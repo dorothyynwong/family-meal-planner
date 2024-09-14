@@ -1,0 +1,10 @@
+@use "../styles/variables.scss" as *;
+
+.custom-background {
+    background-color: $background-color;
+    width: 100vw;
+    height: 100vh;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
