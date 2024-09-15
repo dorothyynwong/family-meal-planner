@@ -4,7 +4,7 @@
 
 $font-family-base: $font-family, sans-serif; 
 
-@import "~bootstrap/scss/bootstrap"; 
+@import "~bootstrap/dist/css/bootstrap.min.css";
 @import "../Styles/custom-styles.scss";
 
 
@@ -13,6 +13,6 @@ html, body {
     height: 100%;
 }
 
-h1 {
+.h1, h1 {
     font-weight: $font-weight-bold;
 }

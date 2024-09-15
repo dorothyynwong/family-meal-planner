@@ -5,24 +5,22 @@
     height: 16px;
 }
 
-.search-icon-box {
+.search-icon-box,
+.search-box {
     background-color: $background-color;
     border-top: 3px solid black;
     border-left: 3px solid black;
     border-right: 0;
     border-bottom: 3px solid black;
-}
 
-.search-box {
-    background-color: $background-color;
-    border-top: 3px solid black;
-    border-right: 3px solid black;
-    border-left: 0;
-    border-bottom: 3px solid black;
-    &:focus {
-        background-color: $background-color;
-        outline: none;            
-        border-color: black;     
-        box-shadow: none;
-      }
+    &.search-box {
+        border-right: 3px solid black;
+        border-left: 0;
+        &:focus {
+            background-color: $background-color;
+            outline: none;            
+            border-color: black;     
+            box-shadow: none;
+          }
+    }
 }
