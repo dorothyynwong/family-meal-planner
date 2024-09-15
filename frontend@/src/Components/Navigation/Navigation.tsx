@@ -1,6 +1,6 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
 import './Navigation.scss'; 
-import logo from '../../assets/watermelon.png';
+import logo from '../../assets/watermelon.svg';
 
 const Navigation: React.FC = () => {
     return (

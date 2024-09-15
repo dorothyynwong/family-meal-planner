@@ -1,0 +1,28 @@
+@use "../../styles/variables.scss" as *;
+
+.side-menu-toggle-button{
+    position: fixed;
+    top: 1vh;
+    right: 1vw;
+    z-index:200;
+}
+
+.side-menu-hidden {
+    display : none;
+  }
+  
+.side-menu-show {
+  z-index: 100;
+  position: absolute;
+  display : flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  top: 0;
+  right: 0;
+  width: 50%;
+  height: 100%;
+  background: $container-background;
+  opacity: 90%;
+  gap: 30px;
+}
