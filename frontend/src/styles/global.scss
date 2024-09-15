@@ -1,12 +1,14 @@
 @use "../styles/variables.scss" as *;
+
 @import url('https://fonts.googleapis.com/css2?family=Federo&family=Fredoka:wght@300..700&display=swap');
 
+$font-family-base: $font-family, sans-serif; 
 
-.custom-background {
-    background-color: $background-color;
-    width: 100vw;
-    height: 100vh;
-    position: absolute;
-    top: 0;
-    left: 0;
+@import "~bootstrap/scss/bootstrap"; 
+@import "../styles/custom-styles.scss";
+
+
+html, body {
+    font-family: $font-family-base;
+    height: 100%;
 }

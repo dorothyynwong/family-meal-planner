@@ -1,4 +1,4 @@
-@use "../../styles/variables.scss" as *;
+@use "../styles/variables.scss" as *;
 
 .custom-navbar-container {
     display: flex;
@@ -17,7 +17,6 @@
 }
 
 .custom-nav-link {
-    font-family: $font-family;
     font-weight: $font-weight-bold;
     font-size: $font-size-subtitle;
 }
