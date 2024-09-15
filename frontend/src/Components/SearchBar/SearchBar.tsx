@@ -5,7 +5,7 @@ import "./SearchBar.scss";
 const SearchBar: React.FC = () => {
     return (
         <>
-            <InputGroup className="mb-3">
+            <InputGroup className="mb-3 search-container">
                 <InputGroup.Text className="search-icon-box" id="basic-addon1">
                     <FaSearch className="search-icon" />
                 </InputGroup.Text>

@@ -1,8 +1,12 @@
 @use "../../Styles/variables.scss" as *;
 
 .search-icon {
-    width: 16px;
-    height: 16px;
+    width: max(3vh,16px);
+    height: auto;
+}
+
+.search-container {
+    padding-top: max(3vh,10px);
 }
 
 .search-icon-box,
