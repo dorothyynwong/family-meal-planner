@@ -9,6 +9,8 @@ const Recipes: React.FC = () => {
             <SearchBar />
             <div className="button-box">
                 <Button className="custom-button" size="lg">Import Recipe from Website</Button>
+                <Button className="custom-button" size="lg">New Recipe</Button>
+                <Button className="custom-button" size="lg">Copy from Recipe</Button>
             </div>
         </>
     );

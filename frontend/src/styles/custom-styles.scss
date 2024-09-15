@@ -22,6 +22,26 @@
 }
 
 .custom-button {
-    background-color: $button-background;
+    background-color: $darker-background;
+    border: 0;
+}
+
+.custom-button:visited {
+    background-color: $darker-background;
+    border: 0;
+}
+
+.custom-button:hover {
+    background-color: $secondary-background;
+    border: 0;
+}
+
+.custom-button:active {
+    background-color: $secondary-background;
+    border: 0;
+}
+
+.custom-button:focus {
+    background-color: $secondary-background;
     border: 0;
 }
