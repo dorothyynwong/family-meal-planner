@@ -1,4 +1,4 @@
-@use "../../styles/variables.scss" as *;
+@use "../../Styles/variables.scss" as *;
 
 .layout {
 	display:grid;
@@ -21,6 +21,8 @@
 .main-content {
 	grid-column:1/4;
 	grid-row:2/3;
+	padding-top: 5vh;
+	padding-left: 2vh;
 }
 .side-menu {
 	grid-column:3/4;

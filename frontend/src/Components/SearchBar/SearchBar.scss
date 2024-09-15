@@ -1,0 +1,11 @@
+@use "../../Styles/variables.scss" as *;
+
+.search-icon {
+    width: 16px;
+    height: 16px;
+}
+
+.search-box {
+    background-color: $background-color;
+    border: 1px solid black;
+}
