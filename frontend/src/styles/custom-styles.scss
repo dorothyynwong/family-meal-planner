@@ -37,7 +37,7 @@
 }
 
 .custom-button:active {
-    background-color: $secondary-background;
+    background-color: $secondary-background !important;
     border: 0;
 }
 
