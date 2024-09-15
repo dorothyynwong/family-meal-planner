@@ -1,0 +1,27 @@
+@use "../../styles/variables.scss" as *;
+
+.layout {
+	display:grid;
+	grid-template:auto 1fr auto/1fr 1fr 1fr;
+	gap:0px 0px;
+	justify-items:stretch;
+	align-items:stretch;
+    background-color: $background-color;
+    height: 100vh;
+}
+.header-menu {
+	grid-column:1/4;
+	grid-row:1/2;
+}
+.footer-menu {
+	grid-column:1/4;
+	grid-row:3/4;
+}
+.main-content {
+	grid-column:1/4;
+	grid-row:2/3;
+}
+.side-menu {
+	grid-column:3/4;
+	grid-row:1/4;
+}

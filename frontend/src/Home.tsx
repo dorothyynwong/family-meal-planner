@@ -5,10 +5,7 @@ import HeaderMenu from "./Components/HeaderMenu/HeaderMenu"
 function Home() {
 
   return (
-    <div className="custom-background">
-      <HeaderMenu name="Evie Cheng" />
-      <SideMenu />
-    </div>
+    <>Home</>
   )
 }
 
