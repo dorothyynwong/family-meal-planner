@@ -6,7 +6,7 @@ const SearchBar: React.FC = () => {
     return (
         <>
             <InputGroup className="mb-3">
-                <InputGroup.Text className="search-box" id="basic-addon1">
+                <InputGroup.Text className="search-icon-box" id="basic-addon1">
                     <FaSearch className="search-icon" />
                 </InputGroup.Text>
 
