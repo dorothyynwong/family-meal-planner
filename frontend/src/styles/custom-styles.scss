@@ -21,11 +21,7 @@
     font-size: $font-size-subtitle;
 }
 
-html, body {
-    font-family: $font-family-base;
-    height: 100%;
-}
-
-.h1, h1 {
-    font-weight: $font-weight-bold;
+.custom-button {
+    background-color: $button-background;
+    border: 0;
 }
