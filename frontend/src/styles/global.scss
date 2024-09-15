@@ -1,11 +1,11 @@
-@use "../styles/variables.scss" as *;
+@use "../Styles/variables.scss" as *;
 
 @import url('https://fonts.googleapis.com/css2?family=Federo&family=Fredoka:wght@300..700&display=swap');
 
 $font-family-base: $font-family, sans-serif; 
 
 @import "~bootstrap/scss/bootstrap"; 
-@import "../styles/custom-styles.scss";
+@import "../Styles/custom-styles.scss";
 
 
 html, body {

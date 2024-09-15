@@ -1,5 +1,5 @@
 import { Container, Nav, Navbar } from "react-bootstrap";
-import logo from '../../assets/watermelon.png';
+import logo from '../../Assets/watermelon.png';
 
 const Navigation: React.FC = () => {
     return (
