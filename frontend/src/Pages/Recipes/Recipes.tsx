@@ -29,7 +29,7 @@ const Recipes: React.FC = () => {
                     aria-label="Recipe-Url"
                     aria-describedby="basic-addon1"
                 />
-                <Button className="url-button">Submit</Button>
+                <Button className="custom-button">Submit</Button>
             </InputGroup>
             </Popup>
         </>
