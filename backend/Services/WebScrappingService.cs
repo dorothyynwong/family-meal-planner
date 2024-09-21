@@ -1,4 +1,3 @@
-using System.Text.Json;
 using System.Text.Json.Nodes;
 using FamilyMealPlanner.Models;
 using HtmlAgilityPack;
@@ -27,12 +26,12 @@ public class WebScrappingService : IWebScrappingService
                         {
                                 throw new Exception($"{url} is an invalid recipe.");
                         }
-                        
+
 
                         string json = recipeJsonElements.FirstOrDefault().InnerText;
                         if (json.StartsWith("[") && json.EndsWith("]"))
                         {
-                                json = json.Trim('[',']');
+                                json = json.Trim('[', ']');
                         }
                         return json;
 
@@ -44,73 +43,53 @@ public class WebScrappingService : IWebScrappingService
 
         }
 
-        private List<string> ParseJsonNode(JsonNode parentNode)
+        private string GetChildNodeValue(JsonNode jsonNode)
         {
-                List<string> listOfString = new List<string>();
-                if (parentNode != null)
+                if (jsonNode is JsonObject)
                 {
-                        if (parentNode is JsonArray)
+                        string type = jsonNode["@type"]?.ToString();
+                        switch (type)
                         {
-                                foreach (JsonNode childNode in parentNode.AsArray())
-                                {
-                                        if (childNode is JsonObject jsonObject )
-                                        {
-                                                string type =  jsonObject["@type"]?.ToString();
-                                                switch (type)
-                                                {
-                                                        case "HowToStep":
-                                                                listOfString.Add(childNode["text"].ToString());
-                                                                break;
-                                                        case "ImageObject":
-                                                                listOfString.Add(childNode["url"].ToString());
-                                                                break;
-                                                        case "Person":
-                                                                listOfString.Add(childNode["name"].ToString());
-                                                                break;
-                                                        case "Organization":
-                                                                listOfString.Add(childNode["name"].ToString());
-                                                                break;
-                                                        default:
-                                                                listOfString.Add(childNode["text"].ToString());
-                                                                break;
-
-                                                }
-
-
-                                        }
-                                        
-                                        listOfString.Add(childNode!.ToString());
-                                }
-                        }
-                        else
-                        {
-                                if (parentNode is JsonObject jsonObject )
-                                {
-                                        string type = jsonObject["@type"].ToString();
-                                                                                        switch (type)
-                                                {
-                                                        case "HowToStep":
-                                                                listOfString.Add(parentNode["text"].ToString());
-                                                                break;
-                                                        case "ImageObject":
-                                                                listOfString.Add(parentNode["url"].ToString());
-                                                                break;
-                                                        case "Person":
-                                                                listOfString.Add(parentNode["name"].ToString());
-                                                                break;
-                                                        case "Organization":
-                                                                listOfString.Add(parentNode["name"].ToString());
-                                                                break;
-                                                        default:
-                                                                listOfString.Add(parentNode.ToString());
-                                                                break;
-
-                                                }
-                                }
-                               
+                                case "HowToStep":
+                                        return jsonNode["text"].ToString();
+                                case "ImageObject":
+                                        return jsonNode["url"].ToString();
+                                case "Person":
+                                        return jsonNode["name"].ToString();
+                                case "Organization":
+                                        return jsonNode["name"].ToString();
+                                default:
+                                        return jsonNode.ToString();
                         }
 
                 }
+                else
+                {
+                        return jsonNode.ToString();
+                }
+
+        }
+
+        private List<string> ParseJsonNode(JsonNode parentNode)
+        {
+                List<string> listOfString = new List<string>();
+                if (parentNode == null) return listOfString;
+
+
+                if (parentNode is JsonArray)
+                {
+                        foreach (JsonNode childNode in parentNode.AsArray())
+                        {
+                               
+                                listOfString.Add(GetChildNodeValue(childNode));
+                        }
+                }
+                else
+                {
+                        listOfString.Add(GetChildNodeValue(parentNode));
+                }
+
+
                 return listOfString;
         }
 
@@ -119,25 +98,25 @@ public class WebScrappingService : IWebScrappingService
                 string json = await GetRecipeJson(url);
                 JsonNode recipeNode = JsonNode.Parse(json);
 
-                Recipe recipe = new Recipe{};
-                
-                        recipe.Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "";
-                        recipe.Images = ParseJsonNode(recipeNode["image"]);
-                        recipe.Author = ParseJsonNode(recipeNode["author"])[0];
-                        recipe.Url = url;
-                        recipe.Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "";
-                        recipe.RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "";
-                        recipe.PrepTime = recipeNode["prepTime"] != null ? recipeNode["prepTime"]!.ToString() : "";
-                        recipe.CookTime = recipeNode["cookTime"] != null ? recipeNode["cookTime"]!.ToString() : "";
-                        recipe.TotalTime = recipeNode["totalTime"] != null ? recipeNode["totalTime"]!.ToString() : "";
-                        recipe.Keywords = ParseJsonNode(recipeNode["keywords"]);
-                        recipe.RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "";
-                        recipe.RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "";
-                        recipe.RecipeIngredient = ParseJsonNode(recipeNode["recipeIngredient"]);
-                        recipe.RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]);
+                Recipe recipe = new Recipe { };
+
+                recipe.Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "";
+                recipe.Images = ParseJsonNode(recipeNode["image"]);
+                recipe.Author = ParseJsonNode(recipeNode["author"])[0];
+                recipe.Url = url;
+                recipe.Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "";
+                recipe.RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "";
+                recipe.PrepTime = recipeNode["prepTime"] != null ? recipeNode["prepTime"]!.ToString() : "";
+                recipe.CookTime = recipeNode["cookTime"] != null ? recipeNode["cookTime"]!.ToString() : "";
+                recipe.TotalTime = recipeNode["totalTime"] != null ? recipeNode["totalTime"]!.ToString() : "";
+                recipe.Keywords = recipeNode["keywords"] != null ? recipeNode["keywords"]!.ToString() : "";
+                recipe.RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "";
+                recipe.RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "";
+                recipe.RecipeIngredient = ParseJsonNode(recipeNode["recipeIngredient"]);
+                recipe.RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]);
 
 
-                
+
 
                 return recipe;
         }

@@ -12,7 +12,7 @@ public class Recipe
     public string PrepTime { get; set; }
     public string CookTime { get; set; }
     public string TotalTime { get; set; }
-    public List<string> Keywords { get; set; }
+    public string Keywords { get; set; }
     public string RecipeYield { get; set; }
     public string RecipeCategory { get; set; }
     public List<string> RecipeIngredient { get; set; }
