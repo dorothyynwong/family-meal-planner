@@ -54,9 +54,7 @@ public class WebScrappingServiceTests
         recipe.PrepTime = "PT1H";
         recipe.CookTime = "PT30M";
         recipe.TotalTime = "";
-        recipe.Keywords = [
-                            "air fryer chicken, air fryer chicken, air fryer family food , air fryer, all things breaded, easy family dinners, chicken kyiv, chicken breast, nut free, pregnancy friendly"
-                          ];
+        recipe.Keywords = "air fryer chicken, air fryer chicken, air fryer family food , air fryer, all things breaded, easy family dinners, chicken kyiv, chicken breast, nut free, pregnancy friendly";
         recipe.RecipeYield = "Serves 4";
         recipe.RecipeCategory = "";
         recipe.RecipeIngredient = [
