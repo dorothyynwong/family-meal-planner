@@ -48,12 +48,50 @@ public class WebScrappingService : IWebScrappingService
                         {
                                 foreach (JsonNode childNode in parentNode.AsArray())
                                 {
+                                        if (childNode is JsonObject jsonObject )
+                                        {
+                                                string type =  jsonObject["@type"]?.ToString();
+                                                switch (type)
+                                                {
+                                                        case "HowToStep":
+                                                                listOfString.Add(childNode["text"].ToString());
+                                                                break;
+                                                        case "ImageObject":
+                                                                listOfString.Add(childNode["url"].ToString());
+                                                                break;
+                                                        case "Person":
+                                                                listOfString.Add(childNode["name"].ToString());
+                                                                break;
+                                                        case "Organization":
+                                                                listOfString.Add(childNode["name"].ToString());
+                                                                break;
+                                                        default:
+                                                                listOfString.Add(childNode["text"].ToString());
+                                                                break;
+
+                                                }
+
+
+                                        }
+                                        
                                         listOfString.Add(childNode!.ToString());
                                 }
                         }
                         else
                         {
-                                listOfString.Add(parentNode.ToString());
+                                if (parentNode is JsonObject jsonObject )
+                                {
+                                        string type = jsonObject["@type"].ToString();
+                                        if (type == "ImageObject")
+                                        {
+                                                listOfString.Add(parentNode["url"].ToString());
+                                        }
+                                        else
+                                        {
+                                                 listOfString.Add(parentNode.ToString());
+                                        }
+                                }
+                               
                         }
 
                 }
@@ -65,39 +103,11 @@ public class WebScrappingService : IWebScrappingService
                 string json = await GetRecipeJson(url);
                 JsonNode recipeNode = JsonNode.Parse(json);
 
-                JsonNode authorNode = recipeNode["author"]!;
-
-                List<string> instructions = new List<string>();
-                JsonNode instructionsNode = recipeNode["recipeInstructions"];
-                if (instructionsNode != null)
-                {
-                        if(instructionsNode is JsonArray)
-                        {
-                                foreach(JsonNode instruction in instructionsNode.AsArray())
-                                {
-                                        if (instruction is JsonObject instructionObject && instructionObject["@type"]?.ToString() == "HowToStep")
-                                        {
-                                                instructions.Add(instruction["text"].ToString());
-                                        }
-                                        else
-                                        {
-                                                instructions.Add(instruction.ToString());
-                                        }
-                                        
-                                }
-                        }
-                        else
-                        {
-                                instructions.Add(instructionsNode.ToString());
-                        }
-                }
-
-
                 Recipe recipe = new Recipe
                 {
-                        Name = recipeNode["name"]!.ToString(),
+                        Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "",
                         Images = ParseJsonNode(recipeNode["image"]),
-                        Author = authorNode["name"] != null ? authorNode["name"]!.ToString() : "",
+                        Author = ParseJsonNode(recipeNode["author"])[0],
                         Url = url,
                         Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "",
                         RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "",
@@ -108,7 +118,7 @@ public class WebScrappingService : IWebScrappingService
                         RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "",
                         RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "",
                         RecipeIngredient = ParseJsonNode(recipeNode["recipeIngredient"]),
-                        RecipeInstructions = instructions
+                        RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"])
 
 
                 };
