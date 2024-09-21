@@ -1,4 +1,9 @@
+using System.Text.Json.Serialization;
+using FamilyMealPlanner.Services;
+
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -13,6 +18,11 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
+                });
 
 var app = builder.Build();
 
@@ -25,6 +35,7 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
-
 app.UseCors();
+
+app.MapControllers();
 app.Run();
