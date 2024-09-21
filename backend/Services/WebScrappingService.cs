@@ -27,9 +27,14 @@ public class WebScrappingService : IWebScrappingService
                         {
                                 throw new Exception($"{url} is an invalid recipe.");
                         }
+                        
 
-                        return recipeJsonElements.FirstOrDefault().InnerText;
-
+                        string json = recipeJsonElements.FirstOrDefault().InnerText;
+                        if (json.StartsWith("[") && json.EndsWith("]"))
+                        {
+                                json = json.Trim('[',']');
+                        }
+                        return json;
 
                 }
                 catch (Exception ex)
@@ -82,14 +87,25 @@ public class WebScrappingService : IWebScrappingService
                                 if (parentNode is JsonObject jsonObject )
                                 {
                                         string type = jsonObject["@type"].ToString();
-                                        if (type == "ImageObject")
-                                        {
-                                                listOfString.Add(parentNode["url"].ToString());
-                                        }
-                                        else
-                                        {
-                                                 listOfString.Add(parentNode.ToString());
-                                        }
+                                                                                        switch (type)
+                                                {
+                                                        case "HowToStep":
+                                                                listOfString.Add(parentNode["text"].ToString());
+                                                                break;
+                                                        case "ImageObject":
+                                                                listOfString.Add(parentNode["url"].ToString());
+                                                                break;
+                                                        case "Person":
+                                                                listOfString.Add(parentNode["name"].ToString());
+                                                                break;
+                                                        case "Organization":
+                                                                listOfString.Add(parentNode["name"].ToString());
+                                                                break;
+                                                        default:
+                                                                listOfString.Add(parentNode.ToString());
+                                                                break;
+
+                                                }
                                 }
                                
                         }
@@ -103,25 +119,25 @@ public class WebScrappingService : IWebScrappingService
                 string json = await GetRecipeJson(url);
                 JsonNode recipeNode = JsonNode.Parse(json);
 
-                Recipe recipe = new Recipe
-                {
-                        Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "",
-                        Images = ParseJsonNode(recipeNode["image"]),
-                        Author = ParseJsonNode(recipeNode["author"])[0],
-                        Url = url,
-                        Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "",
-                        RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "",
-                        PrepTime = recipeNode["prepTime"] != null ? recipeNode["prepTime"]!.ToString() : "",
-                        CookTime = recipeNode["cookTime"] != null ? recipeNode["cookTime"]!.ToString() : "",
-                        TotalTime = recipeNode["totalTime"] != null ? recipeNode["totalTime"]!.ToString() : "",
-                        Keywords = ParseJsonNode(recipeNode["keywords"]),
-                        RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "",
-                        RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "",
-                        RecipeIngredient = ParseJsonNode(recipeNode["recipeIngredient"]),
-                        RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"])
+                Recipe recipe = new Recipe{};
+                
+                        recipe.Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "";
+                        recipe.Images = ParseJsonNode(recipeNode["image"]);
+                        recipe.Author = ParseJsonNode(recipeNode["author"])[0];
+                        recipe.Url = url;
+                        recipe.Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "";
+                        recipe.RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "";
+                        recipe.PrepTime = recipeNode["prepTime"] != null ? recipeNode["prepTime"]!.ToString() : "";
+                        recipe.CookTime = recipeNode["cookTime"] != null ? recipeNode["cookTime"]!.ToString() : "";
+                        recipe.TotalTime = recipeNode["totalTime"] != null ? recipeNode["totalTime"]!.ToString() : "";
+                        recipe.Keywords = ParseJsonNode(recipeNode["keywords"]);
+                        recipe.RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "";
+                        recipe.RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "";
+                        recipe.RecipeIngredient = ParseJsonNode(recipeNode["recipeIngredient"]);
+                        recipe.RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]);
 
 
-                };
+                
 
                 return recipe;
         }
