@@ -1,3 +1,4 @@
+using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,5 +19,16 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
         }
         string json = await _webScrappingService.GetRecipeJson(url);
         return Ok(json);
+    }
+
+    [HttpGet("")]
+    public async Task<IActionResult> GetRecipe([FromQuery] string url)
+    {
+        if (string.IsNullOrEmpty(url))
+        {
+            return BadRequest("URL cannot be null or empty.");
+        }
+        var recipe = await _webScrappingService.GetRecipeFromUrl(url);
+        return Ok(recipe);
     }
 }
