@@ -15,7 +15,7 @@ const NewRecipe: React.FC = () => {
     return (
     <>
         <h1 className="mb-3">New Recipe</h1>
-        <RecipeForm />
+        <RecipeForm/>
     
     </>);
 }
