@@ -11,3 +11,9 @@ node_modules/
 # Build output
 bin/
 obj/
+
+backend/bin/
+backend/obj/
+
+backend.Tests/bin/
+backend.Tests/obj/

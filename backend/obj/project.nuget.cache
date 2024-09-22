@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "AiQdaCc6U6c=",
+  "dgSpecHash": "5E0NlvYcB0k=",
   "success": true,
   "projectFilePath": "C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj",
   "expectedPackageFiles": [
@@ -58,12 +58,5 @@
     "C:\\Users\\dorot\\.nuget\\packages\\system.text.json\\8.0.4\\system.text.json.8.0.4.nupkg.sha512",
     "C:\\Users\\dorot\\.nuget\\packages\\system.threading.channels\\6.0.0\\system.threading.channels.6.0.0.nupkg.sha512"
   ],
-  "logs": [
-    {
-      "code": "Undefined",
-      "level": "Warning",
-      "warningLevel": 1,
-      "message": "Problem reading the cache file C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\obj\\project.nuget.cache : Invalid property identifier character: <. Path 'version', line 3, position 0."
-    }
-  ]
+  "logs": []
 }
