@@ -6,9 +6,8 @@ export async function ImportRecipeFromUrl(url: string) {
         const response: AxiosResponse = await client.get('recipes/url', {
             params: { url: url }
         });
-
-        console.log(response.data); 
+        return response;
     } catch (error) {
-        console.error('Error importing recipe:', error); 
+        throw error;
     }
 }

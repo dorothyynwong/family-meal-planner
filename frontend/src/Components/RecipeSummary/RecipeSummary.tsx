@@ -1,5 +1,4 @@
 import { Button, Form } from "react-bootstrap";
-import "./RecipeSummary.scss";
 
 const RecipeSummary: React.FC = () => {
     return (
@@ -11,9 +10,15 @@ const RecipeSummary: React.FC = () => {
 
             <Form.Group className="mb-3" controlId="recipe-description">
                 <Form.Label>Description</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Description" />
+                <Form.Control className="custom-form-control"  as="textarea" rows={3} placeholder="Description" />
             </Form.Group>
-            <Button className="mb-3 custom-button" size="lg" style={{ fontSize: '1rem' }} type="button">
+
+            <Form.Group className="mb-3" controlId="recipe-notes">
+                <Form.Label>Notes</Form.Label>
+                <Form.Control className="custom-form-control"  as="textarea" rows={3} placeholder="Notes" />
+            </Form.Group>
+
+            <Button className="custom-button recipe-button" size="lg" type="button">
                 Add Photo
             </Button>
 

@@ -45,7 +45,7 @@ const RecipeIngredient: React.FC = () => {
                     </Col>
                 </Row>
             ))}
-            <Button onClick={handleClick}>Add More Ingredients</Button>
+            <Button className="custom-button recipe-button" size="lg" onClick={handleClick}>Add More Ingredients</Button>
         </Form.Group>
     )
 }

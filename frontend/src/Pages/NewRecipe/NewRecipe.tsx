@@ -1,15 +1,28 @@
 import { useLocation } from "react-router-dom";
 import { ImportRecipeFromUrl } from "../../Api/api";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 
 const NewRecipe: React.FC = () => {
     const location = useLocation();
     const url = location.state;
+    const [data, setData] = useState();
+
 
     useEffect(() => {
         if (url!==null && url !== "")
-            ImportRecipeFromUrl(url);
+        {
+            ImportRecipeFromUrl(url)
+            .then(response => 
+                {
+                    if(response.status !== 200) {
+                        throw new Error();
+                    }
+                    setData(response.data);
+                })
+            .catch((error) => {});
+        }
+            
     }, [url]);
 
     return (
