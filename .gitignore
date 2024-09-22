@@ -17,3 +17,5 @@ backend/obj/
 
 backend.Tests/bin/
 backend.Tests/obj/
+
+.env
