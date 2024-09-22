@@ -1,3 +1,8 @@
+using FamilyMealPlanner;
+using FamilyMealPlanner.Models.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 using System.Text.Json.Serialization;
 using FamilyMealPlanner.Services;
 
@@ -18,6 +23,15 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
+});
+
+builder
+    .Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<FamilyMealPlannerContext>()
+    .AddDefaultTokenProviders();
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
