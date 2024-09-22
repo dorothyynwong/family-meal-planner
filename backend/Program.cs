@@ -1,3 +1,8 @@
+using FamilyMealPlanner;
+using FamilyMealPlanner.Models.Data;
+using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
@@ -13,6 +18,15 @@ builder.Services.AddCors(options =>
     });
 });
 
+builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
+{
+    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
+});
+
+builder
+    .Services.AddIdentity<User, Role>()
+    .AddEntityFrameworkStores<FamilyMealPlannerContext>()
+    .AddDefaultTokenProviders();
 
 var app = builder.Build();
 
