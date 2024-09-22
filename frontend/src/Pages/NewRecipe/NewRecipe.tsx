@@ -1,6 +1,7 @@
 import { useLocation } from "react-router-dom";
 import { ImportRecipeFromUrl } from "../../Api/api";
 import { useEffect } from "react";
+import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 
 const NewRecipe: React.FC = () => {
     const location = useLocation();
@@ -13,7 +14,8 @@ const NewRecipe: React.FC = () => {
 
     return (
     <>
-        <h1>Create Recipe</h1>
+        <h1 className="mb-3">New Recipe</h1>
+        <RecipeForm />
     
     </>);
 }
