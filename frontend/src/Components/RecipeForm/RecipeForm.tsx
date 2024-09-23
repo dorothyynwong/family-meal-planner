@@ -18,6 +18,7 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             addRecipe(data);
     }
     
+    
     return (
         <Form onSubmit={handleSubmit}>
             <RecipeSummary data={data} updateData={updateData} />
