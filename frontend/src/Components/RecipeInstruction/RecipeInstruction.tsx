@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
 import { NewRecipeProps } from "../RecipeForm/RecipeForm";
+import { RxCross2 } from "react-icons/rx";
 
 
 const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
@@ -8,12 +9,25 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     const [rowCount, setRowCount] = useState(5);
 
     useEffect(() => {
-        setRowCount(instructions.length > 0 ? instructions.length : 5);
-    }, [data, instructions.length]); 
+        setRowCount(instructions.length || 1);
+    }, [instructions.length]); 
 
     const handleClick = () => {
         setRowCount(rowCount+1);
     }
+
+    const handleCrossClick = (index: number) => {
+        if (!data) return;
+    
+        const updatedInstructions = data.recipeInstructions?.filter((_, i) => i !== index);
+    
+        updateData({
+            ...data,
+            recipeInstructions: updatedInstructions && updatedInstructions.length > 0
+                ? updatedInstructions
+                : [""],
+        });
+    };
 
     const handleChange = (index: number, value: string) => {
         if (data) {
@@ -24,7 +38,6 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 recipeInstructions: updatedInstructions,
             });
         }
-        console.log(data);
     };
 
     return (
@@ -32,7 +45,7 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             <FormLabel>Instructions</FormLabel>
             {Array.from({ length: rowCount }, (_, i) => (
                 <Row key={i}>
-                    <Col key={`col-1`}>
+                    <Col key={`col-1`} xs={10}>
                         <Form.Control
                             className="mb-3 custom-form-control"
                             type="text"
@@ -42,6 +55,9 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                             name={`instruction-${i+1}`}
                             onChange={(e) => handleChange(i, e.target.value)}
                         />
+                    </Col>
+                    <Col key={`col-2`} xs={2}>
+                        <RxCross2 onClick={() => handleCrossClick(i)} size="25"/>
                     </Col>
                 </Row>
             ))}

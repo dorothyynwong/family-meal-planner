@@ -24,10 +24,8 @@ const RecipeIngreident: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 recipeIngredients: updatedIngredients,
             });
         }
-        console.log(data);
     };
 
-    if (!data) return(<>No data</>);
 
     return (
         <Form.Group className="mb-3" controlId="ingredients-list">
