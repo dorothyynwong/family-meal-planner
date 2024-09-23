@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
 import { NewRecipeProps } from "../RecipeForm/RecipeForm";
 
@@ -27,7 +27,11 @@ const RecipeIngredient: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     const ingredientsList = data?.recipeIngredients || [];
     const parsedIngredients = ingredientsList?.map(parseIngredient);
     
-    const [rowCount, setRowCount] = useState(ingredientsList && ingredientsList.length > 0 ? ingredientsList.length : 5);
+    const [rowCount, setRowCount] = useState(5);
+
+    useEffect(() => {
+        setRowCount(ingredientsList.length > 0 ? ingredientsList.length : 5);
+    }, [data, ingredientsList.length]); 
 
     const handleClick = () => {
         setRowCount(rowCount+1);
@@ -36,7 +40,13 @@ const RecipeIngredient: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     const handleChange = (index: number, field: keyof Ingredient, value: string) => {
         if (data) {
             const updatedIngredientsList = [...parsedIngredients];
-            updatedIngredientsList[index][field] = value;
+            if(updatedIngredientsList[index])
+                updatedIngredientsList[index][field] = value;
+            else
+            updatedIngredientsList[index] = { 
+                quantity: field === 'quantity' ? value : '', 
+                name: field === 'name' ? value : '' 
+            };
             updateData({
                 ...data,
                 recipeIngredients: updatedIngredientsList.map(ingredient => `${ingredient.quantity} ${ingredient.name}`).filter(Boolean),
@@ -61,7 +71,7 @@ const RecipeIngredient: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                             type="text"
                             aria-label={`quantity-${i+1}`}
                             aria-describedby="quantity"
-                            value={parsedIngredients? parsedIngredients[i].quantity : ""}
+                            value={parsedIngredients[i]? parsedIngredients[i].quantity : ""}
                             name={`quantity-${i+1}`}    
                             onChange={(e) => handleChange(i, "quantity", e.target.value)}
                         />
@@ -72,7 +82,7 @@ const RecipeIngredient: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                             type="text"
                             aria-label={`ingredient-${i+1}`}
                             aria-describedby="ingredient"
-                            value={parsedIngredients? parsedIngredients[i].name : ""}
+                            value={parsedIngredients[i]? parsedIngredients[i].name : ""}
                             name={`ingredient-${i+1}`}    
                             onChange={(e) => handleChange(i, "name", e.target.value)}
                         />

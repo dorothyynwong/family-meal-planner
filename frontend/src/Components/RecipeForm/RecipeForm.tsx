@@ -15,7 +15,7 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     return (
         <Form>
             <RecipeSummary data={data} updateData={updateData} />
-            {/* <RecipeIngredient data={data} updateData={updateData} /> */}
+            <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData}  />
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">
