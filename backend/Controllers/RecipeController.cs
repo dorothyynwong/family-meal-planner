@@ -6,9 +6,10 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/recipes")]
-public class RecipeController(IWebScrappingService webScrappingService) : Controller
+public class RecipeController(IWebScrappingService webScrappingService, IRecipeService recipeService) : Controller
 {
     private readonly IWebScrappingService _webScrappingService = webScrappingService ;
+    private readonly IRecipeService _recipeService = recipeService ;
 
     [HttpGet("url")]
     public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
@@ -30,5 +31,12 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
         }
         var recipe = await _webScrappingService.GetRecipeFromUrl(url);
         return Ok(recipe);
+    }
+
+    [HttpPost("")]
+    public async Task<IActionResult> AddRecipe(RecipeRequest recipe)
+    {
+        await _recipeService.AddRecipe(recipe);
+        return Ok();
     }
 }

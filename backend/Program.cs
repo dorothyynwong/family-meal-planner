@@ -9,6 +9,7 @@ using FamilyMealPlanner.Services;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
+builder.Services.AddTransient<IRecipeService, RecipeService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

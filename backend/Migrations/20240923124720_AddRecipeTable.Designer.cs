@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FamilyMealPlanner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(FamilyMealPlannerContext))]
-    partial class FamilyMealPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20240923124720_AddRecipeTable")]
+    partial class AddRecipeTable
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -141,17 +144,32 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<string>("Author")
+                        .HasColumnType("text");
+
+                    b.Property<string>("CookTime")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<List<string>>("Images")
                         .HasColumnType("text[]");
 
+                    b.Property<string>("Keywords")
+                        .HasColumnType("text");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("text");
 
-                    b.Property<string>("Notes")
+                    b.Property<string>("PrepTime")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RecipeCategory")
+                        .HasColumnType("text");
+
+                    b.Property<string>("RecipeCuisine")
                         .HasColumnType("text");
 
                     b.Property<List<string>>("RecipeIngredients")
@@ -159,6 +177,15 @@ namespace backend.Migrations
 
                     b.Property<List<string>>("RecipeInstructions")
                         .HasColumnType("text[]");
+
+                    b.Property<string>("RecipeYield")
+                        .HasColumnType("text");
+
+                    b.Property<string>("TotalTime")
+                        .HasColumnType("text");
+
+                    b.Property<string>("Url")
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 
