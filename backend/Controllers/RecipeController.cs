@@ -21,7 +21,7 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
         return Ok(json);
     }
 
-    [HttpGet("")]
+    [HttpGet("import")]
     public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
     {
         if (string.IsNullOrEmpty(url))
