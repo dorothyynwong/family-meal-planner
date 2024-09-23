@@ -2,7 +2,6 @@ import { useLocation } from "react-router-dom";
 import { importRecipeFromUrl } from "../../Api/api";
 import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
-import { ImportRecipeInterface } from "../../Api/apiInterface";
 
 export interface NewRecipeData {
     name?: string;
@@ -16,16 +15,10 @@ export interface NewRecipeData {
 const NewRecipe: React.FC = () => {
     const location = useLocation();
     const url = location.state;
-    const [data, setData] = useState<NewRecipeData>({
-        name: "",
-        images: [],
-        notes: "",
-        description: "",
-        recipeIngredients: [],
-        recipeInstructions: []
-    });
+    const [data, setData] = useState<NewRecipeData>();
+
     const updateData = (newData: NewRecipeData) => {
-        setData(newData)
+        setData(newData);
     }
 
     useEffect(() => {

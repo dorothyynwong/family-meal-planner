@@ -27,8 +27,6 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
         console.log(data);
     };
 
-    if (!data) return(<>No data</>);
-
     return (
         <Form.Group className="mb-3" controlId="instructions-list">
             <FormLabel>Instructions</FormLabel>
