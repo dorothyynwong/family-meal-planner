@@ -4,6 +4,7 @@ import RecipeIngredient from "../RecipeIngredient/RecipeIngredient";
 import "./RecipeForm.scss"
 import RecipeInstruction from "../RecipeInstruction/RecipeInstruction";
 import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
+import { addRecipe } from "../../Api/api";
 
 export interface NewRecipeProps {
     data: NewRecipeData | undefined;
@@ -11,6 +12,10 @@ export interface NewRecipeProps {
 }
 
 const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+    const handleSubmit = () => {
+        if (data)
+            addRecipe(data);
+    }
     
     return (
         <Form>
@@ -18,7 +23,7 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData}  />
             <div className="d-flex justify-content-end">
-                <Button className="custom-button recipe-button" size="lg" type="submit">
+                <Button className="custom-button recipe-button" size="lg" type="submit" onSubmit={handleSubmit}>
                     Submit
                 </Button>
             </div>
