@@ -18,28 +18,28 @@ const RecipeIngredient: React.FC = () => {
                 <Col key="ingredient-header" style={{ textAlign: "center", fontWeight: "bold"}}>Ingredient</Col>
             </Row>
             {Array.from({ length: rowCount }, (_, i) => (
-                <Row key={i}>
-                    <Col key={i - 1}>
+                <Row key={i+1}>
+                    <Col key={`col-1`}>
                         <Form.Control
                             className="mb-3 custom-form-control"
                             type="text"
-                            id={`quantity-${i}`}
+                            aria-label={`quantity-${i+1}`}
                             aria-describedby="quantity"
                         />
                     </Col>
-                    <Col key={i - 2}>
+                    <Col key={`col-2`}>
                         <Form.Control
                             className="mb-3 custom-form-control"
                             type="text"
-                            id={`unit-${i}`}
+                            aria-label={`unit-${i+1}`}
                             aria-describedby="unit"
                         />
                     </Col>
-                    <Col key={i - 3}>
+                    <Col key={`col-3`}>
                         <Form.Control
                             className="mb-3 custom-form-control"
                             type="text"
-                            id={`ingredient--${i}`}
+                            aria-label={`ingredient-${i+1}`}
                             aria-describedby="ingredient"
                         />
                     </Col>

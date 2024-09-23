@@ -14,11 +14,11 @@ const RecipeInstruction: React.FC = () => {
             <FormLabel>Instructions</FormLabel>
             {Array.from({ length: rowCount }, (_, i) => (
                 <Row key={i}>
-                    <Col key={i - 1}>
+                    <Col key={`col-1`}>
                         <Form.Control
                             className="mb-3 custom-form-control"
                             type="text"
-                            id={`instruction-${i}`}
+                            aria-label={`instruction-${i+1}`}
                             aria-describedby="instruction"
                         />
                     </Col>

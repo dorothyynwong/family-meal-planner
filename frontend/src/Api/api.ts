@@ -3,7 +3,7 @@ import client from './apiClient';
 
 export async function ImportRecipeFromUrl(url: string) {
     try {
-        const response: AxiosResponse = await client.get('recipes/url', {
+        const response: AxiosResponse = await client.get('recipes', {
             params: { url: url }
         });
         return response;

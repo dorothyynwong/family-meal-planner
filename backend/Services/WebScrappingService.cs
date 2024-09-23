@@ -112,7 +112,7 @@ public class WebScrappingService : IWebScrappingService
                 recipe.Keywords = recipeNode["keywords"] != null ? recipeNode["keywords"]!.ToString() : "";
                 recipe.RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "";
                 recipe.RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "";
-                recipe.RecipeIngredient = ParseJsonNode(recipeNode["recipeIngredient"]);
+                recipe.RecipeIngredients = ParseJsonNode(recipeNode["recipeIngredient"]);
                 recipe.RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]);
 
 
