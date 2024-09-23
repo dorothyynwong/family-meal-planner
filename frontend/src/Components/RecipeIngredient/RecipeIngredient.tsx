@@ -38,15 +38,20 @@ const RecipeIngredient: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     }
 
     const handleChange = (index: number, field: keyof Ingredient, value: string) => {
-        if (data) {
+        if (parsedIngredients) {
             const updatedIngredientsList = [...parsedIngredients];
             if(updatedIngredientsList[index])
+            {
                 updatedIngredientsList[index][field] = value;
+            }
             else
-            updatedIngredientsList[index] = { 
-                quantity: field === 'quantity' ? value : '', 
-                name: field === 'name' ? value : '' 
-            };
+            {
+                updatedIngredientsList[index] =  { 
+                    quantity: field === 'quantity' ? value : '', 
+                    name: field === 'name' ? value : '' 
+                };
+            }
+
             updateData({
                 ...data,
                 recipeIngredients: updatedIngredientsList.map(ingredient => `${ingredient.quantity} ${ingredient.name}`).filter(Boolean),
