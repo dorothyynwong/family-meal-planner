@@ -30,7 +30,7 @@ const RecipeIngreident: React.FC<NewRecipeProps> = ({ data, updateData }) => {
 
     return (
         <Form.Group className="mb-3" controlId="ingredients-list">
-            <FormLabel>ingredients</FormLabel>
+            <FormLabel>Ingredients</FormLabel>
             {Array.from({ length: rowCount }, (_, i) => (
                 <Row key={i}>
                     <Col key={`col-1`}>
