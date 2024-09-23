@@ -1,10 +1,34 @@
 import { Button, Form, InputGroup } from "react-bootstrap";
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import "./Recipes.scss";
-import React from "react";
+import React, { useState } from "react";
 import Popup from "../../Components/Popup/Popup";
+import { useNavigate } from "react-router-dom";
+
+
 
 const Recipes: React.FC = () => {
+    const navigate = useNavigate();
+    const [url, setUrl] = useState("");
+
+    const handleClick = (event: { currentTarget: { id: string } })  => {
+        const buttonId = event.currentTarget.id;
+        switch (buttonId) {
+          case "new-recipe-button":
+            navigate("/new-recipe", { state: url })
+            break
+          case "import-recipe-button":
+            navigate("/new-recipe", { state: url })
+            break
+          case "log-out-button":
+            navigate("/")
+            break
+          default:
+            break
+        }
+
+    }
+
     const [modalShow, setModalShow] = React.useState(false);
 
     return (
@@ -13,8 +37,8 @@ const Recipes: React.FC = () => {
             <SearchBar />
             <div className="button-box">
                 <Button className="custom-button" size="lg" onClick={() => setModalShow(true)}>Import Recipe from Website</Button>
-                <Button className="custom-button" size="lg">New Recipe</Button>
-                <Button className="custom-button" size="lg">Copy from Recipe</Button>
+                <Button id="new-recipe-button" className="custom-button" size="lg" onClick={handleClick}>New Recipe</Button>
+                <Button id="copy-recipe-button" className="custom-button" size="lg">Copy from Recipe</Button>
             </div>
             <Popup
                 show={modalShow}
@@ -28,8 +52,9 @@ const Recipes: React.FC = () => {
                     placeholder="Recipe Url"
                     aria-label="Recipe-Url"
                     aria-describedby="basic-addon1"
+                    onChange={(event)=> setUrl(event.target.value)}
                 />
-                <Button className="custom-button">Submit</Button>
+                <Button id="import-recipe-button" className="custom-button" onClick={handleClick}>Submit</Button>
             </InputGroup>
             </Popup>
         </>

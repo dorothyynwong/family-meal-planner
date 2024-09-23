@@ -45,3 +45,13 @@
     background-color: $secondary-background;
     border: 0;
 }
+
+.form-label {
+    font-weight: $font-weight-bold;
+    font-size: $font-size-subtitle;
+}
+
+.custom-form-control {
+    background-color: $primary-background;
+    border: 3px solid black;
+}

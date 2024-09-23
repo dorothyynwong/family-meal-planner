@@ -11,7 +11,7 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
     private readonly IWebScrappingService _webScrappingService = webScrappingService ;
 
     [HttpGet("url")]
-    public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
+    public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
     {
         if (string.IsNullOrEmpty(url))
         {
@@ -22,7 +22,7 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
     }
 
     [HttpGet("")]
-    public async Task<IActionResult> GetRecipe([FromQuery] string url)
+    public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
     {
         if (string.IsNullOrEmpty(url))
         {
