@@ -4,11 +4,22 @@ import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 import { ImportRecipeInterface } from "../../Api/apiInterface";
 
+export interface NewRecipeData {
+    name?: string;
+    images? :string[];
+    notes?: string;
+    description?: string;
+    recipeIngredients?: string[];
+    recipeInstructions?: string[];
+}
+
 const NewRecipe: React.FC = () => {
     const location = useLocation();
     const url = location.state;
-    const [data, setData] = useState<ImportRecipeInterface>();
-
+    const [data, setData] = useState<NewRecipeData>();
+    const updateData = (newData: NewRecipeData) => {
+        setData(newData)
+    }
 
     useEffect(() => {
         if (url!==null && url !== "")
@@ -30,7 +41,7 @@ const NewRecipe: React.FC = () => {
     return (
     <>
         <h1 className="mb-3">New Recipe</h1>
-        <RecipeForm {...data}  />
+        <RecipeForm data={data} updateData={updateData}  />
     </>);
 }
 

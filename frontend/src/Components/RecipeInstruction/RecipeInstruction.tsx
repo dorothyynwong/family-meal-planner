@@ -1,15 +1,28 @@
 import { useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
-import { ImportRecipeInterface } from "../../Api/apiInterface";
+import { NewRecipeProps } from "../RecipeForm/RecipeForm";
 
 
-const RecipeInstruction: React.FC<ImportRecipeInterface> = (data) => {
-    const instructions = data.recipeInstructions;
+const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+    const instructions = data?.recipeInstructions || [];
     const [rowCount, setRowCount] = useState(instructions && instructions.length > 0 ? instructions.length : 5);
 
     const handleClick = () => {
         setRowCount(rowCount+1);
     }
+
+    const handleChange = (index: number, value: string) => {
+        if (data) {
+            const updatedInstructions = [...instructions];
+            updatedInstructions[index] = value;
+            updateData({
+                ...data,
+                recipeInstructions: updatedInstructions,
+            });
+        }
+        console.log(data);
+    };
+
 
     return (
         <Form.Group className="mb-3" controlId="instructions-list">
@@ -23,6 +36,8 @@ const RecipeInstruction: React.FC<ImportRecipeInterface> = (data) => {
                             aria-label={`instruction-${i+1}`}
                             aria-describedby="instruction"
                             value={instructions? instructions[i] : ""}
+                            name={`instruction-${i+1}`}
+                            onChange={(e) => handleChange(i, e.target.value)}
                         />
                     </Col>
                 </Row>

@@ -3,14 +3,20 @@ import RecipeSummary from "../RecipeSummary/RecipeSummary";
 import RecipeIngredient from "../RecipeIngredient/RecipeIngredient";
 import "./RecipeForm.scss"
 import RecipeInstruction from "../RecipeInstruction/RecipeInstruction";
-import { ImportRecipeInterface } from "../../Api/apiInterface";
+import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 
-const RecipeForm: React.FC<ImportRecipeInterface> = (data) => {
+export interface NewRecipeProps {
+    data: NewRecipeData | undefined;
+    updateData: (newData: NewRecipeData) => void;
+}
+
+const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+    
     return (
         <Form>
-            <RecipeSummary {...data}/>
-            <RecipeIngredient {...data}/>
-            <RecipeInstruction {...data} />
+            <RecipeSummary data={data} updateData={updateData} />
+            {/* <RecipeIngredient data={data} updateData={updateData} /> */}
+            <RecipeInstruction data={data} updateData={updateData}  />
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">
                     Submit
