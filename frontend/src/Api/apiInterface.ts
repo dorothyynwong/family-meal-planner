@@ -3,7 +3,7 @@ export interface ImportRecipeInterface {
     name?: string;
     images? :string[];
     author? :string;
-    url: string;
+    url?: string;
     description?: string;
     recipeCuisine?: string;
     prepTime?: string;

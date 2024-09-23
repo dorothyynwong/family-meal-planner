@@ -1,9 +1,11 @@
 import { useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
+import { ImportRecipeInterface } from "../../Api/apiInterface";
 
 
-const RecipeIngredient: React.FC = () => {
-    const [rowCount, setRowCount] = useState(5);
+const RecipeIngredient: React.FC<ImportRecipeInterface> = (data) => {
+    const ingredients = data.recipeIngredients;
+    const [rowCount, setRowCount] = useState(ingredients && ingredients.length > 0 ? ingredients.length : 5);
 
     const handleClick = () => {
         setRowCount(rowCount+1);
@@ -25,6 +27,7 @@ const RecipeIngredient: React.FC = () => {
                             type="text"
                             aria-label={`quantity-${i+1}`}
                             aria-describedby="quantity"
+                            
                         />
                     </Col>
                     <Col key={`col-2`}>
@@ -41,6 +44,7 @@ const RecipeIngredient: React.FC = () => {
                             type="text"
                             aria-label={`ingredient-${i+1}`}
                             aria-describedby="ingredient"
+                            value={data.recipeIngredients? data.recipeIngredients[i] : ""}
                         />
                     </Col>
                 </Row>

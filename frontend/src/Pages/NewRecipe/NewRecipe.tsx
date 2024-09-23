@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { ImportRecipeFromUrl } from "../../Api/api";
+import { importRecipeFromUrl } from "../../Api/api";
 import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 import { ImportRecipeInterface } from "../../Api/apiInterface";
@@ -13,7 +13,7 @@ const NewRecipe: React.FC = () => {
     useEffect(() => {
         if (url!==null && url !== "")
         {
-            ImportRecipeFromUrl(url)
+            importRecipeFromUrl(url)
             .then(response => 
                 {
                     if(response.status !== 200) {
@@ -30,8 +30,7 @@ const NewRecipe: React.FC = () => {
     return (
     <>
         <h1 className="mb-3">New Recipe</h1>
-        <RecipeForm/>
-        {data?.recipeIngredients}
+        <RecipeForm {...data}  />
     </>);
 }
 
