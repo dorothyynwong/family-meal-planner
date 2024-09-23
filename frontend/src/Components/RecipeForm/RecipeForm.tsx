@@ -12,18 +12,19 @@ export interface NewRecipeProps {
 }
 
 const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
-    const handleSubmit = () => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
+        event.preventDefault();
         if (data)
             addRecipe(data);
     }
     
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <RecipeSummary data={data} updateData={updateData} />
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData}  />
             <div className="d-flex justify-content-end">
-                <Button className="custom-button recipe-button" size="lg" type="submit" onSubmit={handleSubmit}>
+                <Button className="custom-button recipe-button" size="lg" type="submit">
                     Submit
                 </Button>
             </div>

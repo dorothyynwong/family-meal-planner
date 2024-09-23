@@ -15,9 +15,7 @@ export async function importRecipeFromUrl(url: string) {
 
 export async function addRecipe(recipe: NewRecipeData) {
     try {
-        const response: AxiosResponse = await client.post('recipes', {
-            params: { recipe: recipe}
-        });
+        const response: AxiosResponse = await client.post('recipes', recipe);
         return response;
     } catch (error) {
         throw error;

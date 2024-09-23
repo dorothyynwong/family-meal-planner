@@ -1,6 +1,7 @@
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
@@ -10,6 +11,8 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 {
     private readonly IWebScrappingService _webScrappingService = webScrappingService ;
     private readonly IRecipeService _recipeService = recipeService ;
+
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpGet("url")]
     public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
@@ -36,6 +39,7 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     [HttpPost("")]
     public async Task<IActionResult> AddRecipe(RecipeRequest recipe)
     {
+        Logger.Info("recipe", recipe.Name);
         await _recipeService.AddRecipe(recipe);
         return Ok();
     }
