@@ -23,3 +23,12 @@
 
 2024-09-24 16:11:18.2135 Info - FamilyMealPlanner.Controllers.RecipeController: add recipe
 2024-09-24 16:45:14.4860 Info - backend.ImageService: upload image
+2024-09-24 17:07:24.4580 Info - backend.ImageService: upload image
+2024-09-24 17:14:23.9950 Info - backend.ImageService: System.Net.Http.HttpConnectionResponseContent
+2024-09-24 17:17:20.7714 Info - backend.ImageService: System.Net.Http.HttpConnectionResponseContent
+2024-09-24 17:17:20.7714 Info - backend.ImageService: {"status":200,"success":true,"data":{"id":"DavAEBn","deletehash":"WDOGZxRTVbC26Bt","account_id":null,"account_url":null,"ad_type":null,"ad_url":null,"title":"Simple upload","description":"This is a simple image upload in Imgur","name":"","type":"image/jpeg","width":3784,"height":2764,"size":713811,"views":0,"section":null,"vote":null,"bandwidth":0,"animated":false,"favorite":false,"in_gallery":false,"in_most_viral":false,"has_sound":false,"is_ad":false,"nsfw":null,"link":"https://i.imgur.com/DavAEBn.jpeg","tags":[],"datetime":1727194640,"mp4":"","hls":""}}
+
+2024-09-24 17:41:46.2926 Info - backend.ImageService: {"status":200,"success":true,"data":{"id":"InOkViR","deletehash":"yzeiXvMONzR3XGf","account_id":null,"account_url":null,"ad_type":null,"ad_url":null,"title":"Simple upload","description":"This is a simple image upload in Imgur","name":"","type":"image/jpeg","width":3784,"height":2764,"size":713811,"views":0,"section":null,"vote":null,"bandwidth":0,"animated":false,"favorite":false,"in_gallery":false,"in_most_viral":false,"has_sound":false,"is_ad":false,"nsfw":null,"link":"https://i.imgur.com/InOkViR.jpeg","tags":[],"datetime":1727196106,"mp4":"","hls":""}}
+
+2024-09-24 17:42:43.7664 Info - backend.ImageService: {"status":200,"success":true,"data":{"id":"yuDtrDm","deletehash":"C39m7jZ24lmQixM","account_id":null,"account_url":null,"ad_type":null,"ad_url":null,"title":"Simple upload","description":"This is a simple image upload in Imgur","name":"","type":"image/jpeg","width":3784,"height":2764,"size":713811,"views":0,"section":null,"vote":null,"bandwidth":0,"animated":false,"favorite":false,"in_gallery":false,"in_most_viral":false,"has_sound":false,"is_ad":false,"nsfw":null,"link":"https://i.imgur.com/yuDtrDm.jpeg","tags":[],"datetime":1727196163,"mp4":"","hls":""}}
+

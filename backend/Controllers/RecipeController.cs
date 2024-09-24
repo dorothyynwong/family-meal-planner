@@ -82,7 +82,7 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
             return BadRequest("No image uploaded.");
         }
         
-        var response = await _imageService.UploadImageAsync();
+        var response = await _imageService.UploadImageAsync(uploadImage);
         ImgurResponse imgurResponse = JsonSerializer.Deserialize<ImgurResponse>(response);
         return Ok(imgurResponse);
     }
