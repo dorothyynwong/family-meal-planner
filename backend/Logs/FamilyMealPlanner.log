@@ -22,3 +22,4 @@
 2024-09-24 11:25:30.5735 Info - backend.ImageService: {"status":200,"success":true,"data":{"id":"PIhvE46","deletehash":"uugeWd4iDM8R9jy","account_id":null,"account_url":null,"ad_type":null,"ad_url":null,"title":"Simple upload","description":"This is a simple image upload in Imgur","name":"","type":"image/jpeg","width":4000,"height":2668,"size":888176,"views":0,"section":null,"vote":null,"bandwidth":0,"animated":false,"favorite":false,"in_gallery":false,"in_most_viral":false,"has_sound":false,"is_ad":false,"nsfw":null,"link":"https://i.imgur.com/PIhvE46.jpeg","tags":[],"datetime":1727173533,"mp4":"","hls":""}}
 
 2024-09-24 16:11:18.2135 Info - FamilyMealPlanner.Controllers.RecipeController: add recipe
+2024-09-24 16:45:14.4860 Info - backend.ImageService: upload image

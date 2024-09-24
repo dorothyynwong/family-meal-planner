@@ -15,7 +15,9 @@ public class ImageService(IConfiguration configuration) : IImageService
 
     public async Task<string> UploadImageAsync()
     {
+        
         var imgurClientId = _configuration["Imgur:ClientId"];
+        Logger.Info("upload image", imgurClientId);
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgur.com/3/image");
         request.Headers.Add("Authorization", $"Client-ID {{{imgurClientId}}}");
