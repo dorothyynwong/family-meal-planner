@@ -6,6 +6,7 @@ import { uploadImage } from "../../Api/api";
 const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+    const [selectedFilePath, setSelectedFilePath] = useState("");
     const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -27,8 +28,10 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             const file = inputRef.current.files[0];
             setUploadedFileName(file.name);
             setSelectedFile(file);
-            if (file)
-                console.log(uploadImage(file));
+            // if (file)
+                // console.log(uploadImage(file));
+            const cachedURL = URL.createObjectURL(file);
+            setSelectedFilePath(cachedURL)
         }
     };
 
@@ -54,6 +57,8 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 <Button className="custom-button recipe-button me-3" size="lg" type="button" onClick={handleUpload}  variant={uploadedFileName ? "success" : "primary"}>
                 {uploadedFileName ? uploadedFileName : "Upload Photo"}
                 </Button>
+
+                {selectedFile? <img alt="selected tea" src={selectedFilePath} width="100px" /> : <></>}
                 
             </Form.Group>
 
