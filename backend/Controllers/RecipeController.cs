@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -74,8 +75,10 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     }
 
     [HttpPost("upload")]
-    public async Task UploadImage()
+    public async Task<ImgurResponse> UploadImage([FromForm] IFormFile uploadImage)
     {
-        await _imageService.UploadImageAsync();
+        var response = await _imageService.UploadImageAsync();
+        ImgurResponse imgurResponse = JsonSerializer.Deserialize<ImgurResponse>(response);
+        return imgurResponse;
     }
 }

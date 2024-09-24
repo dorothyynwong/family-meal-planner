@@ -1,9 +1,10 @@
 
+using System.Text.Json;
 using NLog;
 
 public interface IImageService
 {
-    Task UploadImageAsync();
+    Task<string> UploadImageAsync();
 
 }
 
@@ -12,7 +13,7 @@ public class ImageService(IConfiguration configuration) : IImageService
     private readonly IConfiguration _configuration = configuration;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    public async Task UploadImageAsync()
+    public async Task<string> UploadImageAsync()
     {
         var imgurClientId = _configuration["Imgur:ClientId"];
         var client = new HttpClient();
@@ -30,6 +31,8 @@ public class ImageService(IConfiguration configuration) : IImageService
         response.EnsureSuccessStatusCode();
         // Console.WriteLine(await response.Content.ReadAsStringAsync());
         var responseStr = await response.Content.ReadAsStringAsync();
+        
         Logger.Info(responseStr);
+        return responseStr;
     }
 }

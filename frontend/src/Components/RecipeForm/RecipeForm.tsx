@@ -15,7 +15,11 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
         event.preventDefault();
         if (data)
+        {
             addRecipe(data);
+            
+        }
+            
     }
     
     return (

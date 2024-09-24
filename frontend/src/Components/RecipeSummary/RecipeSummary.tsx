@@ -1,10 +1,12 @@
 import { Button, Form } from "react-bootstrap";
 import { NewRecipeProps } from "../RecipeForm/RecipeForm";
 import { useRef, useState } from "react";
+import { uploadImage } from "../../Api/api";
 
 const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -21,8 +23,13 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     };
 
     const handleDisplayFileDetails = () => {
-        inputRef.current?.files &&
-            setUploadedFileName(inputRef.current.files[0].name);
+        if (inputRef.current?.files) {
+            const file = inputRef.current.files[0];
+            setUploadedFileName(file.name);
+            setSelectedFile(file);
+            if (!file)
+                console.log(uploadImage(file));
+        }
     };
 
     return (

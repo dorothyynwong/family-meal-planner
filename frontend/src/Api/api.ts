@@ -20,4 +20,15 @@ export async function addRecipe(recipe: NewRecipeData) {
     } catch (error) {
         throw error;
     }
+
+
+}
+
+export async function uploadImage(uploadImage: File) {
+    try {
+        const response: AxiosResponse = await client.post('recipes/upload', uploadImage);
+        return response;
+    } catch (error) {
+        throw error;
+    }
 }
