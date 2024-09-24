@@ -11,6 +11,7 @@ using NLog.Targets;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var imgurClientId = builder.Configuration["Imgur:ClientId"];
 
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
@@ -23,6 +24,7 @@ LogManager.Configuration = config;
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
+builder.Services.AddTransient<IImageService, ImageService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -53,6 +55,8 @@ builder.Services.AddControllers()
                 });
 
 var app = builder.Build();
+
+app.MapGet("/", () => imgurClientId);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
