@@ -75,10 +75,15 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     }
 
     [HttpPost("upload")]
-    public async Task<ImgurResponse> UploadImage([FromForm] IFormFile uploadImage)
+    public async Task<IActionResult> UploadImage([FromForm] IFormFile uploadImage)
     {
+        if (uploadImage == null || uploadImage.Length == 0)
+        {
+            return BadRequest("No image uploaded.");
+        }
+        
         var response = await _imageService.UploadImageAsync();
         ImgurResponse imgurResponse = JsonSerializer.Deserialize<ImgurResponse>(response);
-        return imgurResponse;
+        return Ok(imgurResponse);
     }
 }

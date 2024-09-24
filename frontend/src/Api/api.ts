@@ -25,8 +25,14 @@ export async function addRecipe(recipe: NewRecipeData) {
 }
 
 export async function uploadImage(uploadImage: File) {
+    const formData = new FormData();
+    formData.append('uploadImage',uploadImage);
     try {
-        const response: AxiosResponse = await client.post('recipes/upload', uploadImage);
+        const response: AxiosResponse = await client.post('recipes/upload', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+            },
+        });
         return response;
     } catch (error) {
         throw error;

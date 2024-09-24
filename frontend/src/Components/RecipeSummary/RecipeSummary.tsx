@@ -27,7 +27,7 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             const file = inputRef.current.files[0];
             setUploadedFileName(file.name);
             setSelectedFile(file);
-            if (!file)
+            if (file)
                 console.log(uploadImage(file));
         }
     };
