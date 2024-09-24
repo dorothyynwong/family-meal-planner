@@ -43,12 +43,11 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             </Form.Group>
 
             <Form.Group className="mb-3" controlId="recipe-upload-image">
-                {/* <Form.Label className="me-3">Choose file</Form.Label> */}
                 <Form.Control className="d-none" name="upload-image" type="file" ref={inputRef} onChange={handleDisplayFileDetails}/>
                 <Button className="custom-button recipe-button me-3" size="lg" type="button" onClick={handleUpload}  variant={uploadedFileName ? "success" : "primary"}>
-                    Add Photo
+                {uploadedFileName ? uploadedFileName : "Upload Photo"}
                 </Button>
-                {uploadedFileName ? uploadedFileName : "Upload"}
+                
             </Form.Group>
 
         </>

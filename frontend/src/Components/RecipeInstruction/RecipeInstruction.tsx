@@ -51,7 +51,7 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                             type="text"
                             aria-label={`instruction-${i+1}`}
                             aria-describedby="instruction"
-                            value={instructions? instructions[i] : ""}
+                            value={instructions && instructions[i]? instructions[i] : ""}
                             name={`instruction-${i+1}`}
                             onChange={(e) => handleChange(i, e.target.value)}
                         />

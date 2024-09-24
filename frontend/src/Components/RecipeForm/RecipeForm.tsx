@@ -7,7 +7,7 @@ import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 import { addRecipe } from "../../Api/api";
 
 export interface NewRecipeProps {
-    data?: NewRecipeData;
+    data: NewRecipeData;
     updateData: (newData: NewRecipeData) => void;
 }
 
@@ -17,21 +17,6 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
         if (data)
             addRecipe(data);
     }
-
-    if(!data) 
-    {
-        const data:NewRecipeData = {
-            name: "",
-            images: [],
-            notes: "",
-            description: "",
-            recipeIngredients: [],
-            recipeInstructions: [],
-            uploadImage: undefined
-
-        }    
-    }
-    
     
     return (
         <Form onSubmit={handleSubmit}>

@@ -16,7 +16,15 @@ export interface NewRecipeData {
 const NewRecipe: React.FC = () => {
     const location = useLocation();
     const url = location.state;
-    const [data, setData] = useState<NewRecipeData>();
+    const [data, setData] = useState<NewRecipeData>({
+        name: "",
+        images: [],
+        notes: "",
+        description: "",
+        recipeIngredients: [],
+        recipeInstructions: [],
+        uploadImage: undefined
+    });
 
     const updateData = (newData: NewRecipeData) => {
         setData(newData);
