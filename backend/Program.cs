@@ -5,10 +5,24 @@ using Microsoft.EntityFrameworkCore;
 
 using System.Text.Json.Serialization;
 using FamilyMealPlanner.Services;
+using NLog;
+using NLog.Config;
+using NLog.Targets;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
+NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+string currentDirectory = System.IO.Directory.GetCurrentDirectory();
+
+var config = new LoggingConfiguration();
+var target = new FileTarget { FileName = @$"{currentDirectory}\Logs\FamilyMealPlanner.log", Layout = @"${longdate} ${level} - ${logger}: ${message}" };
+config.AddTarget("File Logger", target);
+config.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, target));
+LogManager.Configuration = config;
+
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
+builder.Services.AddTransient<IRecipeService, RecipeService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

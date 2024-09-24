@@ -8,7 +8,7 @@ namespace FamilyMealPlanner.Services;
 public interface IWebScrappingService
 {
         Task<string> GetRecipeJson(string url);
-        Task<Recipe> GetRecipeFromUrl([FromRoute] string url);
+        Task<ImportRecipeResponse> GetRecipeFromUrl([FromRoute] string url);
 }
 
 public class WebScrappingService : IWebScrappingService
@@ -80,7 +80,7 @@ public class WebScrappingService : IWebScrappingService
                 {
                         foreach (JsonNode childNode in parentNode.AsArray())
                         {
-                               
+
                                 listOfString.Add(GetChildNodeValue(childNode));
                         }
                 }
@@ -93,30 +93,28 @@ public class WebScrappingService : IWebScrappingService
                 return listOfString;
         }
 
-        public async Task<Recipe> GetRecipeFromUrl([FromRoute] string url)
+        public async Task<ImportRecipeResponse> GetRecipeFromUrl([FromRoute] string url)
         {
                 string json = await GetRecipeJson(url);
                 JsonNode recipeNode = JsonNode.Parse(json);
 
-                Recipe recipe = new Recipe { };
+                ImportRecipeResponse recipe = new ImportRecipeResponse{
 
-                recipe.Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "";
-                recipe.Images = ParseJsonNode(recipeNode["image"]);
-                recipe.Author = ParseJsonNode(recipeNode["author"])[0];
-                recipe.Url = url;
-                recipe.Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "";
-                recipe.RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "";
-                recipe.PrepTime = recipeNode["prepTime"] != null ? recipeNode["prepTime"]!.ToString() : "";
-                recipe.CookTime = recipeNode["cookTime"] != null ? recipeNode["cookTime"]!.ToString() : "";
-                recipe.TotalTime = recipeNode["totalTime"] != null ? recipeNode["totalTime"]!.ToString() : "";
-                recipe.Keywords = recipeNode["keywords"] != null ? recipeNode["keywords"]!.ToString() : "";
-                recipe.RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "";
-                recipe.RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "";
-                recipe.RecipeIngredients = ParseJsonNode(recipeNode["recipeIngredient"]);
-                recipe.RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]);
-
-
-
+                        Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "",
+                        Images = ParseJsonNode(recipeNode["image"]),
+                        Author = ParseJsonNode(recipeNode["author"])[0],
+                        Url = url,
+                        Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "",
+                        RecipeCuisine = recipeNode["recipeCuisine"] != null ? recipeNode["recipeCuisine"]!.ToString() : "",
+                        PrepTime = recipeNode["prepTime"] != null ? recipeNode["prepTime"]!.ToString() : "",
+                        CookTime = recipeNode["cookTime"] != null ? recipeNode["cookTime"]!.ToString() : "",
+                        TotalTime = recipeNode["totalTime"] != null ? recipeNode["totalTime"]!.ToString() : "",
+                        Keywords = recipeNode["keywords"] != null ? recipeNode["keywords"]!.ToString() : "",
+                        RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "",
+                        RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "",
+                        RecipeIngredients = ParseJsonNode(recipeNode["recipeIngredient"]),
+                        RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]),
+                };
 
                 return recipe;
         }

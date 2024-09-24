@@ -24,7 +24,6 @@ const RecipeIngreident: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 recipeIngredients: updatedIngredients,
             });
         }
-        console.log(data);
     };
 
 

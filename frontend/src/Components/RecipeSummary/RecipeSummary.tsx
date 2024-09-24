@@ -12,6 +12,8 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
         }
     };
 
+    // if (!data) return(<>No data</>);
+
     return (
         <>
             <Form.Group className="mb-3" controlId="recipe-name">

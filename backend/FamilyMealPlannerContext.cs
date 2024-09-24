@@ -1,4 +1,5 @@
 using FamilyMealPlanner.Enums;
+using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -7,6 +8,7 @@ namespace FamilyMealPlanner;
 public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext> options)
     : IdentityDbContext<User, Role, int>(options)
 {
+    public DbSet<Recipe> Recipes { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {

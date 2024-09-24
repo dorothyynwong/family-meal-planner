@@ -1,14 +1,18 @@
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/recipes")]
-public class RecipeController(IWebScrappingService webScrappingService) : Controller
+public class RecipeController(IWebScrappingService webScrappingService, IRecipeService recipeService) : Controller
 {
     private readonly IWebScrappingService _webScrappingService = webScrappingService ;
+    private readonly IRecipeService _recipeService = recipeService ;
+
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpGet("url")]
     public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
@@ -21,7 +25,7 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
         return Ok(json);
     }
 
-    [HttpGet("")]
+    [HttpGet("import")]
     public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
     {
         if (string.IsNullOrEmpty(url))
@@ -30,5 +34,41 @@ public class RecipeController(IWebScrappingService webScrappingService) : Contro
         }
         var recipe = await _webScrappingService.GetRecipeFromUrl(url);
         return Ok(recipe);
+    }
+
+    [HttpPost("")]
+    public async Task<IActionResult> Add(RecipeRequest recipe)
+    {
+        Logger.Info("add recipe", recipe.Name);
+        await _recipeService.AddRecipe(recipe);
+        return Ok();
+    }
+
+    [HttpGet("{recipeId}")]
+    public async Task<IActionResult> GetById([FromRoute]int recipeId)
+    {
+        Logger.Info("get recipe by Id", recipeId);
+        Recipe recipe = await _recipeService.GetRecipeById(recipeId);
+        
+        return Ok(recipe);
+    }
+
+    [HttpPut("{recipeId}")]
+    public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute]int recipeId)
+    {
+        Logger.Info("update recipe", recipeId);
+        await _recipeService.UpdateRecipe(recipeRequest, recipeId);
+        
+        return Ok(recipeRequest);
+    }
+
+    
+    [HttpDelete("{recipeId}")]
+    public async Task<IActionResult> Delete([FromRoute]int recipeId)
+    {
+        Logger.Info("delete recipe", recipeId);
+        await _recipeService.Delete(recipeId);
+        
+        return Ok();
     }
 }

@@ -4,16 +4,25 @@ import RecipeIngredient from "../RecipeIngredient/RecipeIngredient";
 import "./RecipeForm.scss"
 import RecipeInstruction from "../RecipeInstruction/RecipeInstruction";
 import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
+import { addRecipe } from "../../Api/api";
 
 export interface NewRecipeProps {
-    data: NewRecipeData | undefined;
+    data?: NewRecipeData;
     updateData: (newData: NewRecipeData) => void;
 }
 
 const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
+        event.preventDefault();
+        if (data)
+            addRecipe(data);
+    }
+
+    if(!data) return(<>No data</>)
+    
     
     return (
-        <Form>
+        <Form onSubmit={handleSubmit}>
             <RecipeSummary data={data} updateData={updateData} />
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData}  />
