@@ -37,10 +37,38 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     }
 
     [HttpPost("")]
-    public async Task<IActionResult> AddRecipe(RecipeRequest recipe)
+    public async Task<IActionResult> Add(RecipeRequest recipe)
     {
-        Logger.Info("recipe", recipe.Name);
+        Logger.Info("add recipe", recipe.Name);
         await _recipeService.AddRecipe(recipe);
+        return Ok();
+    }
+
+    [HttpGet("{recipeId}")]
+    public async Task<IActionResult> GetById([FromRoute]int recipeId)
+    {
+        Logger.Info("get recipe by Id", recipeId);
+        Recipe recipe = await _recipeService.GetRecipeById(recipeId);
+        
+        return Ok(recipe);
+    }
+
+    [HttpPut("{recipeId}")]
+    public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute]int recipeId)
+    {
+        Logger.Info("update recipe", recipeId);
+        await _recipeService.UpdateRecipe(recipeRequest, recipeId);
+        
+        return Ok(recipeRequest);
+    }
+
+    
+    [HttpDelete("{recipeId}")]
+    public async Task<IActionResult> Delete([FromRoute]int recipeId)
+    {
+        Logger.Info("delete recipe", recipeId);
+        await _recipeService.Delete(recipeId);
+        
         return Ok();
     }
 }
