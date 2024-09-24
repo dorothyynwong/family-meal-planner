@@ -10,6 +10,7 @@ export interface NewRecipeData {
     description?: string;
     recipeIngredients?: string[];
     recipeInstructions?: string[];
+    uploadImage?: File;
 }
 
 const NewRecipe: React.FC = () => {

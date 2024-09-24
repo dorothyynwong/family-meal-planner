@@ -18,7 +18,19 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             addRecipe(data);
     }
 
-    if(!data) return(<>No data</>)
+    if(!data) 
+    {
+        const data:NewRecipeData = {
+            name: "",
+            images: [],
+            notes: "",
+            description: "",
+            recipeIngredients: [],
+            recipeInstructions: [],
+            uploadImage: undefined
+
+        }    
+    }
     
     
     return (
