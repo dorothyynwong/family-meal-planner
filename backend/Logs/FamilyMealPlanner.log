@@ -146,3 +146,16 @@ CF-RAY: 8c8b1715ccbe45a0-LHR
 2024-09-25 15:43:47.9187 Info - backend.ImageService: upload started
 2024-09-25 15:43:58.0369 Info - backend.ImageService: upload end
 2024-09-25 15:43:58.0369 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/qMrZxxb/hg534s2v-02c.jpg
+2024-09-25 17:47:27.9176 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-25 17:47:28.0755 Info - backend.ImageService: upload started
+2024-09-25 17:47:28.8938 Info - backend.ImageService: upload end
+2024-09-25 17:47:28.9139 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/bLnw7GL/m5yxqnzf-ywt.jpg
+2024-09-25 17:49:51.4534 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-25 17:49:51.4569 Info - backend.ImageService: upload started
+2024-09-25 17:49:52.1582 Info - backend.ImageService: upload end
+2024-09-25 17:49:52.1582 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/1MnvBVS/kx12p5n3-thn.jpg
+2024-09-25 17:52:07.5961 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-25 17:52:07.5961 Info - backend.ImageService: upload started
+2024-09-25 17:52:08.2646 Info - backend.ImageService: upload end
+2024-09-25 17:52:08.2646 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/SfN0Ymr/aijcxclz-rhj.jpg
+2024-09-25 17:52:24.7882 Info - FamilyMealPlanner.Controllers.RecipeController: add recipe

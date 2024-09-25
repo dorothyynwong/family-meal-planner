@@ -40,11 +40,8 @@ const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <RecipeCarousel data={data} updateData={updateData}/>
-            <RecipeSummary data={data} updateData={updateData} />
             <ImageUploader file={undefined} sendUrlToParent={handleUrlFromUploader} />
-            {Array.from({ length: updatedImages.length }, (_, i) => (
-                <img src={updatedImages[i]} alt="food" width="100"/>
-            ))}
+            <RecipeSummary data={data} updateData={updateData} />
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData} />
             <div className="d-flex justify-content-end">
