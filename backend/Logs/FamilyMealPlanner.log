@@ -126,3 +126,15 @@ CF-RAY: 8c8b1715ccbe45a0-LHR
 2024-09-25 14:59:06.1579 Info - backend.ImageService: image service 1
 2024-09-25 14:59:16.5444 Info - backend.ImageService: upload end
 2024-09-25 14:59:16.5444 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/x5S6FmS/53spykvh-zdl.jpg
+2024-09-25 15:10:38.8060 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-25 15:10:38.8241 Info - backend.ImageService: upload started
+2024-09-25 15:10:43.6306 Info - backend.ImageService: upload end
+2024-09-25 15:10:43.6528 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/x5S6FmS/53spykvh-zdl.jpg
+2024-09-25 15:16:04.6946 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-25 15:16:04.6946 Info - backend.ImageService: upload started
+2024-09-25 15:16:09.8309 Info - backend.ImageService: upload end
+2024-09-25 15:16:09.8309 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/x5S6FmS/53spykvh-zdl.jpg
+2024-09-25 15:31:17.2428 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-25 15:31:17.2428 Info - backend.ImageService: upload started
+2024-09-25 15:31:28.3435 Info - backend.ImageService: upload end
+2024-09-25 15:31:28.3435 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/qMrZxxb/hg534s2v-02c.jpg

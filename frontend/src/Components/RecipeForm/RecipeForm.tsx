@@ -6,6 +6,7 @@ import RecipeInstruction from "./RecipeInstruction";
 import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 import { addRecipe } from "../../Api/api";
 import ImageUploader from "../ImageUploader/ImageUploader";
+import { useState } from "react";
 
 export interface RecipeProps {
     data: NewRecipeData;
@@ -13,6 +14,8 @@ export interface RecipeProps {
 }
 
 const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
+    const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+    
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
         event.preventDefault();
         if (data)
@@ -21,11 +24,15 @@ const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
         }
             
     }
+
+    function handleUrlFromUploader(urlFromUploader: string) {
+        setUploadedFileUrl(urlFromUploader);
+      }
     
     return (
         <Form onSubmit={handleSubmit}>
             <RecipeSummary data={data} updateData={updateData} />
-            <ImageUploader file={undefined} />
+            <ImageUploader file={undefined} urlToParent={handleUrlFromUploader}/>
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData}  />
             <div className="d-flex justify-content-end">
