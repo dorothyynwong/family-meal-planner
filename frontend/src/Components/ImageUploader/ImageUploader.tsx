@@ -4,14 +4,14 @@ import { uploadImage } from "../../Api/api";
 
 export interface ImageUploaderProps {
     file?: File;
-    urlToParent: (url: string) => void;
+    sendUrlToParent: (url: string) => void;
 }
 
-const ImageUploader: React.FC<ImageUploaderProps> = ({file, urlToParent}) => {
+const ImageUploader: React.FC<ImageUploaderProps> = ({file, sendUrlToParent}) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [selectedFilePath, setSelectedFilePath] = useState("");
     const [selectedFile, setSelectedFile] = useState<File | null>(file || null);
-    const [uploadedFileUrl, setUploadedFileUrl] = useState("");
+    // const [uploadedFileUrl, setUploadedFileUrl] = useState("");
 
     const handleUpload = () => {
         inputRef.current?.click();
@@ -25,8 +25,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({file, urlToParent}) => {
             {
                 uploadImage(file)
                     .then(response => {
-                        setUploadedFileUrl(response.data);
-                        urlToParent(response.data);
+                        // setUploadedFileUrl(response.data);
+                        sendUrlToParent(response.data);
                     }
                     )
                     .catch(error => {
