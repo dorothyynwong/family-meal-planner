@@ -2,13 +2,9 @@ import { Button, Form } from "react-bootstrap";
 import { NewRecipeProps } from "../RecipeForm/RecipeForm";
 import { useRef, useState } from "react";
 import { uploadImage } from "../../Api/api";
+import ImageUploader from "../ImageUploader/ImageUploader";
 
 const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
-    const inputRef = useRef<HTMLInputElement>(null);
-    const [uploadedFileName, setUploadedFileName] = useState<string | null>(null);
-    const [selectedFilePath, setSelectedFilePath] = useState("");
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
-
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (data) {
@@ -16,22 +12,6 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 ...data,
                 [name]: value,
             })
-        }
-    };
-
-    const handleUpload = () => {
-        inputRef.current?.click();
-    };
-
-    const handleDisplayFileDetails = () => {
-        if (inputRef.current?.files) {
-            const file = inputRef.current.files[0];
-            setUploadedFileName(file.name);
-            setSelectedFile(file);
-            // if (file)
-                // console.log(uploadImage(file));
-            const cachedURL = URL.createObjectURL(file);
-            setSelectedFilePath(cachedURL)
         }
     };
 
@@ -52,15 +32,7 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={data?.notes} onChange={handleChange} />
             </Form.Group>
 
-            <Form.Group className="mb-3" controlId="recipe-upload-image">
-                <Form.Control className="d-none" name="upload-image" type="file" ref={inputRef} onChange={handleDisplayFileDetails}/>
-                <Button className="custom-button recipe-button me-3" size="lg" type="button" onClick={handleUpload}  variant={uploadedFileName ? "success" : "primary"}>
-                {uploadedFileName ? uploadedFileName : "Upload Photo"}
-                </Button>
-
-                {selectedFile? <img alt="selected tea" src={selectedFilePath} width="100px" /> : <></>}
-                
-            </Form.Group>
+            <ImageUploader />
 
         </>
     )
