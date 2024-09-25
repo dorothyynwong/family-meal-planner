@@ -1,12 +1,15 @@
 import { Button, Form } from "react-bootstrap";
-import { NewRecipeProps } from "../RecipeForm/RecipeForm";
 import { useRef, useState } from "react";
 import { uploadImage } from "../../Api/api";
 
-const ImageUploader: React.FC = () => {
+export interface ImageUploaderProps {
+    file?: File;
+}
+
+const ImageUploader: React.FC<ImageUploaderProps> = ({file}) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [selectedFilePath, setSelectedFilePath] = useState("");
-    const [selectedFile, setSelectedFile] = useState<File | null>(null);
+    const [selectedFile, setSelectedFile] = useState<File | null>(file || null);
 
     const handleUpload = () => {
         inputRef.current?.click();

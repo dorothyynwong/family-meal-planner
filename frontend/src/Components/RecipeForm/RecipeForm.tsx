@@ -5,6 +5,7 @@ import "./RecipeForm.scss"
 import RecipeInstruction from "../RecipeInstruction/RecipeInstruction";
 import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 import { addRecipe } from "../../Api/api";
+import ImageUploader from "../ImageUploader/ImageUploader";
 
 export interface NewRecipeProps {
     data: NewRecipeData;
@@ -25,6 +26,7 @@ const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <RecipeSummary data={data} updateData={updateData} />
+            <ImageUploader file={undefined} />
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData}  />
             <div className="d-flex justify-content-end">

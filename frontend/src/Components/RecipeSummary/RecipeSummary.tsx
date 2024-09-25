@@ -32,8 +32,6 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                 <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={data?.notes} onChange={handleChange} />
             </Form.Group>
 
-            <ImageUploader />
-
         </>
     )
 }
