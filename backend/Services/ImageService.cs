@@ -15,12 +15,16 @@ public class ImageService(IConfiguration configuration) : IImageService
 
     public async Task<string> UploadImageAsync(IFormFile file)
     {
-        // var imgurClientId = _configuration["Imgur:ClientId"];
         var imgbbApiKey = _configuration["ImgBB:API_KEY"];
+        if (imgbbApiKey == null || imgbbApiKey == "")
+        {
+            Logger.Error("API key cannot be found");
+            throw new Exception("API key cannot be found");
+        }
+            
+
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgbb.com/1/upload");
-        // request.Headers.Add("Authorization", $"Client-ID {{{imgurClientId}}}");
-
         var tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + Path.GetExtension(file.FileName));
 
         using (var stream = new FileStream(tempFilePath, FileMode.Create))
@@ -28,11 +32,10 @@ public class ImageService(IConfiguration configuration) : IImageService
             await file.CopyToAsync(stream);
         }
 
-        Logger.Info("image service 1");
+        Logger.Info("upload started");
 
         var content = new MultipartFormDataContent
         {
-            // { new StreamContent(File.OpenRead("C:\\Images\\test.jpg")), "image", "C:\\Images\\test.jpg" },
             { new StreamContent(File.OpenRead(tempFilePath)), "image", Path.GetFileName(tempFilePath) },
             { new StringContent(imgbbApiKey), "key" }
         };
@@ -40,10 +43,7 @@ public class ImageService(IConfiguration configuration) : IImageService
         request.Content = content;
         var response = await client.SendAsync(request);
         Logger.Info("upload end");
-        // Logger.Info(response.Headers.ToString());
-        // Logger.Info(response.StatusCode);
         response.EnsureSuccessStatusCode();
-        // Console.WriteLine(await response.Content.ReadAsStringAsync());
         var responseStr = await response.Content.ReadAsStringAsync();
 
         return responseStr;

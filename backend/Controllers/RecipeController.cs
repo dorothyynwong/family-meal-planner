@@ -83,15 +83,13 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
             return BadRequest("No image uploaded.");
         }
 
-        var response = await _imageService.UploadImageAsync(uploadImage);
-        // var response = "{\"data\":{\"id\":\"VwKM46z\",\"title\":\"oigsuxtf-wv5\",\"url_viewer\":\"https://ibb.co/VwKM46z\",\"url\":\"https://i.ibb.co/vXtLn9T/oigsuxtf-wv5.jpg\",\"display_url\":\"https://i.ibb.co/Bn1TMkQ/oigsuxtf-wv5.jpg\",\"width\":3784,\"height\":2764,\"size\":713675,\"time\":1727268882,\"expiration\":0,\"image\":{\"filename\":\"oigsuxtf-wv5.jpg\",\"name\":\"oigsuxtf-wv5\",\"mime\":\"image/jpeg\",\"extension\":\"jpg\",\"url\":\"https://i.ibb.co/vXtLn9T/oigsuxtf-wv5.jpg\"},\"thumb\":{\"filename\":\"oigsuxtf-wv5.jpg\",\"name\":\"oigsuxtf-wv5\",\"mime\":\"image/jpeg\",\"extension\":\"jpg\",\"url\":\"https://i.ibb.co/VwKM46z/oigsuxtf-wv5.jpg\"},\"medium\":{\"filename\":\"oigsuxtf-wv5.jpg\",\"name\":\"oigsuxtf-wv5\",\"mime\":\"image/jpeg\",\"extension\":\"jpg\",\"url\":\"https://i.ibb.co/Bn1TMkQ/oigsuxtf-wv5.jpg\"},\"delete_url\":\"https://ibb.co/VwKM46z/a6409b7b33a58dc2cb928bbb47695479\"},\"success\":true,\"status\":200}";
-        // ImgurResponse imgurResponse = JsonSerializer.Deserialize<ImgurResponse>(response);
-
         try
         {
+            var response = await _imageService.UploadImageAsync(uploadImage);
             ImgBBResponse imgBBResponse = JsonSerializer.Deserialize<ImgBBResponse>(response);
             Logger.Info(imgBBResponse.ImgData.DisplayUrl);
-            return Ok();
+            
+            return Ok(imgBBResponse.ImgData.DisplayUrl);
         }
         catch (Exception ex)
         {
