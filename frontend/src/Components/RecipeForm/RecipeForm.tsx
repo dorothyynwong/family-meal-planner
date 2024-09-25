@@ -1,18 +1,18 @@
 import { Button, Form } from "react-bootstrap";
-import RecipeSummary from "../RecipeSummary/RecipeSummary";
-import RecipeIngredient from "../RecipeIngredient/RecipeIngredient";
+import RecipeSummary from "./RecipeSummary";
+import RecipeIngredient from "./RecipeIngredient";
 import "./RecipeForm.scss"
-import RecipeInstruction from "../RecipeInstruction/RecipeInstruction";
+import RecipeInstruction from "./RecipeInstruction";
 import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 import { addRecipe } from "../../Api/api";
 import ImageUploader from "../ImageUploader/ImageUploader";
 
-export interface NewRecipeProps {
+export interface RecipeProps {
     data: NewRecipeData;
     updateData: (newData: NewRecipeData) => void;
 }
 
-const RecipeForm: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>)=> {
         event.preventDefault();
         if (data)

@@ -1,10 +1,10 @@
 import { Button, Form } from "react-bootstrap";
-import { NewRecipeProps } from "../RecipeForm/RecipeForm";
+import { RecipeProps } from "./RecipeForm";
 import { useRef, useState } from "react";
 import { uploadImage } from "../../Api/api";
 import ImageUploader from "../ImageUploader/ImageUploader";
 
-const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+const RecipeSummary: React.FC<RecipeProps> = ({ data, updateData }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (data) {
