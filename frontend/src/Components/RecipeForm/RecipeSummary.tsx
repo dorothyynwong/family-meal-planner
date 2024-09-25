@@ -1,7 +1,7 @@
-import { Button, Form } from "react-bootstrap";
-import { NewRecipeProps } from "../RecipeForm/RecipeForm";
+import { Form } from "react-bootstrap";
+import { RecipeProps } from "./RecipeForm";
 
-const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+const RecipeSummary: React.FC<RecipeProps> = ({ data, updateData }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (data) {
@@ -11,8 +11,6 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
             })
         }
     };
-
-    // if (!data) return(<>No data</>);
 
     return (
         <>
@@ -28,12 +26,8 @@ const RecipeSummary: React.FC<NewRecipeProps> = ({ data, updateData }) => {
 
             <Form.Group className="mb-3" controlId="recipe-notes">
                 <Form.Label>Notes</Form.Label>
-                <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={data?.notes}  onChange={handleChange} />
+                <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={data?.notes} onChange={handleChange} />
             </Form.Group>
-
-            <Button className="custom-button recipe-button" size="lg" type="button">
-                Add Photo
-            </Button>
 
         </>
     )

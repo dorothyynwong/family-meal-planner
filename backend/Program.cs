@@ -8,9 +8,11 @@ using FamilyMealPlanner.Services;
 using NLog;
 using NLog.Config;
 using NLog.Targets;
+using Microsoft.OpenApi.Models;
 
 
 var builder = WebApplication.CreateBuilder(args);
+var imgurClientId = builder.Configuration["Imgur:ClientId"];
 
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
@@ -23,11 +25,15 @@ LogManager.Configuration = config;
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
+builder.Services.AddTransient<IImageService, ImageService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+builder.Services.AddSwaggerGen(c =>
+{
+    c.SwaggerDoc("v1", new OpenApiInfo { Title = "My API", Version = "v1" });
+});
 
 builder.Services.AddCors(options =>
 {
@@ -53,6 +59,8 @@ builder.Services.AddControllers()
                 });
 
 var app = builder.Build();
+
+app.MapGet("/", () => imgurClientId);
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
