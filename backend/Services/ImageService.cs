@@ -15,10 +15,11 @@ public class ImageService(IConfiguration configuration) : IImageService
 
     public async Task<string> UploadImageAsync(IFormFile file)
     {
-        var imgurClientId = _configuration["Imgur:ClientId"];
+        // var imgurClientId = _configuration["Imgur:ClientId"];
+        var imgbbApiKey = _configuration["ImgBB:API_KEY"];
         var client = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgur.com/3/image");
-        request.Headers.Add("Authorization", $"Client-ID {{{imgurClientId}}}");
+        var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgbb.com/1/upload");
+        // request.Headers.Add("Authorization", $"Client-ID {{{imgurClientId}}}");
 
         var tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + Path.GetExtension(file.FileName));
 
@@ -33,16 +34,14 @@ public class ImageService(IConfiguration configuration) : IImageService
         {
             // { new StreamContent(File.OpenRead("C:\\Images\\test.jpg")), "image", "C:\\Images\\test.jpg" },
             { new StreamContent(File.OpenRead(tempFilePath)), "image", Path.GetFileName(tempFilePath) },
-            { new StringContent("image"), "type" },
-            { new StringContent("Simple upload"), "title" },
-            { new StringContent("This is a simple image upload in Imgur"), "description" }
+            { new StringContent(imgbbApiKey), "key" }
         };
 
         request.Content = content;
         var response = await client.SendAsync(request);
         Logger.Info("upload end");
-        Logger.Info(response.Headers.ToString());
-        Logger.Info(response.StatusCode);
+        // Logger.Info(response.Headers.ToString());
+        // Logger.Info(response.StatusCode);
         response.EnsureSuccessStatusCode();
         // Console.WriteLine(await response.Content.ReadAsStringAsync());
         var responseStr = await response.Content.ReadAsStringAsync();
