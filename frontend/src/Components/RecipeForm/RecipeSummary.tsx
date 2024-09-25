@@ -1,8 +1,5 @@
-import { Button, Form } from "react-bootstrap";
+import { Form } from "react-bootstrap";
 import { RecipeProps } from "./RecipeForm";
-import { useRef, useState } from "react";
-import { uploadImage } from "../../Api/api";
-import ImageUploader from "../ImageUploader/ImageUploader";
 
 const RecipeSummary: React.FC<RecipeProps> = ({ data, updateData }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {

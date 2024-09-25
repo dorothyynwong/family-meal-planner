@@ -18,7 +18,6 @@ const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
         if (data)
         {
             addRecipe(data);
-            
         }
             
     }

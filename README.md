@@ -1,0 +1,1 @@
+dotnet user-secrets set "Imgur:ClientId" "YOUR SECRET"

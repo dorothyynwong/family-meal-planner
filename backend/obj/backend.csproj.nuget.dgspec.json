@@ -1,27 +1,25 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj": {}
+    "C:\\Training\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj": {}
   },
   "projects": {
-    "C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj": {
+    "C:\\Training\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj",
+        "projectUniqueName": "C:\\Training\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj",
         "projectName": "backend",
-        "projectPath": "C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj",
-        "packagesPath": "C:\\Users\\dorot\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\dorot\\Documents\\Study\\FamilyMealPlanner\\family-meal-planner\\backend\\obj\\",
+        "projectPath": "C:\\Training\\FamilyMealPlanner\\family-meal-planner\\backend\\backend.csproj",
+        "packagesPath": "C:\\Users\\DorWon\\.nuget\\packages\\",
+        "outputPath": "C:\\Training\\FamilyMealPlanner\\family-meal-planner\\backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\dorot\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "C:\\Users\\DorWon\\AppData\\Roaming\\NuGet\\NuGet.Config"
         ],
         "originalTargetFrameworks": [
           "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -107,7 +105,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.303/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.401/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

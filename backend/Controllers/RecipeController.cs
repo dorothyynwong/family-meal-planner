@@ -75,8 +75,11 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     }
 
     [HttpPost("upload")]
+    [ProducesResponseType(typeof(ImgurResponse), StatusCodes.Status200OK)]
+    [ProducesResponseType(StatusCodes.Status400BadRequest)]
     public async Task<IActionResult> UploadImage([FromForm] IFormFile uploadImage)
     {
+        Logger.Info("upload photo");
         if (uploadImage == null || uploadImage.Length == 0)
         {
             return BadRequest("No image uploaded.");

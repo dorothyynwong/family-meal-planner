@@ -15,7 +15,6 @@ public class ImageService(IConfiguration configuration) : IImageService
 
     public async Task<string> UploadImageAsync(IFormFile file)
     {
-
         var imgurClientId = _configuration["Imgur:ClientId"];
         var client = new HttpClient();
         var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgur.com/3/image");
@@ -28,6 +27,8 @@ public class ImageService(IConfiguration configuration) : IImageService
             await file.CopyToAsync(stream);
         }
 
+        Logger.Info("image service 1");
+
         var content = new MultipartFormDataContent
         {
             // { new StreamContent(File.OpenRead("C:\\Images\\test.jpg")), "image", "C:\\Images\\test.jpg" },
@@ -36,13 +37,18 @@ public class ImageService(IConfiguration configuration) : IImageService
             { new StringContent("Simple upload"), "title" },
             { new StringContent("This is a simple image upload in Imgur"), "description" }
         };
+
         request.Content = content;
         var response = await client.SendAsync(request);
+        Logger.Info("upload end");
+        Logger.Info(response.Headers.ToString());
+        Logger.Info(response.StatusCode);
         response.EnsureSuccessStatusCode();
         // Console.WriteLine(await response.Content.ReadAsStringAsync());
         var responseStr = await response.Content.ReadAsStringAsync();
 
-        Logger.Info(responseStr);
         return responseStr;
+
     }
+
 }

@@ -4,12 +4,14 @@ import { uploadImage } from "../../Api/api";
 
 export interface ImageUploaderProps {
     file?: File;
+    url?: string;
 }
 
 const ImageUploader: React.FC<ImageUploaderProps> = ({file}) => {
     const inputRef = useRef<HTMLInputElement>(null);
     const [selectedFilePath, setSelectedFilePath] = useState("");
     const [selectedFile, setSelectedFile] = useState<File | null>(file || null);
+    const [uploadedFileUrl, setUploadedFileUrl] = useState("");
 
     const handleUpload = () => {
         inputRef.current?.click();
@@ -19,8 +21,8 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({file}) => {
         if (inputRef.current?.files) {
             const file = inputRef.current.files[0];
             setSelectedFile(file);
-            // if (file)
-                // console.log(uploadImage(file));
+            if (file)
+                console.log(uploadImage(file));
             const cachedURL = URL.createObjectURL(file);
             setSelectedFilePath(cachedURL)
         }
