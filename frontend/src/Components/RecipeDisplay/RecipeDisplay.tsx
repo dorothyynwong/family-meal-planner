@@ -25,7 +25,7 @@ const RecipeDisplay: React.FC<RecipeDetailsProps> = ({id}) => {
    
     useEffect(()=>{
         getRecipeById(id)
-        .then(recipe => {setRecipeData(recipe.data); console.log(recipe.data); });
+        .then(recipe => setRecipeData(recipe.data) );
     },[])
 
     return (

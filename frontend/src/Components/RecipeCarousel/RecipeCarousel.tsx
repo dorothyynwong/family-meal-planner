@@ -23,7 +23,7 @@ const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images }) => {
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
       {Array.from({ length: imagesUrls? imagesUrls.length : 0 }, (_, i) => (
-        <Carousel.Item>
+        <Carousel.Item key={`image-${i}`} >
           <Image className="carousel-image" src={imagesUrls? imagesUrls[i] : ""} fluid/>
         </Carousel.Item>
 

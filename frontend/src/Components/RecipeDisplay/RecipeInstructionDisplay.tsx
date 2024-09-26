@@ -10,7 +10,7 @@ const RecipeInstructionDisplay: React.FC<RecipeDetailsProps> = ({ data }) => {
             <h5 className="mt-3">Instructions</h5>
             <ListGroup as="ol" numbered>
                 {Array.from({ length: instructions.length }, (_, i) => (
-                    <ListGroup.Item className="instruction-item d-flex" as="li">
+                    <ListGroup.Item className="instruction-item d-flex" as="li" key={`instruction-${i}`}>
                         {instructions && instructions[i] ? instructions[i] : ""}
                     </ListGroup.Item>
                 ))}
