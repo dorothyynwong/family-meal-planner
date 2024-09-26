@@ -18,35 +18,60 @@ public class ImageService(IConfiguration configuration) : IImageService
         var imgbbApiKey = _configuration["ImgBB:API_KEY"];
         if (imgbbApiKey == null || imgbbApiKey == "")
         {
-            Logger.Error("API key cannot be found");
-            throw new Exception("API key cannot be found");
+            Logger.Error("ImgBB API key cannot be found or is invalid.");
+            throw new InvalidOperationException("ImgBB API key cannot be found or is invalid.");
         }
+
+        var tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + Path.GetExtension(file.FileName));
+        
+        try
+        {
+            var client = new HttpClient();
+            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgbb.com/1/upload");
             
 
-        var client = new HttpClient();
-        var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgbb.com/1/upload");
-        var tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + Path.GetExtension(file.FileName));
+            using (var stream = new FileStream(tempFilePath, FileMode.Create))
+            {
+                await file.CopyToAsync(stream);
+            }
 
-        using (var stream = new FileStream(tempFilePath, FileMode.Create))
-        {
-            await file.CopyToAsync(stream);
+            Logger.Info("upload started");
+
+            var content = new MultipartFormDataContent
+            {
+                { new StreamContent(File.OpenRead(tempFilePath)), "image", Path.GetFileName(tempFilePath) },
+                { new StringContent(imgbbApiKey), "key" }
+            };
+
+            request.Content = content;
+            var response = await client.SendAsync(request);
+            Logger.Info("upload end");
+            response.EnsureSuccessStatusCode();
+            var responseStr = await response.Content.ReadAsStringAsync();
+
+            return responseStr;
         }
-
-        Logger.Info("upload started");
-
-        var content = new MultipartFormDataContent
+        catch (HttpRequestException ex)
         {
-            { new StreamContent(File.OpenRead(tempFilePath)), "image", Path.GetFileName(tempFilePath) },
-            { new StringContent(imgbbApiKey), "key" }
-        };
-
-        request.Content = content;
-        var response = await client.SendAsync(request);
-        Logger.Info("upload end");
-        response.EnsureSuccessStatusCode();
-        var responseStr = await response.Content.ReadAsStringAsync();
-
-        return responseStr;
+            Logger.Error($"HTTP Request error: {ex.Message}");
+            throw new Exception("There was a problem uploading the image. Please try again later.", ex);
+        }
+        catch (IOException ex)
+        {
+            Logger.Error($"File error: {ex.Message}");
+            throw new IOException("An error occurred while processing the image file.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error: {ex.Message}");
+            throw new Exception($"Unable to upload image to ImgBB, {ex.Message}", ex);
+        }
+        finally{
+            if (File.Exists(tempFilePath))
+            {
+                File.Delete(tempFilePath);
+            }
+        }
 
     }
 
