@@ -6,7 +6,6 @@ import RecipeIngredientForm from "./RecipeIngredientForm";
 import RecipeInstructionForm from "./RecipeInstructionForm";
 import RecipePhotoForm from "./RecipePhotoForm";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 export interface RecipeFormProps {
@@ -15,7 +14,6 @@ export interface RecipeFormProps {
 }
 
 const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
-    // const [recipeId, setRecipeId] = useState();
     const navigate = useNavigate();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
@@ -25,13 +23,10 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
                 if(response.statusText=="OK")
                 {
                     const recipeData = response.data;
-                    // setRecipeId(recipeData);
                     navigate(`/recipe-details/${recipeData}`);
                 }
             });
-
         }
-
     }
 
     return (

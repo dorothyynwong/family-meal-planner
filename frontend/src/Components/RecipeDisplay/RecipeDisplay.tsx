@@ -1,45 +1,31 @@
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
-import { getRecipeById } from "../../Api/api";
-import { useEffect, useState } from "react";
 import RecipeSummaryDisplay from "./RecipeSummaryDisplay";
 import RecipeIngredientDisplay from "./RecipeIngredientDisplay";
 import RecipeCarousel from "../RecipeCarousel/RecipeCarousel";
 import RecipeInstructionDisplay from "./RecipeInstructionDisplay";
-import { Card, Container, Row } from "react-bootstrap";
+import { Card } from "react-bootstrap";
 
 
 export interface RecipeDisplayProps {
-    id: number;
+
     data?: RecipeDetailsInterface
 }
 
-const RecipeDisplay: React.FC<RecipeDisplayProps> = ({id}) => {
-    const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
-        name: "",
-        images: [],
-        notes: "",
-        description: "",
-        recipeIngredients: [],
-        recipeInstructions: [],
-    });;
-   
-    useEffect(()=>{
-        getRecipeById(id)
-        .then(recipe => setRecipeData(recipe.data) );
-    },[])
+const RecipeDisplay: React.FC<RecipeDisplayProps> = ({data}) => {
+    if(!data) return(<>No Data</>);
 
     return (
         <>
-            <h1 className="mb-3">{recipeData.name}</h1>
+            <h1 className="mb-3">{data.name}</h1>
             <Card className="vh-30">
-                <RecipeCarousel images={recipeData.images} />
+                <RecipeCarousel images={data.images} />
             </Card>
 
-            <RecipeSummaryDisplay id={id} data={recipeData} />  
+            <RecipeSummaryDisplay data={data} />  
 
         
-        <RecipeIngredientDisplay id={id} data={recipeData} />
-        <RecipeInstructionDisplay id={id} data={recipeData}  />
+        <RecipeIngredientDisplay data={data} />
+        <RecipeInstructionDisplay data={data}  />
         </>
     )
 
