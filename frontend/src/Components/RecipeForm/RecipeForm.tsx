@@ -7,6 +7,8 @@ import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 import { addRecipe } from "../../Api/api";
 import ImageUploader from "../ImageUploader/ImageUploader";
 import { useState } from "react";
+import ControlledCarousel from "../RecipeCarousel/RecipeCarousel";
+import RecipeCarousel from "../RecipeCarousel/RecipeCarousel";
 
 export interface RecipeProps {
     data: NewRecipeData;
@@ -37,11 +39,9 @@ const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <RecipeSummary data={data} updateData={updateData} />
+            <RecipeCarousel data={data} updateData={updateData}/>
             <ImageUploader file={undefined} sendUrlToParent={handleUrlFromUploader} />
-            {Array.from({ length: updatedImages.length }, (_, i) => (
-                <img src={updatedImages[i]} alt="food" width="100"/>
-            ))}
+            <RecipeSummary data={data} updateData={updateData} />
             <RecipeIngredient data={data} updateData={updateData} />
             <RecipeInstruction data={data} updateData={updateData} />
             <div className="d-flex justify-content-end">

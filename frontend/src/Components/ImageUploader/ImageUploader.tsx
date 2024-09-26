@@ -11,7 +11,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({file, sendUrlToParent}) =>
     const inputRef = useRef<HTMLInputElement>(null);
     const [selectedFilePath, setSelectedFilePath] = useState("");
     const [selectedFile, setSelectedFile] = useState<File | null>(file || null);
-    // const [uploadedFileUrl, setUploadedFileUrl] = useState("");
 
     const handleUpload = () => {
         inputRef.current?.click();
@@ -25,7 +24,6 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({file, sendUrlToParent}) =>
             {
                 uploadImage(file)
                     .then(response => {
-                        // setUploadedFileUrl(response.data);
                         sendUrlToParent(response.data);
                     }
                     )
@@ -45,10 +43,7 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({file, sendUrlToParent}) =>
                 <Form.Control className="d-none" name="upload-image" type="file" ref={inputRef} onChange={handleDisplayFileDetails}/>
                 <Button className="custom-button recipe-button me-3" size="lg" type="button" onClick={handleUpload}>
                     Add Photo
-                </Button>
-
-                {selectedFile? <img alt="selected tea" src={selectedFilePath} width="100px" /> : <></>}
-                
+                </Button>      
             </Form.Group>
 
         </>
