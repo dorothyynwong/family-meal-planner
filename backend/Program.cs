@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using FamilyMealPlanner.Services;
 using NLog;
-using NLog.Config;
-using NLog.Targets;
 using Microsoft.OpenApi.Models;
 
 
