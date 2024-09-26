@@ -8,12 +8,12 @@ import RecipeInstructionDisplay from "./RecipeInstructionDisplay";
 import { Card, Container, Row } from "react-bootstrap";
 
 
-export interface RecipeDetailsProps {
+export interface RecipeDisplayProps {
     id: number;
     data?: RecipeDetailsInterface
 }
 
-const RecipeDisplay: React.FC<RecipeDetailsProps> = ({id}) => {
+const RecipeDisplay: React.FC<RecipeDisplayProps> = ({id}) => {
     const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
         name: "",
         images: [],

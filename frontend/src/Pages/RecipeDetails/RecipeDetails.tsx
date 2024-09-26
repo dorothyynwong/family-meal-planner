@@ -1,12 +1,12 @@
-import { RecipeDetailsInterface } from "../../Api/apiInterface";
-import { getRecipeById } from "../../Api/api";
-import { useEffect, useState } from "react";
-import RecipeDisplay, { RecipeDetailsProps } from "../../Components/RecipeDisplay/RecipeDisplay";
+
+import { useParams } from "react-router-dom";
+import RecipeDisplay from "../../Components/RecipeDisplay/RecipeDisplay";
 
 
 const RecipeDetails: React.FC = () => {
+    const { id } = useParams<{ id: string  }>();
     return (
-        <><RecipeDisplay id={5} /></>
+        <><RecipeDisplay id={parseInt(id!, 10)} /></>
     )
 
 }

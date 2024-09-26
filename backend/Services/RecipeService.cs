@@ -2,13 +2,14 @@
 using System.Linq;
 using FamilyMealPlanner.Models;
 using Microsoft.EntityFrameworkCore;
+using NLog;
 
 
 namespace FamilyMealPlanner.Services;
 
 public interface IRecipeService
 {
-    Task AddRecipe(RecipeRequest recipeRequest);
+    Task<int> AddRecipe(RecipeRequest recipeRequest);
     Task<Recipe> GetRecipeById(int recipeId);
     Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId);
     Task Delete(int recipeId);
@@ -17,8 +18,9 @@ public interface IRecipeService
 public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
 {
     private readonly FamilyMealPlannerContext _context = context;
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    public async Task AddRecipe(RecipeRequest recipeRequest)
+    public async Task<int> AddRecipe(RecipeRequest recipeRequest)
     {
         Recipe recipe = new Recipe()
         {
@@ -32,6 +34,8 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
 
         _context.Recipes.Add(recipe);
         await _context.SaveChangesAsync();
+        Logger.Info(recipe.Id);
+        return recipe.Id;
     }
 
     public async Task<Recipe> GetRecipeById(int recipeId)

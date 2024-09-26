@@ -16,7 +16,7 @@ export interface RecipeFormProps {
 
 const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     // const [recipeId, setRecipeId] = useState();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (data) {
@@ -24,11 +24,9 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
             .then(response => {
                 if(response.statusText=="OK")
                 {
-                    // const recipeData = response.data;
-                    // setRecipeId(recipeData.id);
-                    // console.log(recipeData.id)
-                    // navigate(`/recipe/${recipeData.id}/`);
-
+                    const recipeData = response.data;
+                    // setRecipeId(recipeData);
+                    navigate(`/recipe-details/${recipeData}`);
                 }
             });
 
