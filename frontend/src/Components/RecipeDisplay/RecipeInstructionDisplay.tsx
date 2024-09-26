@@ -1,8 +1,8 @@
 import { ListGroup } from "react-bootstrap";
-import { RecipeDetailsProps } from "./RecipeDisplay";
+import { RecipeDisplayProps } from "./RecipeDisplay";
 import "./RecipeDisplay.scss";
 
-const RecipeInstructionDisplay: React.FC<RecipeDetailsProps> = ({ data }) => {
+const RecipeInstructionDisplay: React.FC<RecipeDisplayProps> = ({ data }) => {
     const instructions = data?.recipeInstructions || [];
 
     return (

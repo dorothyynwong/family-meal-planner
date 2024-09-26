@@ -28,7 +28,6 @@ const RecipeSummaryForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
                 <Form.Label>Notes</Form.Label>
                 <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={data?.notes} onChange={handleChange} />
             </Form.Group>
-
         </>
     )
 }

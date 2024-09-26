@@ -42,8 +42,8 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     public async Task<IActionResult> Add(RecipeRequest recipe)
     {
         Logger.Info("add recipe", recipe.Name);
-        await _recipeService.AddRecipe(recipe);
-        return Ok();
+        int recipeId = await _recipeService.AddRecipe(recipe);
+        return Ok(recipeId);
     }
 
     [HttpGet("{recipeId}")]
