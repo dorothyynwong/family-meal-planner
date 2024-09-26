@@ -26,8 +26,8 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
             Notes = recipeRequest.Notes,
             Images = recipeRequest.Images,
             Description = recipeRequest.Description,
-            recipeIngredients = recipeRequest.recipeIngredients,
-            recipeInstructions = recipeRequest.recipeInstructions,
+            RecipeIngredients = recipeRequest.RecipeIngredients,
+            RecipeInstructions = recipeRequest.RecipeInstructions,
         };
 
         _context.Recipes.Add(recipe);
@@ -50,8 +50,8 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
         recipe.Notes = recipeRequest.Notes;
         recipe.Images = recipeRequest.Images;
         recipe.Description = recipeRequest.Description;
-        recipe.recipeIngredients = recipeRequest.recipeIngredients;
-        recipe.recipeInstructions = recipeRequest.recipeInstructions;
+        recipe.RecipeIngredients = recipeRequest.RecipeIngredients;
+        recipe.RecipeInstructions = recipeRequest.RecipeInstructions;
 
         _context.Recipes.Update(recipe);
         await _context.SaveChangesAsync();
