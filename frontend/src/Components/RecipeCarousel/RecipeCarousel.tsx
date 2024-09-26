@@ -1,9 +1,8 @@
 import { useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
-import { RecipeFormProps } from '../RecipeForm/RecipeForm';
 import { Image } from 'react-bootstrap';
-import { RecipeDetailsProps } from '../RecipeDisplay/RecipeDisplay';
-import { RecipeDetailsInterface } from '../../Api/apiInterface';
+import "./RecipeCarousel.scss";
+
 
 export interface RecipeCarouselProps {
   images?: string[]
@@ -25,7 +24,7 @@ const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images }) => {
     <Carousel activeIndex={index} onSelect={handleSelect}>
       {Array.from({ length: imagesUrls? imagesUrls.length : 0 }, (_, i) => (
         <Carousel.Item>
-          <Image src={imagesUrls? imagesUrls[i] : ""} fluid/>
+          <Image className="carousel-image" src={imagesUrls? imagesUrls[i] : ""} fluid/>
         </Carousel.Item>
 
       ))}

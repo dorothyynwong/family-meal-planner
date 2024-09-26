@@ -1,20 +1,16 @@
 import { ListGroup } from "react-bootstrap";
 import { RecipeDetailsProps } from "./RecipeDisplay";
+import { Form } from "react-router-dom";
 
-const RecipeSummaryDisplay: React.FC<RecipeDetailsProps> = ({data}) => {
-   
+const RecipeSummaryDisplay: React.FC<RecipeDetailsProps> = ({ data }) => {
+
     return (
-<ListGroup className="mb-3">
-    <ListGroup.Item>
-        <strong>Name:</strong> {data?.name}
-    </ListGroup.Item>
-    <ListGroup.Item>
-        <strong>Description:</strong> {data?.description}
-    </ListGroup.Item>
-    <ListGroup.Item>
-        <strong>Notes:</strong> {data?.notes}
-    </ListGroup.Item>
-</ListGroup>
+        <>
+            <h5 className="mt-3">Description</h5>
+            {data?.description}
+            <h5 className="mt-3">Notes</h5>
+            {data?.notes}
+        </>
 
     )
 
