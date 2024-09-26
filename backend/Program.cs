@@ -6,8 +6,6 @@ using Microsoft.EntityFrameworkCore;
 using System.Text.Json.Serialization;
 using FamilyMealPlanner.Services;
 using NLog;
-using NLog.Config;
-using NLog.Targets;
 using Microsoft.OpenApi.Models;
 
 
@@ -16,12 +14,9 @@ var imgurClientId = builder.Configuration["Imgur:ClientId"];
 
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
-
-var config = new LoggingConfiguration();
-var target = new FileTarget { FileName = @$"{currentDirectory}\Logs\FamilyMealPlanner.log", Layout = @"${longdate} ${level} - ${logger}: ${message}" };
-config.AddTarget("File Logger", target);
-config.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, target));
-LogManager.Configuration = config;
+GlobalDiagnosticsContext.Set("configDir", @$"{currentDirectory}\Logs");
+Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+Logger.Warn("console logging is great");
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
