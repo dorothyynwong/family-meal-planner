@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Carousel from 'react-bootstrap/Carousel';
 import { RecipeFormProps } from '../RecipeForm/RecipeForm';
 import { Image } from 'react-bootstrap';
@@ -12,6 +12,10 @@ export interface RecipeCarouselProps {
 const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images }) => {
   const [index, setIndex] = useState(0);
   const [imagesUrls, setImagesUrls] = useState(images);
+
+  useEffect(() => {
+    setImagesUrls(images);
+  }, [images])
 
   const handleSelect = (selectedIndex: number) => {
     setIndex(selectedIndex);

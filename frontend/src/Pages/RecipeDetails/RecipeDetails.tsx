@@ -6,7 +6,7 @@ import RecipeDisplay, { RecipeDetailsProps } from "../../Components/RecipeDispla
 
 const RecipeDetails: React.FC = () => {
     return (
-        <><RecipeDisplay id={5}/></>
+        <><RecipeDisplay id={5} /></>
     )
 
 }

@@ -8,7 +8,7 @@ import RecipeInstructionDisplay from "./RecipeInstructionDisplay";
 
 export interface RecipeDetailsProps {
     id: number;
-    // data?: RecipeDetailsInterface
+    data?: RecipeDetailsInterface
 }
 
 const RecipeDisplay: React.FC<RecipeDetailsProps> = ({id}) => {
@@ -28,11 +28,10 @@ const RecipeDisplay: React.FC<RecipeDetailsProps> = ({id}) => {
 
     return (
         <>
-        {recipeData.name}
         <RecipeCarousel images={recipeData.images} />
-        <RecipeSummaryDisplay />
-        <RecipeIngredientDisplay />
-        <RecipeInstructionDisplay />
+        <RecipeSummaryDisplay id={id} data={recipeData} />
+        <RecipeIngredientDisplay id={id} data={recipeData} />
+        <RecipeInstructionDisplay id={id} data={recipeData}  />
         </>
     )
 

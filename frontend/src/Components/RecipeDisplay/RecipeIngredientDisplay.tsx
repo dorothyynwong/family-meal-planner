@@ -1,4 +1,6 @@
-const RecipeIngredientDisplay: React.FC = () => {
+import { RecipeDetailsProps } from "./RecipeDisplay";
+
+const RecipeIngredientDisplay: React.FC<RecipeDetailsProps> = ({data}) => {
    
     return (
         <></>
