@@ -24,6 +24,18 @@ export async function addRecipe(recipe: NewRecipeData) {
 
 }
 
+export async function getRecipeById(recipeId: number) {
+    try {
+        const response: AxiosResponse = await client.get(`/recipes/${recipeId}`);
+
+        return response;
+    } catch (error) {
+        throw error;
+    }
+
+
+}
+
 export async function uploadImage(uploadImage: File) {
     const formData = new FormData();
     formData.append('uploadImage',uploadImage);
@@ -38,3 +50,4 @@ export async function uploadImage(uploadImage: File) {
         throw error;
     }
 }
+

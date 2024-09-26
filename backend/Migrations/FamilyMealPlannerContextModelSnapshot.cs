@@ -154,10 +154,10 @@ namespace backend.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<List<string>>("RecipeIngredients")
+                    b.Property<List<string>>("recipeIngredients")
                         .HasColumnType("text[]");
 
-                    b.Property<List<string>>("RecipeInstructions")
+                    b.Property<List<string>>("recipeInstructions")
                         .HasColumnType("text[]");
 
                     b.HasKey("Id");

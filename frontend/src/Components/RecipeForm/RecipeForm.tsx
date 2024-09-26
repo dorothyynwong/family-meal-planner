@@ -1,11 +1,11 @@
 import { Button, Form } from "react-bootstrap";
-import RecipeSummary from "./RecipeSummary";
-import RecipeIngredient from "./RecipeIngredient";
+import RecipeSummaryForm from "./RecipeSummaryForm";
+import RecipeIngredientForm from "./RecipeIngredientForm";
 import "./RecipeForm.scss"
-import RecipeInstruction from "./RecipeInstruction";
+import RecipeInstructionForm from "./RecipeInstructionForm";
 import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
 import { addRecipe } from "../../Api/api";
-import RecipePhotos from "./RecipePhotos";
+import RecipePhotos from "./RecipePhotosForm";
 
 export interface RecipeProps {
     data: NewRecipeData;
@@ -23,10 +23,10 @@ const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
 
     return (
         <Form onSubmit={handleSubmit}>
-            <RecipeSummary data={data} updateData={updateData} />
+            <RecipeSummaryForm data={data} updateData={updateData} />
             <RecipePhotos data={data} updateData={updateData} />
-            <RecipeIngredient data={data} updateData={updateData} />
-            <RecipeInstruction data={data} updateData={updateData} />
+            <RecipeIngredientForm data={data} updateData={updateData} />
+            <RecipeInstructionForm data={data} updateData={updateData} />
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">
                     Submit

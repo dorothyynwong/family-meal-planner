@@ -1,5 +1,4 @@
-export interface ImportRecipeInterface {
-    id?: number;
+export interface RecipeDetailsInterface {
     name?: string;
     images? :string[];
     author? :string;

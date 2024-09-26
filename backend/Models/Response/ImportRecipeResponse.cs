@@ -14,6 +14,6 @@ public class ImportRecipeResponse
     public string Keywords { get; set; } = "";
     public string RecipeYield { get; set; } = "";
     public string RecipeCategory { get; set; } = "";
-    public List<string> RecipeIngredients { get; set; } = [];
-    public List<string> RecipeInstructions { get; set; }  = [];
+    public List<string> recipeIngredients { get; set; } = [];
+    public List<string> recipeInstructions { get; set; }  = [];
 }
