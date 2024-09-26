@@ -4,6 +4,7 @@ export interface RecipeDetailsInterface {
     author? :string;
     url?: string;
     description?: string;
+    notes?: string;
     recipeCuisine?: string;
     prepTime?: string;
     cookTime?: string;

@@ -1,7 +1,7 @@
 import { Form } from "react-bootstrap";
-import { RecipeProps } from "./RecipeForm";
+import { RecipeFormProps } from "./RecipeForm";
 
-const RecipeSummaryForm: React.FC<RecipeProps> = ({ data, updateData }) => {
+const RecipeSummaryForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (data) {

@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
-import { RecipeProps } from "./RecipeForm";
+import { RecipeFormProps } from "./RecipeForm";
 import { RxCross2 } from "react-icons/rx";
 
 
-const RecipeInstructionForm: React.FC<RecipeProps> = ({ data, updateData }) => {
+const RecipeInstructionForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     const instructions = data?.recipeInstructions || [];
     const [rowCount, setRowCount] = useState(5);
 

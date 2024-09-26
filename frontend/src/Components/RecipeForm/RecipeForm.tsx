@@ -1,18 +1,18 @@
 import { Button, Form } from "react-bootstrap";
+import "./RecipeForm.scss"
+import { addRecipe } from "../../Api/api";
 import RecipeSummaryForm from "./RecipeSummaryForm";
 import RecipeIngredientForm from "./RecipeIngredientForm";
-import "./RecipeForm.scss"
 import RecipeInstructionForm from "./RecipeInstructionForm";
-import { NewRecipeData } from "../../Pages/NewRecipe/NewRecipe";
-import { addRecipe } from "../../Api/api";
-import RecipePhotos from "./RecipePhotosForm";
+import RecipePhotoForm from "./RecipePhotoForm";
+import { RecipeDetailsInterface } from "../../Api/apiInterface";
 
-export interface RecipeProps {
-    data: NewRecipeData;
-    updateData: (newData: NewRecipeData) => void;
+export interface RecipeFormProps {
+    data: RecipeDetailsInterface;
+    updateData: (newData: RecipeDetailsInterface) => void;
 }
 
-const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
+const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (data) {
@@ -24,7 +24,7 @@ const RecipeForm: React.FC<RecipeProps> = ({ data, updateData }) => {
     return (
         <Form onSubmit={handleSubmit}>
             <RecipeSummaryForm data={data} updateData={updateData} />
-            <RecipePhotos data={data} updateData={updateData} />
+            <RecipePhotoForm data={data} updateData={updateData} />
             <RecipeIngredientForm data={data} updateData={updateData} />
             <RecipeInstructionForm data={data} updateData={updateData} />
             <div className="d-flex justify-content-end">

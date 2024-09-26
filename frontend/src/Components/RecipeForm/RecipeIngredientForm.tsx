@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
-import { RecipeProps } from "./RecipeForm";
+import { RecipeFormProps } from "./RecipeForm";
 
 
-const RecipeIngreident: React.FC<RecipeProps> = ({ data, updateData }) => {
+const RecipeIngreident: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     const ingredients = data?.recipeIngredients || [];
     const [rowCount, setRowCount] = useState(5);
 

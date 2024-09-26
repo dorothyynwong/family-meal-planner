@@ -1,20 +1,12 @@
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { getRecipeById } from "../../Api/api";
 import { useEffect, useState } from "react";
+import RecipeDisplay, { RecipeDetailsProps } from "../../Components/RecipeDisplay/RecipeDisplay";
 
-export interface RecipeDetailsProps {
-    id: number;
-}
 
-const RecipeDetails: React.FC<RecipeDetailsProps> = ({id}) => {
-    const [data, setData] = useState<RecipeDetailsInterface>();
-   
-    useEffect(()=>{
-        getRecipeById(id)
-        .then(recipeData => setData(recipeData.data));
-    },[data])
+const RecipeDetails: React.FC = () => {
     return (
-        <>{data?.name}</>
+        <><RecipeDisplay id={5}/></>
     )
 
 }
