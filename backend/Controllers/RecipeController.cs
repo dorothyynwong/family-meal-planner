@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -7,10 +8,11 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/recipes")]
-public class RecipeController(IWebScrappingService webScrappingService, IRecipeService recipeService) : Controller
+public class RecipeController(IWebScrappingService webScrappingService, IRecipeService recipeService, IImageService imageService) : Controller
 {
-    private readonly IWebScrappingService _webScrappingService = webScrappingService ;
-    private readonly IRecipeService _recipeService = recipeService ;
+    private readonly IWebScrappingService _webScrappingService = webScrappingService;
+    private readonly IRecipeService _recipeService = recipeService;
+    private readonly IImageService _imageService = imageService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -45,30 +47,59 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     }
 
     [HttpGet("{recipeId}")]
-    public async Task<IActionResult> GetById([FromRoute]int recipeId)
+    public async Task<IActionResult> GetById([FromRoute] int recipeId)
     {
         Logger.Info("get recipe by Id", recipeId);
         Recipe recipe = await _recipeService.GetRecipeById(recipeId);
-        
+
         return Ok(recipe);
     }
 
     [HttpPut("{recipeId}")]
-    public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute]int recipeId)
+    public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute] int recipeId)
     {
         Logger.Info("update recipe", recipeId);
         await _recipeService.UpdateRecipe(recipeRequest, recipeId);
-        
+
         return Ok(recipeRequest);
     }
 
-    
+
     [HttpDelete("{recipeId}")]
-    public async Task<IActionResult> Delete([FromRoute]int recipeId)
+    public async Task<IActionResult> Delete([FromRoute] int recipeId)
     {
         Logger.Info("delete recipe", recipeId);
         await _recipeService.Delete(recipeId);
-        
+
         return Ok();
+    }
+
+    [HttpPost("upload")]
+    public async Task<IActionResult> UploadImage([FromForm] IFormFile uploadImage)
+    {
+        Logger.Info("upload photo");
+        if (uploadImage == null || uploadImage.Length == 0)
+        {
+            return BadRequest("No image uploaded.");
+        }
+
+        try
+        {
+            var response = await _imageService.UploadImageAsync(uploadImage);
+            ImgBBResponse imgBBResponse = JsonSerializer.Deserialize<ImgBBResponse>(response);
+            Logger.Info(imgBBResponse.ImgData.DisplayUrl);
+            
+            return Ok(imgBBResponse.ImgData.DisplayUrl);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error(ex.Message);
+            return BadRequest(ex.Message);
+        }
+
+
+
+
+        
     }
 }

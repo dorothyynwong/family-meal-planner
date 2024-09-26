@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
-import { NewRecipeProps } from "../RecipeForm/RecipeForm";
+import { RecipeProps } from "./RecipeForm";
 import { RxCross2 } from "react-icons/rx";
 
 
-const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
+const RecipeInstruction: React.FC<RecipeProps> = ({ data, updateData }) => {
     const instructions = data?.recipeInstructions || [];
     const [rowCount, setRowCount] = useState(5);
 
@@ -51,7 +51,7 @@ const RecipeInstruction: React.FC<NewRecipeProps> = ({ data, updateData }) => {
                             type="text"
                             aria-label={`instruction-${i+1}`}
                             aria-describedby="instruction"
-                            value={instructions? instructions[i] : ""}
+                            value={instructions && instructions[i]? instructions[i] : ""}
                             name={`instruction-${i+1}`}
                             onChange={(e) => handleChange(i, e.target.value)}
                         />
