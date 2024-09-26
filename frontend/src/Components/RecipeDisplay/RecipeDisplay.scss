@@ -1,0 +1,17 @@
+@use "./../../Styles/variables.scss" as *;
+
+.instruction-item {
+    background-color: $primary-background;
+}
+
+.instruction-item::before {
+    margin-right: 1rem;             
+}
+
+.ingredient-item {
+    background-color: $primary-background;
+}
+
+.ingredient-item::before {
+    margin-right: 1rem;             
+}

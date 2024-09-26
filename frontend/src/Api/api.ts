@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { NewRecipeData } from '../Pages/NewRecipe/NewRecipe';
+import { RecipeDetailsInterface } from './apiInterface';
 
 export async function importRecipeFromUrl(url: string) {
     try {
@@ -13,9 +13,21 @@ export async function importRecipeFromUrl(url: string) {
     }
 }
 
-export async function addRecipe(recipe: NewRecipeData) {
+export async function addRecipe(recipe: RecipeDetailsInterface) {
     try {
         const response: AxiosResponse = await client.post('recipes', recipe);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+
+
+}
+
+export async function getRecipeById(recipeId: number) {
+    try {
+        const response: AxiosResponse = await client.get(`/recipes/${recipeId}`);
+
         return response;
     } catch (error) {
         throw error;
@@ -38,3 +50,4 @@ export async function uploadImage(uploadImage: File) {
         throw error;
     }
 }
+
