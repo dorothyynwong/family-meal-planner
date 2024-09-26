@@ -17,6 +17,7 @@
       <PrivateAssets>all</PrivateAssets>
     </PackageReference>
     <PackageReference Include="nlog" Version="5.3.4" />
+    <PackageReference Include="nlog.database" Version="5.3.4" />
     <PackageReference Include="NLog.Web.AspNetCore" Version="5.3.13" />
     <PackageReference Include="Npgsql" Version="8.0.4" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4" />
