@@ -14,18 +14,11 @@ using Microsoft.OpenApi.Models;
 var builder = WebApplication.CreateBuilder(args);
 var imgurClientId = builder.Configuration["Imgur:ClientId"];
 
-// NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
-
-// var config = new LoggingConfiguration();
-// var target = new FileTarget { FileName = @$"{currentDirectory}\Logs\FamilyMealPlanner.log", Layout = @"${longdate} ${level} - ${logger}: ${message}" };
-// config.AddTarget("File Logger", target);
-// config.LoggingRules.Add(new LoggingRule("*", NLog.LogLevel.Debug, target));
-// LogManager.Configuration = config;
-
 GlobalDiagnosticsContext.Set("configDir", @$"{currentDirectory}\Logs");
-var logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-logger.Warn("console logging is great");
+Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+Logger.Warn("console logging is great");
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
