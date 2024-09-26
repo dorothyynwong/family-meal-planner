@@ -1,18 +1,8 @@
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { importRecipeFromUrl } from "../../Api/api";
 import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
-
-// export interface RecipeDetailsInterface {
-//     name?: string;
-//     images? :string[];
-//     notes?: string;
-//     description?: string;
-//     recipeIngredients?: string[];
-//     recipeInstructions?: string[];
-//     uploadImage?: File;
-// }
 
 const NewRecipe: React.FC = () => {
     const location = useLocation();
@@ -24,7 +14,6 @@ const NewRecipe: React.FC = () => {
         description: "",
         recipeIngredients: [],
         recipeInstructions: [],
-        // uploadImage: undefined
     });
 
     const updateData = (newData: RecipeDetailsInterface) => {
