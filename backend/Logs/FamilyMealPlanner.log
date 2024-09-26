@@ -159,3 +159,18 @@ CF-RAY: 8c8b1715ccbe45a0-LHR
 2024-09-25 17:52:08.2646 Info - backend.ImageService: upload end
 2024-09-25 17:52:08.2646 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/SfN0Ymr/aijcxclz-rhj.jpg
 2024-09-25 17:52:24.7882 Info - FamilyMealPlanner.Controllers.RecipeController: add recipe
+2024-09-26 10:20:26.0897 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-26 10:20:26.1246 Info - backend.ImageService: upload started
+2024-09-26 10:20:30.6769 Info - backend.ImageService: upload end
+2024-09-26 10:20:30.6905 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/SVNkBVM/mjye1lqy-kqf.jpg
+2024-09-26 10:25:53.6466 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-26 10:25:53.6466 Info - backend.ImageService: upload started
+2024-09-26 10:25:58.4138 Info - backend.ImageService: upload end
+2024-09-26 10:25:58.4138 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/SVNkBVM/mjye1lqy-kqf.jpg
+2024-09-26 10:44:26.3644 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-26 10:44:26.3711 Info - backend.ImageService: upload started
+2024-09-26 10:44:30.3773 Error - FamilyMealPlanner.Controllers.RecipeController: The SSL connection could not be established, see inner exception.
+2024-09-26 10:48:02.9072 Info - FamilyMealPlanner.Controllers.RecipeController: upload photo
+2024-09-26 10:48:02.9097 Info - backend.ImageService: upload started
+2024-09-26 10:48:08.5215 Info - backend.ImageService: upload end
+2024-09-26 10:48:08.5215 Info - FamilyMealPlanner.Controllers.RecipeController: https://i.ibb.co/SVNkBVM/mjye1lqy-kqf.jpg
