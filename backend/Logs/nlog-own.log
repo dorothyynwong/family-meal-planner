@@ -106,3 +106,5 @@
     "string"
   ]
 }: Unexpected error while updating record to database 
+2024-09-27 13:59:11.0291||backend.Program|WARN|  console logging is great 
+2024-09-27 14:00:54.7635||backend.ImageService|INFO|  upload started 
