@@ -4,7 +4,7 @@ import { RecipeDetailsInterface } from './apiInterface';
 
 export async function importRecipeFromUrl(url: string) {
     try {
-        const response: AxiosResponse = await client.get('recipes/import', {
+        const response: AxiosResponse = await client.get('recipes/import-recipe', {
             params: { url: url }
         });
         return response;
@@ -40,7 +40,7 @@ export async function uploadImage(uploadImage: File) {
     const formData = new FormData();
     formData.append('uploadImage',uploadImage);
     try {
-        const response: AxiosResponse = await client.post('recipes/upload', formData, {
+        const response: AxiosResponse = await client.post('recipes/upload-image', formData, {
             headers: {
                 'Content-Type': 'multipart/form-data',
             },

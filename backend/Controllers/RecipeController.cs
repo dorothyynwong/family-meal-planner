@@ -16,90 +16,109 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    [HttpGet("url")]
-    public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
-    {
-        if (string.IsNullOrEmpty(url))
-        {
-            return BadRequest("URL cannot be null or empty.");
-        }
-        string json = await _webScrappingService.GetRecipeJson(url);
-        return Ok(json);
-    }
-
-    [HttpGet("import")]
+    [HttpGet("import-recipe")]
     public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
     {
         if (string.IsNullOrEmpty(url))
         {
             return BadRequest("URL cannot be null or empty.");
         }
-        var recipe = await _webScrappingService.GetRecipeFromUrl(url);
-        return Ok(recipe);
+
+        try
+        {
+            var recipe = await _webScrappingService.GetRecipeFromUrl(url);
+            return Ok(recipe);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to import recipe: {ex.Message}");
+            return BadRequest($"Unable to import recipe: {ex.Message}");
+        }
     }
 
     [HttpPost("")]
     public async Task<IActionResult> Add(RecipeRequest recipe)
     {
-        Logger.Info("add recipe", recipe.Name);
-        int recipeId = await _recipeService.AddRecipe(recipe);
-        return Ok(recipeId);
+        try
+        {
+            int recipeId = await _recipeService.AddRecipe(recipe);
+            return Ok(recipeId);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to add recipe: {ex.Message}");
+            return BadRequest($"Unable to add recipe: {ex.Message}");
+        }
+
     }
 
     [HttpGet("{recipeId}")]
     public async Task<IActionResult> GetById([FromRoute] int recipeId)
     {
-        Logger.Info("get recipe by Id", recipeId);
-        Recipe recipe = await _recipeService.GetRecipeById(recipeId);
+        try
+        {
+            Recipe recipe = await _recipeService.GetRecipeById(recipeId);
+            return Ok(recipe);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get recipe {recipeId}: {ex.Message}");
+            return BadRequest($"Unable to get recipe {recipeId}: {ex.Message}");
+        }
 
-        return Ok(recipe);
     }
 
     [HttpPut("{recipeId}")]
     public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute] int recipeId)
     {
-        Logger.Info("update recipe", recipeId);
-        await _recipeService.UpdateRecipe(recipeRequest, recipeId);
-
-        return Ok(recipeRequest);
+        try
+        {
+            await _recipeService.UpdateRecipe(recipeRequest, recipeId);
+            return Ok(recipeRequest);
+        }
+        catch (Exception ex)
+        {
+            string requestJson = JsonSerializer.Serialize(recipeRequest, new JsonSerializerOptions { WriteIndented = true });
+            Logger.Error($"Failed to update recipe {recipeId}, {requestJson}: {ex.Message}");
+            return BadRequest($"Unable to update recipe {recipeId}: {ex.Message}");
+        }
     }
 
 
     [HttpDelete("{recipeId}")]
     public async Task<IActionResult> Delete([FromRoute] int recipeId)
     {
-        Logger.Info("delete recipe", recipeId);
-        await _recipeService.Delete(recipeId);
-
-        return Ok();
+        try
+        {
+            await _recipeService.Delete(recipeId);
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get recipe {recipeId}: {ex.Message}");
+            return BadRequest($"Unable to get recipe {recipeId}: {ex.Message}");
+        }
     }
 
-    [HttpPost("upload")]
+    [HttpPost("upload-image")]
     public async Task<IActionResult> UploadImage([FromForm] IFormFile uploadImage)
     {
-        Logger.Info("upload photo");
         if (uploadImage == null || uploadImage.Length == 0)
         {
-            return BadRequest("No image uploaded.");
+            Logger.Error("Empty image");
+            return BadRequest("Empty Image");
         }
 
         try
         {
             var response = await _imageService.UploadImageAsync(uploadImage);
             ImgBBResponse imgBBResponse = JsonSerializer.Deserialize<ImgBBResponse>(response);
-            Logger.Info(imgBBResponse.ImgData.DisplayUrl);
-            
             return Ok(imgBBResponse.ImgData.DisplayUrl);
         }
         catch (Exception ex)
         {
-            Logger.Error(ex.Message);
-            return BadRequest(ex.Message);
+            Logger.Error($"Unable to upload image: {ex.Message}");
+            return BadRequest($"Unable to upload image: {ex.Message}");
         }
-
-
-
-
-        
     }
 }
