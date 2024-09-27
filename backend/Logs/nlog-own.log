@@ -34,3 +34,47 @@
 2024-09-26 18:13:20.6492||backend.ImageService|INFO|  upload end 
 2024-09-26 18:13:20.6644||FamilyMealPlanner.Controllers.RecipeController|ERROR|  The process cannot access the file 'C:\Users\dorot\AppData\Local\Temp\zm2jlh2w.4oi.jpeg' because it is being used by another process. 
 2024-09-27 10:19:52.0850||backend.Program|WARN|  console logging is great 
+2024-09-27 10:24:32.7055||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 10:24:32.7284||backend.ImageService|INFO|  upload started 
+2024-09-27 10:24:37.5377||backend.ImageService|INFO|  upload end 
+2024-09-27 10:24:37.5534||FamilyMealPlanner.Controllers.RecipeController|INFO|  https://i.ibb.co/6HGzy1n/3f1j14vw-ex0.jpg 
+2024-09-27 10:24:39.9024||FamilyMealPlanner.Controllers.RecipeController|INFO|  add recipe 
+2024-09-27 10:24:41.2610||FamilyMealPlanner.Services.RecipeService|INFO|  22 
+2024-09-27 10:24:41.3024||FamilyMealPlanner.Controllers.RecipeController|INFO|  get recipe by Id 
+2024-09-27 10:24:41.8464||FamilyMealPlanner.Controllers.RecipeController|INFO|  get recipe by Id 
+2024-09-27 10:39:00.6996||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 10:39:00.8068||backend.ImageService|INFO|  upload started 
+2024-09-27 10:39:02.6816||backend.ImageService|INFO|  upload end 
+2024-09-27 10:39:02.6816||FamilyMealPlanner.Controllers.RecipeController|INFO|  https://i.ibb.co/6HGzy1n/3f1j14vw-ex0.jpg 
+2024-09-27 10:39:05.6818||FamilyMealPlanner.Controllers.RecipeController|INFO|  add recipe 
+2024-09-27 10:39:05.7078||FamilyMealPlanner.Services.RecipeService|INFO|  23 
+2024-09-27 10:39:05.8078||FamilyMealPlanner.Controllers.RecipeController|INFO|  get recipe by Id 
+2024-09-27 10:39:05.8371||FamilyMealPlanner.Controllers.RecipeController|INFO|  get recipe by Id 
+2024-09-27 11:26:02.8809||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:26:02.9781||backend.ImageService|INFO|  upload started 
+2024-09-27 11:26:07.8673||backend.ImageService|INFO|  upload end 
+2024-09-27 11:26:07.8752||FamilyMealPlanner.Controllers.RecipeController|ERROR|  The process cannot access the file 'C:\Users\DorWon\AppData\Local\Temp\irsaqknv.5gy.jpg' because it is being used by another process. 
+2024-09-27 11:27:58.8152||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:27:58.8152||backend.ImageService|INFO|  upload started 
+2024-09-27 11:27:58.8152||backend.ImageService|ERROR|  File error: The process cannot access the file 'C:\Users\DorWon\AppData\Local\Temp\420tzkrn.zbj.jpg' because it is being used by another process. 
+2024-09-27 11:27:58.8152||FamilyMealPlanner.Controllers.RecipeController|ERROR|  An error occurred while processing the image file. 
+2024-09-27 11:28:36.7176||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:28:36.7291||backend.ImageService|INFO|  upload started 
+2024-09-27 11:28:41.8068||backend.ImageService|INFO|  upload end 
+2024-09-27 11:28:41.8183||FamilyMealPlanner.Controllers.RecipeController|INFO|  https://i.ibb.co/6HGzy1n/3f1j14vw-ex0.jpg 
+2024-09-27 11:34:16.3728||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:34:16.4554||backend.ImageService|INFO|  upload started 
+2024-09-27 11:34:16.4572||backend.ImageService|ERROR|  File error: The process cannot access the file 'C:\Users\DorWon\AppData\Local\Temp\gd1oe0l2.zdm.jpg' because it is being used by another process. 
+2024-09-27 11:34:16.4572||FamilyMealPlanner.Controllers.RecipeController|ERROR|  An error occurred while processing the image file. 
+2024-09-27 11:36:51.7803||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:36:51.7803||backend.ImageService|INFO|  upload started 
+2024-09-27 11:37:10.3742||backend.ImageService|INFO|  upload end 
+2024-09-27 11:37:10.3839||FamilyMealPlanner.Controllers.RecipeController|INFO|  https://i.ibb.co/6HGzy1n/3f1j14vw-ex0.jpg 
+2024-09-27 11:37:48.8145||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:37:48.8190||backend.ImageService|INFO|  upload started 
+2024-09-27 11:37:54.1630||backend.ImageService|INFO|  upload end 
+2024-09-27 11:37:54.1630||FamilyMealPlanner.Controllers.RecipeController|ERROR|  The process cannot access the file 'C:\Users\DorWon\AppData\Local\Temp\lnusf3v1.o03.jpg' because it is being used by another process. 
+2024-09-27 11:38:35.6118||FamilyMealPlanner.Controllers.RecipeController|INFO|  upload photo 
+2024-09-27 11:38:35.6195||backend.ImageService|INFO|  upload started 
+2024-09-27 11:38:41.2528||backend.ImageService|INFO|  upload end 
+2024-09-27 11:38:41.2663||FamilyMealPlanner.Controllers.RecipeController|INFO|  https://i.ibb.co/6HGzy1n/3f1j14vw-ex0.jpg 

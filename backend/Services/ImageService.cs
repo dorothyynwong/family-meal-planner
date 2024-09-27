@@ -23,33 +23,36 @@ public class ImageService(IConfiguration configuration) : IImageService
         }
 
         var tempFilePath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName() + Path.GetExtension(file.FileName));
-        
+
         try
         {
-            var client = new HttpClient();
-            var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgbb.com/1/upload");
-            
-
             using (var stream = new FileStream(tempFilePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-
             Logger.Info("upload started");
 
-            var content = new MultipartFormDataContent
+            using (var client = new HttpClient())
             {
-                { new StreamContent(File.OpenRead(tempFilePath)), "image", Path.GetFileName(tempFilePath) },
-                { new StringContent(imgbbApiKey), "key" }
-            };
+                using (var request = new HttpRequestMessage(HttpMethod.Post, "https://api.imgbb.com/1/upload"))
+                {
+                    var content = new MultipartFormDataContent
+                    {
+                        { new StreamContent(File.OpenRead(tempFilePath)), "image", Path.GetFileName(tempFilePath) },
+                        { new StringContent(imgbbApiKey), "key" }
+                    };
 
-            request.Content = content;
-            var response = await client.SendAsync(request);
-            Logger.Info("upload end");
-            response.EnsureSuccessStatusCode();
-            var responseStr = await response.Content.ReadAsStringAsync();
+                    request.Content = content;
+                    var response = await client.SendAsync(request);
+                    Logger.Info("upload end");
+                    response.EnsureSuccessStatusCode();
+                    var responseStr = await response.Content.ReadAsStringAsync();
 
-            return responseStr;
+                    return responseStr;
+                }
+
+            }
+
         }
         catch (HttpRequestException ex)
         {
@@ -66,7 +69,8 @@ public class ImageService(IConfiguration configuration) : IImageService
             Logger.Error($"Unexpected error: {ex.Message}");
             throw new Exception($"Unable to upload image to ImgBB, {ex.Message}", ex);
         }
-        finally{
+        finally
+        {
             if (File.Exists(tempFilePath))
             {
                 File.Delete(tempFilePath);
