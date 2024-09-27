@@ -16,16 +16,16 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    [HttpGet("url")]
-    public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
-    {
-        if (string.IsNullOrEmpty(url))
-        {
-            return BadRequest("URL cannot be null or empty.");
-        }
-        string json = await _webScrappingService.GetRecipeJson(url);
-        return Ok(json);
-    }
+    // [HttpGet("url")]
+    // public async Task<IActionResult> GetRecipeJsonByUrl([FromQuery] string url)
+    // {
+    //     if (string.IsNullOrEmpty(url))
+    //     {
+    //         return BadRequest("URL cannot be null or empty.");
+    //     }
+    //     string json = await _webScrappingService.GetRecipeJson(url);
+    //     return Ok(json);
+    // }
 
     [HttpGet("import")]
     public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
