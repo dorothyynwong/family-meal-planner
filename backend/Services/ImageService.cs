@@ -66,14 +66,21 @@ public class ImageService(IConfiguration configuration) : IImageService
         }
         catch (Exception ex)
         {
-            Logger.Error($"Unexpected error: {ex.Message}");
+            Logger.Error($"Unexpected error, unable to upload image to ImgBB: {ex.Message}");
             throw new Exception($"Unable to upload image to ImgBB, {ex.Message}", ex);
         }
         finally
         {
-            if (File.Exists(tempFilePath))
+            try
             {
-                File.Delete(tempFilePath);
+                if (File.Exists(tempFilePath))
+                {
+                    File.Delete(tempFilePath);
+                }
+            }
+            catch (Exception ex)
+            {
+                Logger.Error($"Unexpected error, unable to remove temporary file: {ex.Message}");
             }
         }
 
