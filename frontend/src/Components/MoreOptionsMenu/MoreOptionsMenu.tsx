@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { useNavigate } from 'react-router-dom';
+import "./MoreOptionsMenu.scss";
 
 export interface MoreOptionsMenuProps {
     menuType: string;
@@ -18,6 +19,9 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
             case "recipeCard":
                 setMenuOptions(["Details", "Edit", "Delete"]);
                 break;
+            case "recipeDetails":
+                    setMenuOptions(["Edit", "Delete"]);
+                    break;
             default:
                 setMenuOptions([]); 
                 break;
@@ -48,7 +52,6 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
                 break;
 
         }
-        // console.log(`You clicked on ${option}`);
         handleClose(); 
     };
 
@@ -61,6 +64,9 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
                 anchorEl={anchorEl} 
                 open={Boolean(anchorEl)} 
                 onClose={handleClose} 
+                slotProps={{
+                    paper: {className: "more-options-menu"}
+                }}
             >
                 {menuOptions?.map((menuOption, index) => (
                     <MenuItem 
