@@ -1,0 +1,6 @@
+@use "./../../Styles/variables.scss" as *;
+
+.custom-card {
+    background-color: $primary-background;
+    border: 1px solid;
+}

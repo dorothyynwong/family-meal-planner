@@ -11,10 +11,12 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
-import ShareIcon from '@mui/icons-material/Share';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { RecipeDetailsInterface } from '../../Api/apiInterface';
+import { Nav } from 'react-bootstrap';
+import RecipeInstructionDisplay from '../RecipeDisplay/RecipeInstructionDisplay';
+import "./RecipeCard.scss";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -57,7 +59,8 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardHeader
+            <CardHeader 
+                // className="custom-card"
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                         R
@@ -72,15 +75,14 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                 // subheader="September 14, 2016"
             />
             <CardMedia
+                // className="custom-card"
                 component="img"
                 height="194"
                 image={recipe.images? recipe.images[0] : ""}
                 alt={recipe.name}
             />
             <CardContent>
-                <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-                    {recipe.description}
-                </Typography>
+                {recipe.description}
             </CardContent>
             <CardActions disableSpacing>
                 <IconButton aria-label="add to favorites">
@@ -97,11 +99,7 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
             </CardActions>
             <Collapse in={expanded} timeout="auto" unmountOnExit>
                 <CardContent>
-                    <Typography sx={{ marginBottom: 2 }}>Instructions:</Typography>
-                    {recipe.recipeInstructions?.map(instruction => (
-                        <Typography sx={{ marginBottom: 2 }}>{instruction}</Typography>
-                    ))}
-        
+                    <RecipeInstructionDisplay data={recipe} />
                 </CardContent>
             </Collapse>
         </Card>

@@ -1,4 +1,5 @@
 export interface RecipeDetailsInterface {
+    id?: number;
     name?: string;
     images? :string[];
     author? :string;
