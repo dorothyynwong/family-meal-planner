@@ -45,7 +45,11 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
                 switch(option)
                 {
                     case "Details":
-                        navigate(`/recipe-details/${recipeId}`)
+                        navigate(`/recipe-details/${recipeId}`);
+                        break;
+                    case "Delete":
+                        navigate(`/recipe-details/${recipeId}/delete`);
+                        break;
                 }
                 break;
             default:

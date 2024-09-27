@@ -7,7 +7,7 @@ import { getRecipeById } from "../../Api/api";
 
 
 const RecipeDetails: React.FC = () => {
-    const { id } = useParams<{ id: string  }>();
+    const { id, mode } = useParams<{ id: string, mode:string  }>();
     const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
         name: "",
         images: [],
@@ -24,7 +24,11 @@ const RecipeDetails: React.FC = () => {
     },[])
 
     return (
-        <><RecipeDisplay data={recipeData} /></>
+        <>
+        <RecipeDisplay data={recipeData} />
+        {mode=="delete" && <div>Delete</div>}
+        </>
+        
     )
 
 }
