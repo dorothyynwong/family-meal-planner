@@ -11,10 +11,10 @@ import IconButton, { IconButtonProps } from '@mui/material/IconButton';
 import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { RecipeDetailsInterface } from '../../Api/apiInterface';
 import RecipeInstructionDisplay from '../RecipeDisplay/RecipeInstructionDisplay';
 import "./RecipeCard.scss";
+import MoreOptionsMenu from '../MoreOptionsMenu/MoreOptionsMenu';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -61,13 +61,15 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                 // className="custom-card"
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        R
+                        Melissa Cheng
                     </Avatar>
                 }
                 action={
-                    <IconButton aria-label="settings">
-                        <MoreVertIcon />
-                    </IconButton>
+                    <MoreOptionsMenu menuType='recipeCard' id={recipe.id? recipe.id : 0}/>
+                    // <IconButton aria-label="settings">
+                    //     <MoreVertIcon />
+                        
+                    // </IconButton>
                 }
                 title={recipe.name}
                 // subheader="September 14, 2016"
