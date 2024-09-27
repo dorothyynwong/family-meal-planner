@@ -29,3 +29,4 @@
 2024-09-26 18:11:37.2155||FamilyMealPlanner.Services.RecipeService|INFO|9 
 2024-09-26 18:11:37.2923||FamilyMealPlanner.Controllers.RecipeController|INFO|get recipe by Id 
 2024-09-26 18:11:37.3286||FamilyMealPlanner.Controllers.RecipeController|INFO|get recipe by Id 
+2024-09-27 10:19:52.0850||backend.Program|WARN|console logging is great 
