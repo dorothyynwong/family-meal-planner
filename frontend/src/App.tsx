@@ -5,6 +5,7 @@ import Layout from './Components/Layout/Layout';
 import Recipes from './Pages/Recipes/Recipes';
 import NewRecipe from './Pages/NewRecipe/NewRecipe';
 import RecipeDetails from './Pages/RecipeDetails/RecipeDetails';
+import RecipesList from './Pages/RecipesList/RecipesList';
 
 
 function App() {
@@ -17,6 +18,8 @@ function App() {
             element={<Home />} />
           <Route path="/recipes"
             element={<Recipes />} />
+          <Route path="/recipes-list"
+            element={<RecipesList />} />
           <Route path="/new-recipe"
             element={<NewRecipe />} />
           <Route path="/recipe-details/:id" element={<RecipeDetails />} />

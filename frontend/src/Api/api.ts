@@ -36,6 +36,20 @@ export async function getRecipeById(recipeId: number) {
 
 }
 
+export async function getRecipeByUserId(userId: number) {
+    try {
+        const response: AxiosResponse = await client.get(`/recipes`, {
+            params: {
+                userId: 1
+            }
+        });
+
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function uploadImage(uploadImage: File) {
     const formData = new FormData();
     formData.append('uploadImage',uploadImage);
