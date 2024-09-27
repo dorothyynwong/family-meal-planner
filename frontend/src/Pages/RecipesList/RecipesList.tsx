@@ -1,9 +1,9 @@
-import { Link, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import RecipeCard from "../../Components/RecipeCard/RecipeCard";
 import { useEffect, useState } from "react";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { getRecipeByUserId } from "../../Api/api";
-import { Nav, Row } from "react-bootstrap";
+import { Row } from "react-bootstrap";
 
 const RecipesList: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
