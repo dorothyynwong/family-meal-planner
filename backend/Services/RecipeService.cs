@@ -9,6 +9,7 @@ public interface IRecipeService
 {
     Task<int> AddRecipe(RecipeRequest recipeRequest);
     Task<Recipe> GetRecipeById(int recipeId);
+    Task<List<Recipe>> GetRecipeByUserId(int userId);
     Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId);
     Task Delete(int recipeId);
 }
@@ -59,6 +60,20 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
             throw new InvalidOperationException($"Recipe with id {recipeId} is not found.");
         }
         return recipe;
+    }
+
+    public async Task<List<Recipe>> GetRecipeByUserId(int userId)
+    {
+        List<Recipe> recipes =  await _context.Recipes
+                                                .Where(recipe => recipe.Id != 0)
+                                                .ToListAsync();
+        if (recipes == null || recipes.Count == 0)
+        {
+            Logger.Error($"No recipes for {userId}");
+            throw new InvalidOperationException($"No recipes for {userId}");
+        }
+
+        return recipes;
     }
 
     public async Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId)
