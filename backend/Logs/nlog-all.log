@@ -74,3 +74,31 @@
 2024-09-27 11:38:35.6195||backend.ImageService|INFO|upload started 
 2024-09-27 11:38:41.2528||backend.ImageService|INFO|upload end 
 2024-09-27 11:38:41.2663||FamilyMealPlanner.Controllers.RecipeController|INFO|https://i.ibb.co/6HGzy1n/3f1j14vw-ex0.jpg 
+2024-09-27 13:36:11.8237||backend.Program|WARN|console logging is great 
+2024-09-27 13:36:24.8249||backend.Program|WARN|console logging is great 
+2024-09-27 13:41:47.1751||backend.Program|WARN|console logging is great 
+2024-09-27 13:44:52.7941||FamilyMealPlanner.Services.WebScrappingService|ERROR|https://learn.microsoft.com/en-us/dotnet/api/system.web.http.apicontroller.badrequest?view=aspnetcore-2.2 is an invalid recipe.  
+2024-09-27 13:44:52.8121||FamilyMealPlanner.Services.WebScrappingService|ERROR|Error scraping recipe: https://learn.microsoft.com/en-us/dotnet/api/system.web.http.apicontroller.badrequest?view=aspnetcore-2.2 is an invalid recipe. 
+2024-09-27 13:44:52.8121||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Error scraping recipe: https://learn.microsoft.com/en-us/dotnet/api/system.web.http.apicontroller.badrequest?view=aspnetcore-2.2 is an invalid recipe. 
+2024-09-27 13:49:37.8835||FamilyMealPlanner.Services.RecipeService|ERROR|Unexpected error on recipeId 0: Sequence contains no elements. 
+2024-09-27 13:49:37.8835||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to update recipe 0, FamilyMealPlanner.Models.RecipeRequest: Unexpected error while updating record to database 
+2024-09-27 13:50:35.4708||FamilyMealPlanner.Services.WebScrappingService|ERROR|https://learn.microsoft.com/en-us/dotnet/api/system.web.http.apicontroller.badrequest?view=aspnetcore-2.2 is an invalid recipe.  
+2024-09-27 13:50:35.4708||FamilyMealPlanner.Services.WebScrappingService|ERROR|Error scraping recipe: https://learn.microsoft.com/en-us/dotnet/api/system.web.http.apicontroller.badrequest?view=aspnetcore-2.2 is an invalid recipe. 
+2024-09-27 13:50:35.4748||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Error scraping recipe: https://learn.microsoft.com/en-us/dotnet/api/system.web.http.apicontroller.badrequest?view=aspnetcore-2.2 is an invalid recipe. 
+2024-09-27 13:51:08.8538||FamilyMealPlanner.Services.RecipeService|ERROR|Unexpected error on recipeId 0: Sequence contains no elements. 
+2024-09-27 13:51:08.8538||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to update recipe 0, FamilyMealPlanner.Models.RecipeRequest: Unexpected error while updating record to database 
+2024-09-27 13:53:14.3425||FamilyMealPlanner.Services.RecipeService|ERROR|Unexpected error on recipeId 0: Sequence contains no elements. 
+2024-09-27 13:53:14.3425||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to update recipe 0, {
+  "Name": "string",
+  "Images": [
+    "string"
+  ],
+  "Notes": "string",
+  "Description": "string",
+  "RecipeIngredients": [
+    "string"
+  ],
+  "RecipeInstructions": [
+    "string"
+  ]
+}: Unexpected error while updating record to database 
