@@ -68,6 +68,22 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
     }
 
+    [HttpGet]
+    public async Task<IActionResult> GetByUserId([FromQuery] int userId)
+    {
+        try
+        {
+            List<Recipe> recipes = await _recipeService.GetRecipeByUserId(userId);
+            return Ok(recipes);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get recipes of {userId}: {ex.Message}");
+            return BadRequest($"Unable to get recipes of {userId}: {ex.Message}");
+        }
+
+    }
+
     [HttpPut("{recipeId}")]
     public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute] int recipeId)
     {
