@@ -17,6 +17,7 @@ import "./RecipeCard.scss";
 import MoreOptionsMenu from '../MoreOptionsMenu/MoreOptionsMenu';
 import OverflowMenu from '../OverflowMenu/OverflowMenu';
 import { MenuItem } from '@mui/material';
+import { useNavigate } from 'react-router-dom';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -52,10 +53,28 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 
 const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
     const [expanded, setExpanded] = React.useState(false);
+    const navigate = useNavigate();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
+
+    const handleClick = (event: { currentTarget: { id: string } })  => {
+        const buttonId = event.currentTarget.id;
+        switch (buttonId) {
+          case "display-recipe-button":
+            navigate(`/recipe-details/${recipe.id}`);
+            break
+          case "delete-recipe-button":
+            navigate(`/recipe-details/${recipe.id}/delete`);
+            break
+          case "edit-recipe-button":
+            navigate("/")
+            break
+          default:
+            break
+        }
+    }
 
     return (
         <Card sx={{ maxWidth: 345 }}>
@@ -70,9 +89,9 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                     // <MoreOptionsMenu menuType='recipeCard' id={recipe.id? recipe.id : 0}/>
                     <OverflowMenu>
                         <>
-                        <MenuItem>Details</MenuItem>
-                        <MenuItem>Edit</MenuItem>
-                        <MenuItem>Delete</MenuItem>
+                        <MenuItem id="display-recipe-button" onClick={handleClick}>Details</MenuItem>
+                        <MenuItem id="edit-recipe-button" onClick={handleClick}>Edit</MenuItem>
+                        <MenuItem id="delete-recipe-button" onClick={handleClick}>Delete</MenuItem>
                         </>
                     </OverflowMenu>
                     // <IconButton aria-label="settings">
