@@ -15,6 +15,8 @@ import { RecipeDetailsInterface } from '../../Api/apiInterface';
 import RecipeInstructionDisplay from '../RecipeDisplay/RecipeInstructionDisplay';
 import "./RecipeCard.scss";
 import MoreOptionsMenu from '../MoreOptionsMenu/MoreOptionsMenu';
+import OverflowMenu from '../OverflowMenu/OverflowMenu';
+import { MenuItem } from '@mui/material';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -65,7 +67,14 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                     </Avatar>
                 }
                 action={
-                    <MoreOptionsMenu menuType='recipeCard' id={recipe.id? recipe.id : 0}/>
+                    // <MoreOptionsMenu menuType='recipeCard' id={recipe.id? recipe.id : 0}/>
+                    <OverflowMenu>
+                        <>
+                        <MenuItem>Details</MenuItem>
+                        <MenuItem>Edit</MenuItem>
+                        <MenuItem>Delete</MenuItem>
+                        </>
+                    </OverflowMenu>
                     // <IconButton aria-label="settings">
                     //     <MoreVertIcon />
                         
