@@ -54,7 +54,7 @@ const RecipeDetails: React.FC = () => {
         <>
             <Row>
                 <Col xs={10}>
-                    <MdArrowBackIosNew size={20} onClick={() => navigate(-1)} />
+                    <MdArrowBackIosNew size={20} onClick={() => navigate("/recipes-list")} />
                 </Col>
                 <Col xs={2}>
                      <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />

@@ -15,9 +15,11 @@ const RecipeDisplay: React.FC<RecipeDisplayProps> = ({ data }) => {
     return (
         <>
             <h1 className="mb-3">{data.name}</h1>
+            {data.images && data.images.length > 0 &&
             <Card className="vh-30">
                 <RecipeCarousel images={data.images} />
             </Card>
+            }
             <RecipeSummaryDisplay data={data} />
             <RecipeIngredientDisplay data={data} />
             <RecipeInstructionDisplay data={data} />

@@ -31,7 +31,7 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data}) => {
         switch (buttonId) {
             case "delete-recipe-button":
                 deleteRecipe(recipeData.id? recipeData.id : 0);
-                navigate(-1);
+                navigate("/recipes-list");
                 break
             case "cancel-delete-recipe-button":
                 setModalShow(false);
