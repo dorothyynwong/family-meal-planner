@@ -10,7 +10,6 @@ interface RecipeDeleteProps {
     data: RecipeDetailsInterface;
 }
 
-
 const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data}) => {
     const navigate = useNavigate();
     const [modalShow, setModalShow] = useState(true);
@@ -53,7 +52,6 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data}) => {
                     <Button id="cancel-delete-recipe-button" className="custom-button" onClick={handleClick}>Cancel</Button>
                 </InputGroup>
             </Popup>
-
     )
 }
 

@@ -1,4 +1,3 @@
-import * as React from 'react';
 import { styled } from '@mui/material/styles';
 import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
@@ -15,7 +14,6 @@ import { RecipeDetailsInterface } from '../../Api/apiInterface';
 import RecipeInstructionDisplay from '../RecipeDisplay/RecipeInstructionDisplay';
 import "./RecipeCard.scss";
 import OverflowMenu from '../OverflowMenu/OverflowMenu';
-import { MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
 import RecipeDeleteConfirmation from '../RecipeDeleteConfirmation/RecipeDeleteConirmation';
 import { useState } from 'react';
