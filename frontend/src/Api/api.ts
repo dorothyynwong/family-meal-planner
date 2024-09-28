@@ -22,6 +22,15 @@ export async function addRecipe(recipe: RecipeDetailsInterface) {
     }
 }
 
+export async function updateRecipe(recipe: RecipeDetailsInterface, recipeId: number) {
+    try {
+        const response: AxiosResponse = await client.put(`/recipes/${recipeId}`, recipe);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function deleteRecipe(recipeId: number) {
     try {
         const response: AxiosResponse = await client.delete(`/recipes/${recipeId}`);

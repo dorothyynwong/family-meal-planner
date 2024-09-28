@@ -14,11 +14,14 @@ const Recipes: React.FC = () => {
     const handleClick = (event: { currentTarget: { id: string } })  => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
+          case "show-recipe-button":
+            navigate("/recipes-list")
+            break
           case "new-recipe-button":
-            navigate("/new-recipe", { state: url })
+            navigate("/recipe-add", { state: url })
             break
           case "import-recipe-button":
-            navigate("/new-recipe", { state: url })
+            navigate("/recipe-add", { state: url })
             break
           case "log-out-button":
             navigate("/")
@@ -26,7 +29,6 @@ const Recipes: React.FC = () => {
           default:
             break
         }
-
     }
 
     const [modalShow, setModalShow] = React.useState(false);
@@ -36,9 +38,9 @@ const Recipes: React.FC = () => {
             <h1>Recipes</h1>
             <SearchBar />
             <div className="button-box">
+            <Button id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>My Recipes</Button>
                 <Button className="custom-button" size="lg" onClick={() => setModalShow(true)}>Import Recipe from Website</Button>
                 <Button id="new-recipe-button" className="custom-button" size="lg" onClick={handleClick}>New Recipe</Button>
-                <Button id="copy-recipe-button" className="custom-button" size="lg">Copy from Recipe</Button>
             </div>
             <Popup
                 show={modalShow}

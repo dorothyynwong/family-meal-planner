@@ -26,12 +26,16 @@ const RecipeDetails: React.FC = () => {
     useEffect(() => {
         const recipeIdNo = parseInt(recipeId!, 10)
         getRecipeById(recipeIdNo)
-            .then(recipe => setRecipeData(recipe.data));
+            .then(recipe => setRecipeData(recipe.data))
+            .catch(err => {
+                console.error("Error getting recipe:", err);
+            });
     }, [recipeId])
 
     const menuItems = [
         { id: "edit-recipe-button", label: "Edit" },
         { id: "delete-recipe-button", label: "Delete" },
+        { id: "copy-recipe-button", label: "Copy"},
     ];
 
     const handleOptionsClick = (option: string) => {
@@ -43,25 +47,31 @@ const RecipeDetails: React.FC = () => {
                 setIsDelete(true);
                 break
             case "edit-recipe-button":
-                navigate("/")
+                navigate(`/recipe-edit/${recipeData.id}`);
                 break
+            case "copy-recipe-button":
+                    navigate(`/recipe-add/${recipeData.id}`);
+                    break
             default:
                 break
         }
     }
 
+    const handleCancel = () => {
+        setIsDelete(false);
+    }
     return (
         <>
             <Row>
                 <Col xs={10}>
-                    <MdArrowBackIosNew size={20} onClick={() => navigate(-1)} />
+                    <MdArrowBackIosNew size={20} onClick={() => navigate("/recipes-list")} />
                 </Col>
                 <Col xs={2}>
                      <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />
                 </Col>
             </Row>
             <RecipeDisplay data={recipeData} />
-            {isDelete && <RecipeDeleteConfirmation data={recipeData}/>}
+            {isDelete && <RecipeDeleteConfirmation data={recipeData}  onCancel={handleCancel} />}
             
         </>
 

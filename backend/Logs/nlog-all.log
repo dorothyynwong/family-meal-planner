@@ -106,3 +106,6 @@
 2024-09-27 14:00:54.7635||backend.ImageService|INFO|upload started 
 2024-09-27 16:00:57.0012||backend.Program|WARN|console logging is great 
 2024-09-27 17:50:32.7779||backend.Program|WARN|console logging is great 
+2024-09-28 13:55:20.6948||backend.Program|WARN|console logging is great 
+2024-09-28 13:55:26.2829||FamilyMealPlanner.Controllers.RecipeController|DEBUG|update recipe 
+2024-09-28 13:56:12.2423||backend.Program|WARN|console logging is great 

@@ -63,6 +63,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         { id: "display-recipe-button", label: "Details" },
         { id: "edit-recipe-button", label: "Edit" },
         { id: "delete-recipe-button", label: "Delete" },
+        { id: "copy-recipe-button", label: "Copy"},
     ];
 
     const handleOptionsClick = (option: string) => {
@@ -74,11 +75,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 setIsDelete(true);
                 break
             case "edit-recipe-button":
-                navigate("/")
+                navigate(`/recipe-edit/${recipe.id}`);
+                break
+            case "copy-recipe-button":
+                navigate(`/recipe-add/${recipe.id}`);
                 break
             default:
                 break
         }
+    }
+
+    const handleCancel = () => {
+        setIsDelete(false);
     }
 
     return (
@@ -121,7 +129,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                     <RecipeInstructionDisplay data={recipe} />
                 </CardContent>
             </Collapse>
-            {isDelete && <RecipeDeleteConfirmation data={recipe} />}
+            {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
         </Card>
     );
 }
