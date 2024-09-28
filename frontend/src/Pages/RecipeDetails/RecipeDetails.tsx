@@ -31,8 +31,8 @@ const RecipeDetails: React.FC = () => {
     }, [recipeId])
 
     const menuItems = [
-        <MenuItem id="edit-recipe-button">Edit</MenuItem>,
-        <MenuItem id="delete-recipe-button">Delete</MenuItem>,
+        { id: "edit-recipe-button", label: "Edit" },
+        { id: "delete-recipe-button", label: "Delete" },
     ];
 
     const handleOptionsClick = (option: string) => {

@@ -2,8 +2,13 @@ import { ReactElement, useState } from "react";
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 
+interface MenuItemType {
+    id: string;
+    label: string; // Add label for the display text
+}
+
 interface OverflowMenuProps {
-    menuItems: ReactElement[];
+    menuItems: MenuItemType[];
     handleOptionsClick?: (option: string) => void;
 }
 
@@ -31,9 +36,9 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
                     paper: { className: "more-options-menu" }
                 }}
             >
-                {menuItems.map((menuItem, index) => (
-                    <MenuItem key={index} onClick={() => {handleOptionsClick?.(menuItem.props.id); handleClose();}}>
-                        {menuItem}
+                {menuItems.map(({ id, label }) => (
+                    <MenuItem key={id} onClick={() => { handleOptionsClick?.(id); handleClose(); }}>
+                        {label} 
                     </MenuItem>
                 ))}
 

@@ -62,9 +62,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
     };
 
     const menuItems = [
-        <MenuItem id="display-recipe-button" >Details</MenuItem>,
-        <MenuItem id="edit-recipe-button">Edit</MenuItem>,
-        <MenuItem id="delete-recipe-button">Delete</MenuItem>,
+        { id: "display-recipe-button", label: "Details" },
+        { id: "edit-recipe-button", label: "Edit" },
+        { id: "delete-recipe-button", label: "Delete" },
     ];
 
     const handleOptionsClick = (option: string) => {

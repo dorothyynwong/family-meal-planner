@@ -13,7 +13,7 @@ const RecipesList: React.FC = () => {
         const userIdInt = parseInt(userId!, 10)
         getRecipeByUserId(userIdInt)
             .then(recipes => setRecipesList(recipes.data));
-    }, [userId, recipesList])
+    }, [])
 
     return (
         <>
