@@ -30,17 +30,24 @@ const RecipeDetails: React.FC = () => {
             .then(recipe => setRecipeData(recipe.data));
     }, [recipeId])
 
-    const handleOptionsClick = (event: { currentTarget: { id: string } })  => {
-        const buttonId = event.currentTarget.id;
-        switch (buttonId) {
-          case "delete-recipe-button":
-            setIsDelete(true);
-            break
-          case "edit-recipe-button":
-            navigate("/")
-            break
-          default:
-            break
+    const menuItems = [
+        <MenuItem id="edit-recipe-button">Edit</MenuItem>,
+        <MenuItem id="delete-recipe-button">Delete</MenuItem>,
+    ];
+
+    const handleOptionsClick = (option: string) => {
+        switch (option) {
+            case "display-recipe-button":
+                navigate(`/recipe-details/${recipeData.id}`);
+                break
+            case "delete-recipe-button":
+                setIsDelete(true);
+                break
+            case "edit-recipe-button":
+                navigate("/")
+                break
+            default:
+                break
         }
     }
 
@@ -51,12 +58,7 @@ const RecipeDetails: React.FC = () => {
                     <MdArrowBackIosNew size={20} onClick={() => navigate(-1)} />
                 </Col>
                 <Col xs={2}>
-                    <OverflowMenu>
-                        <>
-                            <MenuItem id="edit-recipe-button" onClick={handleOptionsClick}>Edit</MenuItem>
-                            <MenuItem id="delete-recipe-button" onClick={handleOptionsClick}>Delete</MenuItem>
-                        </>
-                    </OverflowMenu>
+                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />
                 </Col>
             </Row>
             <RecipeDisplay data={recipeData} />

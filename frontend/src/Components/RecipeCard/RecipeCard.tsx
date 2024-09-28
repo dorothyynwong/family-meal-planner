@@ -52,7 +52,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     ],
 }));
 
-const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
@@ -61,49 +61,45 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
         setExpanded(!expanded);
     };
 
-    const handleOptionsClick = (event: { currentTarget: { id: string } })  => {
-        const buttonId = event.currentTarget.id;
-        switch (buttonId) {
-          case "display-recipe-button":
-            navigate(`/recipe-details/${recipe.id}`);
-            break
-          case "delete-recipe-button":
-            setIsDelete(true);
-            break
-          case "edit-recipe-button":
-            navigate("/")
-            break
-          default:
-            break
+    const menuItems = [
+        <MenuItem id="display-recipe-button" >Details</MenuItem>,
+        <MenuItem id="edit-recipe-button">Edit</MenuItem>,
+        <MenuItem id="delete-recipe-button">Delete</MenuItem>,
+    ];
+
+    const handleOptionsClick = (option: string) => {
+        switch (option) {
+            case "display-recipe-button":
+                navigate(`/recipe-details/${recipe.id}`);
+                break
+            case "delete-recipe-button":
+                setIsDelete(true);
+                break
+            case "edit-recipe-button":
+                navigate("/")
+                break
+            default:
+                break
         }
     }
 
     return (
         <Card sx={{ maxWidth: 345 }}>
-            <CardHeader 
-                // className="custom-card"
+            <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
                         Melissa Cheng
                     </Avatar>
                 }
                 action={
-                    <OverflowMenu>
-                        <>
-                        <MenuItem id="display-recipe-button" onClick={handleOptionsClick}>Details</MenuItem>
-                        <MenuItem id="edit-recipe-button" onClick={handleOptionsClick}>Edit</MenuItem>
-                        <MenuItem id="delete-recipe-button" onClick={handleOptionsClick}>Delete</MenuItem>
-                        </>
-                    </OverflowMenu>
+                    <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />
                 }
                 title={recipe.name}
-                // subheader="September 14, 2016"
             />
             <CardMedia
-                // className="custom-card"
                 component="img"
                 height="194"
-                image={recipe.images? recipe.images[0] : ""}
+                image={recipe.images ? recipe.images[0] : ""}
                 alt={recipe.name}
             />
             <CardContent>
@@ -127,7 +123,7 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                     <RecipeInstructionDisplay data={recipe} />
                 </CardContent>
             </Collapse>
-            {isDelete && <RecipeDeleteConfirmation data={recipe}/>}
+            {isDelete && <RecipeDeleteConfirmation data={recipe} />}
         </Card>
     );
 }
