@@ -1,7 +1,7 @@
-import { ReactElement, useState } from "react";
+import {  useState } from "react";
 import { IconButton, Menu, MenuItem } from '@mui/material';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
-
+import "./OverflowMenu.scss";
 interface MenuItemType {
     id: string;
     label: string; // Add label for the display text
@@ -32,8 +32,13 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                slotProps={{
-                    paper: { className: "more-options-menu" }
+                // slotProps={{
+                //     paper: { className: "overflow-menu" }
+                //   }}
+                sx={{
+                    '& .MuiPaper-root': {
+                        backgroundColor: '#8E9D76', 
+                    }
                 }}
             >
                 {menuItems.map(({ id, label }) => (
