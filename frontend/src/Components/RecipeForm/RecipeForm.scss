@@ -7,10 +7,12 @@
 .recipe-photo-card {
     width: '18rem';
     padding: 1em;
+    position: relative;
 }
 
-.recipe-photo-edit-icon {
-    position: absolute; 
+.overflow-menu-container {
+    position: absolute;
     top: 0;
-    right: 0;
+    right: 0; 
+    z-index: 50; 
 }

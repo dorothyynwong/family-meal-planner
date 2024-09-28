@@ -18,7 +18,7 @@ const Recipes: React.FC = () => {
             navigate("/recipes-list")
             break
           case "new-recipe-button":
-            navigate("/recipe-add", { state: url })
+            navigate("/recipe-add")
             break
           case "import-recipe-button":
             navigate("/recipe-add", { state: url })

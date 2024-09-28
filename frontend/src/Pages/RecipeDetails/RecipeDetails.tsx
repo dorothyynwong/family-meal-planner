@@ -8,6 +8,7 @@ import {  Col,  Row } from "react-bootstrap";
 import { MdArrowBackIosNew } from "react-icons/md";
 import OverflowMenu from "../../Components/OverflowMenu/OverflowMenu";
 import RecipeDeleteConfirmation from "../../Components/RecipeDeleteConfirmation/RecipeDeleteConirmation";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 const RecipeDetails: React.FC = () => {
@@ -67,7 +68,7 @@ const RecipeDetails: React.FC = () => {
                     <MdArrowBackIosNew size={20} onClick={() => navigate("/recipes-list")} />
                 </Col>
                 <Col xs={2}>
-                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />
+                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
                 </Col>
             </Row>
             <RecipeDisplay data={recipeData} />
