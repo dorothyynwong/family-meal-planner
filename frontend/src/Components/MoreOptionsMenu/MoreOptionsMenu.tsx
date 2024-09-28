@@ -20,33 +20,38 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
                 setMenuOptions(["Details", "Edit", "Delete"]);
                 break;
             case "recipeDetails":
-                    setMenuOptions(["Edit", "Delete"]);
-                    break;
+                setMenuOptions(["Edit", "Delete"]);
+                break;
             default:
-                setMenuOptions([]); 
+                setMenuOptions([]);
                 break;
         }
         setRecipeId(id);
 
-    }, [menuType, id]); 
+    }, [menuType, id]);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
-        setAnchorEl(event.currentTarget); 
+        setAnchorEl(event.currentTarget);
     };
 
     const handleClose = () => {
-        setAnchorEl(null); 
+        setAnchorEl(null);
     };
 
     const handleOptionClick = (option: string) => {
-        switch(menuType)
-        {
+        switch (menuType) {
             case "recipeCard":
-                switch(option)
-                {
+                switch (option) {
                     case "Details":
                         navigate(`/recipe-details/${recipeId}`);
                         break;
+                    case "Delete":
+                        navigate(`/recipe-details/${recipeId}/delete`);
+                        break;
+                }
+                break;
+            case "recipeDetails":
+                switch (option) {
                     case "Delete":
                         navigate(`/recipe-details/${recipeId}/delete`);
                         break;
@@ -56,7 +61,7 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
                 break;
 
         }
-        handleClose(); 
+        handleClose();
     };
 
     return (
@@ -65,18 +70,18 @@ const MoreOptionsMenu: React.FC<MoreOptionsMenuProps> = ({ menuType, id }) => {
                 <MoreVertIcon />
             </IconButton>
             <Menu
-                anchorEl={anchorEl} 
-                open={Boolean(anchorEl)} 
-                onClose={handleClose} 
+                anchorEl={anchorEl}
+                open={Boolean(anchorEl)}
+                onClose={handleClose}
                 slotProps={{
-                    paper: {className: "more-options-menu"}
+                    paper: { className: "more-options-menu" }
                 }}
             >
                 {menuOptions?.map((menuOption, index) => (
-                    <MenuItem 
-                        key={`menu-${index}`} 
+                    <MenuItem
+                        key={`menu-${index}`}
                         onClick={() => handleOptionClick(menuOption)}>
-                            {menuOption}
+                        {menuOption}
                     </MenuItem>
                 )
 
