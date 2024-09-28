@@ -38,7 +38,7 @@ const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
             <FormLabel>Photos</FormLabel>
             {Array.from({ length: imagesUrls.length }, (_, i) => (
                 <Card className="recipe-photo-card" key={"card-"[i]}>
-                    <Card.Header>
+                    <Card.Header key={"card-header-"[i]}>
                         <div className="overflow-menu-container">
                             <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={EditNoteIcon} />
                         </div>
