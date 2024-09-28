@@ -20,8 +20,15 @@ export async function addRecipe(recipe: RecipeDetailsInterface) {
     } catch (error) {
         throw error;
     }
+}
 
-
+export async function deleteRecipe(recipeId: number) {
+    try {
+        const response: AxiosResponse = await client.delete(`/recipes/${recipeId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
 }
 
 export async function getRecipeById(recipeId: number) {
@@ -32,8 +39,6 @@ export async function getRecipeById(recipeId: number) {
     } catch (error) {
         throw error;
     }
-
-
 }
 
 export async function getRecipeByUserId(userId: number) {

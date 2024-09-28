@@ -25,7 +25,6 @@ const RecipesList: React.FC = () => {
 
         </>
     );
-
 }
 
 export default RecipesList;
