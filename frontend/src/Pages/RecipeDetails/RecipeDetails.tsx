@@ -50,6 +50,9 @@ const RecipeDetails: React.FC = () => {
         }
     }
 
+    const handleCancel = () => {
+        setIsDelete(false);
+    }
     return (
         <>
             <Row>
@@ -61,7 +64,7 @@ const RecipeDetails: React.FC = () => {
                 </Col>
             </Row>
             <RecipeDisplay data={recipeData} />
-            {isDelete && <RecipeDeleteConfirmation data={recipeData}/>}
+            {isDelete && <RecipeDeleteConfirmation data={recipeData}  onCancel={handleCancel} />}
             
         </>
 

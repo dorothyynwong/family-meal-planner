@@ -81,6 +81,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         }
     }
 
+    const handleCancel = () => {
+        setIsDelete(false);
+    }
+
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
@@ -121,7 +125,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                     <RecipeInstructionDisplay data={recipe} />
                 </CardContent>
             </Collapse>
-            {isDelete && <RecipeDeleteConfirmation data={recipe} />}
+            {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
         </Card>
     );
 }

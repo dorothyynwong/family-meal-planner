@@ -8,9 +8,10 @@ import { RecipeDetailsInterface } from "../../Api/apiInterface";
 
 interface RecipeDeleteProps {
     data: RecipeDetailsInterface;
+    onCancel: () => void;
 }
 
-const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data}) => {
+const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data, onCancel}) => {
     const navigate = useNavigate();
     const [modalShow, setModalShow] = useState(true);
     const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
@@ -30,11 +31,17 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data}) => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
             case "delete-recipe-button":
-                deleteRecipe(recipeData.id? recipeData.id : 0);
-                navigate("/recipes-list");
+                deleteRecipe(recipeData.id? recipeData.id : 0)
+                .then(() => {
+                    navigate("/recipes-list"); 
+                })
+                .catch(err => {
+                    console.error("Error deleting recipe:", err);
+                });
                 break
             case "cancel-delete-recipe-button":
                 setModalShow(false);
+                onCancel();
                 break
             default:
                 break
