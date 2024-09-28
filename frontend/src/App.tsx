@@ -3,10 +3,10 @@ import {BrowserRouter as Router, Routes, Route} from 'react-router-dom';
 import Home from './Home';
 import Layout from './Components/Layout/Layout';
 import Recipes from './Pages/Recipes/Recipes';
-import NewRecipe from './Pages/NewRecipe/NewRecipe';
+import RecipeCreation from './Pages/RecipeCreation/RecipeCreation';
 import RecipeDetails from './Pages/RecipeDetails/RecipeDetails';
 import RecipesList from './Pages/RecipesList/RecipesList';
-import UpdateRecipe from './Pages/UpdateRecipe/UpdateRecipe';
+import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
 
 function App() {
 
@@ -20,12 +20,12 @@ function App() {
             element={<Recipes />} />
           <Route path="/recipes-list"
             element={<RecipesList />} />
-          <Route path="/new-recipe"
-            element={<NewRecipe />} />
+          <Route path="/recipe-add"
+            element={<RecipeCreation />} />
           <Route path="/recipe-details/:recipeId" 
             element={<RecipeDetails />} />
           <Route path="/recipe-edit/:recipeId" 
-            element={<UpdateRecipe />} />
+            element={<RecipeUpdate />} />
         </Routes>
       </Router>
     </Layout>

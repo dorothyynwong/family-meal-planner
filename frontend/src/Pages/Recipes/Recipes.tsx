@@ -15,10 +15,10 @@ const Recipes: React.FC = () => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
           case "new-recipe-button":
-            navigate("/new-recipe", { state: url })
+            navigate("/recipe-add", { state: url })
             break
           case "import-recipe-button":
-            navigate("/new-recipe", { state: url })
+            navigate("/recipe-add", { state: url })
             break
           case "log-out-button":
             navigate("/")
@@ -26,7 +26,6 @@ const Recipes: React.FC = () => {
           default:
             break
         }
-
     }
 
     const [modalShow, setModalShow] = React.useState(false);

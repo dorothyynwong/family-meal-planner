@@ -37,7 +37,7 @@ const UpdateRecipe: React.FC = () => {
     return (
         <>
             <h1 className="mb-3">Update Recipe</h1>
-            <RecipeForm data={data} updateData={updateData} />
+            <RecipeForm data={data} updateData={updateData} mode="update"/>
         </>);
 }
 

@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 
-const NewRecipe: React.FC = () => {
+const RecipeCreation: React.FC = () => {
     const location = useLocation();
     const url = location.state;
     const [data, setData] = useState<RecipeDetailsInterface>({
@@ -39,8 +39,8 @@ const NewRecipe: React.FC = () => {
     return (
     <>
         <h1 className="mb-3">New Recipe</h1>
-        <RecipeForm data={data} updateData={updateData}  />
+        <RecipeForm data={data} updateData={updateData} mode="add" />
     </>);
 }
 
-export default NewRecipe;
+export default RecipeCreation;
