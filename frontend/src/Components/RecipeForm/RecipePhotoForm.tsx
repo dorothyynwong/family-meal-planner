@@ -4,10 +4,8 @@ import ImageUploader from "../ImageUploader/ImageUploader";
 import EditNoteIcon from '@mui/icons-material/EditNote';
 import "./RecipeForm.scss";
 import OverflowMenu from "../OverflowMenu/OverflowMenu";
-import { useNavigate } from "react-router-dom";
 
 const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
-    const navigate = useNavigate();
     const imagesUrls = data.images || [];
     const updatedImages = data?.images || [];
 
@@ -46,8 +44,6 @@ const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
                         </div>
                     </Card.Header>
                     <Card.Img variant="top" src={imagesUrls[i]} />
-
-
                 </Card>
 
             ))}
