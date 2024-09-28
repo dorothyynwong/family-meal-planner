@@ -43,7 +43,7 @@ const RecipeDetails: React.FC = () => {
                 setIsDelete(true);
                 break
             case "edit-recipe-button":
-                navigate("/")
+                navigate(`/recipe-edit/${recipeData.id}`);
                 break
             default:
                 break

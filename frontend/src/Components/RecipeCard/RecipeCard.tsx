@@ -74,7 +74,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 setIsDelete(true);
                 break
             case "edit-recipe-button":
-                navigate("/")
+                navigate(`/recipe-edit/${recipe.id}`);
                 break
             default:
                 break

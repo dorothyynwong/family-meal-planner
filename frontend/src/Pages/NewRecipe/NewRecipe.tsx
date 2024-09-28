@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { importRecipeFromUrl } from "../../Api/api";
 import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
