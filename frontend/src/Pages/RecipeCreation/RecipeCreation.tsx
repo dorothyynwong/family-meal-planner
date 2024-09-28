@@ -1,5 +1,5 @@
-import { useLocation } from "react-router-dom";
-import { importRecipeFromUrl } from "../../Api/api";
+import { useLocation, useParams } from "react-router-dom";
+import { getRecipeById, importRecipeFromUrl } from "../../Api/api";
 import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
@@ -15,6 +15,7 @@ const RecipeCreation: React.FC = () => {
         recipeIngredients: [],
         recipeInstructions: [],
     });
+    const { recipeId } = useParams<{ recipeId: string }>();
 
     const updateData = (newData: RecipeDetailsInterface) => {
         setData(newData);
@@ -33,8 +34,18 @@ const RecipeCreation: React.FC = () => {
                 })
             .catch((error) => {});
         }
+
+        if (recipeId!==null)
+        {
+            const recipeIdNo = parseInt(recipeId!, 10);
+            getRecipeById(recipeIdNo)
+            .then(recipe => setData(recipe.data))
+            .catch(err => {
+                console.error("Error getting recipe:", err);
+            });
+        }
             
-    }, [url]);
+    }, [url, recipeId]);
 
     return (
     <>

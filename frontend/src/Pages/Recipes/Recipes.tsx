@@ -41,7 +41,6 @@ const Recipes: React.FC = () => {
             <Button id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>My Recipes</Button>
                 <Button className="custom-button" size="lg" onClick={() => setModalShow(true)}>Import Recipe from Website</Button>
                 <Button id="new-recipe-button" className="custom-button" size="lg" onClick={handleClick}>New Recipe</Button>
-                <Button id="copy-recipe-button" className="custom-button" size="lg">Copy from Recipe</Button>
             </div>
             <Popup
                 show={modalShow}

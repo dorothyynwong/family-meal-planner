@@ -20,7 +20,7 @@ function App() {
             element={<Recipes />} />
           <Route path="/recipes-list"
             element={<RecipesList />} />
-          <Route path="/recipe-add"
+          <Route path="/recipe-add/:recipeId"
             element={<RecipeCreation />} />
           <Route path="/recipe-details/:recipeId" 
             element={<RecipeDetails />} />

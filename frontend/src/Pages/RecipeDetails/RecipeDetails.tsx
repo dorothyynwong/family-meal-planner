@@ -26,12 +26,16 @@ const RecipeDetails: React.FC = () => {
     useEffect(() => {
         const recipeIdNo = parseInt(recipeId!, 10)
         getRecipeById(recipeIdNo)
-            .then(recipe => setRecipeData(recipe.data));
+            .then(recipe => setRecipeData(recipe.data))
+            .catch(err => {
+                console.error("Error getting recipe:", err);
+            });
     }, [recipeId])
 
     const menuItems = [
         { id: "edit-recipe-button", label: "Edit" },
         { id: "delete-recipe-button", label: "Delete" },
+        { id: "copy-recipe-button", label: "Copy"},
     ];
 
     const handleOptionsClick = (option: string) => {
@@ -45,6 +49,9 @@ const RecipeDetails: React.FC = () => {
             case "edit-recipe-button":
                 navigate(`/recipe-edit/${recipeData.id}`);
                 break
+            case "copy-recipe-button":
+                    navigate(`/recipe-add/${recipeData.id}`);
+                    break
             default:
                 break
         }

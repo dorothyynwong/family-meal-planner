@@ -63,6 +63,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         { id: "display-recipe-button", label: "Details" },
         { id: "edit-recipe-button", label: "Edit" },
         { id: "delete-recipe-button", label: "Delete" },
+        { id: "copy-recipe-button", label: "Copy"},
     ];
 
     const handleOptionsClick = (option: string) => {
@@ -75,6 +76,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                 break
             case "edit-recipe-button":
                 navigate(`/recipe-edit/${recipe.id}`);
+                break
+            case "copy-recipe-button":
+                navigate(`/recipe-add/${recipe.id}`);
                 break
             default:
                 break

@@ -28,7 +28,9 @@ const UpdateRecipe: React.FC = () => {
                 }
                 setData(response.data);
             })
-            .catch((error) => { });
+            .catch(err => {
+                console.error("Error getting recipe:", err);
+            });
 
     }, [recipeIdNo]);
 
