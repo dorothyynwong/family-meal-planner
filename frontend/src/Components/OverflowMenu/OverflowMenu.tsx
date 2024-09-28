@@ -18,10 +18,6 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
         setAnchorEl(null);
     };
 
-    const handleOptionClick = (option: string) => {
-        handleClose();
-    };
-
     return (
         <div>
             <IconButton onClick={handleClick}>
