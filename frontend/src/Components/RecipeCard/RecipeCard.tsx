@@ -14,10 +14,11 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { RecipeDetailsInterface } from '../../Api/apiInterface';
 import RecipeInstructionDisplay from '../RecipeDisplay/RecipeInstructionDisplay';
 import "./RecipeCard.scss";
-import MoreOptionsMenu from '../MoreOptionsMenu/MoreOptionsMenu';
 import OverflowMenu from '../OverflowMenu/OverflowMenu';
 import { MenuItem } from '@mui/material';
 import { useNavigate } from 'react-router-dom';
+import RecipeDeleteConfirmation from '../RecipeDeleteConfirmation/RecipeDeleteConirmation';
+import { useState } from 'react';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -52,21 +53,22 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
-    const [expanded, setExpanded] = React.useState(false);
+    const [expanded, setExpanded] = useState(false);
+    const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
 
-    const handleClick = (event: { currentTarget: { id: string } })  => {
+    const handleOptionsClick = (event: { currentTarget: { id: string } })  => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
           case "display-recipe-button":
             navigate(`/recipe-details/${recipe.id}`);
             break
           case "delete-recipe-button":
-            navigate(`/recipe-details/${recipe.id}/delete`);
+            setIsDelete(true);
             break
           case "edit-recipe-button":
             navigate("/")
@@ -86,18 +88,13 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                     </Avatar>
                 }
                 action={
-                    // <MoreOptionsMenu menuType='recipeCard' id={recipe.id? recipe.id : 0}/>
                     <OverflowMenu>
                         <>
-                        <MenuItem id="display-recipe-button" onClick={handleClick}>Details</MenuItem>
-                        <MenuItem id="edit-recipe-button" onClick={handleClick}>Edit</MenuItem>
-                        <MenuItem id="delete-recipe-button" onClick={handleClick}>Delete</MenuItem>
+                        <MenuItem id="display-recipe-button" onClick={handleOptionsClick}>Details</MenuItem>
+                        <MenuItem id="edit-recipe-button" onClick={handleOptionsClick}>Edit</MenuItem>
+                        <MenuItem id="delete-recipe-button" onClick={handleOptionsClick}>Delete</MenuItem>
                         </>
                     </OverflowMenu>
-                    // <IconButton aria-label="settings">
-                    //     <MoreVertIcon />
-                        
-                    // </IconButton>
                 }
                 title={recipe.name}
                 // subheader="September 14, 2016"
@@ -130,6 +127,7 @@ const RecipeCard:React.FC<RecipeCardProps> = ({recipe}) => {
                     <RecipeInstructionDisplay data={recipe} />
                 </CardContent>
             </Collapse>
+            {isDelete && <RecipeDeleteConfirmation data={recipe}/>}
         </Card>
     );
 }

@@ -3,15 +3,18 @@ import { useNavigate, useParams } from "react-router-dom";
 import RecipeDisplay from "../../Components/RecipeDisplay/RecipeDisplay";
 import { useEffect, useState } from "react";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
-import { deleteRecipe, getRecipeById } from "../../Api/api";
-import Popup from "../../Components/Popup/Popup";
-import { Button, InputGroup } from "react-bootstrap";
+import { getRecipeById } from "../../Api/api";
+import {  Col,  Row } from "react-bootstrap";
+import { MdArrowBackIosNew } from "react-icons/md";
+import OverflowMenu from "../../Components/OverflowMenu/OverflowMenu";
+import { MenuItem } from "@mui/material";
+import RecipeDeleteConfirmation from "../../Components/RecipeDeleteConfirmation/RecipeDeleteConirmation";
 
 
 const RecipeDetails: React.FC = () => {
-    const { id, mode } = useParams<{ id: string, mode: string }>();
+    const { recipeId } = useParams<{ recipeId: string }>();
     const navigate = useNavigate();
-    const [modalShow, setModalShow] = useState(mode==="delete"? true: false);
+    const [isDelete, setIsDelete] = useState(false);
     const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
         name: "",
         images: [],
@@ -22,42 +25,43 @@ const RecipeDetails: React.FC = () => {
     });;
 
     useEffect(() => {
-        const recipeId = parseInt(id!, 10)
-        getRecipeById(recipeId)
+        const recipeIdNo = parseInt(recipeId!, 10)
+        getRecipeById(recipeIdNo)
             .then(recipe => setRecipeData(recipe.data));
-    }, [])
+    }, [recipeId])
 
-    const handleClick = (event: { currentTarget: { id: string } }) => {
+    const handleOptionsClick = (event: { currentTarget: { id: string } })  => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
-            case "delete-recipe-button":
-                const recipeId = parseInt(id!, 10);
-                deleteRecipe(recipeId);
-                navigate(-1);
-                break
-            case "cancel-delete-recipe-button":
-                setModalShow(false);
-                break
-            default:
-                break
+          case "delete-recipe-button":
+            setIsDelete(true);
+            break
+          case "edit-recipe-button":
+            navigate("/")
+            break
+          default:
+            break
         }
     }
 
     return (
         <>
+            <Row>
+                <Col xs={10}>
+                    <MdArrowBackIosNew size={20} onClick={() => navigate(-1)} />
+                </Col>
+                <Col xs={2}>
+                    <OverflowMenu>
+                        <>
+                            <MenuItem id="edit-recipe-button" onClick={handleOptionsClick}>Edit</MenuItem>
+                            <MenuItem id="delete-recipe-button" onClick={handleOptionsClick}>Delete</MenuItem>
+                        </>
+                    </OverflowMenu>
+                </Col>
+            </Row>
             <RecipeDisplay data={recipeData} />
-            {mode === "delete" &&
-                <Popup
-                    show={modalShow}
-                    onHide={() => setModalShow(false)}
-                    title={`Delete Recipe ${recipeData.name}`}
-                    body={`Are you sure to delete ${recipeData.name} ?`}>
-                    <InputGroup className="d-flex justify-content-evenly">
-                        <Button id="delete-recipe-button" className="custom-button" onClick={handleClick}>Delete</Button>
-                        <Button id="cancel-delete-recipe-button" className="custom-button" onClick={handleClick}>Cancel</Button>
-                    </InputGroup>
-                </Popup>
-            }
+            {isDelete && <RecipeDeleteConfirmation data={recipeData}/>}
+            
         </>
 
     )
