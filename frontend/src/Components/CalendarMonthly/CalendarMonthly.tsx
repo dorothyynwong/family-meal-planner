@@ -78,6 +78,10 @@ const Basic: React.FC<BasicProps> = ({ localizer = mLocalizer, showDemoLink = tr
         views={customViews}
         step={240}
         timeslots={1}
+        components={{
+          timeSlotWrapper: () => null, // Hide time slot wrapper
+         
+        }}
       />
     </div>
       {/* {showDemoLink && <DemoLink fileName="basic" />}
