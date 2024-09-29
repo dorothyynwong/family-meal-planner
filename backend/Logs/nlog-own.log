@@ -145,3 +145,6 @@
 2024-09-29 09:39:32.5548||backend.Program|WARN|  console logging is great 
 2024-09-29 09:39:45.6794||FamilyMealPlanner.Services.RecipeService|ERROR|  Database error: An error occurred while saving the entity changes. See the inner exception for details. 
 2024-09-29 09:39:45.6872||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Failed to add recipe: An error occurred while updating the database. 
+2024-09-29 10:44:31.4958||backend.Program|WARN|  console logging is great 
+2024-09-29 10:56:12.2308||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Failed to get recipe 28: Sequence contains no elements. 
+2024-09-29 10:56:12.2779||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Failed to get recipe 28: Sequence contains no elements. 
