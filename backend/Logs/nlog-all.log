@@ -128,3 +128,14 @@
 2024-09-29 09:26:17.6938||backend.Program|WARN|console logging is great 
 2024-09-29 09:27:37.6935||backend.Program|WARN|console logging is great 
 2024-09-29 09:27:54.8134||backend.Program|WARN|console logging is great 
+2024-09-29 09:35:00.2839||backend.Program|WARN|console logging is great 
+2024-09-29 09:35:11.1503||backend.Program|WARN|console logging is great 
+2024-09-29 09:36:37.3882||backend.Program|WARN|console logging is great 
+2024-09-29 09:37:01.6360||FamilyMealPlanner.Services.RecipeService|ERROR|Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-09-29 09:37:01.6467||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to add recipe: An error occurred while updating the database. 
+2024-09-29 09:38:23.8122||backend.Program|WARN|console logging is great 
+2024-09-29 09:38:53.7946||FamilyMealPlanner.Services.RecipeService|ERROR|Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-09-29 09:38:53.8022||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to add recipe: An error occurred while updating the database. 
+2024-09-29 09:39:32.5548||backend.Program|WARN|console logging is great 
+2024-09-29 09:39:45.6794||FamilyMealPlanner.Services.RecipeService|ERROR|Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-09-29 09:39:45.6872||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to add recipe: An error occurred while updating the database. 
