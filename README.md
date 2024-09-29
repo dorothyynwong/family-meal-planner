@@ -39,7 +39,7 @@ npm install
 
 ```bash
 dotnet restore
-dotnet dotnet-ef database update
+dotnet ef database update
 dotnet user-secrets set "ImgBB:API_KEY" "YOUR API KEY"
 ```
 
@@ -64,4 +64,13 @@ dotnet watch run
 
 ```bash
 npm start
+```
+
+## During Development
+After changing any Models/Data
+
+### Add and Update migrations
+```bash
+dotnet ef migrations add <YOUR MIGRATION NAME HERE>
+dotnet ef database update
 ```
