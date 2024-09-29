@@ -70,7 +70,7 @@ const Basic: React.FC<BasicProps> = ({ localizer = mLocalizer, showDemoLink = tr
         <div>test</div>
         <div className="height600">
       <Calendar
-        defaultDate={new Date(2015, 3, 13)}
+        defaultDate={new Date(2024, 9, 29)}
         defaultView={Views.MONTH}
         eventPropGetter={eventPropGetter}
         events={events}

@@ -10,31 +10,30 @@ export default [
   }, */
   {
     id: 1,
-    title: 'Long Event Meeting',
-    start: new Date(2015, 3, 7),
-    end: new Date(2015, 3, 10),
+    title: 'Breakfast 1',
+    start: new Date(2024, 9, 29, 0, 0, 0),
+    end: new Date(2024, 9, 29, 4,0,0),
   },
 
   {
     id: 2,
-    title: 'DTS STARTS',
-    start: new Date(2016, 2, 13, 0, 0, 0),
-    end: new Date(2016, 2, 20, 0, 0, 0),
+    title: 'Breakfast 2',
+    start: new Date(2024, 9, 30, 0, 0, 0),
+    end: new Date(2024, 9, 30, 4,0,0),
   },
 
   {
     id: 3,
-    title: 'DTS ENDS',
-    start: new Date(2016, 10, 6, 0, 0, 0),
-    end: new Date(2016, 10, 13, 0, 0, 0),
+    title: 'Morning Tea 1',
+    start: new Date(2024, 9, 30, 4, 0, 0),
+    end: new Date(2024, 9, 30, 8,0,0),
   },
 
   {
     id: 4,
-    title: 'Some Event',
-    start: new Date(2015, 3, 9, 0, 0, 0),
-    end: new Date(2015, 3, 9, 0, 0, 0),
-    allDay: true,
+    title: 'Lunch 1',
+    start: new Date(2024, 9, 30, 8, 0, 0),
+    end: new Date(2024, 9, 30, 12 ,0,0),
   },
 
   {
