@@ -176,3 +176,40 @@
 2024-09-29 13:28:22.0319||FamilyMealPlanner.Controllers.RecipeController|ERROR|Unable to upload image: There was a problem uploading the image. Please try again later. 
 2024-09-29 13:35:42.6045||backend.ImageService|INFO|upload started 
 2024-09-29 13:35:42.9405||backend.ImageService|INFO|upload end 
+2024-09-29 14:13:50.3667||backend.Program|WARN|console logging is great 
+2024-09-29 14:14:37.6958||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:14:37.7145||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:14:37.7145||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:14:37.8633||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:14:37.8633||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:14:37.8633||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:15:08.5659||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:15:08.5659||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:15:08.5659||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:15:08.7032||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:15:08.7032||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:15:08.7032||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:25.8518||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:18:25.8577||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:25.8577||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:25.9648||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:18:25.9683||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:25.9683||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:37.6668||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:18:37.6829||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:37.6951||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:49.5323||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:18:49.5323||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:49.5323||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:49.6576||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:18:49.6576||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:49.6576||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:59.9095||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:18:59.9844||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:18:59.9844||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:19:00.1149||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:19:00.1149||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:19:00.1149||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:19:27.8690||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:19:27.8690||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:19:27.8738||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 

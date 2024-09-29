@@ -1,7 +1,6 @@
-import { Button, Form, Spinner } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useRef, useState } from "react";
 import { uploadImage } from "../../Api/api";
-import ErrorDisplay from "../ErrorDisplay/ErrorDisplay";
 import StatusHandler from "../StatusHandler/StatusHandler";
 
 export interface ImageUploaderProps {
