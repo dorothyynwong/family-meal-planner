@@ -4,14 +4,17 @@ import RecipeDisplay from "../../Components/RecipeDisplay/RecipeDisplay";
 import { useEffect, useState } from "react";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { getRecipeById } from "../../Api/api";
-import {  Col,  Row } from "react-bootstrap";
+import { Col, Row } from "react-bootstrap";
 import { MdArrowBackIosNew } from "react-icons/md";
 import OverflowMenu from "../../Components/OverflowMenu/OverflowMenu";
 import RecipeDeleteConfirmation from "../../Components/RecipeDeleteConfirmation/RecipeDeleteConirmation";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 
 
 const RecipeDetails: React.FC = () => {
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { recipeId } = useParams<{ recipeId: string }>();
     const userId = 1;
     const navigate = useNavigate();
@@ -26,18 +29,26 @@ const RecipeDetails: React.FC = () => {
     });;
 
     useEffect(() => {
+        setStatus("loading");
+        setErrorMessages([]);
         const recipeIdNo = parseInt(recipeId!, 10)
         getRecipeById(recipeIdNo)
-            .then(recipe => setRecipeData(recipe.data))
-            .catch(err => {
-                console.error("Error getting recipe:", err);
+            .then(recipe => {
+                setRecipeData(recipe.data);
+                setStatus("success");
+            })
+            .catch(error => {
+                console.log("Error getting recipe", error);
+                const errorMessage = error?.response?.data?.message || "Error getting recipe";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
             });
     }, [recipeId])
 
     const menuItems = [
         { id: "edit-recipe-button", label: "Edit" },
         { id: "delete-recipe-button", label: "Delete" },
-        { id: "copy-recipe-button", label: "Copy"},
+        { id: "copy-recipe-button", label: "Copy" },
     ];
 
     const handleOptionsClick = (option: string) => {
@@ -52,8 +63,8 @@ const RecipeDetails: React.FC = () => {
                 navigate(`/recipe-edit/${recipeData.id}`);
                 break
             case "copy-recipe-button":
-                    navigate(`/recipe-add/${recipeData.id}`);
-                    break
+                navigate(`/recipe-add/${recipeData.id}`);
+                break
             default:
                 break
         }
@@ -64,17 +75,25 @@ const RecipeDetails: React.FC = () => {
     }
     return (
         <>
-            <Row>
-                <Col xs={10}>
-                    <MdArrowBackIosNew size={20} onClick={() => navigate(`/recipes-list/${userId}`)} />
-                </Col>
-                <Col xs={2}>
-                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
-                </Col>
-            </Row>
-            <RecipeDisplay data={recipeData} />
-            {isDelete && <RecipeDeleteConfirmation data={recipeData}  onCancel={handleCancel} />}
-            
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Uploading image..."
+                successMessage="Image uploaded successfully!"
+            >
+                <Row>
+                    <Col xs={10}>
+                        <MdArrowBackIosNew size={20} onClick={() => navigate(`/recipes-list/${userId}`)} />
+                    </Col>
+                    <Col xs={2}>
+                        <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
+                    </Col>
+                </Row>
+
+                <RecipeDisplay data={recipeData} />
+                {isDelete && <RecipeDeleteConfirmation data={recipeData} onCancel={handleCancel} />}
+            </StatusHandler>
+
         </>
 
     )

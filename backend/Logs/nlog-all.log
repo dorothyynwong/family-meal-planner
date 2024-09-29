@@ -213,3 +213,14 @@
 2024-09-29 14:19:27.8690||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
 2024-09-29 14:19:27.8690||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
 2024-09-29 14:19:27.8738||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:23:56.1833||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:23:56.1863||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:23:56.1863||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:23:56.3574||FamilyMealPlanner.Services.WebScrappingService|ERROR|Parent Node is null 
+2024-09-29 14:23:56.3597||FamilyMealPlanner.Services.WebScrappingService|ERROR|Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:23:56.3597||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to import recipe: Unexpected error to parse recipe: Unable to parse the JSON 
+2024-09-29 14:26:07.2943||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 19: Sequence contains no elements. 
+2024-09-29 14:26:07.3273||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 19: Sequence contains no elements. 
+2024-09-29 14:26:20.4927||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 19: Sequence contains no elements. 
+2024-09-29 14:26:20.5068||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 19: Sequence contains no elements. 
+2024-09-29 14:26:38.6233||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 19: Sequence contains no elements. 
