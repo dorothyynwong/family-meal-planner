@@ -7,10 +7,11 @@ import OverflowMenu from "../OverflowMenu/OverflowMenu";
 
 const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     const imagesUrls = data.images || [];
-    const updatedImages = data?.images || [];
+    // const updatedImages = data?.images || [];
 
     const handleUrlFromUploader = (urlFromUploader: string) => {
-        updatedImages.push(urlFromUploader);
+        const updatedImages = data.images? [...data.images, urlFromUploader] : [urlFromUploader];
+        // updatedImages.push(urlFromUploader);
         updateData({
             ...data,
             images: updatedImages
@@ -36,21 +37,24 @@ const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     }
 
     const handleDeleteImage = (index: number) => {
-        const newImages = updatedImages.filter((_, i) => i !== index);
+        const newImages = imagesUrls.filter((_, i) => i !== index);
+        const newDefaultImageUrl = data.defaultImageUrl === imagesUrls[index]? newImages[0] : data.defaultImageUrl;
+
         updateData({
             ...data,
-            images: newImages
+            images: newImages,
+            defaultImageUrl: newDefaultImageUrl
         });
     }
 
     const handleSetDefault = (index:number) => {
-        const defaultImageUrl = updatedImages[index];
-        const newImages = updatedImages.filter((_, i) => i !== index);
+        const defaultImageUrl = imagesUrls[index];
+        const newImages = imagesUrls.filter((_, i) => i !== index);
         newImages.unshift(defaultImageUrl);
         updateData({
             ...data,
             images: newImages,
-            defaultImageUrl: updatedImages[index]
+            defaultImageUrl: imagesUrls[index]
         });
     }
 
