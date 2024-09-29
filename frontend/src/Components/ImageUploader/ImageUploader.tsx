@@ -2,6 +2,7 @@ import { Button, Form, Spinner } from "react-bootstrap";
 import { useRef, useState } from "react";
 import { uploadImage } from "../../Api/api";
 import ErrorDisplay from "../ErrorDisplay/ErrorDisplay";
+import StatusHandler from "../StatusHandler/StatusHandler";
 
 export interface ImageUploaderProps {
     sendUrlToParent: (url: string) => void;
@@ -44,18 +45,18 @@ const ImageUploader: React.FC<ImageUploaderProps> = ({ sendUrlToParent }) => {
 
     return (
         <>
-            {errorMessages && <ErrorDisplay errorMessages={errorMessages} />}
             <Form.Group className="mb-3" controlId="recipe-upload-image">
                 <Form.Control className="d-none" name="upload-image" type="file" ref={inputRef} onChange={handleDisplayFileDetails} />
-                {status === "loading" ? (
-                    <Spinner animation="border" role="status" className="me-3">
-                        <span className="visually-hidden">Loading...</span>
-                    </Spinner>
-                ) : (
+                <StatusHandler
+                    status={status}
+                    errorMessages={errorMessages}
+                    loadingMessage="Uploading image..."
+                    successMessage="Image uploaded successfully!"
+                >
                     <Button className="custom-button recipe-button me-3" size="lg" type="button" onClick={handleUpload}>
                         Add Photo
                     </Button>
-                )}
+                </StatusHandler>
             </Form.Group>
 
         </>
