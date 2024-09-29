@@ -148,3 +148,5 @@
 2024-09-29 10:44:31.4958||backend.Program|WARN|  console logging is great 
 2024-09-29 10:56:12.2308||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Failed to get recipe 28: Sequence contains no elements. 
 2024-09-29 10:56:12.2779||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Failed to get recipe 28: Sequence contains no elements. 
+2024-09-29 11:11:22.2877||backend.ImageService|INFO|  upload started 
+2024-09-29 11:11:22.7520||backend.ImageService|INFO|  upload end 
