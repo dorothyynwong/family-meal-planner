@@ -156,3 +156,29 @@
 2024-09-29 12:50:46.2425||backend.ImageService|INFO|  upload end 
 2024-09-29 12:58:18.8492||backend.ImageService|INFO|  upload started 
 2024-09-29 13:06:00.4269||backend.Program|WARN|  console logging is great 
+2024-09-29 13:20:48.4611||backend.ImageService|INFO|  upload started 
+2024-09-29 13:20:49.5218||backend.ImageService|INFO|  upload end 
+2024-09-29 13:20:49.5502||backend.ImageService|ERROR|  HTTP Request error: Response status code does not indicate success: 400 (Bad Request). 
+2024-09-29 13:20:49.5502||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Unable to upload image: There was a problem uploading the image. Please try again later. 
+2024-09-29 13:22:49.4778||backend.ImageService|INFO|  upload started 
+2024-09-29 13:22:50.2839||backend.ImageService|INFO|  upload end 
+2024-09-29 13:22:50.2839||backend.ImageService|ERROR|  HTTP Request error: Response status code does not indicate success: 400 (Bad Request). 
+2024-09-29 13:22:50.2839||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Unable to upload image: There was a problem uploading the image. Please try again later. 
+2024-09-29 13:25:24.8815||backend.ImageService|INFO|  upload started 
+2024-09-29 13:25:25.6487||backend.ImageService|INFO|  upload end 
+2024-09-29 13:25:25.6487||backend.ImageService|ERROR|  HTTP Request error: Response status code does not indicate success: 400 (Bad Request). 
+2024-09-29 13:25:25.6542||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Unable to upload image: There was a problem uploading the image. Please try again later. 
+2024-09-29 13:27:44.1336||backend.ImageService|INFO|  upload started 
+2024-09-29 13:27:45.0772||backend.ImageService|INFO|  upload end 
+2024-09-29 13:27:45.0927||backend.ImageService|ERROR|  HTTP Request error: Response status code does not indicate success: 400 (Bad Request). 
+2024-09-29 13:27:45.1166||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Unable to upload image: There was a problem uploading the image. Please try again later. 
+2024-09-29 13:28:02.1846||backend.ImageService|INFO|  upload started 
+2024-09-29 13:28:03.0249||backend.ImageService|INFO|  upload end 
+2024-09-29 13:28:03.0249||backend.ImageService|ERROR|  HTTP Request error: Response status code does not indicate success: 400 (Bad Request). 
+2024-09-29 13:28:03.0346||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Unable to upload image: There was a problem uploading the image. Please try again later. 
+2024-09-29 13:28:21.5160||backend.ImageService|INFO|  upload started 
+2024-09-29 13:28:22.0319||backend.ImageService|INFO|  upload end 
+2024-09-29 13:28:22.0319||backend.ImageService|ERROR|  HTTP Request error: Response status code does not indicate success: 400 (Bad Request). 
+2024-09-29 13:28:22.0319||FamilyMealPlanner.Controllers.RecipeController|ERROR|  Unable to upload image: There was a problem uploading the image. Please try again later. 
+2024-09-29 13:35:42.6045||backend.ImageService|INFO|  upload started 
+2024-09-29 13:35:42.9405||backend.ImageService|INFO|  upload end 
