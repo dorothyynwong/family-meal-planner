@@ -28,6 +28,7 @@ const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
                 handleDeleteImage(index);
                 break
             case "set-default-image-button":
+                handleSetDefault(index);
                 break
             default:
                 break
@@ -39,6 +40,13 @@ const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
         updateData({
             ...data,
             images: newImages
+        });
+    }
+
+    const handleSetDefault = (index:number) => {
+        updateData({
+            ...data,
+            defaultImageUrl: updatedImages[index]
         });
     }
 
