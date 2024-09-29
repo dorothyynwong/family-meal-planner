@@ -7,6 +7,8 @@ import RecipeInstructionForm from "./RecipeInstructionForm";
 import RecipePhotoForm from "./RecipePhotoForm";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import StatusHandler from "../StatusHandler/StatusHandler";
 
 export interface RecipeFormProps {
     data: RecipeDetailsInterface;
@@ -15,10 +17,14 @@ export interface RecipeFormProps {
 }
 
 const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData, mode }) => {
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const navigate = useNavigate();
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         if (data) {
+            setStatus("loading");
+            setErrorMessages([]);
             if (mode === "add")
             {
                 addRecipe(data)
@@ -27,7 +33,14 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData, mode }) => {
                     {
                         const recipeData = response.data;
                         navigate(`/recipe-details/${recipeData}`);
+                        setStatus("success");
                     }
+                })
+                .catch(error => {
+                    console.log("Error adding recipe", error);
+                    const errorMessage = error?.response?.data?.message || "Error adding recipe";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
                 });
             }
             else
@@ -38,6 +51,12 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData, mode }) => {
                     {
                         navigate(`/recipe-details/${data.id}`);
                     }
+                })
+                .catch(error => {
+                    console.log("Error updating recipe", error);
+                    const errorMessage = error?.response?.data?.message || "Error updating recipe";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
                 });
             }
 
@@ -50,11 +69,18 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData, mode }) => {
             <RecipePhotoForm data={data} updateData={updateData} mode={mode} />
             <RecipeIngredientForm data={data} updateData={updateData} mode={mode}/>
             <RecipeInstructionForm data={data} updateData={updateData} mode={mode} />
+            <StatusHandler
+                    status={status}
+                    errorMessages={errorMessages}
+                    loadingMessage="Submitting recipe ..."
+                    successMessage="Recipe is submitted successfully!"
+                >
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">
                     Submit
                 </Button>
             </div>
+            </StatusHandler>
         </Form>
     )
 

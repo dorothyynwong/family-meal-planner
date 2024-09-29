@@ -3,8 +3,11 @@ import { useEffect, useState } from "react";
 import RecipeForm from "../../Components/RecipeForm/RecipeForm";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { useParams } from "react-router-dom";
+import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 
 const UpdateRecipe: React.FC = () => {
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { recipeId } = useParams<{ recipeId: string }>();
     const recipeIdNo = parseInt(recipeId!, 10);
     const [data, setData] = useState<RecipeDetailsInterface>({
@@ -21,25 +24,36 @@ const UpdateRecipe: React.FC = () => {
     }
 
     useEffect(() => {
+        setStatus("loading");
+        setErrorMessages([]);
         getRecipeById(recipeIdNo)
             .then(response => {
-                if (response.status !== 200) {
-                    throw new Error();
-                }
                 setData(response.data);
+                setStatus("success");
             })
-            .catch(err => {
-                console.error("Error getting recipe:", err);
+            .catch(error => {
+                console.log("Error getting recipe", error);
+                const errorMessage = error?.response?.data?.message || "Error getting recipe";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
             });
 
     }, [recipeIdNo]);
 
-    if(!data) return(<>No Data</>);
+    if (!data) return (<>No Data</>);
 
     return (
         <>
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Getting recipe ..."
+                successMessage=""
+            >
+                <></>
+            </StatusHandler>
             <h1 className="mb-3">Update Recipe</h1>
-            <RecipeForm data={data} updateData={updateData} mode="update"/>
+            <RecipeForm data={data} updateData={updateData} mode="update" />
         </>);
 }
 
