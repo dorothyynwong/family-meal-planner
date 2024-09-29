@@ -155,3 +155,4 @@
 2024-09-29 12:50:45.8672||backend.ImageService|INFO|  upload started 
 2024-09-29 12:50:46.2425||backend.ImageService|INFO|  upload end 
 2024-09-29 12:58:18.8492||backend.ImageService|INFO|  upload started 
+2024-09-29 13:06:00.4269||backend.Program|WARN|  console logging is great 
