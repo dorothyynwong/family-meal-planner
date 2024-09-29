@@ -106,7 +106,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
             <CardMedia
                 component="img"
                 height="194"
-                image={recipe.images ? recipe.images[0] : ""}
+                image={recipe.defaultImageUrl? recipe.defaultImageUrl : recipe.images ? recipe.images[0] : ""}
                 alt={recipe.name}
             />
             <CardContent>
