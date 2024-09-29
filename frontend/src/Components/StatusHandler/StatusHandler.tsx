@@ -40,7 +40,7 @@ const StatusHandler: React.FC<StatusHandlerProps> = ({
             );
 
         case "success":
-            if (loadingMessage === "") return <></>
+            if (successMessage === "") return <></>
             return <Alert variant="success">{successMessage}</Alert>;
 
         case "idle":
