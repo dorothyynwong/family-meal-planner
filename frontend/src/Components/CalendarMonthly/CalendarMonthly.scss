@@ -1,0 +1,27 @@
+@import 'react-big-calendar/lib/sass/styles';
+@import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+
+.height600 {
+    height: 600px;
+}
+
+.powerBlue {
+    background-color: powderblue;
+}
+
+.darkGreen {
+    background-color: darkgreen;
+}
+
+.rbc-time-view {
+    .rbc-label {
+    display: none;
+    }
+    .rbc-allday-cell {
+    height: calc(100vh - 98px);
+    max-height: unset;
+    }
+    .rbc-time-content {
+    display: none;
+    }
+    }

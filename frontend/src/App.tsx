@@ -7,6 +7,7 @@ import RecipeDetails from './Pages/RecipeDetails/RecipeDetails';
 import RecipesList from './Pages/RecipesList/RecipesList';
 import RecipeCreation from './Pages/RecipeCreation/RecipeCreation';
 import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
+import CalendarMonthly from './Components/CalendarMonthly/CalendarMonthly';
 
 function App() {
 
@@ -33,6 +34,9 @@ function App() {
 
           <Route path="/recipe-edit/:recipeId"
             element={<RecipeUpdate />} />
+
+          <Route path="/mealplans-monthly"
+          element={<CalendarMonthly />} />
         </Routes>
       </Router>
     </Layout>
