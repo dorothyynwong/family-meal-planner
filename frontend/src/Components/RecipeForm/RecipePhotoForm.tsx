@@ -44,8 +44,12 @@ const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     }
 
     const handleSetDefault = (index:number) => {
+        const defaultImageUrl = updatedImages[index];
+        const newImages = updatedImages.filter((_, i) => i !== index);
+        newImages.unshift(defaultImageUrl);
         updateData({
             ...data,
+            images: newImages,
             defaultImageUrl: updatedImages[index]
         });
     }
