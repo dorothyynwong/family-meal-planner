@@ -17,6 +17,7 @@ import OverflowMenu from '../OverflowMenu/OverflowMenu';
 import { useNavigate } from 'react-router-dom';
 import RecipeDeleteConfirmation from '../RecipeDeleteConfirmation/RecipeDeleteConirmation';
 import { useState } from 'react';
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -98,14 +99,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                     </Avatar>
                 }
                 action={
-                    <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />
+                    <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
                 }
                 title={recipe.name}
             />
             <CardMedia
                 component="img"
                 height="194"
-                image={recipe.images ? recipe.images[0] : ""}
+                image={recipe.defaultImageUrl? recipe.defaultImageUrl : recipe.images ? recipe.images[0] : ""}
                 alt={recipe.name}
             />
             <CardContent>

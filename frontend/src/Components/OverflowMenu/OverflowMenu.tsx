@@ -1,6 +1,6 @@
-import {  useState } from "react";
-import { IconButton, Menu, MenuItem } from '@mui/material';
-import MoreVertIcon from '@mui/icons-material/MoreVert';
+import {  ElementType, useState } from "react";
+import { IconButton, Menu, MenuItem, SvgIconProps } from '@mui/material';
+
 import "./OverflowMenu.scss";
 interface MenuItemType {
     id: string;
@@ -10,9 +10,10 @@ interface MenuItemType {
 interface OverflowMenuProps {
     menuItems: MenuItemType[];
     handleOptionsClick?: (option: string) => void;
+    icon: ElementType<SvgIconProps>;
 }
 
-const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClick}) => {
+const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClick, icon: Icon}) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -26,7 +27,7 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
     return (
         <div>
             <IconButton onClick={handleClick}>
-                <MoreVertIcon />
+                <Icon />
             </IconButton>
             <Menu
                 anchorEl={anchorEl}

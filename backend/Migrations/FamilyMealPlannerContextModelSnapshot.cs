@@ -141,11 +141,20 @@ namespace backend.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
+                    b.Property<DateTime>("CreationDateTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("DefaultImageUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("Description")
                         .HasColumnType("text");
 
                     b.Property<List<string>>("Images")
                         .HasColumnType("text[]");
+
+                    b.Property<DateTime?>("LastUpdatedDateTime")
+                        .HasColumnType("timestamp with time zone");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -154,10 +163,10 @@ namespace backend.Migrations
                     b.Property<string>("Notes")
                         .HasColumnType("text");
 
-                    b.Property<List<string>>("recipeIngredients")
+                    b.Property<List<string>>("RecipeIngredients")
                         .HasColumnType("text[]");
 
-                    b.Property<List<string>>("recipeInstructions")
+                    b.Property<List<string>>("RecipeInstructions")
                         .HasColumnType("text[]");
 
                     b.HasKey("Id");

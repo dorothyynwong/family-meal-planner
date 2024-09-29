@@ -22,36 +22,35 @@ const RecipeCreation: React.FC = () => {
     }
 
     useEffect(() => {
-        if (url!==null && url !== "")
-        {
+        if (url !== null && url !== "") {
             importRecipeFromUrl(url)
-            .then(response => 
-                {
-                    if(response.status !== 200) {
+                .then(response => {
+                    if (response.status !== 200) {
                         throw new Error();
                     }
                     setData(response.data);
                 })
-            .catch((error) => {});
+                .catch((error) => { });
         }
 
-        if (recipeId!==null)
-        {
+        if (recipeId !== null) {
             const recipeIdNo = parseInt(recipeId!, 10);
-            getRecipeById(recipeIdNo)
-            .then(recipe => setData(recipe.data))
-            .catch(err => {
-                console.error("Error getting recipe:", err);
-            });
+            if (recipeIdNo > 0) {
+                getRecipeById(recipeIdNo)
+                    .then(recipe => setData(recipe.data))
+                    .catch(err => {
+                        console.error("Error getting recipe:", err);
+                    });
+            }
         }
-            
+
     }, [url, recipeId]);
 
     return (
-    <>
-        <h1 className="mb-3">New Recipe</h1>
-        <RecipeForm data={data} updateData={updateData} mode="add" />
-    </>);
+        <>
+            <h1 className="mb-3">New Recipe</h1>
+            <RecipeForm data={data} updateData={updateData} mode="add" />
+        </>);
 }
 
 export default RecipeCreation;

@@ -109,3 +109,43 @@
 2024-09-28 13:55:20.6948||backend.Program|WARN|console logging is great 
 2024-09-28 13:55:26.2829||FamilyMealPlanner.Controllers.RecipeController|DEBUG|update recipe 
 2024-09-28 13:56:12.2423||backend.Program|WARN|console logging is great 
+2024-09-29 08:58:02.0386||backend.Program|WARN|console logging is great 
+2024-09-29 09:05:11.5148||backend.Program|WARN|console logging is great 
+2024-09-29 09:06:05.1084||backend.Program|WARN|console logging is great 
+2024-09-29 09:08:14.8601||backend.Program|WARN|console logging is great 
+2024-09-29 09:09:40.4762||backend.Program|WARN|console logging is great 
+2024-09-29 09:10:19.2755||backend.Program|WARN|console logging is great 
+2024-09-29 09:11:10.5303||backend.Program|WARN|console logging is great 
+2024-09-29 09:12:47.0137||backend.Program|WARN|console logging is great 
+2024-09-29 09:12:56.8267||backend.Program|WARN|console logging is great 
+2024-09-29 09:13:10.4087||backend.Program|WARN|console logging is great 
+2024-09-29 09:13:22.6092||backend.Program|WARN|console logging is great 
+2024-09-29 09:15:00.5401||backend.Program|WARN|console logging is great 
+2024-09-29 09:15:30.8123||backend.Program|WARN|console logging is great 
+2024-09-29 09:16:21.3450||backend.Program|WARN|console logging is great 
+2024-09-29 09:17:45.9552||backend.Program|WARN|console logging is great 
+2024-09-29 09:25:45.3060||backend.Program|WARN|console logging is great 
+2024-09-29 09:26:17.6938||backend.Program|WARN|console logging is great 
+2024-09-29 09:27:37.6935||backend.Program|WARN|console logging is great 
+2024-09-29 09:27:54.8134||backend.Program|WARN|console logging is great 
+2024-09-29 09:35:00.2839||backend.Program|WARN|console logging is great 
+2024-09-29 09:35:11.1503||backend.Program|WARN|console logging is great 
+2024-09-29 09:36:37.3882||backend.Program|WARN|console logging is great 
+2024-09-29 09:37:01.6360||FamilyMealPlanner.Services.RecipeService|ERROR|Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-09-29 09:37:01.6467||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to add recipe: An error occurred while updating the database. 
+2024-09-29 09:38:23.8122||backend.Program|WARN|console logging is great 
+2024-09-29 09:38:53.7946||FamilyMealPlanner.Services.RecipeService|ERROR|Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-09-29 09:38:53.8022||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to add recipe: An error occurred while updating the database. 
+2024-09-29 09:39:32.5548||backend.Program|WARN|console logging is great 
+2024-09-29 09:39:45.6794||FamilyMealPlanner.Services.RecipeService|ERROR|Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-09-29 09:39:45.6872||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to add recipe: An error occurred while updating the database. 
+2024-09-29 10:44:31.4958||backend.Program|WARN|console logging is great 
+2024-09-29 10:56:12.2308||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 28: Sequence contains no elements. 
+2024-09-29 10:56:12.2779||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 28: Sequence contains no elements. 
+2024-09-29 11:11:22.2877||backend.ImageService|INFO|upload started 
+2024-09-29 11:11:22.7520||backend.ImageService|INFO|upload end 
+2024-09-29 12:49:57.0222||backend.ImageService|INFO|upload started 
+2024-09-29 12:49:57.5392||backend.ImageService|INFO|upload end 
+2024-09-29 12:50:45.8672||backend.ImageService|INFO|upload started 
+2024-09-29 12:50:46.2425||backend.ImageService|INFO|upload end 
+2024-09-29 12:58:18.8492||backend.ImageService|INFO|upload started 

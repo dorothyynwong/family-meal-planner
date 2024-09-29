@@ -29,11 +29,13 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({data, onCancel})
 
     const handleClick = (event: { currentTarget: { id: string } }) => {
         const buttonId = event.currentTarget.id;
+        const userId = 1;
         switch (buttonId) {
             case "delete-recipe-button":
                 deleteRecipe(recipeData.id? recipeData.id : 0)
                 .then(() => {
-                    navigate("/recipes-list"); 
+                    setModalShow(false);
+                    navigate(`/recipes-list/${userId}`);
                 })
                 .catch(err => {
                     console.error("Error deleting recipe:", err);

@@ -8,10 +8,12 @@ import {  Col,  Row } from "react-bootstrap";
 import { MdArrowBackIosNew } from "react-icons/md";
 import OverflowMenu from "../../Components/OverflowMenu/OverflowMenu";
 import RecipeDeleteConfirmation from "../../Components/RecipeDeleteConfirmation/RecipeDeleteConirmation";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 
 const RecipeDetails: React.FC = () => {
     const { recipeId } = useParams<{ recipeId: string }>();
+    const userId = 1;
     const navigate = useNavigate();
     const [isDelete, setIsDelete] = useState(false);
     const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
@@ -64,10 +66,10 @@ const RecipeDetails: React.FC = () => {
         <>
             <Row>
                 <Col xs={10}>
-                    <MdArrowBackIosNew size={20} onClick={() => navigate("/recipes-list")} />
+                    <MdArrowBackIosNew size={20} onClick={() => navigate(`/recipes-list/${userId}`)} />
                 </Col>
                 <Col xs={2}>
-                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} />
+                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
                 </Col>
             </Row>
             <RecipeDisplay data={recipeData} />

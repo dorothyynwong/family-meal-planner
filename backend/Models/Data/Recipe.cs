@@ -15,4 +15,7 @@ public class Recipe
     public string? Description { get; set; }
     public List<string>? RecipeIngredients { get; set; }
     public List<string>? RecipeInstructions { get; set; } 
+    public DateTime CreationDateTime {get; set; }
+    public DateTime? LastUpdatedDateTime {get; set;} = DateTime.UtcNow;
+    public string? DefaultImageUrl   { get; set; }
 }

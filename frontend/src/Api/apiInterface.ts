@@ -15,4 +15,7 @@ export interface RecipeDetailsInterface {
     recipeCategory?: string;
     recipeIngredients?: string[];
     recipeInstructions?: string[];
+    creationDateTime?: Date;
+    lastUpdatedDateTime?: Date;
+    defaultImageUrl?: string;
 }

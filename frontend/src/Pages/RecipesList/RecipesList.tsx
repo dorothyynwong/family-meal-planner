@@ -1,4 +1,4 @@
-import { useParams } from "react-router-dom";
+import { useLocation, useParams } from "react-router-dom";
 import RecipeCard from "../../Components/RecipeCard/RecipeCard";
 import { useEffect, useState } from "react";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
@@ -7,13 +7,14 @@ import { Row } from "react-bootstrap";
 
 const RecipesList: React.FC = () => {
     const { userId } = useParams<{ userId: string }>();
+    const location = useLocation();
     const [recipesList, setRecipesList] = useState<RecipeDetailsInterface[]>([]);
 
     useEffect(() => {
         const userIdInt = parseInt(userId!, 10)
         getRecipeByUserId(userIdInt)
             .then(recipes => setRecipesList(recipes.data));
-    }, [userId, recipesList])
+    }, [userId, location.key])
 
     return (
         <>

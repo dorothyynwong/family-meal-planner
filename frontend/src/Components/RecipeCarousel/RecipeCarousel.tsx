@@ -6,9 +6,10 @@ import "./RecipeCarousel.scss";
 
 export interface RecipeCarouselProps {
   images?: string[]
+  defaultImageUrl?: string
 }
 
-const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images }) => {
+const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images, defaultImageUrl }) => {
   const [index, setIndex] = useState(0);
   const [imagesUrls, setImagesUrls] = useState(images);
 
@@ -20,13 +21,14 @@ const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images }) => {
     setIndex(selectedIndex);
   };
 
+  // const defaultImageIndex = imagesUrls?.findIndex((element) => element === defaultImageUrl);
+
   return (
     <Carousel activeIndex={index} onSelect={handleSelect}>
-      {Array.from({ length: imagesUrls? imagesUrls.length : 0 }, (_, i) => (
-        <Carousel.Item key={`image-${i}`} >
-          <Image className="carousel-image" src={imagesUrls? imagesUrls[i] : ""} fluid/>
+      {imagesUrls?.map((imageUrl, index) => (
+        <Carousel.Item key={`image-${index}`} >
+          <Image className="carousel-image" src={imageUrl} fluid />
         </Carousel.Item>
-
       ))}
 
     </Carousel>

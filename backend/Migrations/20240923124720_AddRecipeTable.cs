@@ -30,8 +30,8 @@ namespace backend.Migrations
                     Keywords = table.Column<string>(type: "text", nullable: true),
                     RecipeYield = table.Column<string>(type: "text", nullable: true),
                     RecipeCategory = table.Column<string>(type: "text", nullable: true),
-                    recipeIngredients = table.Column<List<string>>(type: "text[]", nullable: true),
-                    recipeInstructions = table.Column<List<string>>(type: "text[]", nullable: true)
+                    RecipeIngredients = table.Column<List<string>>(type: "text[]", nullable: true),
+                    RecipeInstructions = table.Column<List<string>>(type: "text[]", nullable: true)
                 },
                 constraints: table =>
                 {

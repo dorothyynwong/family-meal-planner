@@ -172,10 +172,10 @@ namespace backend.Migrations
                     b.Property<string>("RecipeCuisine")
                         .HasColumnType("text");
 
-                    b.Property<List<string>>("recipeIngredients")
+                    b.Property<List<string>>("RecipeIngredients")
                         .HasColumnType("text[]");
 
-                    b.Property<List<string>>("recipeInstructions")
+                    b.Property<List<string>>("RecipeInstructions")
                         .HasColumnType("text[]");
 
                     b.Property<string>("RecipeYield")
