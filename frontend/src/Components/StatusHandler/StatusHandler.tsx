@@ -18,6 +18,7 @@ const StatusHandler: React.FC<StatusHandlerProps> = ({
 }) => {
     switch (status) {
         case "loading":
+            if (loadingMessage === "") return <></>
             return (
                 <div className="d-flex align-items-center">
                     <Spinner animation="border" role="status" className="me-2">
@@ -39,6 +40,7 @@ const StatusHandler: React.FC<StatusHandlerProps> = ({
             );
 
         case "success":
+            if (loadingMessage === "") return <></>
             return <Alert variant="success">{successMessage}</Alert>;
 
         case "idle":

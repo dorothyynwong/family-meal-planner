@@ -48,7 +48,7 @@ const UpdateRecipe: React.FC = () => {
                 status={status}
                 errorMessages={errorMessages}
                 loadingMessage="Getting recipe ..."
-                successMessage="Recipe is retreived successfully!"
+                successMessage=""
             >
                 <></>
             </StatusHandler>

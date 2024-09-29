@@ -35,8 +35,8 @@ const RecipesList: React.FC = () => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                // loadingMessage="Getting recipes..."
-                // successMessage="Recipes are retrieved !"
+                loadingMessage="Getting recipes..."
+                successMessage=""
             >
                 <></>
             </StatusHandler>
