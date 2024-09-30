@@ -11,29 +11,29 @@ export default [
   {
     id: 1,
     title: 'Breakfast 1',
-    start: new Date(2024, 9, 29, 0, 0, 0),
-    end: new Date(2024, 9, 29, 4,0,0),
+    start: new Date(2024, 9, 29),
+    end: new Date(2024, 9, 29),
   },
 
   {
     id: 2,
     title: 'Breakfast 2',
-    start: new Date(2024, 9, 30, 0, 0, 0),
-    end: new Date(2024, 9, 30, 4,0,0),
+    start: new Date(2024, 9, 30),
+    end: new Date(2024, 9, 30),
   },
 
   {
     id: 3,
     title: 'Morning Tea 1',
-    start: new Date(2024, 9, 30, 4, 0, 0),
-    end: new Date(2024, 9, 30, 8,0,0),
+    start: new Date(2024, 9, 30),
+    end: new Date(2024, 9, 30),
   },
 
   {
     id: 4,
     title: 'Lunch 1',
-    start: new Date(2024, 9, 30, 8, 0, 0),
-    end: new Date(2024, 9, 30, 12 ,0,0),
+    start: new Date(2024, 9, 30),
+    end: new Date(2024, 9, 30),
   },
 
   {
@@ -124,18 +124,18 @@ export default [
     start: new Date(2015, 3, 20, 19, 30, 0),
     end: new Date(2015, 3, 22, 2, 0, 0),
   },
-  {
-    id: 14,
-    title: 'Today',
-    start: new Date(new Date().setHours(new Date().getHours() - 3)),
-    end: new Date(new Date().setHours(new Date().getHours() + 3)),
-  },
-  {
-    id: 15,
-    title: 'Point in Time Event',
-    start: now,
-    end: now,
-  },
+  // {
+  //   id: 14,
+  //   title: 'Today',
+  //   start: new Date(new Date().setHours(new Date().getHours() - 3)),
+  //   end: new Date(new Date().setHours(new Date().getHours() + 3)),
+  // },
+  // {
+  //   id: 15,
+  //   title: 'Point in Time Event',
+  //   start: now,
+  //   end: now,
+  // },
   {
     id: 16,
     title: 'Video Record',

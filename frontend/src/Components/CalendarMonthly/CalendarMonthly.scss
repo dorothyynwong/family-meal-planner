@@ -13,17 +13,10 @@
     background-color: darkgreen;
 }
 
-// .rbc-time-view {
-//     .rbc-label {
-//         display: none;
-//     }
-
-//     .rbc-allday-cell {
-//         height: calc(100vh - 98px);
-//         max-height: unset;
-//     }
-
-//     .rbc-time-content {
-//         display: none;
-//     }
-// }
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: #bbb;
+    border-radius: 50%;
+    display: inline-block;
+  }
