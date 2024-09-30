@@ -33,8 +33,40 @@ const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   );
 }
 
+// const customDayPropGetter = (date:Date) => {
+//   if (date.getDate() === 7 || date.getDate() === 15)
+//     return {
+//       className: "specialDay",
+//       style: {
+//         border: 'solid 3px ' + (date.getDate() === 7 ? '#faa' : '#afa'),
+//       },
+//     }
+//   else return {}
+// }
+
+// const customSlotPropGetter = (date:Date) => {
+//   if (date.getDate() === 7 || date.getDate() === 15)
+//     return {
+//       className: "specialDay",
+//     }
+//   else return {}
+// }
+
 const Basic: React.FC = () => {
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+
+  const customDayPropGetter = (date:Date) => {
+    if (date.getDate() === selectedSlot?.start.getDate() && date.getMonth() === selectedSlot?.start.getMonth())
+      return {
+        className: "specialDay",
+        style: {
+          // border: 'solid 3px ' + (date.getDate() === selectedSlot?.start.getDate()? '#faa' : '#afa'),
+          backgroundColor: ('#faa'),
+        },
+      }
+    else return {}
+  }
+
 
   const { components } = useMemo(
     () => ({
@@ -108,9 +140,10 @@ const Basic: React.FC = () => {
           components={components}
           showAllEvents
           selectable
-          longPressThreshold={10}
+          longPressThreshold={1}
           onSelectSlot={onSelectSlot}
-          eventPropGetter={eventPropGetter}
+          // eventPropGetter={eventPropGetter}
+          dayPropGetter={customDayPropGetter}
         />
       </div>
     </Fragment>
