@@ -1,9 +1,10 @@
-import React, { Fragment, useMemo } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useRef } from 'react';
 import moment from 'moment';
 import {
   Calendar,
   Views,
   momentLocalizer,
+  SlotInfo
 } from 'react-big-calendar';
 
 import events from './events_mock';
@@ -47,6 +48,27 @@ const Basic: React.FC = () => {
     month: true,
   }
 
+
+const clickRef = useRef<number | null>(null); // Type the ref to hold a timeout ID (number)
+
+const buildMessage = (slotInfo: SlotInfo) => {
+  return `Selected slot from ${slotInfo.start} to ${slotInfo.end}`;
+};
+
+const onSelectSlot = useCallback((slotInfo: SlotInfo) => {
+  /**
+   * We wait 250 milliseconds before firing our method to prevent both
+   * 'click' and 'doubleClick' from firing in case of a double-click.
+   */
+  if (clickRef.current !== null) {
+    window.clearTimeout(clickRef.current);
+  }
+  clickRef.current = window.setTimeout(() => {
+    // window.alert(buildMessage(slotInfo));
+    console.log(buildMessage(slotInfo));
+  }, 100);
+}, []);
+
   return (
     <Fragment>
       <div>test</div>
@@ -62,9 +84,8 @@ const Basic: React.FC = () => {
           components={components}
           showAllEvents
           selectable
-          onSelectSlot={(slotInfo) => {
-            console.log("selected",slotInfo.start);
-          }}
+          longPressThreshold={10}
+          onSelectSlot={onSelectSlot}
         />
       </div>
     </Fragment>
