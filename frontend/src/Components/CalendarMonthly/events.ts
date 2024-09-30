@@ -35,6 +35,18 @@ export default [
     start: new Date(2024, 9, 30),
     end: new Date(2024, 9, 30),
   },
+  {
+    id: 5,
+    title: 'Afternoon tea',
+    start: new Date(2024, 9, 30),
+    end: new Date(2024, 9, 30),
+  },
+  {
+    id: 6,
+    title: 'Dinner',
+    start: new Date(2024, 9, 30),
+    end: new Date(2024, 9, 30),
+  },
 
   {
     id: 92,
@@ -42,20 +54,20 @@ export default [
     start: new Date(2015, 3, 9, 8, 0, 0),
     end: new Date(2015, 3, 10, 11, 30, 0),
   },
-  {
-    id: 5,
-    title: 'Conference',
-    start: new Date(2015, 3, 11),
-    end: new Date(2015, 3, 13),
-    desc: 'Big conference for important people',
-  },
-  {
-    id: 6,
-    title: 'Meeting',
-    start: new Date(2015, 3, 12, 10, 30, 0, 0),
-    end: new Date(2015, 3, 12, 12, 30, 0, 0),
-    desc: 'Pre-meeting meeting, to prepare for the meeting',
-  },
+  // {
+  //   id: 5,
+  //   title: 'Conference',
+  //   start: new Date(2015, 3, 11),
+  //   end: new Date(2015, 3, 13),
+  //   desc: 'Big conference for important people',
+  // },
+  // {
+  //   id: 6,
+  //   title: 'Meeting',
+  //   start: new Date(2015, 3, 12, 10, 30, 0, 0),
+  //   end: new Date(2015, 3, 12, 12, 30, 0, 0),
+  //   desc: 'Pre-meeting meeting, to prepare for the meeting',
+  // },
   {
     id: 7,
     title: 'Lunch',

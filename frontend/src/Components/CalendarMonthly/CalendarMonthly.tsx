@@ -28,9 +28,14 @@ interface CustomEventProps {
   event: Event;
 }
 
-const CustomEvent: React.FC<CustomEventProps> = ({ event }) => {
+const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   return (
-    <span className="dot"></span>
+    <div className="dot"></div>
+  )
+}
+const CustomWeeklyEvent: React.FC<CustomEventProps> = ({ event }) => {
+  return (
+    <div>{event.title}</div>
   )
 }
 
@@ -38,8 +43,16 @@ const Basic: React.FC<BasicProps> = ({ localizer = mLocalizer, showDemoLink = tr
     const { components} = useMemo(
     () => ({
       components: {
-        event: CustomEvent,
+        week: {
+          event: CustomWeeklyEvent
+        },
+        month: {
+          event: CustomMonthlyEvent,
+
+        },
+        event: CustomWeeklyEvent,
         timeSlotWrapper: () => null,
+        
       },
     }),
     []
@@ -82,6 +95,7 @@ const Basic: React.FC<BasicProps> = ({ localizer = mLocalizer, showDemoLink = tr
           step={240}
           timeslots={1}
           components={components}
+          showAllEvents
         />
       </div>
     </Fragment>
