@@ -1,10 +1,11 @@
-import React, { Fragment, useCallback, useEffect, useMemo, useRef } from 'react';
+import React, { Fragment, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import moment from 'moment';
 import {
   Calendar,
   Views,
   momentLocalizer,
-  SlotInfo
+  SlotInfo,
+  EventProps
 } from 'react-big-calendar';
 
 import events from './events_mock';
@@ -27,13 +28,15 @@ const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   const types = event.type;
   return (
     <div className="dot-wrapper">
-    {types.map((type, index) => (<div key={index} className="dot"></div>))}
+      {types.map((type, index) => (<div key={index} className="dot"></div>))}
     </div>
-  )
+  );
 }
 
 const Basic: React.FC = () => {
-    const { components} = useMemo(
+  const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+
+  const { components } = useMemo(
     () => ({
       components: {
         month: {
@@ -42,32 +45,55 @@ const Basic: React.FC = () => {
       },
     }),
     []
-  )
+  );
 
   const customViews = {
     month: true,
   }
 
+  const clickRef = useRef<number | null>(null);
 
-const clickRef = useRef<number | null>(null); // Type the ref to hold a timeout ID (number)
+  const buildMessage = (slotInfo: SlotInfo) => {
+    return `Selected slot from ${slotInfo.start} to ${slotInfo.end}`;
+  };
 
-const buildMessage = (slotInfo: SlotInfo) => {
-  return `Selected slot from ${slotInfo.start} to ${slotInfo.end}`;
-};
+  const eventPropGetter = useCallback(
+    (event: Event) => {
+      const isSelected =
+        selectedSlot &&
+        event.start.getTime() === selectedSlot.start.getTime(); // Compare timestamps
 
-const onSelectSlot = useCallback((slotInfo: SlotInfo) => {
-  /**
-   * We wait 250 milliseconds before firing our method to prevent both
-   * 'click' and 'doubleClick' from firing in case of a double-click.
-   */
-  if (clickRef.current !== null) {
-    window.clearTimeout(clickRef.current);
-  }
-  clickRef.current = window.setTimeout(() => {
-    // window.alert(buildMessage(slotInfo));
-    console.log(buildMessage(slotInfo));
-  }, 100);
-}, []);
+        const style = {
+          backgroundColor: isSelected ? 'lightblue' : 'white',
+        };
+    
+        // Debugging logs
+        console.log("Event:", event);
+        console.log("Selected Slot:", selectedSlot);
+        console.log("Is Selected:", isSelected);
+        console.log("Returning Style:", style);
+    
+        return {
+          style,
+        };
+      },
+      [selectedSlot]
+    );
+
+  const onSelectSlot = useCallback((slotInfo: SlotInfo) => {
+    if (clickRef.current !== null) {
+      window.clearTimeout(clickRef.current);
+    }
+    clickRef.current = window.setTimeout(() => {
+      setSelectedSlot(slotInfo);
+      console.log(buildMessage(slotInfo));
+    }, 100);
+  }, []);
+
+  // Log selectedSlot whenever it changes
+  useEffect(() => {
+    console.log("selected", selectedSlot?.start);
+  }, [selectedSlot]);
 
   return (
     <Fragment>
@@ -79,13 +105,12 @@ const onSelectSlot = useCallback((slotInfo: SlotInfo) => {
           events={events}
           localizer={mLocalizer}
           views={customViews}
-        //   step={240}
-        //   timeslots={1}
           components={components}
           showAllEvents
           selectable
           longPressThreshold={10}
           onSelectSlot={onSelectSlot}
+          eventPropGetter={eventPropGetter}
         />
       </div>
     </Fragment>
