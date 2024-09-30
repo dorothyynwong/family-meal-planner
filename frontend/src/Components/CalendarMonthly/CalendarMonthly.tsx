@@ -7,7 +7,7 @@ import {
   DateLocalizer,
   CalendarProps,
 } from 'react-big-calendar';
-import events from './events';
+import events from './events2';
 import "./CalendarMonthly.scss";
 
 const mLocalizer = momentLocalizer(moment);
@@ -17,25 +17,39 @@ interface BasicProps extends Partial<CalendarProps> {
   showDemoLink?: boolean;
 }
 
+// interface Event {
+//   title: string;
+//   start: Date;
+//   end: Date;
+//   allDay?: boolean;
+// }
+
 interface Event {
-  title: string;
+  title: string[];
   start: Date;
   end: Date;
-  allDay?: boolean;
+  type: string[];
 }
 
 interface CustomEventProps {
   event: Event;
 }
 
+
 const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
+  const types = event.type;
   return (
-    <div className="dot"></div>
+    <div className="dot-wrapper">
+    {types.map(type => (<div className="dot"></div>))}
+    </div>
   )
 }
 const CustomWeeklyEvent: React.FC<CustomEventProps> = ({ event }) => {
+  const titles = event.title;
   return (
-    <div>{event.title}</div>
+    <>
+    {titles.map(title => (<div>{title}</div>))}
+    </>
   )
 }
 
@@ -48,7 +62,6 @@ const Basic: React.FC<BasicProps> = ({ localizer = mLocalizer, showDemoLink = tr
         },
         month: {
           event: CustomMonthlyEvent,
-
         },
         event: CustomWeeklyEvent,
         timeSlotWrapper: () => null,

@@ -2,7 +2,7 @@
 @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 
 .height600 {
-    height: 300px;
+    height: 600px;
 }
 
 .powerBlue {
@@ -13,11 +13,15 @@
     background-color: darkgreen;
 }
 
+.dot-wrapper{
+    display: flex;
+}
 .dot {
     height: 5px;
     width: 5px;
     background-color: darkcyan;
     border-radius: 50%;
+    margin: 1px;
 }
 
 /* Remove the blue box around events in the month view only */
