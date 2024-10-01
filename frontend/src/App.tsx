@@ -35,7 +35,7 @@ function App() {
           <Route path="/recipe-edit/:recipeId"
             element={<RecipeUpdate />} />
 
-          <Route path="/meal-plans/:fromDate/:toDate/:userId" 
+          <Route path="/meal-plans/:userId" 
           element={<MealPlanMonthly/>} />
         </Routes>
       </Router>

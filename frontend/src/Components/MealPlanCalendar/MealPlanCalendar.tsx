@@ -13,6 +13,15 @@ import { EventInterface } from '../../Api/apiInterface';
 
 const mLocalizer = momentLocalizer(moment);
 
+interface MealPlanCalendarProps {
+  startDate: Date;
+  endDate: Date;
+  selectedDate: Date;
+  setStartDate: (date: Date) => void;
+  setEndDate: (date: Date) => void;
+  setSelectedDate: (date: Date) => void;
+}
+
 interface CustomEventProps {
   event: EventInterface;
 }
@@ -26,7 +35,7 @@ const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   );
 }
 
-const Basic: React.FC = () => {
+const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate}) => {
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
 
   const clickRef = useRef<number | null>(null);
@@ -34,6 +43,7 @@ const Basic: React.FC = () => {
   const onSelectSlot = useCallback((slotInfo: SlotInfo) => {
     clickRef.current = window.setTimeout(() => {
       setSelectedSlot(slotInfo);
+      setSelectedDate(slotInfo.start);
     }, 100);
   }, []);
 
@@ -56,6 +66,13 @@ const Basic: React.FC = () => {
     else return {}
   }
 
+  const handleNavigate = (date: Date) => {
+    const fromDate = moment(date).startOf('month').subtract(7, 'days');
+    const toDate = moment(date).endOf('month').add(7, 'days');
+    setStartDate(fromDate.toDate());
+    setEndDate(toDate.toDate());
+  };
+
   return (
     <Fragment>
       <div className="meal-plan-calendar">
@@ -71,6 +88,7 @@ const Basic: React.FC = () => {
           longPressThreshold={10}
           onSelectSlot={onSelectSlot}
           dayPropGetter={customDayPropGetter}
+          onNavigate={handleNavigate}
         />
       </div>
     </Fragment>

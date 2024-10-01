@@ -36,4 +36,4 @@ export interface EventInterface {
     start: Date;
     end: Date;
     type: string[];
-  }
+}
