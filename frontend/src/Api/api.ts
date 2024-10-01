@@ -54,7 +54,7 @@ export async function getRecipeByUserId(userId: number) {
     try {
         const response: AxiosResponse = await client.get(`/recipes`, {
             params: {
-                userId: 1
+                userId: userId
             }
         });
 
@@ -88,12 +88,14 @@ export async function uploadImage(uploadImage: File) {
 //     }
 // }
 
-export async function getMealByDateUserId(date: Date, userId: number) {
+export async function getMealByDateUserId(fromDate: string, toDate: string, userId: string) {
     try {
+
         const response: AxiosResponse = await client.get(`/meals`, {
             params: {
-                date: date,
-                userId: 1
+                fromDate: fromDate,
+                toDate: toDate,
+                userId: parseInt(userId)
             }
         });
 
