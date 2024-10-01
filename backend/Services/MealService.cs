@@ -1,0 +1,96 @@
+using FamilyMealPlanner.Models;
+using Microsoft.EntityFrameworkCore;
+using NLog;
+
+
+namespace FamilyMealPlanner.Services;
+
+public interface IMealService
+{
+    Task<int> AddMeal(MealRequest mealRequest);
+    Task<List<Meal>> GetMealByDateUserId(DateTime date, int userId);
+    Task Delete(int mealId);
+}
+
+public class MealService(FamilyMealPlannerContext context) : IMealService
+{
+    private readonly FamilyMealPlannerContext _context = context;
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+
+    public async Task<int> AddMeal(MealRequest mealRequest)
+    {
+
+        try
+        {
+            Meal meal = new Meal()
+            {
+                Date = mealRequest.Date,
+                Name = mealRequest.Name,
+                RecipeId = mealRequest.RecipeId,
+                UserId = mealRequest.UserId,
+                FamilyId = mealRequest.FamilyId,
+                MealType = mealRequest.MealType,
+                AddedByUserId = mealRequest.AddedByUserId
+            };
+
+            _context.Meals.Add(meal);
+            await _context.SaveChangesAsync();
+            return meal.Id;
+        }
+        catch (DbUpdateException ex)
+        {
+            Logger.Error($"Database error: {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error: {ex.Message}");
+            throw new Exception("Unexpected error while adding record to database", ex);
+        }
+
+    }
+
+    public async Task<List<Meal>> GetMealByDateUserId(DateTime date, int userId)
+    {
+        List<Meal> meals =  await _context.Meals
+                                                .Where(meal => meal.Date == date && meal.UserId == userId)
+                                                .ToListAsync();
+        if (meals== null || meals.Count == 0)
+        {
+            Logger.Error($"No recipes for {date} of user {userId}");
+            throw new InvalidOperationException($"No recipes for {date} of user {userId}");
+        }
+
+        return meals;
+    }
+
+    private async Task<Meal> GetMealById(int mealId)
+    {
+        Meal meal = await _context.Meals.SingleAsync(meal => meal.Id == mealId);
+        return meal;
+    }
+
+    public async Task Delete(int mealId)
+    {
+        try
+        {
+            Meal meal = await GetMealById(mealId);
+            _context.Meals.Remove(meal);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            Logger.Error($"Database error on mealId {mealId}: {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error on mealId {mealId}: {ex.Message}");
+            throw new Exception("Unexpected error while deleting record to database", ex);
+        }
+    }
+
+}
+
+
+
