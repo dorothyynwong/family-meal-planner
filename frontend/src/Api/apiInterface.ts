@@ -19,3 +19,10 @@ export interface RecipeDetailsInterface {
     lastUpdatedDateTime?: Date;
     defaultImageUrl?: string;
 }
+
+export interface EventInterface {
+    title: string[];
+    start: Date;
+    end: Date;
+    type: string[];
+  }

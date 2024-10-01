@@ -1,16 +1,11 @@
+@use "../../Styles/variables.scss" as *;
 @import 'react-big-calendar/lib/sass/styles';
 @import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
 
-.height600 {
-    height: 600px;
-}
 
-.powerBlue {
-    background-color: powderblue;
-}
-
-.darkGreen {
-    background-color: darkgreen;
+.meal-plan-calendar {
+    height: 70vh;
+    max-height: 300px;
 }
 
 .dot-wrapper{
@@ -22,6 +17,10 @@
     background-color: darkcyan;
     border-radius: 50%;
     margin: 1px;
+}
+
+.selected-date {
+    background-color: $light-background;
 }
 
 /* Remove the blue box around events in the month view only */
