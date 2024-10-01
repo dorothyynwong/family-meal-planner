@@ -236,3 +236,7 @@
 2024-10-01 11:24:09.7640||backend.Program|WARN|  console logging is great 
 2024-10-01 11:28:02.3032||backend.Program|WARN|  console logging is great 
 2024-10-01 11:28:38.9285||backend.Program|WARN|  console logging is great 
+2024-10-01 11:53:04.8788||backend.Program|WARN|  console logging is great 
+2024-10-01 11:58:05.2622||backend.Program|WARN|  console logging is great 
+2024-10-01 11:58:41.2556||FamilyMealPlanner.Services.MealService|ERROR|  Database error: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-01 11:58:41.2660||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to add meal: An error occurred while updating the database. 

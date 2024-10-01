@@ -21,6 +21,7 @@ Logger.Warn("console logging is great");
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
 builder.Services.AddTransient<IImageService, ImageService>();
+builder.Services.AddTransient<IMealService, MealService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

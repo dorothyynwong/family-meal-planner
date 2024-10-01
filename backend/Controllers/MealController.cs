@@ -1,4 +1,3 @@
-using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -8,133 +7,55 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/meals")]
-public class MealController(IWebScrappingService webScrappingService, IRecipeService recipeService, IImageService imageService) : Controller
+public class MealController(IMealService mealService) : Controller
 {
-    private readonly IWebScrappingService _webScrappingService = webScrappingService;
-    private readonly IRecipeService _recipeService = recipeService;
-    private readonly IImageService _imageService = imageService;
-
+    private readonly IMealService _mealService = mealService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    [HttpGet("import-recipe")]
-    public async Task<IActionResult> GetRecipeByUrl([FromQuery] string url)
-    {
-        if (string.IsNullOrEmpty(url))
-        {
-            return BadRequest("URL cannot be null or empty.");
-        }
-
-        try
-        {
-            var recipe = await _webScrappingService.GetRecipeFromUrl(url);
-            return Ok(recipe);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Failed to import recipe: {ex.Message}");
-            return BadRequest($"Unable to import recipe: {ex.Message}");
-        }
-    }
-
     [HttpPost("")]
-    public async Task<IActionResult> Add(RecipeRequest recipe)
+    public async Task<IActionResult> Add(MealRequest meal)
     {
         try
         {
-            int recipeId = await _recipeService.AddRecipe(recipe);
-            return Ok(recipeId);
+            int mealId = await _mealService.AddMeal(meal);
+            return Ok(mealId);
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to add recipe: {ex.Message}");
-            return BadRequest($"Unable to add recipe: {ex.Message}");
-        }
-
-    }
-
-    [HttpGet("{recipeId}")]
-    public async Task<IActionResult> GetById([FromRoute] int recipeId)
-    {
-        try
-        {
-            Recipe recipe = await _recipeService.GetRecipeById(recipeId);
-            return Ok(recipe);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Failed to get recipe {recipeId}: {ex.Message}");
-            return BadRequest($"Unable to get recipe {recipeId}: {ex.Message}");
+            Logger.Error($"Failed to add meal: {ex.Message}");
+            return BadRequest($"Unable to add meal: {ex.Message}");
         }
 
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByUserId([FromQuery] int userId)
+    public async Task<IActionResult> GetByDateUserId([FromQuery] DateTime date, int userId)
     {
         try
         {
-            List<Recipe> recipes = await _recipeService.GetRecipeByUserId(userId);
-            return Ok(recipes);
+            List<Meal> meals = await _mealService.GetMealByDateUserId(date, userId);
+            return Ok(meals);
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to get recipes of {userId}: {ex.Message}");
-            return BadRequest($"Unable to get recipes of {userId}: {ex.Message}");
+            Logger.Error($"Failed to get meals of {date} for {userId}: {ex.Message}");
+            return BadRequest($"Unable to meals of {date} for {userId}: {ex.Message}");
         }
 
     }
 
-    [HttpPut("{recipeId}")]
-    public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute] int recipeId)
+    [HttpDelete("{mealId}")]
+    public async Task<IActionResult> Delete([FromRoute] int mealId)
     {
         try
         {
-            await _recipeService.UpdateRecipe(recipeRequest, recipeId);
-            return Ok(recipeRequest);
-        }
-        catch (Exception ex)
-        {
-            string requestJson = JsonSerializer.Serialize(recipeRequest, new JsonSerializerOptions { WriteIndented = true });
-            Logger.Error($"Failed to update recipe {recipeId}, {requestJson}: {ex.Message}");
-            return BadRequest($"Unable to update recipe {recipeId}: {ex.Message}");
-        }
-    }
-
-
-    [HttpDelete("{recipeId}")]
-    public async Task<IActionResult> Delete([FromRoute] int recipeId)
-    {
-        try
-        {
-            await _recipeService.Delete(recipeId);
+            await _mealService.Delete(mealId);
             return Ok();
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to get recipe {recipeId}: {ex.Message}");
-            return BadRequest($"Unable to get recipe {recipeId}: {ex.Message}");
-        }
-    }
-
-    [HttpPost("upload-image")]
-    public async Task<IActionResult> UploadImage([FromForm] IFormFile uploadImage)
-    {
-        if (uploadImage == null || uploadImage.Length == 0)
-        {
-            Logger.Error("Empty image");
-            return BadRequest("Empty Image");
-        }
-
-        try
-        {
-            var response = await _imageService.UploadImageAsync(uploadImage);
-            ImgBBResponse imgBBResponse = JsonSerializer.Deserialize<ImgBBResponse>(response);
-            return Ok(imgBBResponse.ImgData.DisplayUrl);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Unable to upload image: {ex.Message}");
-            return BadRequest($"Unable to upload image: {ex.Message}");
+            Logger.Error($"Failed to get meal {mealId}: {ex.Message}");
+            return BadRequest($"Unable to get meal {mealId}: {ex.Message}");
         }
     }
 }
