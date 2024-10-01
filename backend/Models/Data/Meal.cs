@@ -10,6 +10,7 @@ public class Meal
     [Key]
     public int Id { get; set; }
 
+    [DataType(DataType.Date)] 
     public DateTime Date {get; set;}
 
     public string? Name {get; set;}
