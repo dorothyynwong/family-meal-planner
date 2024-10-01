@@ -228,3 +228,5 @@
 2024-09-29 14:26:41.4087||FamilyMealPlanner.Controllers.RecipeController|ERROR|Failed to get recipe 19: Sequence contains no elements. 
 2024-10-01 11:23:48.3515||backend.Program|WARN|console logging is great 
 2024-10-01 11:24:09.7640||backend.Program|WARN|console logging is great 
+2024-10-01 11:28:02.3032||backend.Program|WARN|console logging is great 
+2024-10-01 11:28:38.9285||backend.Program|WARN|console logging is great 
