@@ -1,5 +1,5 @@
 import MealPlanCalendar from "../../Components/MealPlanCalendar/MealPlanCalendar"
-import MealPlanCard from "../../Components/MealPlanCard/MealPlanCard"
+import MealPlanCard from "../../Components/MealCard/MealCard"
 
 const MealPlanMonthly:React.FC = () => {
     return (
