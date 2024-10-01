@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { getMealByDateUserId } from "../../Api/api";
 import { useParams } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
+import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
@@ -16,6 +17,8 @@ const MealPlanMonthly: React.FC = () => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
+
+    
 
     useEffect(() => {
         setStatus("loading");
@@ -52,6 +55,7 @@ const MealPlanMonthly: React.FC = () => {
     },[selectedDate, meals])
 
     if (!meals) return (<>No data</>);
+    convertMealsToEvents(meals);
 
     return (
         <>
@@ -71,7 +75,8 @@ const MealPlanMonthly: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-                {mealOfDate &&
+                {
+                    mealOfDate &&
                     mealOfDate.map((meal, index) => (
                         <MealCard key={index} meal={meal}/>
                     ))}

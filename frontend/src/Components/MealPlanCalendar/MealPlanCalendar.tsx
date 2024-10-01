@@ -9,7 +9,7 @@ import {
 
 import events from './events_mock';
 import "./MealPlanCalendar.scss";
-import { EventInterface } from '../../Api/apiInterface';
+import { EventInterface } from '../../Utils/convertMealsToEvents';
 
 const mLocalizer = momentLocalizer(moment);
 

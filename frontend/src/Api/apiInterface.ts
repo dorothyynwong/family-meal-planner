@@ -31,9 +31,3 @@ export interface MealDetailsInterface {
     addedByUserId: number;
 }
 
-export interface EventInterface {
-    title: string[];
-    start: Date;
-    end: Date;
-    type: string[];
-}
