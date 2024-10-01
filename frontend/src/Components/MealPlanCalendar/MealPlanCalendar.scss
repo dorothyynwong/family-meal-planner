@@ -1,0 +1,40 @@
+@use "../../Styles/variables.scss" as *;
+@import 'react-big-calendar/lib/sass/styles';
+@import 'react-big-calendar/lib/addons/dragAndDrop/styles'; // if using DnD
+
+
+.meal-plan-calendar {
+    height: 70vh;
+    max-height: 300px;
+}
+
+.dot-wrapper{
+    display: flex;
+}
+.dot {
+    height: 5px;
+    width: 5px;
+    background-color: darkcyan;
+    border-radius: 50%;
+    margin: 1px;
+}
+
+.selected-date {
+    background-color: $light-background;
+}
+
+/* Remove the blue box around events in the month view only */
+.rbc-month-view .rbc-event {
+    background-color: transparent !important; /* Remove background color */
+    border: none !important;                 /* Remove border */
+    box-shadow: none !important;             /* Remove any box-shadow */
+  }
+  
+  /* Optionally, handle hover or active states in the month view */
+  .rbc-month-view .rbc-event:hover, 
+  .rbc-month-view .rbc-event:active {
+    background-color: transparent !important;
+    border: none !important;
+    box-shadow: none !important;
+  }
+  
