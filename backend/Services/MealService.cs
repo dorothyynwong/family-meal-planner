@@ -8,7 +8,7 @@ namespace FamilyMealPlanner.Services;
 public interface IMealService
 {
     Task<int> AddMeal(MealRequest mealRequest);
-    Task<List<MealResponse>> GetMealByDateUserId(DateTime date, int userId);
+    Task<List<MealResponse>> GetMealByDateUserId(DateOnly date, int userId);
     Task Delete(int mealId);
 }
 
@@ -50,7 +50,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     }
 
-    public async Task<List<MealResponse>> GetMealByDateUserId(DateTime date, int userId)
+    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly date, int userId)
     {
         List<Meal> meals =  await _context.Meals
                                                 .Where(meal => meal.Date == date && meal.UserId == userId)

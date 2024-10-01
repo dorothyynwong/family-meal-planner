@@ -29,7 +29,7 @@ public class MealController(IMealService mealService) : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByDateUserId([FromQuery] DateTime date, int userId)
+    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly date, int userId)
     {
         try
         {
