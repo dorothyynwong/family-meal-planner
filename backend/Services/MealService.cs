@@ -8,7 +8,7 @@ namespace FamilyMealPlanner.Services;
 public interface IMealService
 {
     Task<int> AddMeal(MealRequest mealRequest);
-    Task<List<MealResponse>> GetMealByDateUserId(DateOnly date, int userId);
+    Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId);
     Task Delete(int mealId);
 }
 
@@ -50,10 +50,12 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     }
 
-    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly date, int userId)
+    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId)
     {
         List<Meal> meals =  await _context.Meals
-                                                .Where(meal => meal.Date == date && meal.UserId == userId)
+                                                .Where(meal => meal.Date >= fromDate && 
+                                                        meal.Date <= toDate &&
+                                                        meal.UserId == userId)
                                                 .ToListAsync();
         List<MealResponse> mealResponses = new ();
 
@@ -74,8 +76,8 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
         if (meals== null || meals.Count == 0)
         {
-            Logger.Error($"No recipes for {date} of user {userId}");
-            throw new InvalidOperationException($"No recipes for {date} of user {userId}");
+            Logger.Error($"No meals between {fromDate} to {toDate} for user {userId}");
+            throw new InvalidOperationException($"No meals between {fromDate} to {toDate} for user {userId}");
         }
 
         return mealResponses;

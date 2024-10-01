@@ -21,12 +21,14 @@ export interface RecipeDetailsInterface {
 }
 
 export interface MealDetailsInterface {
+    id: number;
     date: Date;
     name: string;
-    recipeId: number;
-    userId: number;
-    familyId: number;
-    mealType: number;
+    recipeId?: number;
+    userId?: number;
+    familyId?: number;
+    mealType: string;
+    addedByUserId: number;
 }
 
 export interface EventInterface {

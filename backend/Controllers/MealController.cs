@@ -29,17 +29,17 @@ public class MealController(IMealService mealService) : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly date, int userId)
+    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate, int userId)
     {
         try
         {
-            List<MealResponse> meals = await _mealService.GetMealByDateUserId(date, userId);
+            List<MealResponse> meals = await _mealService.GetMealByDateUserId(fromDate, toDate, userId);
             return Ok(meals);
         }
         catch (Exception ex)
         {
-            Logger.Error($"Failed to get meals of {date} for {userId}: {ex.Message}");
-            return BadRequest($"Unable to meals of {date} for {userId}: {ex.Message}");
+            Logger.Error($"Failed to get meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
+            return BadRequest($"Failed to get meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
         }
 
     }
