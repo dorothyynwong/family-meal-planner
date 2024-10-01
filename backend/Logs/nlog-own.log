@@ -240,3 +240,8 @@
 2024-10-01 11:58:05.2622||backend.Program|WARN|  console logging is great 
 2024-10-01 11:58:41.2556||FamilyMealPlanner.Services.MealService|ERROR|  Database error: An error occurred while saving the entity changes. See the inner exception for details. 
 2024-10-01 11:58:41.2660||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to add meal: An error occurred while updating the database. 
+2024-10-01 12:06:53.0782||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals of 01/10/2024 00:00:00 for 1: Cannot write DateTime with Kind=Unspecified to PostgreSQL type 'timestamp with time zone', only UTC is supported. Note that it's not possible to mix DateTimes with different Kinds in an array, range, or multirange. (Parameter 'value') 
+2024-10-01 12:17:25.8749||backend.Program|WARN|  console logging is great 
+2024-10-01 12:23:46.9151||backend.Program|WARN|  console logging is great 
+2024-10-01 12:24:08.1515||FamilyMealPlanner.Services.MealService|ERROR|  No recipes for 01/10/2024 11:23:56 of user 1 
+2024-10-01 12:24:08.1515||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals of 01/10/2024 11:23:56 for 1: No recipes for 01/10/2024 11:23:56 of user 1 

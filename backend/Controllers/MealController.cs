@@ -33,7 +33,7 @@ public class MealController(IMealService mealService) : Controller
     {
         try
         {
-            List<Meal> meals = await _mealService.GetMealByDateUserId(date, userId);
+            List<MealResponse> meals = await _mealService.GetMealByDateUserId(date, userId);
             return Ok(meals);
         }
         catch (Exception ex)
