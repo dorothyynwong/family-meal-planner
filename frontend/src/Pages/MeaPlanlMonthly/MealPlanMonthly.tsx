@@ -55,7 +55,8 @@ const MealPlanMonthly: React.FC = () => {
     },[selectedDate, meals])
 
     if (!meals) return (<>No data</>);
-    convertMealsToEvents(meals);
+    const events = convertMealsToEvents(meals);
+    // console.log(convertMealsToEvents(meals));
 
     return (
         <>
@@ -66,6 +67,7 @@ const MealPlanMonthly: React.FC = () => {
             setStartDate={setStartDate} 
             setEndDate={setEndDate} 
             setSelectedDate={setSelectedDate}
+            mealEvents={events}
             />
             <StatusHandler
                 status={status}

@@ -20,6 +20,7 @@ interface MealPlanCalendarProps {
   setStartDate: (date: Date) => void;
   setEndDate: (date: Date) => void;
   setSelectedDate: (date: Date) => void;
+  mealEvents: EventInterface[];
 }
 
 interface CustomEventProps {
@@ -35,8 +36,9 @@ const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   );
 }
 
-const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate}) => {
+const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate, mealEvents}) => {
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+  // const [mealEvents, setMealEvents] = useState(events);
 
   const clickRef = useRef<number | null>(null);
 
@@ -79,7 +81,7 @@ const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDat
         <Calendar
           defaultDate={new Date()}
           defaultView={Views.MONTH}
-          events={events}
+          events={mealEvents}
           localizer={mLocalizer}
           views={{ month: true }}
           components={components}
