@@ -39,7 +39,6 @@ const MealPlanMonthly: React.FC = () => {
 
     useEffect(() => {
         if (meals) {
-            console.log(selectedDate);
             setMealOfDate([]);
             const selectedDateLocal = selectedDate.toLocaleDateString(); 
             setMealOfDate(
@@ -69,8 +68,9 @@ const MealPlanMonthly: React.FC = () => {
                 errorMessages={errorMessages}
                 loadingMessage="Uploading recipes..."
                 successMessage=""
-            ><></>
-                </StatusHandler>
+            >
+                <></>
+            </StatusHandler>
                 {mealOfDate &&
                     mealOfDate.map((meal, index) => (
                         <MealCard key={index} meal={meal}/>
