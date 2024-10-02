@@ -29,9 +29,12 @@ interface CustomEventProps {
 
 const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   const types = event.type;
+  const uniqueTypes = Array.from(new Set(types))
   return (
     <div className="dot-wrapper">
-      {types.map((type, index) => (<div key={index} className="dot"></div>))}
+      {uniqueTypes.map((type, index) => (
+        <div key={index} className={`dot ${type}`}></div>
+      ))}
     </div>
   );
 }
