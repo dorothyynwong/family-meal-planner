@@ -25,6 +25,8 @@ export interface MealDetailsInterface {
     date: Date;
     name: string;
     recipeId?: number;
+    recipeName?: string;
+    recipeDefaultImage?: string;
     userId?: number;
     familyId?: number;
     mealType: string;

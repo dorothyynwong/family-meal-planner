@@ -53,6 +53,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
     public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId)
     {
         List<Meal> meals =  await _context.Meals
+                                                .Include(meal => meal.Recipe)
                                                 .Where(meal => meal.Date >= fromDate && 
                                                         meal.Date <= toDate &&
                                                         meal.UserId == userId)
@@ -66,6 +67,8 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
                 Date = meal.Date,
                 Name = meal.Name,
                 RecipeId = meal.RecipeId,
+                RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
+                RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
                 UserId = meal.UserId,
                 FamilyId = meal.FamilyId,
                 MealType = meal.MealType.ToString(),
