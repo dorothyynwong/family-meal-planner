@@ -78,9 +78,11 @@ const RecipeDetails: React.FC = () => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Uploading image..."
-                successMessage="Image uploaded successfully!"
+                loadingMessage="Getting recipe..."
+                successMessage=""
             >
+                <></>
+            </StatusHandler>
                 <Row>
                     <Col xs={10}>
                         <MdArrowBackIosNew size={20} onClick={() => navigate(`/recipes-list/${userId}`)} />
@@ -92,7 +94,7 @@ const RecipeDetails: React.FC = () => {
 
                 <RecipeDisplay data={recipeData} />
                 {isDelete && <RecipeDeleteConfirmation data={recipeData} onCancel={handleCancel} />}
-            </StatusHandler>
+            
 
         </>
 
