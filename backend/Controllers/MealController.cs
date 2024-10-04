@@ -1,3 +1,4 @@
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
@@ -57,5 +58,11 @@ public class MealController(IMealService mealService) : Controller
             Logger.Error($"Failed to get meal {mealId}: {ex.Message}");
             return BadRequest($"Unable to get meal {mealId}: {ex.Message}");
         }
+    }
+
+    [HttpGet("mealTypes")]
+    public async Task<IActionResult> GetMealTypes()
+    {
+        return Ok(Enum.GetNames(typeof(MealType)));
     }
 }

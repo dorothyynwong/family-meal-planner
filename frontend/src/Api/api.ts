@@ -105,3 +105,13 @@ export async function getMealByDateUserId(fromDate: string, toDate: string, user
     }
 }
 
+export async function getMealTypes() {
+    try {
+
+        const response: AxiosResponse = await client.get(`/meals/mealTypes`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }  
+}
+
