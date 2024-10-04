@@ -23,7 +23,7 @@ const MealPlanMonthly: React.FC = () => {
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
     const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetailsInterface>();
     const [mealDate, setMealDate] = useState(new Date().toISOString().split("T")[0]);
-    const [selectedMealType, setSelectedMealType] = useState("");
+    // const [selectedMealType, setSelectedMealType] = useState("");
     const location = useLocation();
 
     const handleClick = () => {
@@ -64,11 +64,11 @@ const MealPlanMonthly: React.FC = () => {
 
     },[selectedDate, meals])
 
-    useEffect(() => {
-        if (location.state && location.state.selectedMealType) {
-            setSelectedMealType(location.state.selectedMealType);
-        }
-    }, [location.state]); 
+    // useEffect(() => {
+    //     if (location.state && location.state.selectedMealType) {
+    //         setSelectedMealType(location.state.selectedMealType);
+    //     }
+    // }, [location.state]); 
 
     if (!meals) return (<>No data</>);
     const events = convertMealsToEvents(meals);
@@ -95,10 +95,10 @@ const MealPlanMonthly: React.FC = () => {
             <MealForm 
                 modalShow={modalShow} 
                 setModalShow={setModalShow} 
-                mealDate={mealDate}
-                setMealDate={setMealDate}
-                selectedMealType = {selectedMealType}
-                setSelectedMealType = {setSelectedMealType}
+                // mealDate={mealDate}
+                // setMealDate={setMealDate}
+                // selectedMealType = {selectedMealType}
+                // setSelectedMealType = {setSelectedMealType}
             />
             <div className="add-meal-button" onClick={handleClick}>
                 <IoIosAddCircle size={30} />

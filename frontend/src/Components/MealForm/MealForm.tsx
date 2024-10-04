@@ -2,27 +2,27 @@ import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { getMealTypes, getRecipeByUserId } from "../../Api/api";
-import { RecipeDetailsInterface } from "../../Api/apiInterface";
+import { getMealTypes } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useRecipe } from "../RecipeContext/RecipeContext";
+import { useMeal } from "../MealContext/MealContext";
 
 interface MealFormProps {
     modalShow: boolean;
     setModalShow: (newModalShow: boolean) => void;
-    selectedMealType: string;
-    setSelectedMealType: (newMealType: string) => void;
-    mealDate: string;
-    setMealDate: (newMealDate: string) => void;
+    // selectedMealType: string;
+    // setSelectedMealType: (newMealType: string) => void;
+    // mealDate: string;
+    // setMealDate: (newMealDate: string) => void;
 }
 
-const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, selectedMealType, setSelectedMealType, mealDate, setMealDate}) => {
+const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow}) => {
     // const [mealName, setMealName] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
-    const location = useLocation();
+    const {selectedMealType, setSelectedMealType, mealDate, setMealDate} = useMeal();
 
     const navigate = useNavigate();
     const { selectedRecipe, setSelectedRecipe } = useRecipe();
@@ -79,6 +79,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, selectedMe
                         aria-label="Search"
                         aria-describedby="basic-addon1"
                         onClick = {handleClick}
+                        value={selectedRecipe?.name}
                     />
                 </InputGroup>
 
@@ -92,7 +93,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, selectedMe
                     onChange={(e) => setMealDate(e.target.value)}
                 />
 
-                <Form.Select aria-label="Meal Type">
+                <Form.Select aria-label="Meal Type" onChange={(e) => setSelectedMealType(e.target.value)} value={selectedMealType}>
                     <option>Select a Meal Type</option>
                     {mealTypes.map((mealType, index) => (
                         <option key={index} value={mealType}>{mealType}</option>

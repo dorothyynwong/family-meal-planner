@@ -8,13 +8,14 @@ import RecipesList from './Pages/RecipesList/RecipesList';
 import RecipeCreation from './Pages/RecipeCreation/RecipeCreation';
 import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
 import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
-import MealCreation from './Components/MealForm/MealForm';
 import { RecipeProvider } from './Components/RecipeContext/RecipeContext';
+import { MealProvider } from './Components/MealContext/MealContext';
 
 function App() {
 
   return (
     <RecipeProvider>
+    <MealProvider>
     <Layout>
       <Router>
         <Routes>
@@ -44,6 +45,7 @@ function App() {
         </Routes>
       </Router>
     </Layout>
+    </MealProvider>
     </RecipeProvider>
   )
 }
