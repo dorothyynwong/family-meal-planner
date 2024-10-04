@@ -63,6 +63,11 @@ public class MealController(IMealService mealService) : Controller
     [HttpGet("mealTypes")]
     public async Task<IActionResult> GetMealTypes()
     {
-        return Ok(Enum.GetNames(typeof(MealType)));
+        var dict = new Dictionary<string, int>();
+        foreach (var name in Enum.GetNames(typeof(MealType)))
+        {
+            dict.Add(name, (int)Enum.Parse(typeof(MealType), name));
+        }
+        return Ok(dict);
     }
 }

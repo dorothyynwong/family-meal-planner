@@ -17,7 +17,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
-    const [mealTypes, setMealTypes] = useState<string[]>([]);
+    const [mealTypes, setMealTypes] = useState({});
     const { selectedMealType, setSelectedMealType, mealDate, setMealDate, mealNotes, setMealNotes } = useMeal();
 
     const navigate = useNavigate();
@@ -54,10 +54,11 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         event.preventDefault();
         setStatus("loading");
         setErrorMessages([]);
-        const meal:MealDetailsInterface = {
+        const meal: MealDetailsInterface = {
             date: new Date(mealDate),
+            // date: new Date(),
             name: mealNotes,
-            recipeId: selectedRecipe? selectedRecipe.id : 0,
+            recipeId: selectedRecipe ? selectedRecipe.id : 0,
             userId: parseInt(userId!, 10),
             mealType: selectedMealType,
             addedByUserId: parseInt(userId!, 10),
@@ -65,18 +66,19 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         addMeal(meal)
             .then(response => {
                 if (response.statusText === "OK") {
-                    const recipeData = response.data;
-                    navigate(`/recipe-details/${recipeData}`);
+                    const mealData = response.data;
+                    navigate(`/meal-plans/${userId}`);
                     setStatus("success");
                 }
             })
             .catch(error => {
-                console.log("Error adding recipe", error);
-                const errorMessage = error?.response?.data?.message || "Error adding recipe";
+                console.log("Error adding meal", error);
+                const errorMessage = error?.response?.data?.message || "Error adding meal";
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
     }
+
 
 
     return (
@@ -114,9 +116,14 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
 
                 <Form.Select aria-label="Meal Type" onChange={(e) => setSelectedMealType(e.target.value)} value={selectedMealType}>
                     <option>Select a Meal Type</option>
-                    {mealTypes.map((mealType, index) => (
+                    {
+                        Object.keys(mealTypes).map((key, index) => (
+                            <option key={key} value={key}>{key}</option>
+                        ))
+                    }
+                    {/* {mealTypes.map((mealType, index) => (
                         <option key={index} value={mealType}>{mealType}</option>
-                    ))}
+                    ))} */}
                 </Form.Select>
 
                 <Form.Group className="mb-3" controlId="meal-notes">
@@ -124,7 +131,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
 
-                <Button id="add-meal-button" className="custom-button">Submit</Button>
+                <Button id="add-meal-button" className="custom-button" type="submit">Submit</Button>
 
             </Form>
         </Popup>);
