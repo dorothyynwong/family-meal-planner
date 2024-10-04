@@ -79,14 +79,14 @@ export async function uploadImage(uploadImage: File) {
     }
 }
 
-// export async function addMeal(meal: MealDetailsInterface) {
-//     try {
-//         const response: AxiosResponse = await client.post('meals', meal);
-//         return response;
-//     } catch (error) {
-//         throw error;
-//     }
-// }
+export async function addMeal(meal: MealDetailsInterface) {
+    try {
+        const response: AxiosResponse = await client.post('meals', meal);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
 
 export async function getMealByDateUserId(fromDate: string, toDate: string, userId: string) {
     try {

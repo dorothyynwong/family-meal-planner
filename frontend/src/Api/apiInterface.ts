@@ -21,7 +21,7 @@ export interface RecipeDetailsInterface {
 }
 
 export interface MealDetailsInterface {
-    id: number;
+    id?: number;
     date: Date;
     name: string;
     recipeId?: number;

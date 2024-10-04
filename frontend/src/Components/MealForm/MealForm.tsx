@@ -2,10 +2,11 @@ import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { getMealTypes } from "../../Api/api";
+import { addMeal, getMealTypes } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useRecipe } from "../RecipeContext/RecipeContext";
 import { useMeal } from "../MealContext/MealContext";
+import { MealDetailsInterface } from "../../Api/apiInterface";
 
 interface MealFormProps {
     modalShow: boolean;
@@ -49,6 +50,34 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         navigate(`/recipes-list/${userId}`, { state: { isFromMealForm, mealDate, selectedMealType } });
     }
 
+    const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+        event.preventDefault();
+        setStatus("loading");
+        setErrorMessages([]);
+        const meal:MealDetailsInterface = {
+            date: new Date(mealDate),
+            name: mealNotes,
+            recipeId: selectedRecipe? selectedRecipe.id : 0,
+            userId: parseInt(userId!, 10),
+            mealType: selectedMealType,
+            addedByUserId: parseInt(userId!, 10),
+        }
+        addMeal(meal)
+            .then(response => {
+                if (response.statusText === "OK") {
+                    const recipeData = response.data;
+                    navigate(`/recipe-details/${recipeData}`);
+                    setStatus("success");
+                }
+            })
+            .catch(error => {
+                console.log("Error adding recipe", error);
+                const errorMessage = error?.response?.data?.message || "Error adding recipe";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
+            });
+    }
+
 
     return (
         <Popup
@@ -56,7 +85,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
             onHide={() => setModalShow(false)}
             title="Add New Meal"
             body="">
-            <Form>
+            <Form onSubmit={handleSubmit}>
                 <InputGroup className="mb-3 search-container">
                     <InputGroup.Text className="search-icon-box" id="basic-addon1">
                         <FaSearch className="search-icon" />
@@ -95,7 +124,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
 
-                <Button id="add-meal-button" className="custom-button" onClick={handleClick}>Submit</Button>
+                <Button id="add-meal-button" className="custom-button">Submit</Button>
 
             </Form>
         </Popup>);
