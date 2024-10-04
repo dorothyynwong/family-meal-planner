@@ -20,9 +20,16 @@ export interface RecipeDetailsInterface {
     defaultImageUrl?: string;
 }
 
-export interface EventInterface {
-    title: string[];
-    start: Date;
-    end: Date;
-    type: string[];
-  }
+export interface MealDetailsInterface {
+    id: number;
+    date: Date;
+    name: string;
+    recipeId?: number;
+    recipeName?: string;
+    recipeDefaultImage?: string;
+    userId?: number;
+    familyId?: number;
+    mealType: string;
+    addedByUserId: number;
+}
+

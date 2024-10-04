@@ -9,9 +9,19 @@ import {
 
 import events from './events_mock';
 import "./MealPlanCalendar.scss";
-import { EventInterface } from '../../Api/apiInterface';
+import { EventInterface } from '../../Utils/convertMealsToEvents';
 
 const mLocalizer = momentLocalizer(moment);
+
+interface MealPlanCalendarProps {
+  startDate: Date;
+  endDate: Date;
+  selectedDate: Date;
+  setStartDate: (date: Date) => void;
+  setEndDate: (date: Date) => void;
+  setSelectedDate: (date: Date) => void;
+  mealEvents: EventInterface[];
+}
 
 interface CustomEventProps {
   event: EventInterface;
@@ -19,21 +29,26 @@ interface CustomEventProps {
 
 const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   const types = event.type;
+  const uniqueTypes = Array.from(new Set(types))
   return (
     <div className="dot-wrapper">
-      {types.map((type, index) => (<div key={index} className="dot"></div>))}
+      {uniqueTypes.map((type, index) => (
+        <div key={index} className={`dot ${type}`}></div>
+      ))}
     </div>
   );
 }
 
-const Basic: React.FC = () => {
+const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate, mealEvents}) => {
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
+  // const [mealEvents, setMealEvents] = useState(events);
 
   const clickRef = useRef<number | null>(null);
 
   const onSelectSlot = useCallback((slotInfo: SlotInfo) => {
     clickRef.current = window.setTimeout(() => {
       setSelectedSlot(slotInfo);
+      setSelectedDate(slotInfo.start);
     }, 100);
   }, []);
 
@@ -56,13 +71,20 @@ const Basic: React.FC = () => {
     else return {}
   }
 
+  const handleNavigate = (date: Date) => {
+    const fromDate = moment(date).startOf('month').subtract(7, 'days');
+    const toDate = moment(date).endOf('month').add(7, 'days');
+    setStartDate(fromDate.toDate());
+    setEndDate(toDate.toDate());
+  };
+
   return (
     <Fragment>
       <div className="meal-plan-calendar">
         <Calendar
           defaultDate={new Date()}
           defaultView={Views.MONTH}
-          events={events}
+          events={mealEvents}
           localizer={mLocalizer}
           views={{ month: true }}
           components={components}
@@ -71,6 +93,7 @@ const Basic: React.FC = () => {
           longPressThreshold={10}
           onSelectSlot={onSelectSlot}
           dayPropGetter={customDayPropGetter}
+          onNavigate={handleNavigate}
         />
       </div>
     </Fragment>

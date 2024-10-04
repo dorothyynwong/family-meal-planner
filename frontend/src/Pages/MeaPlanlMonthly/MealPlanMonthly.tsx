@@ -1,0 +1,90 @@
+import MealPlanCalendar from "../../Components/MealPlanCalendar/MealPlanCalendar"
+import MealCard from "../../Components/MealCard/MealCard"
+import { MealDetailsInterface } from "../../Api/apiInterface"
+import { useEffect, useState } from "react";
+import { getMealByDateUserId } from "../../Api/api";
+import { useParams } from "react-router-dom";
+import StatusHandler from "../../Components/StatusHandler/StatusHandler";
+import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
+
+const MealPlanMonthly: React.FC = () => {
+    const todaysDate = new Date();
+    const { userId } = useParams<{ userId: string }>();
+    const [startDate, setStartDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1-7));
+    const [endDate, setEndDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 7));
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
+    const [meals, setMeals] = useState<MealDetailsInterface[]>();
+    const [selectedDate, setSelectedDate] = useState(new Date());
+    const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
+
+    
+
+    useEffect(() => {
+        setStatus("loading");
+        setMeals([]);
+        setErrorMessages([]);
+
+        if (userId)
+            getMealByDateUserId(startDate.toDateString(), endDate.toDateString(), userId)
+                .then(meals => {
+                    setMeals(meals.data);
+                    setStatus("success");
+                })
+                .catch(error => {
+                    console.log("Error getting meals", error);
+                    const errorMessage = error?.response?.data?.message || "Error getting meals";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
+    }
+        , [startDate, endDate])
+
+    useEffect(() => {
+        if (meals) {
+            setMealOfDate([]);
+            const selectedDateLocal = selectedDate.toLocaleDateString(); 
+            setMealOfDate(
+                meals.filter((meal) => {
+                    const mealDateLocal = new Date(meal.date).toLocaleDateString(); // Convert meal date to YYYY-MM-DD
+                    return mealDateLocal === selectedDateLocal; // Compare the ISO strings
+                })
+            );
+        }
+
+    },[selectedDate, meals])
+
+    if (!meals) return (<>No data</>);
+    const events = convertMealsToEvents(meals);
+    // console.log(convertMealsToEvents(meals));
+
+    return (
+        <>
+            <MealPlanCalendar 
+            startDate={startDate} 
+            endDate={endDate} 
+            selectedDate={selectedDate}
+            setStartDate={setStartDate} 
+            setEndDate={setEndDate} 
+            setSelectedDate={setSelectedDate}
+            mealEvents={events}
+            />
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Uploading recipes..."
+                successMessage=""
+            >
+                <></>
+            </StatusHandler>
+                {
+                    mealOfDate &&
+                    mealOfDate.map((meal, index) => (
+                        <MealCard key={index} meal={meal}/>
+                    ))}
+        </>
+
+    )
+}
+
+export default MealPlanMonthly

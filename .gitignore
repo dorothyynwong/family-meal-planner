@@ -19,3 +19,5 @@ backend.Tests/bin/
 backend.Tests/obj/
 
 .env
+
+backend/Logs/

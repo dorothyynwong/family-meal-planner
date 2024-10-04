@@ -7,7 +7,7 @@ import RecipeDetails from './Pages/RecipeDetails/RecipeDetails';
 import RecipesList from './Pages/RecipesList/RecipesList';
 import RecipeCreation from './Pages/RecipeCreation/RecipeCreation';
 import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
-import CalendarMonthly from './Components/MealPlanCalendar/MealPlanCalendar';
+import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
 
 function App() {
 
@@ -35,8 +35,8 @@ function App() {
           <Route path="/recipe-edit/:recipeId"
             element={<RecipeUpdate />} />
 
-          <Route path="/mealplans-monthly"
-          element={<CalendarMonthly />} />
+          <Route path="/meal-plans/:userId" 
+          element={<MealPlanMonthly/>} />
         </Routes>
       </Router>
     </Layout>

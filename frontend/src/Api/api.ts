@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { RecipeDetailsInterface } from './apiInterface';
+import { MealDetailsInterface, RecipeDetailsInterface } from './apiInterface';
 
 export async function importRecipeFromUrl(url: string) {
     try {
@@ -54,7 +54,7 @@ export async function getRecipeByUserId(userId: number) {
     try {
         const response: AxiosResponse = await client.get(`/recipes`, {
             params: {
-                userId: 1
+                userId: userId
             }
         });
 
@@ -73,6 +73,32 @@ export async function uploadImage(uploadImage: File) {
                 'Content-Type': 'multipart/form-data',
             },
         });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+// export async function addMeal(meal: MealDetailsInterface) {
+//     try {
+//         const response: AxiosResponse = await client.post('meals', meal);
+//         return response;
+//     } catch (error) {
+//         throw error;
+//     }
+// }
+
+export async function getMealByDateUserId(fromDate: string, toDate: string, userId: string) {
+    try {
+
+        const response: AxiosResponse = await client.get(`/meals`, {
+            params: {
+                fromDate: fromDate,
+                toDate: toDate,
+                userId: parseInt(userId)
+            }
+        });
+
         return response;
     } catch (error) {
         throw error;

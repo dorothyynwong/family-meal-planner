@@ -5,19 +5,38 @@
 
 .meal-plan-calendar {
     height: 70vh;
-    max-height: 300px;
+    max-height: 400px;
 }
 
 .dot-wrapper{
     display: flex;
+    flex-wrap: wrap;
 }
 .dot {
-    height: 5px;
-    width: 5px;
-    background-color: darkcyan;
+    height: 0.5em;
+    width: 0.5em;
     border-radius: 50%;
     margin: 1px;
+    background-color: darkcyan;
 }
+
+.Breakfast {
+    background-color: $breakfast;
+}
+
+.Lunch {
+    background-color: $lunch;
+}
+
+.Dinner {
+    background-color: $dinner;
+}
+
+.MorningSnack, .AfternoonSnack, .EveningSnack {
+    background-color: $snack
+}
+
+
 
 .selected-date {
     background-color: $light-background;

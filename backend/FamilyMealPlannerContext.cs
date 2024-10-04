@@ -9,6 +9,8 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
     : IdentityDbContext<User, Role, int>(options)
 {
     public DbSet<Recipe> Recipes { get; set; }
+    public DbSet<Family> Families { get; set; }
+    public DbSet<Meal> Meals {get; set;}
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
