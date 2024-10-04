@@ -3,7 +3,7 @@ import MealCard from "../../Components/MealCard/MealCard"
 import { MealDetailsInterface, RecipeDetailsInterface } from "../../Api/apiInterface"
 import { useEffect, useState } from "react";
 import { getMealByDateUserId } from "../../Api/api";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
 import { IoIosAddCircle } from "react-icons/io";
@@ -22,8 +22,9 @@ const MealPlanMonthly: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
     const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetailsInterface>();
-    const [mealTypes, setMealTypes] = useState<string[]>([]);
     const [mealDate, setMealDate] = useState(new Date().toISOString().split("T")[0]);
+    const [selectedMealType, setSelectedMealType] = useState("");
+    const location = useLocation();
 
     const handleClick = () => {
         setModalShow(true);
@@ -63,6 +64,12 @@ const MealPlanMonthly: React.FC = () => {
 
     },[selectedDate, meals])
 
+    useEffect(() => {
+        if (location.state && location.state.selectedMealType) {
+            setSelectedMealType(location.state.selectedMealType);
+        }
+    }, [location.state]); 
+
     if (!meals) return (<>No data</>);
     const events = convertMealsToEvents(meals);
 
@@ -90,8 +97,8 @@ const MealPlanMonthly: React.FC = () => {
                 setModalShow={setModalShow} 
                 mealDate={mealDate}
                 setMealDate={setMealDate}
-                mealTypes = {mealTypes}
-                setMealTypes = {setMealTypes}
+                selectedMealType = {selectedMealType}
+                setSelectedMealType = {setSelectedMealType}
             />
             <div className="add-meal-button" onClick={handleClick}>
                 <IoIosAddCircle size={30} />

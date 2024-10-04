@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { getMealTypes, getRecipeByUserId } from "../../Api/api";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { FaSearch } from "react-icons/fa";
@@ -10,17 +10,19 @@ import { useRecipe } from "../RecipeContext/RecipeContext";
 interface MealFormProps {
     modalShow: boolean;
     setModalShow: (newModalShow: boolean) => void;
-    mealTypes: string[];
-    setMealTypes: (newMealTypes: string[]) => void;
+    selectedMealType: string;
+    setSelectedMealType: (newMealType: string) => void;
     mealDate: string;
     setMealDate: (newMealDate: string) => void;
 }
 
-const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, mealTypes, setMealTypes, mealDate, setMealDate}) => {
-    const [mealName, setMealName] = useState("");
+const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, selectedMealType, setSelectedMealType, mealDate, setMealDate}) => {
+    // const [mealName, setMealName] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
+    const [mealTypes, setMealTypes] = useState<string[]>([]);
+    const location = useLocation();
 
     const navigate = useNavigate();
     const { selectedRecipe, setSelectedRecipe } = useRecipe();
@@ -49,12 +51,15 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, mealTypes,
 
     const handleClick = () => {
         const isFromMealForm = true;
-        navigate(`/recipes-list/${userId}`, {state : {isFromMealForm}});
+        navigate(`/recipes-list/${userId}`, {state : {isFromMealForm, mealDate, selectedMealType}});
     }
 
     useEffect(() => {
         console.log(selectedRecipe?.name);
+        console.log(selectedMealType);
     }, [selectedRecipe])
+
+
 
     return (
         <Popup
