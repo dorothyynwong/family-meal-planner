@@ -6,6 +6,8 @@ import { getMealByDateUserId } from "../../Api/api";
 import { useParams } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
+import { IoIosAddCircle } from "react-icons/io";
+import "./MealPlanMonthly.scss";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
@@ -18,7 +20,9 @@ const MealPlanMonthly: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
 
-    
+    const handleClick = () => {
+
+    }
 
     useEffect(() => {
         setStatus("loading");
@@ -46,8 +50,8 @@ const MealPlanMonthly: React.FC = () => {
             const selectedDateLocal = selectedDate.toLocaleDateString(); 
             setMealOfDate(
                 meals.filter((meal) => {
-                    const mealDateLocal = new Date(meal.date).toLocaleDateString(); // Convert meal date to YYYY-MM-DD
-                    return mealDateLocal === selectedDateLocal; // Compare the ISO strings
+                    const mealDateLocal = new Date(meal.date).toLocaleDateString(); 
+                    return mealDateLocal === selectedDateLocal; 
                 })
             );
         }
@@ -56,7 +60,6 @@ const MealPlanMonthly: React.FC = () => {
 
     if (!meals) return (<>No data</>);
     const events = convertMealsToEvents(meals);
-    // console.log(convertMealsToEvents(meals));
 
     return (
         <>
@@ -77,11 +80,14 @@ const MealPlanMonthly: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-                {
-                    mealOfDate &&
-                    mealOfDate.map((meal, index) => (
-                        <MealCard key={index} meal={meal}/>
-                    ))}
+            <div className="add-meal-button">
+                <IoIosAddCircle size={30} onClick={handleClick}/>
+            </div>
+            {
+                mealOfDate &&
+                mealOfDate.map((meal, index) => (
+                    <MealCard key={index} meal={meal}/>
+            ))}
         </>
 
     )
