@@ -1,42 +1,31 @@
 import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
 import { Button, Form, InputGroup } from "react-bootstrap";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { getMealTypes, getRecipeByUserId } from "../../Api/api";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
+import { FaSearch } from "react-icons/fa";
+import { useRecipe } from "../RecipeContext/RecipeContext";
 
 interface MealFormProps {
     modalShow: boolean;
     setModalShow: (newModalShow: boolean) => void;
+    mealTypes: string[];
+    setMealTypes: (newMealTypes: string[]) => void;
+    mealDate: string;
+    setMealDate: (newMealDate: string) => void;
 }
 
-const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
+const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow, mealTypes, setMealTypes, mealDate, setMealDate}) => {
     const [mealName, setMealName] = useState("");
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
-    const [recipesList, setRecipesList] = useState<RecipeDetailsInterface[]>([]);
-    const [mealTypes, setMealTypes] = useState<string[]>([]);
-    const [date, setDate] = useState(new Date().toISOString().split("T")[0]);
 
-    // useEffect(() => {
-    //     setStatus("loading");
-    //     setErrorMessages([]);
-    //     const userIdInt = parseInt(userId!, 10)
-    //     getRecipeByUserId(userIdInt)
-    //         .then(recipes => {
-    //             setRecipesList(recipes.data);
-    //             setStatus("success");
-    //         })
-    //         .catch(error => {
-    //             console.log("Error getting recipes", error);
-    //             const errorMessage = error?.response?.data?.message || "Error getting recipes";
-    //             setStatus("error");
-    //             setErrorMessages([...errorMessages, errorMessage]);
-    //         });
-    // }, [userId])
+    const navigate = useNavigate();
+    const { selectedRecipe, setSelectedRecipe } = useRecipe();
 
-    useEffect(()=>{
+    useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
         getMealTypes()
@@ -50,11 +39,22 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
-    },[])
+    }, []);
+
+    useEffect(() => {
+        if (selectedRecipe) {
+            setModalShow(true);
+        }
+    }, [selectedRecipe, setModalShow]);
 
     const handleClick = () => {
-
+        const isFromMealForm = true;
+        navigate(`/recipes-list/${userId}`, {state : {isFromMealForm}});
     }
+
+    useEffect(() => {
+        console.log(selectedRecipe?.name);
+    }, [selectedRecipe])
 
     return (
         <Popup
@@ -63,15 +63,28 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
             title="Add New Meal"
             body="">
             <Form>
-          
+                <InputGroup className="mb-3 search-container">
+                    <InputGroup.Text className="search-icon-box" id="basic-addon1">
+                        <FaSearch className="search-icon" />
+                    </InputGroup.Text>
+
+                    <Form.Control
+                        className="search-box"
+                        placeholder="Search"
+                        aria-label="Search"
+                        aria-describedby="basic-addon1"
+                        onClick = {handleClick}
+                    />
+                </InputGroup>
+
                 <Form.Control
                     type="date"
                     className="meal-date"
                     placeholder="Meal Date"
                     aria-label="Meal-Date"
                     aria-describedby="basic-addon1"
-                    value={date}
-                    onChange={(e) => setDate(e.target.value)}
+                    value={mealDate}
+                    onChange={(e) => setMealDate(e.target.value)}
                 />
 
                 <Form.Select aria-label="Meal Type">
@@ -80,7 +93,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                         <option key={index} value={mealType}>{mealType}</option>
                     ))}
                 </Form.Select>
-                
+
                 <Button id="add-meal-button" className="custom-button" onClick={handleClick}>Submit</Button>
 
             </Form>

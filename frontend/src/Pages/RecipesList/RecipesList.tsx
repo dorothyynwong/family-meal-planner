@@ -6,12 +6,20 @@ import { getRecipeByUserId } from "../../Api/api";
 import { Row } from "react-bootstrap";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 
+// interface RecipesListProps {
+//     isFromMealForm?: false;
+//     selectedRecipe?: RecipeDetailsInterface;
+//     setSelectedRecipe?: () => {};
+// }
+
 const RecipesList: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { userId } = useParams<{ userId: string }>();
     const location = useLocation();
     const [recipesList, setRecipesList] = useState<RecipeDetailsInterface[]>([]);
+    const isFromMealForm = location.state?.isFromMealForm || false;
+    
 
     useEffect(() => {
         setStatus("loading");
@@ -42,7 +50,7 @@ const RecipesList: React.FC = () => {
             </StatusHandler>
             {recipesList.map((recipe, index) => (
                 <Row className="mb-3" key={index}>
-                    <RecipeCard recipe={recipe} />
+                    <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm}/>
                 </Row>
             ))}
 

@@ -1,6 +1,6 @@
 import MealPlanCalendar from "../../Components/MealPlanCalendar/MealPlanCalendar"
 import MealCard from "../../Components/MealCard/MealCard"
-import { MealDetailsInterface } from "../../Api/apiInterface"
+import { MealDetailsInterface, RecipeDetailsInterface } from "../../Api/apiInterface"
 import { useEffect, useState } from "react";
 import { getMealByDateUserId } from "../../Api/api";
 import { useNavigate, useParams } from "react-router-dom";
@@ -8,7 +8,7 @@ import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
 import { IoIosAddCircle } from "react-icons/io";
 import "./MealPlanMonthly.scss";
-import MealCreation from "../../Components/MealForm/MealForm";
+import MealForm from "../../Components/MealForm/MealForm";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
@@ -21,7 +21,9 @@ const MealPlanMonthly: React.FC = () => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
-    const navigate = useNavigate();
+    const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetailsInterface>();
+    const [mealTypes, setMealTypes] = useState<string[]>([]);
+    const [mealDate, setMealDate] = useState(new Date().toISOString().split("T")[0]);
 
     const handleClick = () => {
         setModalShow(true);
@@ -83,7 +85,14 @@ const MealPlanMonthly: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-            <MealCreation modalShow={modalShow} setModalShow={setModalShow} />
+            <MealForm 
+                modalShow={modalShow} 
+                setModalShow={setModalShow} 
+                mealDate={mealDate}
+                setMealDate={setMealDate}
+                mealTypes = {mealTypes}
+                setMealTypes = {setMealTypes}
+            />
             <div className="add-meal-button" onClick={handleClick}>
                 <IoIosAddCircle size={30} />
             </div>
