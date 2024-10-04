@@ -5,6 +5,8 @@ interface MealContextProps {
     setSelectedMealType: (mealType:string) => void;
     mealDate: string;
     setMealDate: (date:string) => void;
+    mealNotes: string;
+    setMealNotes: (notes: string) => void;
 }
 
 const MealContext = createContext<MealContextProps | undefined>(undefined);
@@ -12,9 +14,10 @@ const MealContext = createContext<MealContextProps | undefined>(undefined);
 export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     const [selectedMealType, setSelectedMealType] = useState("");
     const [mealDate, setMealDate] = useState("");
+    const [mealNotes, setMealNotes] = useState("");
 
     return (
-        <MealContext.Provider value={{ selectedMealType, setSelectedMealType, mealDate, setMealDate }}>
+        <MealContext.Provider value={{ selectedMealType, setSelectedMealType, mealDate, setMealDate, mealNotes, setMealNotes }}>
             {children}
         </MealContext.Provider>
     );
