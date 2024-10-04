@@ -3,15 +3,17 @@ import MealCard from "../../Components/MealCard/MealCard"
 import { MealDetailsInterface } from "../../Api/apiInterface"
 import { useEffect, useState } from "react";
 import { getMealByDateUserId } from "../../Api/api";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
 import { IoIosAddCircle } from "react-icons/io";
 import "./MealPlanMonthly.scss";
+import MealCreation from "../../Components/MealForm/MealForm";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
     const { userId } = useParams<{ userId: string }>();
+    const [modalShow, setModalShow] = useState(false);
     const [startDate, setStartDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1-7));
     const [endDate, setEndDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 7));
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -19,9 +21,10 @@ const MealPlanMonthly: React.FC = () => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
+    const navigate = useNavigate();
 
     const handleClick = () => {
-
+        setModalShow(true);
     }
 
     useEffect(() => {
@@ -80,8 +83,9 @@ const MealPlanMonthly: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-            <div className="add-meal-button">
-                <IoIosAddCircle size={30} onClick={handleClick}/>
+            <MealCreation modalShow={modalShow} setModalShow={setModalShow} />
+            <div className="add-meal-button" onClick={handleClick}>
+                <IoIosAddCircle size={30} />
             </div>
             {
                 mealOfDate &&

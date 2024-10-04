@@ -8,6 +8,7 @@ import RecipesList from './Pages/RecipesList/RecipesList';
 import RecipeCreation from './Pages/RecipeCreation/RecipeCreation';
 import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
 import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
+import MealCreation from './Components/MealForm/MealForm';
 
 function App() {
 
@@ -35,8 +36,9 @@ function App() {
           <Route path="/recipe-edit/:recipeId"
             element={<RecipeUpdate />} />
 
-          <Route path="/meal-plans/:userId" 
-          element={<MealPlanMonthly/>} />
+          <Route path="/meal-plans/:userId"
+            element={<MealPlanMonthly />} />
+
         </Routes>
       </Router>
     </Layout>
