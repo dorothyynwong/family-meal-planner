@@ -7,7 +7,7 @@ interface MealProps {
 
 const MealCard: React.FC<MealProps> = ({ meal }) => {
     return (
-        <Card sx={{ maxWidth: 345, m:2 }}>
+        <Card sx={{ maxWidth: 345, m:2 }} className="meal-card">
             <CardHeader title={meal.mealType} className={meal.mealType} />
             {(meal.recipeDefaultImage) && <CardMedia
                 component="img"

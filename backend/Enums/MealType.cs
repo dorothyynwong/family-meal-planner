@@ -3,10 +3,7 @@ namespace FamilyMealPlanner.Enums;
 public enum MealType
 {
     Breakfast = 1,
-    MorningSnack,
     Lunch,
-    AfternoonSnack,
+    Snack,
     Dinner,
-    EveningSnack,
-    
 }

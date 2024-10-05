@@ -7,6 +7,7 @@ import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
+import "./MealForm.scss";
 
 interface MealFormProps {
     modalShow: boolean;
@@ -105,19 +106,20 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
 
     return (
         <Popup
+            customClass="meal-form"
             show={modalShow}
             onHide={() => setModalShow(false)}
             title="Add New Meal"
             body="">
             <Form onSubmit={handleSubmit}>
-                <InputGroup className="mb-3 search-container">
-                    <InputGroup.Text className="search-icon-box" id="basic-addon1">
-                        <FaSearch className="search-icon" />
+                <InputGroup className="mt-3 recipe-search-container">
+                    <InputGroup.Text className="recipe-search-icon-box" id="basic-addon1">
+                        <FaSearch className="recipe-search-icon" />
                     </InputGroup.Text>
 
                     <Form.Control
-                        className="search-box"
-                        placeholder="Search"
+                        className="recipe-search-box"
+                        placeholder="Search Recipe"
                         aria-label="Search"
                         aria-describedby="basic-addon1"
                         onClick={handleClick}
@@ -128,7 +130,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
 
                 <Form.Control
                     type="date"
-                    className="meal-date"
+                    className="mt-3 meal-date"
                     placeholder="Meal Date"
                     aria-label="Meal-Date"
                     aria-describedby="basic-addon1"
@@ -136,18 +138,21 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     onChange={(e) => setMealDate(e.target.value)}
                 />
 
-                <Form.Select aria-label="Meal Type" onChange={(e) => setSelectedMealType(e.target.value)} value={selectedMealType}>
+                <Form.Select 
+                    className="mt-3 meal-type"
+                    aria-label="Meal Type" 
+                    onChange={(e) => setSelectedMealType(e.target.value)} 
+                    value={selectedMealType}>
                     <option>Select a Meal Type</option>
                     {mealTypes.map((mealType, index) => (
                         <option key={index} value={mealType}>{mealType}</option>
                     ))}
                 </Form.Select>
 
-                <Form.Group className="mb-3" controlId="meal-notes">
-                    <Form.Label>Notes</Form.Label>
-                    <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
+                <Form.Group controlId="meal-notes">
+                    <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
-                <Button id="add-meal-button" className="custom-button" type="submit">Submit</Button>
+                <Button id="add-meal-button" className="mt-3 custom-button" type="submit">Submit</Button>
 
                 <StatusHandler
                     status={status}
