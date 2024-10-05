@@ -5,7 +5,7 @@ import { useEffect, useState } from "react";
 import { getMealByDateUserId } from "../../Api/api";
 import {  useParams } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
-import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
+import { convertMealsToEvents, EventInterface } from "../../Utils/convertMealsToEvents";
 import { IoIosAddCircle } from "react-icons/io";
 import "./MealPlanMonthly.scss";
 import MealForm from "../../Components/MealForm/MealForm";
@@ -22,6 +22,7 @@ const MealPlanMonthly: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
     const {modalShow, setModalShow, setMode} = useMeal();
+    const [convertedEvents, setConvertedEvents] = useState<EventInterface[]>([]);
 
     const handleClick = () => {
         setMode("Add");
@@ -51,6 +52,7 @@ const MealPlanMonthly: React.FC = () => {
     useEffect(() => {
         if (meals) {
             setMealOfDate([]);
+            setConvertedEvents(convertMealsToEvents(meals));
             const selectedDateLocal = selectedDate.toLocaleDateString(); 
             setMealOfDate(
                 meals.filter((meal) => {
@@ -63,8 +65,7 @@ const MealPlanMonthly: React.FC = () => {
     },[selectedDate, meals])
 
     if (!meals) return (<>No data</>);
-    const events = convertMealsToEvents(meals);
-
+    
     return (
         <>
             <MealPlanCalendar 
@@ -74,7 +75,7 @@ const MealPlanMonthly: React.FC = () => {
             setStartDate={setStartDate} 
             setEndDate={setEndDate} 
             setSelectedDate={setSelectedDate}
-            mealEvents={events}
+            mealEvents={convertedEvents}
             />
             <StatusHandler
                 status={status}

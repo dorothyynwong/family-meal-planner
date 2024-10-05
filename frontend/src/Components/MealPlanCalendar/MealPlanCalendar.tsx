@@ -7,7 +7,6 @@ import {
   SlotInfo,
 } from 'react-big-calendar';
 
-import events from './events_mock';
 import "./MealPlanCalendar.scss";
 import { EventInterface } from '../../Utils/convertMealsToEvents';
 
