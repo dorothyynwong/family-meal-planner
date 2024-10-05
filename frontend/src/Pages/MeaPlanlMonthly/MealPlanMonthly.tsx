@@ -44,7 +44,7 @@ const MealPlanMonthly: React.FC = () => {
                     setErrorMessages([...errorMessages, errorMessage]);
                 });
     }
-        , [startDate, endDate])
+        , [startDate, endDate, modalShow])
 
     useEffect(() => {
         if (meals) {
