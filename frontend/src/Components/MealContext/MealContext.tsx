@@ -38,6 +38,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMealDate(new Date().toISOString().split('T')[0]);
         setMealNotes("");
         setSelectedRecipe(null);
+        setRecipeName("");
     };
 
     return (

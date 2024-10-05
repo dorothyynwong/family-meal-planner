@@ -153,7 +153,7 @@ const MealForm: React.FC = () => {
         <Popup
             customclass="meal-form"
             show={modalShow}
-            onHide={() => setModalShow(false)}
+            onHide={() => {setModalShow(false); resetMealContext();}}
             title={`${mode} Meal`}
             body="">
             <Form onSubmit={handleSubmit}>
