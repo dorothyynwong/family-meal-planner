@@ -16,9 +16,7 @@ const MealForm: React.FC = () => {
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
     const { mode,
-            setMode,
             currentMeal,
-            setCurrentMeal,
             recipeName,
             setRecipeName,
             selectedRecipe,
@@ -67,7 +65,6 @@ const MealForm: React.FC = () => {
         deleteMeal(currentMeal!.id!)
         .then(response => {
             if (response.statusText === "OK") {
-                const mealData = response.data;
                 setStatus("success");
             }
         })
@@ -121,8 +118,6 @@ const MealForm: React.FC = () => {
             addMeal(meal)
                 .then(response => {
                     if (response.statusText === "OK") {
-                        const mealData = response.data;
-                        // navigate(`/meal-plans/${userId}`);
                         setStatus("success");
                     }
                 })
@@ -138,7 +133,6 @@ const MealForm: React.FC = () => {
             updateMeal(meal, currentMeal!.id!)
                 .then(response => {
                     if (response.statusText === "OK") {
-                        const mealData = response.data;
                         setStatus("success");
                     }
                 })

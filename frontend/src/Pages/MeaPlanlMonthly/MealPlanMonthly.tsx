@@ -14,7 +14,6 @@ import { useMeal } from "../../Components/MealContext/MealContext";
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
     const { userId } = useParams<{ userId: string }>();
-    // const [modalShow, setModalShow] = useState(false);
     const [startDate, setStartDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1-7));
     const [endDate, setEndDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 7));
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -22,7 +21,7 @@ const MealPlanMonthly: React.FC = () => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
-    const {modalShow, setModalShow, mode, setMode} = useMeal();
+    const {modalShow, setModalShow, setMode} = useMeal();
 
     const handleClick = () => {
         setMode("Add");
