@@ -3,13 +3,17 @@ import MealCard from "../../Components/MealCard/MealCard"
 import { MealDetailsInterface } from "../../Api/apiInterface"
 import { useEffect, useState } from "react";
 import { getMealByDateUserId } from "../../Api/api";
-import { useParams } from "react-router-dom";
+import {  useParams } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import { convertMealsToEvents } from "../../Utils/convertMealsToEvents";
+import { IoIosAddCircle } from "react-icons/io";
+import "./MealPlanMonthly.scss";
+import MealForm from "../../Components/MealForm/MealForm";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
     const { userId } = useParams<{ userId: string }>();
+    const [modalShow, setModalShow] = useState(false);
     const [startDate, setStartDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1-7));
     const [endDate, setEndDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 7));
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -18,7 +22,9 @@ const MealPlanMonthly: React.FC = () => {
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
 
-    
+    const handleClick = () => {
+        setModalShow(true);
+    }
 
     useEffect(() => {
         setStatus("loading");
@@ -38,7 +44,7 @@ const MealPlanMonthly: React.FC = () => {
                     setErrorMessages([...errorMessages, errorMessage]);
                 });
     }
-        , [startDate, endDate])
+        , [startDate, endDate, modalShow])
 
     useEffect(() => {
         if (meals) {
@@ -46,8 +52,8 @@ const MealPlanMonthly: React.FC = () => {
             const selectedDateLocal = selectedDate.toLocaleDateString(); 
             setMealOfDate(
                 meals.filter((meal) => {
-                    const mealDateLocal = new Date(meal.date).toLocaleDateString(); // Convert meal date to YYYY-MM-DD
-                    return mealDateLocal === selectedDateLocal; // Compare the ISO strings
+                    const mealDateLocal = new Date(meal.date).toLocaleDateString(); 
+                    return mealDateLocal === selectedDateLocal; 
                 })
             );
         }
@@ -56,7 +62,6 @@ const MealPlanMonthly: React.FC = () => {
 
     if (!meals) return (<>No data</>);
     const events = convertMealsToEvents(meals);
-    // console.log(convertMealsToEvents(meals));
 
     return (
         <>
@@ -77,11 +82,18 @@ const MealPlanMonthly: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-                {
-                    mealOfDate &&
-                    mealOfDate.map((meal, index) => (
-                        <MealCard key={index} meal={meal}/>
-                    ))}
+            <MealForm 
+                modalShow={modalShow} 
+                setModalShow={setModalShow} 
+            />
+            <div className="add-meal-button" onClick={handleClick}>
+                <IoIosAddCircle size={30} />
+            </div>
+            {
+                mealOfDate &&
+                mealOfDate.map((meal, index) => (
+                    <MealCard key={index} meal={meal}/>
+            ))}
         </>
 
     )

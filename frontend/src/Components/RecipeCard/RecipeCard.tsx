@@ -18,6 +18,8 @@ import { useNavigate } from 'react-router-dom';
 import RecipeDeleteConfirmation from '../RecipeDeleteConfirmation/RecipeDeleteConirmation';
 import { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { MdAddCard } from 'react-icons/md';
+import { useMeal } from '../MealContext/MealContext';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -25,6 +27,7 @@ interface ExpandMoreProps extends IconButtonProps {
 
 interface RecipeCardProps {
     recipe: RecipeDetailsInterface;
+    isFromMealForm? : boolean;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -51,10 +54,11 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     ],
 }));
 
-const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
+const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
+    const { selectedRecipe, setSelectedRecipe } = useMeal();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -90,6 +94,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
         setIsDelete(false);
     }
 
+    const handleCardClick = () => {
+        setSelectedRecipe(recipe);
+        navigate(-1);
+    }
+
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
@@ -98,7 +107,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe }) => {
                         Melissa Cheng
                     </Avatar>
                 }
-                action={
+                action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
                 }
                 title={recipe.name}

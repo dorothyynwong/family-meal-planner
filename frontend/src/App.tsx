@@ -8,10 +8,12 @@ import RecipesList from './Pages/RecipesList/RecipesList';
 import RecipeCreation from './Pages/RecipeCreation/RecipeCreation';
 import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
 import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
+import { MealProvider } from './Components/MealContext/MealContext';
 
 function App() {
 
   return (
+    <MealProvider>
     <Layout>
       <Router>
         <Routes>
@@ -35,11 +37,13 @@ function App() {
           <Route path="/recipe-edit/:recipeId"
             element={<RecipeUpdate />} />
 
-          <Route path="/meal-plans/:userId" 
-          element={<MealPlanMonthly/>} />
+          <Route path="/meal-plans/:userId"
+            element={<MealPlanMonthly />} />
+
         </Routes>
       </Router>
     </Layout>
+    </MealProvider>
   )
 }
 

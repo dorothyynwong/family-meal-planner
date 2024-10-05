@@ -21,9 +21,8 @@ export interface RecipeDetailsInterface {
 }
 
 export interface MealDetailsInterface {
-    id: number;
-    date: Date;
-    name: string;
+    id?: number;
+    date: string;
     recipeId?: number;
     recipeName?: string;
     recipeDefaultImage?: string;
@@ -31,5 +30,6 @@ export interface MealDetailsInterface {
     familyId?: number;
     mealType: string;
     addedByUserId: number;
+    notes?: string;
 }
 
