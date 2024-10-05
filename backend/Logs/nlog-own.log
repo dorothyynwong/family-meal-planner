@@ -265,3 +265,4 @@ POSITION: 73
 2024-10-05 12:55:38.1072||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
 
 POSITION: 73 
+2024-10-05 12:56:27.7329||backend.Program|WARN|  console logging is great 
