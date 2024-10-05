@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { addMeal, getMealTypes } from "../../Api/api";
+import { addMeal, getMealTypes, updateMeal } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
@@ -17,6 +17,8 @@ const MealForm: React.FC = () => {
     const [mealTypes, setMealTypes] = useState<string[]>([]);
     const { mode,
             setMode,
+            currentMeal,
+            setCurrentMeal,
             recipeName,
             setRecipeName,
             selectedRecipe,
@@ -64,7 +66,7 @@ const MealForm: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
-        if (!mealNotes.trim() && !selectedRecipe) {
+        if (!mealNotes.trim() && !selectedRecipe && !recipeName) {
             setErrorMessages(["Please enter notes or select a recipe."]);
             setStatus("error");
             return;
@@ -93,20 +95,41 @@ const MealForm: React.FC = () => {
             addedByUserId: parseInt(userId!, 10),
             ...(selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
-        addMeal(meal)
-            .then(response => {
-                if (response.statusText === "OK") {
-                    const mealData = response.data;
-                    navigate(`/meal-plans/${userId}`);
-                    setStatus("success");
-                }
-            })
-            .catch(error => {
-                console.log("Error adding meal", error);
-                const errorMessage = error?.response?.data?.message || "Error adding meal";
-                setStatus("error");
-                setErrorMessages([...errorMessages, errorMessage]);
-            });
+
+        if (mode === "Add")
+        {
+            addMeal(meal)
+                .then(response => {
+                    if (response.statusText === "OK") {
+                        const mealData = response.data;
+                        navigate(`/meal-plans/${userId}`);
+                        setStatus("success");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error adding meal", error);
+                    const errorMessage = error?.response?.data?.message || "Error adding meal";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
+        }
+        else
+        {
+            updateMeal(meal, currentMeal!.id!)
+                .then(response => {
+                    if (response.statusText === "OK") {
+                        const mealData = response.data;
+                        navigate(`/meal-plans/${userId}`);
+                        setStatus("success");
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating meal", error);
+                    const errorMessage = error?.response?.data?.message || "Error updating meal";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
+        }
         setModalShow(false);
         resetMealContext();
         setStatus("idle");
@@ -170,7 +193,7 @@ const MealForm: React.FC = () => {
                     <Button id="update-meal-button" className="mt-3 custom-button" type="submit">Update</Button>
                 }
 
-                {mode === "Delete" &&
+                {mode === "Edit" &&
                     <Button id="delete-meal-button" className="mt-3 custom-button" type="button">Delete</Button>
                 }
 

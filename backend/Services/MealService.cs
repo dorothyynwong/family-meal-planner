@@ -101,11 +101,11 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
             Meal meal = await GetMealById(mealId);
 
             meal.Date = mealRequest.Date;
-            meal.RecipeId = mealRequest.RecipeId;
-            meal.UserId = mealRequest.UserId;
-            meal.FamilyId = mealRequest.FamilyId;
+            meal.RecipeId = mealRequest.RecipeId != null? mealRequest.RecipeId: meal.RecipeId;
+            // meal.UserId = mealRequest.UserId;
+            // meal.FamilyId = mealRequest.FamilyId;
             meal.MealType = mealRequest.GetMealTypeEnum();
-            meal.AddedByUserId = mealRequest.AddedByUserId;
+            // meal.AddedByUserId = mealRequest.AddedByUserId;
             meal.Notes = mealRequest.Notes;
 
             _context.Meals.Update(meal);

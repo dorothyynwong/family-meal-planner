@@ -300,3 +300,54 @@ POSITION: 73
   "AddedByUserId": 1,
   "Notes": "string"
 }: An error occurred while updating the database. 
+2024-10-05 15:36:38.9234||backend.Program|WARN|  console logging is great 
+2024-10-05 15:37:42.9178||FamilyMealPlanner.Services.MealService|ERROR|  Database error on mealId 15: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-05 15:37:42.9405||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 15, {
+  "Date": "2024-10-05",
+  "Name": null,
+  "RecipeId": 9,
+  "UserId": 1,
+  "FamilyId": null,
+  "MealType": "Breakfast",
+  "AddedByUserId": 1,
+  "Notes": ""
+}: An error occurred while updating the database. 
+2024-10-05 15:38:00.3047||FamilyMealPlanner.Services.MealService|ERROR|  Database error on mealId 15: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-05 15:38:00.3096||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 15, {
+  "Date": "2024-10-05",
+  "Name": null,
+  "RecipeId": 10,
+  "UserId": 1,
+  "FamilyId": null,
+  "MealType": "Breakfast",
+  "AddedByUserId": 1,
+  "Notes": ""
+}: An error occurred while updating the database. 
+2024-10-05 15:39:38.6398||FamilyMealPlanner.Services.MealService|ERROR|  Database error on mealId 15: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-05 15:39:38.6398||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 15, {
+  "Date": "2024-10-05",
+  "Name": null,
+  "RecipeId": 9,
+  "UserId": 1,
+  "FamilyId": null,
+  "MealType": "Breakfast",
+  "AddedByUserId": 1,
+  "Notes": ""
+}: An error occurred while updating the database. 
+2024-10-05 15:39:56.1724||FamilyMealPlanner.Services.MealService|ERROR|  Database error on mealId 15: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-05 15:39:56.1724||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 15, {
+  "Date": "2024-10-05",
+  "Name": null,
+  "RecipeId": 9,
+  "UserId": 1,
+  "FamilyId": null,
+  "MealType": "Breakfast",
+  "AddedByUserId": 1,
+  "Notes": ""
+}: An error occurred while updating the database. 
+2024-10-05 15:41:42.9589||backend.Program|WARN|  console logging is great 
+2024-10-05 15:41:54.4429||FamilyMealPlanner.Controllers.MealController|DEBUG|  update 
+2024-10-05 15:42:23.2016||FamilyMealPlanner.Controllers.MealController|DEBUG|  update 
+2024-10-05 15:42:47.9274||FamilyMealPlanner.Controllers.MealController|DEBUG|  update 
+2024-10-05 15:42:59.9166||FamilyMealPlanner.Controllers.MealController|DEBUG|  update 
+2024-10-05 15:43:12.6470||FamilyMealPlanner.Controllers.MealController|DEBUG|  update 
