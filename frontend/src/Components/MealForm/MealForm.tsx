@@ -18,10 +18,11 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
     const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
-    const { selectedMealType, setSelectedMealType, mealDate, setMealDate, mealNotes, setMealNotes } = useMeal();
+    const { selectedMealType, setSelectedMealType, mealDate, setMealDate, mealNotes, setMealNotes, resetMealContext } = useMeal();
 
     const navigate = useNavigate();
     const { selectedRecipe } = useRecipe();
+
 
     useEffect(() => {
         setStatus("loading");
@@ -54,6 +55,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         event.preventDefault();
         setStatus("loading");
         setErrorMessages([]);
+        
         const meal:MealDetailsInterface = {
             date: mealDate,
             name: mealNotes,
@@ -71,12 +73,13 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                 }
             })
             .catch(error => {
-                console.log(meal);
                 console.log("Error adding meal", error);
                 const errorMessage = error?.response?.data?.message || "Error adding meal";
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+        setModalShow(false);
+        resetMealContext(); 
     }
 
 
