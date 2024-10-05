@@ -55,24 +55,25 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         setStatus("loading");
         setErrorMessages([]);
         const meal:MealDetailsInterface = {
-            date: new Date(mealDate),
+            date: mealDate,
             name: mealNotes,
-            recipeId: selectedRecipe? selectedRecipe.id : 0,
             userId: parseInt(userId!, 10),
             mealType: selectedMealType,
             addedByUserId: parseInt(userId!, 10),
+            ...(selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
         addMeal(meal)
             .then(response => {
                 if (response.statusText === "OK") {
-                    const recipeData = response.data;
-                    navigate(`/recipe-details/${recipeData}`);
+                    const mealData = response.data;
+                    navigate(`/meal-plans/${userId}`);
                     setStatus("success");
                 }
             })
             .catch(error => {
-                console.log("Error adding recipe", error);
-                const errorMessage = error?.response?.data?.message || "Error adding recipe";
+                console.log(meal);
+                console.log("Error adding meal", error);
+                const errorMessage = error?.response?.data?.message || "Error adding meal";
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
@@ -124,7 +125,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
 
-                <Button id="add-meal-button" className="custom-button">Submit</Button>
+                <Button id="add-meal-button" className="custom-button" type="submit">Submit</Button>
 
             </Form>
         </Popup>);
