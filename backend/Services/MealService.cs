@@ -25,12 +25,12 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
             Meal meal = new Meal()
             {
                 Date = mealRequest.Date,
-                Name = mealRequest.Name,
                 RecipeId = mealRequest.RecipeId,
                 UserId = mealRequest.UserId,
                 FamilyId = mealRequest.FamilyId,
                 MealType = mealRequest.GetMealTypeEnum(),
-                AddedByUserId = mealRequest.AddedByUserId
+                AddedByUserId = mealRequest.AddedByUserId,
+                Notes = mealRequest.Notes,
             };
 
             _context.Meals.Add(meal);
@@ -65,14 +65,14 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
             MealResponse mealResponse = new MealResponse{
                 Id = meal.Id,
                 Date = meal.Date,
-                Name = meal.Name,
                 RecipeId = meal.RecipeId,
                 RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
                 RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
                 UserId = meal.UserId,
                 FamilyId = meal.FamilyId,
                 MealType = meal.MealType.ToString(),
-                AddedByUserId = meal.AddedByUserId
+                AddedByUserId = meal.AddedByUserId,
+                Notes = meal.Notes,
             };
             mealResponses.Add(mealResponse);
         }

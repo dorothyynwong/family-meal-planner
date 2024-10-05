@@ -21,5 +21,6 @@ public class MealResponse
     public string MealType  {get; set;}
 
     public int AddedByUserId {get; set;}
+    public string? Notes{get; set;}
 
 }

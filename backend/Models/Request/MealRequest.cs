@@ -21,6 +21,7 @@ public class MealRequest
 
     [Required]
     public int AddedByUserId {get; set;}
+    public string? Notes {get; set;}
 
     public MealType GetMealTypeEnum()
     {

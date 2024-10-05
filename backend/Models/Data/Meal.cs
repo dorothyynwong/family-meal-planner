@@ -13,8 +13,6 @@ public class Meal
     [DataType(DataType.Date)] 
     public DateOnly Date {get; set;}
 
-    public string? Name {get; set;}
-
     [ForeignKey("Recipe")]
     public int? RecipeId {get; set;}
 
@@ -29,6 +27,7 @@ public class Meal
 
     [Required]
     public int AddedByUserId {get; set;}
+    public string? Notes {get; set;}
 
     public Recipe? Recipe {get; set;}
     public User? User {get; set;}
