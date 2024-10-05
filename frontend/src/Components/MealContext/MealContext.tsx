@@ -1,6 +1,9 @@
 import React, { createContext, useContext, useState } from "react";
+import { RecipeDetailsInterface } from "../../Api/apiInterface";
 
 interface MealContextProps {
+    selectedRecipe: RecipeDetailsInterface | null;
+    setSelectedRecipe: (recipe: RecipeDetailsInterface) => void;
     selectedMealType: string;
     setSelectedMealType: (mealType:string) => void;
     mealDate: string;
@@ -13,6 +16,7 @@ interface MealContextProps {
 const MealContext = createContext<MealContextProps | undefined>(undefined);
 
 export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+    const [selectedRecipe, setSelectedRecipe] = useState<RecipeDetailsInterface | null>(null);
     const [selectedMealType, setSelectedMealType] = useState("");
     const [mealDate, setMealDate] = useState(new Date().toISOString().split('T')[0]);
     const [mealNotes, setMealNotes] = useState("");
@@ -24,7 +28,9 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
 
     return (
-        <MealContext.Provider value={{ selectedMealType, 
+        <MealContext.Provider value={{  selectedRecipe,
+                                        setSelectedRecipe,
+                                        selectedMealType, 
                                         setSelectedMealType, 
                                         mealDate, 
                                         setMealDate, 

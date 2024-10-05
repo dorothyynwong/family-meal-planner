@@ -19,7 +19,7 @@ import RecipeDeleteConfirmation from '../RecipeDeleteConfirmation/RecipeDeleteCo
 import { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdAddCard } from 'react-icons/md';
-import { useRecipe } from '../RecipeContext/RecipeContext';
+import { useMeal } from '../MealContext/MealContext';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -58,7 +58,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
-    const { selectedRecipe, setSelectedRecipe } = useRecipe();
+    const { selectedRecipe, setSelectedRecipe } = useMeal();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);

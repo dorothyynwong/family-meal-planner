@@ -4,7 +4,6 @@ import { Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { addMeal, getMealTypes } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
-import { useRecipe } from "../RecipeContext/RecipeContext";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 
@@ -21,7 +20,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
     const { selectedMealType, setSelectedMealType, mealDate, setMealDate, mealNotes, setMealNotes, resetMealContext } = useMeal();
 
     const navigate = useNavigate();
-    const { selectedRecipe } = useRecipe();
+    const { selectedRecipe } = useMeal();
 
 
     useEffect(() => {
