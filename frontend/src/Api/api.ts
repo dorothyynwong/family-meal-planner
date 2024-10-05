@@ -88,6 +88,24 @@ export async function addMeal(meal: MealDetailsInterface) {
     }
 }
 
+export async function updateMeal(meal: MealDetailsInterface, mealId: number) {
+    try {
+        const response: AxiosResponse = await client.put(`/meals/${mealId}`, meal);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function deleteMeal(mealId: number) {
+    try {
+        const response: AxiosResponse = await client.delete(`/meals/${mealId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function getMealByDateUserId(fromDate: string, toDate: string, userId: string) {
     try {
 

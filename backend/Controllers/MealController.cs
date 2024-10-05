@@ -1,3 +1,4 @@
+using System.Text.Json;
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
@@ -43,6 +44,22 @@ public class MealController(IMealService mealService) : Controller
             return BadRequest($"Failed to get meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
         }
 
+    }
+
+    [HttpPut("{mealId}")]
+    public async Task<IActionResult> Update(MealRequest mealRequest, [FromRoute] int mealId)
+    {
+        try
+        {
+            await _mealService.UpdateMeal(mealRequest, mealId);
+            return Ok(mealRequest);
+        }
+        catch (Exception ex)
+        {
+            string requestJson = JsonSerializer.Serialize(mealRequest, new JsonSerializerOptions { WriteIndented = true });
+            Logger.Error($"Failed to update meal {mealId}, {requestJson}: {ex.Message}");
+            return BadRequest($"Unable to update meal {mealId}: {ex.Message}");
+        }
     }
 
     [HttpDelete("{mealId}")]

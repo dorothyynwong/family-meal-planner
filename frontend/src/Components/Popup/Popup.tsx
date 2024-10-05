@@ -8,7 +8,7 @@ interface PopupProps
     title: string;
     body: string;
     children: ReactElement;
-    customClass?: string;
+    customclass?: string;
 }
 
 const Popup:React.FC<PopupProps> = (props: PopupProps) => {
@@ -19,12 +19,12 @@ const Popup:React.FC<PopupProps> = (props: PopupProps) => {
       aria-labelledby="contained-modal-title-vcenter"
       centered
     >
-      <Modal.Header closeButton className={props.customClass}>
+      <Modal.Header closeButton className={props.customclass}>
         <Modal.Title id="contained-modal-title-vcenter" >
           {props.title}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body className={props.customClass}>
+      <Modal.Body className={props.customclass}>
         <h6>{props.body}</h6>
         {props.children}
       </Modal.Body>

@@ -138,10 +138,11 @@ public class WebScrappingService : IWebScrappingService
                 try
                 {
                         JsonNode recipeNode = JsonNode.Parse(json);
+                        var imageUrls = ParseJsonNode(recipeNode["image"]);
                         ImportRecipeResponse recipe = new ImportRecipeResponse
                         {
                                 Name = recipeNode["name"] != null ? recipeNode["name"]!.ToString() : "",
-                                Images = ParseJsonNode(recipeNode["image"]),
+                                Images = imageUrls,
                                 Author = ParseJsonNode(recipeNode["author"])[0],
                                 Url = url,
                                 Description = recipeNode["description"] != null ? recipeNode["description"]!.ToString() : "",
@@ -152,8 +153,9 @@ public class WebScrappingService : IWebScrappingService
                                 Keywords = recipeNode["keywords"] != null ? recipeNode["keywords"]!.ToString() : "",
                                 RecipeYield = recipeNode["recipeYield"] != null ? recipeNode["recipeYield"]!.ToString() : "",
                                 RecipeCategory = recipeNode["recipecategory"] != null ? recipeNode["recipecategory"]!.ToString() : "",
-                                recipeIngredients = ParseJsonNode(recipeNode["recipeIngredient"]),
-                                recipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]),
+                                RecipeIngredients = ParseJsonNode(recipeNode["recipeIngredient"]),
+                                RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]),
+                                DefaultImageUrl = imageUrls[0] != null ? imageUrls[0] : "",
                         };
 
                         return recipe;

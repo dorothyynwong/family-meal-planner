@@ -9,6 +9,7 @@ public interface IMealService
 {
     Task<int> AddMeal(MealRequest mealRequest);
     Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId);
+    Task UpdateMeal(MealRequest mealRequest, int mealId);
     Task Delete(int mealId);
 }
 
@@ -52,17 +53,18 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId)
     {
-        List<Meal> meals =  await _context.Meals
+        List<Meal> meals = await _context.Meals
                                                 .Include(meal => meal.Recipe)
-                                                .Where(meal => meal.Date >= fromDate && 
+                                                .Where(meal => meal.Date >= fromDate &&
                                                         meal.Date <= toDate &&
                                                         meal.UserId == userId)
                                                 .ToListAsync();
-        List<MealResponse> mealResponses = new ();
+        List<MealResponse> mealResponses = new();
 
-        foreach(Meal meal in meals) 
+        foreach (Meal meal in meals)
         {
-            MealResponse mealResponse = new MealResponse{
+            MealResponse mealResponse = new MealResponse
+            {
                 Id = meal.Id,
                 Date = meal.Date,
                 RecipeId = meal.RecipeId,
@@ -77,7 +79,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
             mealResponses.Add(mealResponse);
         }
 
-        if (meals== null || meals.Count == 0)
+        if (meals == null || meals.Count == 0)
         {
             Logger.Error($"No meals between {fromDate} to {toDate} for user {userId}");
             throw new InvalidOperationException($"No meals between {fromDate} to {toDate} for user {userId}");
@@ -91,6 +93,33 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
         Meal meal = await _context.Meals.SingleAsync(meal => meal.Id == mealId);
         return meal;
     }
+
+    public async Task UpdateMeal(MealRequest mealRequest, int mealId)
+    {
+        try
+        {
+            Meal meal = await GetMealById(mealId);
+
+            meal.Date = mealRequest.Date;
+            meal.RecipeId = mealRequest.RecipeId != null? mealRequest.RecipeId: meal.RecipeId;
+            meal.MealType = mealRequest.GetMealTypeEnum();
+            meal.Notes = mealRequest.Notes;
+
+            _context.Meals.Update(meal);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            Logger.Error($"Database error on mealId {mealId}: {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error on mealId {mealId}: {ex.Message}");
+            throw new Exception("Unexpected error while updating record to database", ex);
+        }
+    }
+
 
     public async Task Delete(int mealId)
     {

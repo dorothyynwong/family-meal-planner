@@ -7,14 +7,12 @@ import OverflowMenu from "../OverflowMenu/OverflowMenu";
 
 const RecipePhotoForm: React.FC<RecipeFormProps> = ({ data, updateData }) => {
     const imagesUrls = data.images || [];
-    // const updatedImages = data?.images || [];
 
     const handleUrlFromUploader = (urlFromUploader: string) => {
         const updatedImages = data.images? [...data.images, urlFromUploader] : [urlFromUploader];
-        // updatedImages.push(urlFromUploader);
         updateData({
             ...data,
-            images: updatedImages
+            images: updatedImages,
         });
     }
 
