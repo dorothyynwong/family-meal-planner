@@ -1,13 +1,26 @@
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import { Card, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
+import { useMeal } from "../MealContext/MealContext";
 
 interface MealProps {
-    meal: MealDetailsInterface
+    meal: MealDetailsInterface;
 }
 
 const MealCard: React.FC<MealProps> = ({ meal }) => {
+    const {modalShow, setModalShow, currentMeal, setMealDate, setMealNotes, setSelectedMealType, setCurrentMeal, setRecipeName, setMode} = useMeal();
+
+    const handleClick = () => {
+        setModalShow(true);
+        setMode("Edit");
+        setCurrentMeal(meal);
+        setMealDate(meal.date);
+        setSelectedMealType(meal.mealType);
+        setMealNotes(meal.notes? meal.notes: "");
+        setRecipeName(meal.recipeName? meal.recipeName: "");
+    }
+
     return (
-        <Card sx={{ maxWidth: 345, m:2 }} className="meal-card">
+        <Card sx={{ maxWidth: 345, m:2 }} className="meal-card" onClick={handleClick}>
             <CardHeader title={meal.mealType} className={meal.mealType} />
             {(meal.recipeDefaultImage) && <CardMedia
                 component="img"

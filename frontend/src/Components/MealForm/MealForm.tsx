@@ -9,20 +9,28 @@ import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
 
-interface MealFormProps {
-    modalShow: boolean;
-    setModalShow: (newModalShow: boolean) => void;
-}
 
-const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
+const MealForm: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
-    const { selectedMealType, setSelectedMealType, mealDate, setMealDate, mealNotes, setMealNotes, resetMealContext } = useMeal();
+    const { mode,
+            setMode,
+            recipeName,
+            setRecipeName,
+            selectedRecipe,
+            selectedMealType, 
+            setSelectedMealType, 
+            mealDate, 
+            setMealDate, 
+            mealNotes, 
+            setMealNotes, 
+            modalShow, 
+            setModalShow, 
+            resetMealContext } = useMeal();
 
     const navigate = useNavigate();
-    const { selectedRecipe } = useMeal();
 
 
     useEffect(() => {
@@ -43,6 +51,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
 
     useEffect(() => {
         if (selectedRecipe) {
+            setRecipeName(selectedRecipe.name? selectedRecipe.name : "");
             setModalShow(true);
         }
     }, [selectedRecipe, setModalShow]);
@@ -58,25 +67,25 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         if (!mealNotes.trim() && !selectedRecipe) {
             setErrorMessages(["Please enter notes or select a recipe."]);
             setStatus("error");
-            return; 
+            return;
         }
 
-        if (!selectedMealType){
+        if (!selectedMealType) {
             setErrorMessages(["Please choose a meal type. "]);
             setStatus("error");
-            return; 
+            return;
         }
 
-        if (!mealDate){
+        if (!mealDate) {
             setErrorMessages(["Please select a date. "]);
             setStatus("error");
-            return; 
+            return;
         }
 
         setStatus("loading");
         setErrorMessages([]);
-        
-        const meal:MealDetailsInterface = {
+
+        const meal: MealDetailsInterface = {
             date: mealDate,
             notes: mealNotes,
             userId: parseInt(userId!, 10),
@@ -99,17 +108,17 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
         setModalShow(false);
-        resetMealContext(); 
+        resetMealContext();
         setStatus("idle");
     }
 
 
     return (
         <Popup
-            customClass="meal-form"
+            customclass="meal-form"
             show={modalShow}
             onHide={() => setModalShow(false)}
-            title="Add New Meal"
+            title={`${mode} Meal`}
             body="">
             <Form onSubmit={handleSubmit}>
                 <InputGroup className="mt-3 recipe-search-container">
@@ -123,7 +132,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                         aria-label="Search"
                         aria-describedby="basic-addon1"
                         onClick={handleClick}
-                        value={selectedRecipe?.name}
+                        value={recipeName}
                         readOnly
                     />
                 </InputGroup>
@@ -138,12 +147,12 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     onChange={(e) => setMealDate(e.target.value)}
                 />
 
-                <Form.Select 
+                <Form.Select
                     className="mt-3 meal-type"
-                    aria-label="Meal Type" 
-                    onChange={(e) => setSelectedMealType(e.target.value)} 
+                    aria-label="Meal Type"
+                    onChange={(e) => setSelectedMealType(e.target.value)}
                     value={selectedMealType}>
-                    <option>Select a Meal Type</option>
+                    <option value="">Select a Meal Type</option>
                     {mealTypes.map((mealType, index) => (
                         <option key={index} value={mealType}>{mealType}</option>
                     ))}
@@ -152,7 +161,19 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                 <Form.Group controlId="meal-notes">
                     <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
-                <Button id="add-meal-button" className="mt-3 custom-button" type="submit">Submit</Button>
+
+                {mode === "Add" &&
+                    <Button id="add-meal-button" className="mt-3 custom-button" type="submit">Add</Button>
+                }
+
+                {mode === "Edit" &&
+                    <Button id="update-meal-button" className="mt-3 custom-button" type="submit">Update</Button>
+                }
+
+                {mode === "Delete" &&
+                    <Button id="delete-meal-button" className="mt-3 custom-button" type="button">Delete</Button>
+                }
+
 
                 <StatusHandler
                     status={status}
@@ -160,7 +181,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     loadingMessage="Submitting/Loading meal ..."
                     successMessage=""
                 >
-                <></>
+                    <></>
                 </StatusHandler>
 
             </Form>
