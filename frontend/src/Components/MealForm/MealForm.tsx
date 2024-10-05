@@ -54,7 +54,7 @@ const MealForm: React.FC = () => {
             setRecipeName(selectedRecipe.name? selectedRecipe.name : "");
             setModalShow(true);
         }
-    }, [selectedRecipe, setModalShow]);
+    }, [selectedRecipe, modalShow]);
 
     const handleClick = () => {
         const isFromMealForm = true;

@@ -266,3 +266,37 @@ POSITION: 73
 
 POSITION: 73 
 2024-10-05 12:56:27.7329||backend.Program|WARN|  console logging is great 
+2024-10-05 14:51:15.7629||backend.Program|WARN|  console logging is great 
+2024-10-05 14:52:38.0908||FamilyMealPlanner.Services.MealService|ERROR|  Unexpected error on mealId 1: Invalid MealType 
+2024-10-05 14:52:38.1090||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 1, {
+  "Date": "2024-10-06",
+  "Name": "test update",
+  "RecipeId": 0,
+  "UserId": 1,
+  "FamilyId": 0,
+  "MealType": "string",
+  "AddedByUserId": 1,
+  "Notes": "string"
+}: Unexpected error while updating record to database 
+2024-10-05 14:56:25.9814||FamilyMealPlanner.Services.MealService|ERROR|  Database error on mealId 1: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-05 14:56:25.9899||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 1, {
+  "Date": "2024-10-06",
+  "Name": "test update",
+  "RecipeId": 0,
+  "UserId": 1,
+  "FamilyId": 0,
+  "MealType": "Lunch",
+  "AddedByUserId": 1,
+  "Notes": "string"
+}: An error occurred while updating the database. 
+2024-10-05 14:58:09.5162||FamilyMealPlanner.Services.MealService|ERROR|  Database error on mealId 1: An error occurred while saving the entity changes. See the inner exception for details. 
+2024-10-05 14:58:09.5162||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to update meal 1, {
+  "Date": "2024-10-06",
+  "Name": "test update",
+  "RecipeId": 0,
+  "UserId": 1,
+  "FamilyId": null,
+  "MealType": "Lunch",
+  "AddedByUserId": 1,
+  "Notes": "string"
+}: An error occurred while updating the database. 
