@@ -23,8 +23,9 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
     const resetMealContext = () => {
         setSelectedMealType("");
-        setMealDate("");
+        setMealDate(new Date().toISOString().split('T')[0]);
         setMealNotes("");
+        setSelectedRecipe(null);
     };
 
     return (

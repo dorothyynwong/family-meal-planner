@@ -6,6 +6,7 @@ import { addMeal, getMealTypes } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
+import StatusHandler from "../StatusHandler/StatusHandler";
 
 interface MealFormProps {
     modalShow: boolean;
@@ -29,7 +30,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
         getMealTypes()
             .then(mealTypesList => {
                 setMealTypes(mealTypesList.data);
-                setStatus("success");
+                setStatus("idle");
             })
             .catch(error => {
                 console.log("Error getting meal types", error);
@@ -51,13 +52,32 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+
         event.preventDefault();
+        if (!mealNotes.trim() && !selectedRecipe) {
+            setErrorMessages(["Please enter notes or select a recipe."]);
+            setStatus("error");
+            return; 
+        }
+
+        if (!selectedMealType){
+            setErrorMessages(["Please choose a meal type. "]);
+            setStatus("error");
+            return; 
+        }
+
+        if (!mealDate){
+            setErrorMessages(["Please select a date. "]);
+            setStatus("error");
+            return; 
+        }
+
         setStatus("loading");
         setErrorMessages([]);
         
         const meal:MealDetailsInterface = {
             date: mealDate,
-            name: mealNotes,
+            notes: mealNotes,
             userId: parseInt(userId!, 10),
             mealType: selectedMealType,
             addedByUserId: parseInt(userId!, 10),
@@ -79,6 +99,7 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
             });
         setModalShow(false);
         resetMealContext(); 
+        setStatus("idle");
     }
 
 
@@ -126,8 +147,16 @@ const MealForm: React.FC<MealFormProps> = ({ modalShow, setModalShow }) => {
                     <Form.Label>Notes</Form.Label>
                     <Form.Control className="custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
-
                 <Button id="add-meal-button" className="custom-button" type="submit">Submit</Button>
+
+                <StatusHandler
+                    status={status}
+                    errorMessages={errorMessages}
+                    loadingMessage="Submitting/Loading meal ..."
+                    successMessage=""
+                >
+                <></>
+                </StatusHandler>
 
             </Form>
         </Popup>);

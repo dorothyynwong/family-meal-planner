@@ -1,5 +1,5 @@
 import { MealDetailsInterface } from "../../Api/apiInterface";
-import { Card, CardContent, CardHeader, CardMedia } from "@mui/material";
+import { Card, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
 
 interface MealProps {
     meal: MealDetailsInterface
@@ -16,7 +16,10 @@ const MealCard: React.FC<MealProps> = ({ meal }) => {
                 alt={meal.recipeName}
             />}
             <CardContent>
-                {meal.name}
+            <Typography gutterBottom variant="subtitle1" component="div">
+                {meal.recipeName}
+            </Typography>
+                {meal.notes}
             </CardContent>
         </Card>
     )
