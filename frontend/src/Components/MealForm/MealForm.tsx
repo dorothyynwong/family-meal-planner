@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
 import { Button, Form, InputGroup } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
-import { addMeal, getMealTypes, updateMeal } from "../../Api/api";
+import { addMeal, deleteMeal, getMealTypes, updateMeal } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
@@ -63,6 +63,26 @@ const MealForm: React.FC = () => {
         navigate(`/recipes-list/${userId}`, { state: { isFromMealForm, mealDate, selectedMealType } });
     }
 
+    const handleDelete = () => {
+        deleteMeal(currentMeal!.id!)
+        .then(response => {
+            if (response.statusText === "OK") {
+                const mealData = response.data;
+                setStatus("success");
+            }
+        })
+        .catch(error => {
+            console.log("Error deleting meal", error);
+            const errorMessage = error?.response?.data?.message || "Error deleting meal";
+            setStatus("error");
+            setErrorMessages([...errorMessages, errorMessage]);
+        });
+
+        setModalShow(false);
+        resetMealContext();
+        setStatus("idle");
+    }
+
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
@@ -102,7 +122,7 @@ const MealForm: React.FC = () => {
                 .then(response => {
                     if (response.statusText === "OK") {
                         const mealData = response.data;
-                        navigate(`/meal-plans/${userId}`);
+                        // navigate(`/meal-plans/${userId}`);
                         setStatus("success");
                     }
                 })
@@ -119,7 +139,6 @@ const MealForm: React.FC = () => {
                 .then(response => {
                     if (response.statusText === "OK") {
                         const mealData = response.data;
-                        navigate(`/meal-plans/${userId}`);
                         setStatus("success");
                     }
                 })
@@ -194,7 +213,7 @@ const MealForm: React.FC = () => {
                 }
 
                 {mode === "Edit" &&
-                    <Button id="delete-meal-button" className="mt-3 custom-button" type="button">Delete</Button>
+                    <Button id="delete-meal-button" className="mt-3 custom-button" type="button" onClick={handleDelete}>Delete</Button>
                 }
 
 
