@@ -246,3 +246,22 @@
 2024-10-05 11:48:44.1320||backend.Program|WARN|  console logging is great 
 2024-10-05 11:49:02.4920||backend.Program|WARN|  console logging is great 
 2024-10-05 11:50:44.8358||backend.Program|WARN|  console logging is great 
+2024-10-05 12:28:41.0409||backend.Program|WARN|  console logging is great 
+2024-10-05 12:38:38.1832||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
+
+POSITION: 73 
+2024-10-05 12:38:38.2357||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
+
+POSITION: 73 
+2024-10-05 12:54:11.1191||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
+
+POSITION: 73 
+2024-10-05 12:54:11.3107||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
+
+POSITION: 73 
+2024-10-05 12:55:38.0438||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
+
+POSITION: 73 
+2024-10-05 12:55:38.1072||FamilyMealPlanner.Controllers.MealController|ERROR|  Failed to get meals bewteen 24/9/2024 to 7/11/2024 for 1: 42703: column m.Name does not exist
+
+POSITION: 73 

@@ -1,0 +1,40 @@
+@use "./../../Styles/variables.scss" as *;
+
+.recipe-search-icon {
+    width: max(3vh,16px);
+    height: auto;
+}
+
+.recipe-search-container {
+    padding-top: max(3vh,10px);
+}
+
+.recipe-search-icon-box,
+.recipe-search-box {
+    background-color: $primary-background;
+    border-top: 3px solid black;
+    border-left: 3px solid black;
+    border-right: 0;
+    border-bottom: 3px solid black;
+
+    &.recipe-search-box {
+        border-right: 3px solid black;
+        border-left: 0;
+        &:focus {
+            background-color: $primary-background;
+            outline: none;            
+            border-color: black;     
+            box-shadow: none;
+          }
+    }
+}
+
+
+.meal-date, .meal-type, .meal-notes {
+    background-color: $primary-background;
+    border: 3px solid black;
+}
+
+.meal-form {
+    background-color: $secondary-background;
+}
