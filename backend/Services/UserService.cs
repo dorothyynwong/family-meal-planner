@@ -10,7 +10,7 @@ public interface IUserService
 {
     Task<User> GetUserById(int userId);
     Task<List<UserResponse>> GetUserByFamilyId(int familyId);
-    Task UpdateUser(UserRequest userRequest, int userId);
+    Task UpdateUser(UserUpdateRequest userRequest, int userId);
     Task DeleteUser(int userId);
 }
 
@@ -59,7 +59,7 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
         return userResponses;
     }
 
-    public async Task UpdateUser(UserRequest userRequest, int userId)
+    public async Task UpdateUser(UserUpdateRequest userRequest, int userId)
     {
         try
         {

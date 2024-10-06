@@ -59,7 +59,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     // }
 
     [HttpPost("register")]
-    public async Task<IActionResult> Register([FromBody] UserRequest userRequest)
+    public async Task<IActionResult> Register([FromBody] UserRegisterRequest userRequest)
     {
         if (!ModelState.IsValid)
         {
