@@ -7,5 +7,7 @@ public class Family
 {
     [Key]
     public int Id { get; set; }
-    public string? Name {get; set;}
+    public string? FamilyName {get; set;}
+
+    public ICollection<FamilyUser> FamilyUsers { get; set; }
 }

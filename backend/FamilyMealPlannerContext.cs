@@ -10,7 +10,8 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
 {
     public DbSet<Recipe> Recipes { get; set; }
     public DbSet<Family> Families { get; set; }
-    public DbSet<Meal> Meals {get; set;}
+    public DbSet<Meal> Meals { get; set; }
+    public DbSet<FamilyUser> FamilyUsers { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -28,6 +29,19 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
             NormalizedName = RoleType.Admin.ToString().ToUpper(),
         };
         builder.Entity<Role>().HasData(userRole, adminRole);
+
+        builder.Entity<FamilyUser>()
+                .HasKey(fu => new { fu.UserId, fu.FamilyId });
+
+        builder.Entity<FamilyUser>()
+                .HasOne(fu => fu.User)
+                .WithMany(u => u.FamilyUsers)
+                .HasForeignKey(fu => fu.UserId);
+
+        builder.Entity<FamilyUser>()
+            .HasOne(fu => fu.Family)
+            .WithMany(f => f.FamilyUsers)
+            .HasForeignKey(fu => fu.FamilyId);
 
     }
 }
