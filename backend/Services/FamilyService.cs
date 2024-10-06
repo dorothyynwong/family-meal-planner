@@ -8,6 +8,7 @@ namespace FamilyMealPlanner.Services;
 public interface IFamilyService
 {
     Task<int> AddFamily(FamilyRequest familyRequest);
+    Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId);
     Task<Family> GetFamilyById(int familyId);
     Task<List<FamilyResponse>> GetFamilyByUserId(int userId);
     Task UpdateFamily(FamilyRequest familyRequest, int familyId);
@@ -21,7 +22,6 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
 
     public async Task<int> AddFamily(FamilyRequest familyRequest)
     {
-
         try
         {
             Family family = new Family()
@@ -40,6 +40,49 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
         }
         catch (Exception ex)
         {
+            Logger.Error($"Unexpected error: {ex.Message}");
+            throw new Exception("Unexpected error while adding record to database", ex);
+        }
+
+    }
+
+    public async Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId)
+    {
+        using var transaction = await _context.Database.BeginTransactionAsync();
+
+        try
+        {
+            Family family = new Family()
+            {
+                FamilyName = familyRequest.FamilyName,
+            };
+
+            _context.Families.Add(family);
+            await _context.SaveChangesAsync();
+
+            FamilyUser familyUser = new FamilyUser()
+            {
+                FamilyId = family.Id,
+                UserId = userId,
+                FamilyRole = Enums.FamilyRoleType.Cook,
+                IsApproved = true,
+            };
+
+            _context.FamilyUsers.Add(familyUser);
+            await _context.SaveChangesAsync();
+
+            await transaction.CommitAsync();
+            return family.Id;
+        }
+        catch (DbUpdateException ex)
+        {
+            await transaction.RollbackAsync();
+            Logger.Error($"Database error: {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            await transaction.RollbackAsync();
             Logger.Error($"Unexpected error: {ex.Message}");
             throw new Exception("Unexpected error while adding record to database", ex);
         }

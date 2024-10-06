@@ -1,4 +1,5 @@
 using FamilyMealPlanner.Models;
+using FamilyMealPlanner.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 
@@ -33,6 +34,7 @@ public class FamilyUserService(FamilyMealPlannerContext context) : IFamilyUserSe
 
     public async Task<List<FamilyUserResponse>> GetFamilyUsersByUserId(int userId)
     {
+       
         List<FamilyUser> familyUsers = await _context.FamilyUsers
                                                 .Include(fu => fu.Family)
                                                 .Include(fu => fu.User)  
@@ -99,7 +101,6 @@ public class FamilyUserService(FamilyMealPlannerContext context) : IFamilyUserSe
 
     public async Task AddFamilyUser(FamilyUserRequest familyUserRequest)
     {
-
         try
         {
             FamilyUser familyUser = new FamilyUser()

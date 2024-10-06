@@ -63,24 +63,15 @@ public class FamilyController(IFamilyService familyService, IFamilyUserService f
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromRoute] int userId)
+    public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromQuery] int userId)
     {
         if(!ModelState.IsValid) 
         {
             return BadRequest(ModelState);
         }
-
         try
         {
-            int familyId = await _familyService.AddFamily(familyRequest);
-            FamilyUserRequest familyUserRequest = new FamilyUserRequest
-            {
-                FamilyId = familyId,
-                UserId = userId,
-                FamilyRole = FamilyRoleType.Cook,
-                IsApproved = true
-            };
-            await _familyUserSerivce.AddFamilyUser(familyUserRequest);
+            int familyId = await _familyService.AddFamilyWithUser(familyRequest, userId);
             return Ok(familyId);
         }
         catch (Exception ex)
