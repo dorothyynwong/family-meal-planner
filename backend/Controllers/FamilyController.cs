@@ -1,4 +1,5 @@
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
@@ -9,9 +10,10 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/families")]
-public class FamilyController(IFamilyService familyService) : Controller
+public class FamilyController(IFamilyService familyService, IFamilyUserService familyUserService) : Controller
 {
     private readonly IFamilyService _familyService = familyService;
+    private readonly IFamilyUserService _familyUserSerivce = familyUserService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -63,6 +65,7 @@ public class FamilyController(IFamilyService familyService) : Controller
     [HttpPost]
     public async Task<IActionResult> Add(FamilyRequest familyRequest)
     {
+        int userId = 4;
         if(!ModelState.IsValid) 
         {
             return BadRequest(ModelState);
@@ -71,6 +74,14 @@ public class FamilyController(IFamilyService familyService) : Controller
         try
         {
             int familyId = await _familyService.AddFamily(familyRequest);
+            FamilyUserRequest familyUserRequest = new FamilyUserRequest
+            {
+                FamilyId = familyId,
+                UserId = userId,
+                FamilyRole = FamilyRoleType.Cook,
+                IsApproved = true
+            };
+            await _familyUserSerivce.AddFamilyUser(familyUserRequest);
             return Ok(familyId);
         }
         catch (Exception ex)
