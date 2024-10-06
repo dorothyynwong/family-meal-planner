@@ -1,3 +1,4 @@
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models.Data;
