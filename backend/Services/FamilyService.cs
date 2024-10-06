@@ -9,7 +9,7 @@ public interface IFamilyService
 {
     Task<int> AddFamily(FamilyRequest familyRequest);
     Task<Family> GetFamilyById(int familyId);
-    Task<List<Family>> GetFamilyByUserId(int userId);
+    Task<List<FamilyResponse>> GetFamilyByUserId(int userId);
     Task UpdateFamily(FamilyRequest familyRequest, int familyId);
     Task DeleteFamily(int familyId);
 }
@@ -57,7 +57,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
         return family;
     }
 
-    public async Task<List<Family>> GetFamilyByUserId(int userId)
+    public async Task<List<FamilyResponse>> GetFamilyByUserId(int userId)
     {
         List<Family> families = await _context.Families
                                                 .Include(family => family.FamilyUsers)  
@@ -70,7 +70,19 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
             throw new InvalidOperationException($"No families for {userId}");
         }
 
-        return families;
+        List<FamilyResponse> familyResponses = new List<FamilyResponse>();
+        foreach(Family family in families)
+        {
+            FamilyResponse familyResponse = new FamilyResponse
+            {
+                Id = family.Id,
+                FamilyName = family.FamilyName,
+            };
+            familyResponses.Add(familyResponse);
+
+        }
+
+        return familyResponses;
     }
 
     public async Task UpdateFamily(FamilyRequest familyRequest, int familyId)
