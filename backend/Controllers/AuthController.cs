@@ -6,6 +6,7 @@ using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Models.Request;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
@@ -16,7 +17,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
-    private readonly IConfiguration _configuration = configuration;
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     // [HttpPost("login")]
     // public async Task<IActionResult> Login([FromBody] LoginRequest loginRequest)
@@ -60,27 +61,51 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     [HttpPost("register")]
     public async Task<IActionResult> Register([FromBody] UserRequest userRequest)
     {
-        User user = new User
+        if (!ModelState.IsValid)
         {
-            FirstName = userRequest.FirstName,
-            LastName = userRequest.LastName,
-            Email = userRequest.Email,
-            UserName = userRequest.UserName,
-        };
+            return BadRequest(ModelState);
+        }
 
-        var result = await _userManager.CreateAsync(user, userRequest.Password);
-        
-        await _userManager.AddToRoleAsync(user, RoleType.User.ToString());
-
-        UserResponse userResponse = new UserResponse
+        try
         {
-            Id = user.Id,
-            UserName  = user.UserName,
-            Email = user.Email,
-            FirstName = user.FirstName,
-            LastName = user.LastName,
-        };
+            User user = new User
+            {
+                FirstName = userRequest.FirstName,
+                LastName = userRequest.LastName,
+                Email = userRequest.Email,
+                UserName = userRequest.UserName,
+            };
 
-        return Ok(userResponse);
+            var result = await _userManager.CreateAsync(user, userRequest.Password);
+
+            if (!result.Succeeded)
+            {
+                return BadRequest(result.Errors);
+            }
+
+            var roleResult = await _userManager.AddToRoleAsync(user, RoleType.User.ToString());
+
+            if (!roleResult.Succeeded)
+            {
+                return BadRequest(roleResult.Errors);
+            }
+
+            UserResponse userResponse = new UserResponse
+            {
+                Id = user.Id,
+                UserName = user.UserName,
+                Email = user.Email,
+                FirstName = user.FirstName,
+                LastName = user.LastName,
+            };
+            return Ok(userResponse);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unable to register user: {ex.Message}");
+            return BadRequest($"Unable to register user: {ex.Message}");
+        }
+
+
     }
 }
