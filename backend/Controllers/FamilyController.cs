@@ -63,9 +63,8 @@ public class FamilyController(IFamilyService familyService, IFamilyUserService f
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(FamilyRequest familyRequest)
+    public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromRoute] int userId)
     {
-        int userId = 4;
         if(!ModelState.IsValid) 
         {
             return BadRequest(ModelState);
