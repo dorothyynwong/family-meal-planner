@@ -9,5 +9,7 @@ public class Family
     public int Id { get; set; }
     public string? FamilyName {get; set;}
 
+    public string HashedFamilyCode {get; set;}
+    public string Salt {get; set;}
     public ICollection<FamilyUser> FamilyUsers { get; set; }
 }
