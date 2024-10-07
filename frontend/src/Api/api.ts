@@ -55,7 +55,8 @@ export async function getRecipeByUserId(userId: number) {
         const response: AxiosResponse = await client.get(`/recipes`, {
             params: {
                 userId: userId
-            }
+            },
+            withCredentials: true,
         });
 
         return response;
@@ -135,10 +136,12 @@ export async function getMealTypes() {
 
 export async function userLogin(username: string, password: string) {
     try {
+        const config = { withCredentials: true };
+
         const response: AxiosResponse = await client.post(`/auth/login`, {
                 username: username,
                 password: password,
-        });
+        }, config);
         return response;
     } catch (error) {
         throw error;

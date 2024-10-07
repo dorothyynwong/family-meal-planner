@@ -10,10 +10,12 @@ import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
 import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
 import { MealProvider } from './Components/MealContext/MealContext';
 import UserLoginPage from './Pages/UserLoginPage/UserLoginPage';
+import { AuthProvider } from './Components/AuthProvider/AuthProvider';
 
 function App() {
 
   return (
+    <AuthProvider>
     <MealProvider>
       <Layout>
         <Router>
@@ -48,6 +50,7 @@ function App() {
         </Router>
       </Layout>
     </MealProvider>
+    </AuthProvider>
   )
 }
 

@@ -3,6 +3,7 @@ import { Button, Form } from "react-bootstrap";
 import { userLogin } from "../../Api/api";
 import { useNavigate } from "react-router-dom";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
+import { useAuth } from "../../Components/AuthProvider/AuthProvider";
 
 const UserLoginPage: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -13,6 +14,7 @@ const UserLoginPage: React.FC = () => {
     
     const navigate = useNavigate();
 
+    const { logUserIn } = useAuth();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
@@ -29,11 +31,12 @@ const UserLoginPage: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setStatus("loading");
-
+        
         userLogin(username, password)
             .then(response => {
                 if (response.statusText === "OK") {
                     // const recipeData = response.data;
+                    logUserIn();
                     navigate(`/recipes-list/1`);
                     setStatus("success");
                 }

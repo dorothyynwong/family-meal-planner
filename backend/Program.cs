@@ -63,7 +63,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod().AllowAnyHeader();
+        policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod()
+                                                                    .AllowAnyHeader()
+                                                                    .AllowCredentials();
     });
 });
 
