@@ -30,6 +30,10 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
         };
         builder.Entity<Role>().HasData(userRole, adminRole);
 
+        builder.Entity<Family>()
+                .HasIndex(f => f.FamilyShareCode)
+                .HasDatabaseName("IX_FamilyShareCode_Ascending");
+
         builder.Entity<FamilyUser>()
                 .HasKey(fu => new { fu.UserId, fu.FamilyId });
 

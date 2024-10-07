@@ -61,6 +61,23 @@ public class FamilyController(IFamilyService familyService) : Controller
 
     }
 
+    [HttpGet("by-code")]
+    public async Task<IActionResult> GetFamilyByGuid([FromQuery] Guid guid)
+    {
+        try
+        {
+            Family family = await _familyService.GetFamilyByGuid(guid);
+            
+            return Ok(family);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get families of {guid}: {ex.Message}");
+            return BadRequest($"Unable to get families of {guid}: {ex.Message}");
+        }
+
+    }
+
     [HttpPost]
     public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromQuery] int userId)
     {
