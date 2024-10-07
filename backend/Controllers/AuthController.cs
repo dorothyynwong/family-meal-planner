@@ -20,12 +20,20 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
+    private readonly IConfiguration _configuration = configuration;
+
+
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    private static SigningCredentials CreateSigningCredentials()
+    private SigningCredentials CreateSigningCredentials()
     {
+        
+        string secret = _configuration["JWT:SECRET"];
+        if (secret == null)
+            throw new InvalidOperationException("Unable to find JWT Secret");
+
         return new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes("VerySecretAndLongKey-NeedMoreSymbolsHere-123")), 
+            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)), 
             SecurityAlgorithms.HmacSha256);
     }
 
@@ -48,30 +56,15 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
             }
 
             var jwt = new JwtSecurityToken(
-                        issuer: "issuer",
-                        audience: "audience",
+                        issuer:  _configuration["Jwt:Issuer"],
+                        audience: _configuration["Jwt:Audience"],
                         claims: authClaims,
                         expires: DateTime.UtcNow.AddHours(1),
                         signingCredentials: CreateSigningCredentials()
                         );
-            // var token = new JwtSecurityToken(
-            //     issuer: _configuration["Jwt:Issuer"],
-            //     audience: _configuration["Jwt:Audience"],
-            //     expires: DateTime.UtcNow.AddHours(1),
-            //     claims: authClaims,
-            //     signingCredentials: new SigningCredentials(
-            //         new SymmetricSecurityKey(Encoding.Default.GetBytes(_configuration["Jwt:Secret"]!)),
-            //         SecurityAlgorithms.HmacSha256
-            //     )
-            // );
+
             return Ok(
-            // new TokenResponse
-            // {
-            //     Token = new JwtSecurityTokenHandler().WriteToken(token),
-            //     Expiration = token.ValidTo,
-            //     RoleType = token.Claims.ElementAt(3).Value
-            // }
-            new JwtSecurityTokenHandler().WriteToken(jwt)
+                new JwtSecurityTokenHandler().WriteToken(jwt)
             );
         }
         return Unauthorized();
