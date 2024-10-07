@@ -25,6 +25,7 @@ builder.Services.AddTransient<IMealService, MealService>();
 builder.Services.AddTransient<IUserService, UserService>();
 builder.Services.AddTransient<IFamilyService, FamilyService>();
 builder.Services.AddTransient<IFamilyUserService, FamilyUserService>();
+builder.Services.AddTransient<IEncryptionService, EncryptionService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -47,10 +48,12 @@ builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
     options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
 });
 
-builder
-    .Services.AddIdentity<User, Role>()
-    .AddEntityFrameworkStores<FamilyMealPlannerContext>()
-    .AddDefaultTokenProviders();
+builder.Services.AddIdentity<User, Role>()
+                .AddEntityFrameworkStores<FamilyMealPlannerContext>()
+                .AddDefaultTokenProviders();
+
+builder.Services.AddDataProtection();
+
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {

@@ -15,18 +15,22 @@ public interface IFamilyService
     Task DeleteFamily(int familyId);
 }
 
-public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
+public class FamilyService(FamilyMealPlannerContext context, IEncryptionService encryptionService) : IFamilyService
 {
     private readonly FamilyMealPlannerContext _context = context;
+    private readonly IEncryptionService _encryptionService = encryptionService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     public async Task<int> AddFamily(FamilyRequest familyRequest)
     {
         try
         {
+            Guid g = Guid.NewGuid();
+
             Family family = new Family()
             {
                 FamilyName = familyRequest.FamilyName,
+                EncryptedGuid = _encryptionService.EncryptGuid(g)
             };
 
             _context.Families.Add(family);
@@ -52,9 +56,12 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
 
         try
         {
+            Guid g = Guid.NewGuid();
+
             Family family = new Family()
             {
                 FamilyName = familyRequest.FamilyName,
+                EncryptedGuid = _encryptionService.EncryptGuid(g),
             };
 
             _context.Families.Add(family);
