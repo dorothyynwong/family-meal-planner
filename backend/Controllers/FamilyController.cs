@@ -1,4 +1,5 @@
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
@@ -61,16 +62,15 @@ public class FamilyController(IFamilyService familyService) : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(FamilyRequest familyRequest)
+    public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromQuery] int userId)
     {
         if(!ModelState.IsValid) 
         {
             return BadRequest(ModelState);
         }
-
         try
         {
-            int familyId = await _familyService.AddFamily(familyRequest);
+            int familyId = await _familyService.AddFamilyWithUser(familyRequest, userId);
             return Ok(familyId);
         }
         catch (Exception ex)

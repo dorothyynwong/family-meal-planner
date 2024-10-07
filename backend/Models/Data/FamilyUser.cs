@@ -13,6 +13,7 @@ public class FamilyUser
     [ForeignKey("Family")]
     public int FamilyId { get; set; }
     public FamilyRoleType FamilyRole { get; set; }
+    public bool IsApproved {get; set; } = false;
     public User User { get; set; }
     public Family Family  { get; set; }
 }
