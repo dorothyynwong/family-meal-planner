@@ -2,11 +2,13 @@ using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("/users")]
 public class UserController(IUserService userService) : Controller

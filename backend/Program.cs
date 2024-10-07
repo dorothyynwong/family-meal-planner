@@ -39,7 +39,7 @@ builder.Services.AddSwaggerGen(c =>
         In = ParameterLocation.Header,
         Description = "Please enter a valid token",
         Name = "Authorization",
-        Type = SecuritySchemeType.Http,
+        Type = SecuritySchemeType.ApiKey,
         BearerFormat = "JWT",
         Scheme = "Bearer"
     });
@@ -77,34 +77,42 @@ builder
     .AddEntityFrameworkStores<FamilyMealPlannerContext>()
     .AddDefaultTokenProviders();
 
-builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
-    .AddJwtBearer(options =>
-    {
-        string secret = builder.Configuration["JWT:SECRET"];
-        if (secret == null)
-            throw new InvalidOperationException("Unable to find JWT Secret");
+builder.Services.AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(options =>
+                {
+                    string secret = builder.Configuration["JWT:SECRET"];
+                    Logger.Debug(secret);
+                    if (secret == null)
+                        throw new InvalidOperationException("Unable to find JWT Secret");
 
-        options.TokenValidationParameters = new TokenValidationParameters
-        {
-            ValidateIssuer = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidateAudience = true,
-            ValidAudience = builder.Configuration["Jwt:Audience"],
-            ValidateLifetime = true,
-            IssuerSigningKey = 
-                new SymmetricSecurityKey(
-                    Encoding.UTF8.GetBytes(secret)),
-            ValidateIssuerSigningKey = true,
-        };
-    });
+                    options.TokenValidationParameters = new TokenValidationParameters
+                    {
+                        ValidateIssuer = true,
+                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidateAudience = true,
+                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        ValidateLifetime = true,
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(
+                                Encoding.UTF8.GetBytes(secret)),
+                        ValidateIssuerSigningKey = true,
+                    };
+                });
 
 builder.Services.AddAuthorization();
+
 
 builder.Services.AddControllers()
                 .AddJsonOptions(options =>
                 {
                     options.JsonSerializerOptions.ReferenceHandler = ReferenceHandler.IgnoreCycles;
                 });
+
 
 var app = builder.Build();
 
@@ -116,7 +124,6 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
-
 app.UseCors();
 
 app.UseAuthentication();
