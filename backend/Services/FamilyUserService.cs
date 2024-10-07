@@ -16,9 +16,10 @@ public interface IFamilyUserService
     Task DeleteFamilyUser(int familyId, int userId);
 }
 
-public class FamilyUserService(FamilyMealPlannerContext context) : IFamilyUserService
+public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService familyService) : IFamilyUserService
 {
     private readonly FamilyMealPlannerContext _context = context;
+    private readonly IFamilyService _familyService = familyService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     public async Task<FamilyUser> GetFamilyUser(int familyId, int userId)
@@ -105,7 +106,7 @@ public class FamilyUserService(FamilyMealPlannerContext context) : IFamilyUserSe
         {
             FamilyUser familyUser = new FamilyUser()
             {
-                FamilyId = familyUserRequest.FamilyId,
+                FamilyId = _familyService.GetFamilyByGuid(familyUserRequest.FamilyShareCode).Id,
                 UserId = familyUserRequest.UserId,
                 FamilyRole = familyUserRequest.FamilyRole,
                 IsApproved = familyUserRequest.IsApproved ?? false

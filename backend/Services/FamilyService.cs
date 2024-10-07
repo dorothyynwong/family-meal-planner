@@ -22,7 +22,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
 
     public async Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId)
     {
-        Guid guid = Guid.NewGuid();
+        Guid guid;
         int counter = 5;
         Family? familyGuid = null;
         do
