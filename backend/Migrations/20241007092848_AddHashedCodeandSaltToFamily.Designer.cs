@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FamilyMealPlanner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(FamilyMealPlannerContext))]
-    partial class FamilyMealPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20241007092848_AddHashedCodeandSaltToFamily")]
+    partial class AddHashedCodeandSaltToFamily
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -150,8 +153,13 @@ namespace backend.Migrations
                     b.Property<string>("FamilyName")
                         .HasColumnType("text");
 
-                    b.Property<Guid>("FamilyShareCode")
-                        .HasColumnType("uuid");
+                    b.Property<string>("HashedFamilyCode")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Salt")
+                        .IsRequired()
+                        .HasColumnType("text");
 
                     b.HasKey("Id");
 

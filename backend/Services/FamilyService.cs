@@ -7,9 +7,9 @@ namespace FamilyMealPlanner.Services;
 
 public interface IFamilyService
 {
-    Task<int> AddFamily(FamilyRequest familyRequest);
     Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId);
     Task<Family> GetFamilyById(int familyId);
+    Task<Family?> GetFamilyByGuid(Guid guid);
     Task<List<FamilyResponse>> GetFamilyByUserId(int userId);
     Task UpdateFamily(FamilyRequest familyRequest, int familyId);
     Task DeleteFamily(int familyId);
@@ -20,34 +20,25 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    public async Task<int> AddFamily(FamilyRequest familyRequest)
-    {
-        try
-        {
-            Family family = new Family()
-            {
-                FamilyName = familyRequest.FamilyName,
-            };
-
-            _context.Families.Add(family);
-            await _context.SaveChangesAsync();
-            return family.Id;
-        }
-        catch (DbUpdateException ex)
-        {
-            Logger.Error($"Database error: {ex.Message}");
-            throw new Exception("An error occurred while updating the database.", ex);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Unexpected error: {ex.Message}");
-            throw new Exception("Unexpected error while adding record to database", ex);
-        }
-
-    }
-
     public async Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId)
     {
+        Guid guid;
+        int counter = 5;
+        Family? familyGuid = null;
+        do
+        {
+            guid=Guid.NewGuid();
+            familyGuid = await GetFamilyByGuid(guid);
+            counter--;
+        } 
+        while (familyGuid != null && counter > 0);
+
+        if (counter <= 0) 
+        {
+            Logger.Error("Unable to generate unique Guid");
+            throw new InvalidOperationException("Unable to generate unique Guid");
+        }
+
         using var transaction = await _context.Database.BeginTransactionAsync();
 
         try
@@ -55,6 +46,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
             Family family = new Family()
             {
                 FamilyName = familyRequest.FamilyName,
+                FamilyShareCode = guid
             };
 
             _context.Families.Add(family);
@@ -99,6 +91,13 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
         }
         return family;
     }
+
+    public async Task<Family?> GetFamilyByGuid(Guid guid)
+    {
+        Family? family = await _context.Families.FirstOrDefaultAsync(family => family.FamilyShareCode == guid);
+        return family;
+    }
+
 
     public async Task<List<FamilyResponse>> GetFamilyByUserId(int userId)
     {
