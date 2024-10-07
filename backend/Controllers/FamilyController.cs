@@ -10,10 +10,9 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/families")]
-public class FamilyController(IFamilyService familyService, IFamilyUserService familyUserService) : Controller
+public class FamilyController(IFamilyService familyService) : Controller
 {
     private readonly IFamilyService _familyService = familyService;
-    private readonly IFamilyUserService _familyUserSerivce = familyUserService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
