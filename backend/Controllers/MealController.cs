@@ -2,11 +2,13 @@ using System.Text.Json;
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("/meals")]
 public class MealController(IMealService mealService) : Controller

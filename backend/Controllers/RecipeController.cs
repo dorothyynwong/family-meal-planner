@@ -6,6 +6,7 @@ using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("/recipes")]
 public class RecipeController(IWebScrappingService webScrappingService, IRecipeService recipeService, IImageService imageService) : Controller

@@ -41,6 +41,7 @@ npm install
 dotnet restore
 dotnet ef database update
 dotnet user-secrets set "ImgBB:API_KEY" "YOUR API KEY"
+dotnet user-secrets set "JWT:SECRET" "YOUR SECRET"
 ```
 
 ### Inside the `frontend/` directory

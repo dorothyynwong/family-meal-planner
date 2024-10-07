@@ -8,6 +8,7 @@ using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
+[Authorize]
 [ApiController]
 [Route("/families")]
 public class FamilyController(IFamilyService familyService) : Controller
