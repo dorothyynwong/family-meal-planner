@@ -4,6 +4,7 @@ using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using NLog;
 
 namespace FamilyMealPlanner.Controllers;

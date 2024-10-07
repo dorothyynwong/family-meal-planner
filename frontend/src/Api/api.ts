@@ -133,3 +133,15 @@ export async function getMealTypes() {
     }  
 }
 
+export async function userLogin(username: string, password: string) {
+    try {
+        const response: AxiosResponse = await client.post(`/auth/login`, {
+                username: username,
+                password: password,
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }      
+}
+

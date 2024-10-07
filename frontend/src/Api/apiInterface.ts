@@ -32,4 +32,3 @@ export interface MealDetailsInterface {
     addedByUserId: number;
     notes?: string;
 }
-
