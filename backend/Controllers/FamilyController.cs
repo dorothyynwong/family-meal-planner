@@ -50,7 +50,7 @@ public class FamilyController(IFamilyService familyService) : Controller
         try
         {
             List<FamilyResponse> familyResponses = await _familyService.GetFamilyByUserId(userId);
-            
+
             return Ok(familyResponses);
         }
         catch (Exception ex)
@@ -61,10 +61,44 @@ public class FamilyController(IFamilyService familyService) : Controller
 
     }
 
+    [HttpGet("by-code")]
+    public async Task<IActionResult> GetFamilyByGuid([FromQuery] Guid guid)
+    {
+        try
+        {
+            Family family = await _familyService.GetFamilyByGuid(guid);
+
+            return Ok(family);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get families of {guid}: {ex.Message}");
+            return BadRequest($"Unable to get families of {guid}: {ex.Message}");
+        }
+
+    }
+
+    [HttpGet("code")]
+    public async Task<IActionResult> GetCodeByFamilyId([FromQuery] int familyId)
+    {
+        try
+        {
+            Guid guid = await _familyService.GetGuidByFamilyId(familyId);
+
+            return Ok(guid);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get code of {familyId}: {ex.Message}");
+            return BadRequest($"Unable to get code of {familyId}: {ex.Message}");
+        }
+
+    }
+
     [HttpPost]
     public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromQuery] int userId)
     {
-        if(!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
@@ -84,7 +118,7 @@ public class FamilyController(IFamilyService familyService) : Controller
     [HttpPut("{familyId}")]
     public async Task<IActionResult> Update(FamilyRequest familyRequest, [FromRoute] int familyId)
     {
-        if(!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }

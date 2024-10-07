@@ -7,12 +7,14 @@ namespace FamilyMealPlanner.Services;
 
 public interface IFamilyService
 {
-    Task<int> AddFamily(FamilyRequest familyRequest);
+    // Task<int> AddFamily(FamilyRequest familyRequest);
     Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId);
     Task<Family> GetFamilyById(int familyId);
     Task<List<FamilyResponse>> GetFamilyByUserId(int userId);
+    Task<Family> GetFamilyByGuid(Guid guid);
     Task UpdateFamily(FamilyRequest familyRequest, int familyId);
     Task DeleteFamily(int familyId);
+    Task<Guid> GetGuidByFamilyId(int familyId);
 }
 
 public class FamilyService(FamilyMealPlannerContext context, IEncryptionService encryptionService) : IFamilyService
@@ -21,47 +23,59 @@ public class FamilyService(FamilyMealPlannerContext context, IEncryptionService 
     private readonly IEncryptionService _encryptionService = encryptionService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    public async Task<int> AddFamily(FamilyRequest familyRequest)
+    // public async Task<int> AddFamily(FamilyRequest familyRequest)
+    // {
+    //     try
+    //     {
+    //         Guid g = Guid.NewGuid();
+
+    //         Family family = new Family()
+    //         {
+    //             FamilyName = familyRequest.FamilyName,
+    //             EncryptedGuid = _encryptionService.EncryptGuid(g)
+    //         };
+
+    //         _context.Families.Add(family);
+    //         await _context.SaveChangesAsync();
+    //         return family.Id;
+    //     }
+    //     catch (DbUpdateException ex)
+    //     {
+    //         Logger.Error($"Database error: {ex.Message}");
+    //         throw new Exception("An error occurred while updating the database.", ex);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Logger.Error($"Unexpected error: {ex.Message}");
+    //         throw new Exception("Unexpected error while adding record to database", ex);
+    //     }
+
+    // }
+
+    private async Task<Guid> GenerateGuid()
     {
-        try
+        Guid g;
+        int familyId = 0;
+        do
         {
-            Guid g = Guid.NewGuid();
-
-            Family family = new Family()
-            {
-                FamilyName = familyRequest.FamilyName,
-                EncryptedGuid = _encryptionService.EncryptGuid(g)
-            };
-
-            _context.Families.Add(family);
-            await _context.SaveChangesAsync();
-            return family.Id;
-        }
-        catch (DbUpdateException ex)
-        {
-            Logger.Error($"Database error: {ex.Message}");
-            throw new Exception("An error occurred while updating the database.", ex);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Unexpected error: {ex.Message}");
-            throw new Exception("Unexpected error while adding record to database", ex);
-        }
-
+            g = Guid.NewGuid();
+            // familyId = await GetFamilyIdByGuid(g);
+        } while (familyId > 0);
+        return g;
     }
 
     public async Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId)
     {
+        Guid guid = await GenerateGuid();
         using var transaction = await _context.Database.BeginTransactionAsync();
-
         try
         {
-            Guid g = Guid.NewGuid();
+            
 
             Family family = new Family()
             {
                 FamilyName = familyRequest.FamilyName,
-                EncryptedGuid = _encryptionService.EncryptGuid(g),
+                EncryptedGuid = _encryptionService.EncryptGuid(guid),
             };
 
             _context.Families.Add(family);
@@ -105,6 +119,20 @@ public class FamilyService(FamilyMealPlannerContext context, IEncryptionService 
             throw new InvalidOperationException($"Family with id {familyId} is not found.");
         }
         return family;
+    }
+
+    public async Task<Family> GetFamilyByGuid(Guid guid)
+    {
+        string encryptedGuid = _encryptionService.EncryptGuid(guid);   
+        Logger.Debug(encryptedGuid);
+        Family family = await _context.Families.SingleAsync(family => family.EncryptedGuid == encryptedGuid);
+        return family;
+    }
+
+    public async Task<Guid> GetGuidByFamilyId(int familyId)
+    {
+        Family family = await GetFamilyById(familyId);
+        return _encryptionService.DecryptGuid(family.EncryptedGuid);
     }
 
     public async Task<List<FamilyResponse>> GetFamilyByUserId(int userId)
