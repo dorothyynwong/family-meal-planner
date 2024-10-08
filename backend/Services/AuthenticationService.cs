@@ -19,6 +19,12 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 {
     private readonly IConfiguration _configuration = configuration;
     private readonly UserManager<User> _userManager = userManager;
+    private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
+    private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
+    private string _issuer = configuration["Jwt:Issuer"];
+    private string _audience = configuration["Jwt:Audience"];
+    private string _appName = configuration["Jwt:AppName"];
+    private string _refreshTokenName = configuration["Jwt:RefreshTokenName"];
     private SigningCredentials CreateSigningCredentials()
     {
         
@@ -35,21 +41,21 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     {
 
         var jwt = new JwtSecurityToken(
-                    issuer: _configuration["Jwt:Issuer"],
-                    audience: _configuration["Jwt:Audience"],
+                    issuer: _issuer,
+                    audience: _audience,
                     claims: authClaims,
-                    expires: DateTime.UtcNow.AddMinutes(15),
+                    expires: DateTime.UtcNow.AddMinutes(_accessTokenExpiry),
                     signingCredentials: CreateSigningCredentials()
                     );
 
         var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _configuration["Jwt:AppName"], _configuration["Jwt:RefreshTokenName"]);
+        var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _appName, _refreshTokenName);
 
         var refreshTokenModel = new RefreshTokenViewModel
         {
             UserName = user.UserName,
             TokenString = refreshTokenString,
-            ExpireAt = now.AddDays(7)
+            ExpireAt = now.AddDays(_refreshTokenExpiry)
         };
 
         return new JwtAuthResultViewModel
@@ -64,7 +70,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         context.Response.Cookies.Append("accessToken", accessToken,
             new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddMinutes(15),
+                Expires = DateTimeOffset.UtcNow.AddMinutes(_accessTokenExpiry),
                 HttpOnly = true,
                 IsEssential = true,
                 Secure = true,
@@ -74,7 +80,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         context.Response.Cookies.Append("refreshToken", refreshToken,
             new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddDays(7),
+                Expires = DateTimeOffset.UtcNow.AddDays(_refreshTokenExpiry),
                 HttpOnly = true,
                 IsEssential = true,
                 Secure = true,

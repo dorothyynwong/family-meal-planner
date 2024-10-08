@@ -23,6 +23,8 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly IConfiguration _configuration = configuration;
     private readonly IAuthenticationService _authenticationService = authenticationService;
+    private string _appName = configuration["Jwt:AppName"];
+    private string _refreshTokenName = configuration["Jwt:RefreshTokenName"];
 
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -38,8 +40,8 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
 
             await userManager.SetAuthenticationTokenAsync(
                                                             matchingUser,
-                                                            _configuration["Jwt:AppName"],
-                                                            _configuration["Jwt:RefreshTokenName"],
+                                                            _appName,
+                                                            _refreshTokenName,
                                                             jwtAuthResult.RefreshToken.TokenString
                                                         );
 
@@ -116,14 +118,14 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         Logger.Debug("refresh toekn");
         var refreshToken = Request.Cookies["refreshToken"];
         var userName = Request.Cookies["username"];
-        
+
         Logger.Debug(userName);
 
         var matchingUser = await _userManager.FindByNameAsync(userName);
 
         var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
-                                                            _configuration["Jwt:AppName"],
-                                                            _configuration["Jwt:RefreshTokenName"],
+                                                            _appName,
+                                                            _refreshTokenName,
                                                             refreshToken);
 
         if (!isValid)
@@ -136,8 +138,8 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser, authClaims, DateTime.Now);
         await userManager.SetAuthenticationTokenAsync(
                                                         matchingUser,
-                                                        _configuration["Jwt:AppName"],
-                                                        _configuration["Jwt:RefreshTokenName"],
+                                                        _appName,
+                                                        _refreshTokenName,
                                                         jwtAuthResult.RefreshToken.TokenString
                                                     );
 
