@@ -79,7 +79,7 @@ builder
     .Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<FamilyMealPlannerContext>()
     .AddDefaultTokenProviders()
-    .AddTokenProvider<DataProtectorTokenProvider<User>>("AppName");
+    .AddTokenProvider<DataProtectorTokenProvider<User>>(builder.Configuration["Jwt:AppName"]);
 
 builder.Services.AddAuthentication(options =>
                 {

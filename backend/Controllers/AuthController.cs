@@ -49,8 +49,8 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
 
             await userManager.SetAuthenticationTokenAsync(
                                                             matchingUser,
-                                                            "AppName",
-                                                            "RefreshTokenName",
+                                                            _configuration["Jwt:AppName"],
+                                                            _configuration["Jwt:RefreshTokenName"],
                                                             jwtAuthResult.RefreshToken.TokenString
                                                         );
 
@@ -126,7 +126,10 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     {
         var matchingUser = await _userManager.FindByNameAsync(userName);
 
-        var isValid = await userManager.VerifyUserTokenAsync(matchingUser, "AppName", "RefreshTokenName", refreshToken);
+        var isValid = await userManager.VerifyUserTokenAsync(matchingUser, 
+                                                            _configuration["Jwt:AppName"], 
+                                                            _configuration["Jwt:RefreshTokenName"], 
+                                                            refreshToken);
 
         if (!isValid)
         {
@@ -148,8 +151,8 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser, authClaims, DateTime.Now);
         await userManager.SetAuthenticationTokenAsync(
                                                         matchingUser,
-                                                        "AppName",
-                                                        "RefreshTokenName",
+                                                        _configuration["Jwt:AppName"],
+                                                        _configuration["Jwt:RefreshTokenName"],
                                                         jwtAuthResult.RefreshToken.TokenString
                                                     );
 
