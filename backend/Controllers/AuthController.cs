@@ -33,18 +33,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         var matchingUser = await _userManager.FindByNameAsync(loginRequest.UserName);
         if (matchingUser != null && await _userManager.CheckPasswordAsync(matchingUser, loginRequest.Password))
         {
-            var matchingUserRoles = await _userManager.GetRolesAsync(matchingUser);
-            var authClaims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
-                new(ClaimTypes.Name, matchingUser.UserName!),
-                // new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-            foreach (var role in matchingUserRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
+            var authClaims = await GetUserClaims(matchingUser);
             JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser, authClaims, DateTime.Now);
 
             await userManager.SetAuthenticationTokenAsync(
@@ -126,9 +115,9 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     {
         var matchingUser = await _userManager.FindByNameAsync(userName);
 
-        var isValid = await userManager.VerifyUserTokenAsync(matchingUser, 
-                                                            _configuration["Jwt:AppName"], 
-                                                            _configuration["Jwt:RefreshTokenName"], 
+        var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
+                                                            _configuration["Jwt:AppName"],
+                                                            _configuration["Jwt:RefreshTokenName"],
                                                             refreshToken);
 
         if (!isValid)
@@ -136,6 +125,23 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
             return null;
         }
 
+        var authClaims = await GetUserClaims(matchingUser);
+        
+        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser, authClaims, DateTime.Now);
+        await userManager.SetAuthenticationTokenAsync(
+                                                        matchingUser,
+                                                        _configuration["Jwt:AppName"],
+                                                        _configuration["Jwt:RefreshTokenName"],
+                                                        jwtAuthResult.RefreshToken.TokenString
+                                                    );
+
+        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, HttpContext);
+
+        return jwtAuthResult;
+    }
+
+    private async Task<List<Claim>> GetUserClaims(User matchingUser)
+    {
         var matchingUserRoles = await _userManager.GetRolesAsync(matchingUser);
         var authClaims = new List<Claim>
             {
@@ -148,16 +154,6 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
             authClaims.Add(new Claim(ClaimTypes.Role, role));
         }
 
-        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser, authClaims, DateTime.Now);
-        await userManager.SetAuthenticationTokenAsync(
-                                                        matchingUser,
-                                                        _configuration["Jwt:AppName"],
-                                                        _configuration["Jwt:RefreshTokenName"],
-                                                        jwtAuthResult.RefreshToken.TokenString
-                                                    );
-
-        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, HttpContext);
-
-        return jwtAuthResult;
+        return authClaims;
     }
 }
