@@ -78,7 +78,8 @@ builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
 builder
     .Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<FamilyMealPlannerContext>()
-    .AddDefaultTokenProviders();
+    .AddDefaultTokenProviders()
+    .AddTokenProvider<DataProtectorTokenProvider<User>>("AppName");
 
 builder.Services.AddAuthentication(options =>
                 {

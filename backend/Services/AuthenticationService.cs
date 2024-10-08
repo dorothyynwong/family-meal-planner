@@ -16,11 +16,10 @@ public interface IAuthenticationService
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
 }
 
-public class AuthenticationService(IConfiguration configuration) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationService
 {
     private readonly IConfiguration _configuration = configuration;
-    private readonly UserManager<User> userManager;
-
+    private readonly UserManager<User> _userManager = userManager;
     private SigningCredentials CreateSigningCredentials()
     {
         
@@ -33,24 +32,25 @@ public class AuthenticationService(IConfiguration configuration) : IAuthenticati
             SecurityAlgorithms.HmacSha256);
     }
 
-    public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now)
+    public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> authClaims, DateTime now)
     {
 
         var jwt = new JwtSecurityToken(
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Audience"],
-                    claims: claims,
+                    claims: authClaims,
                     expires: DateTime.UtcNow.AddHours(1),
                     signingCredentials: CreateSigningCredentials()
                     );
 
         var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var refreshTokenstring = await userManager.GenerateUserTokenAsync(user, "AppName", "RefreshTokenName");
+        // var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
+        var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, "AppName", "RefreshTokenName");
 
         var refreshTokenModel = new RefreshTokenViewModel
         {
             UserName = user.UserName,
-            TokenString = refreshTokenstring,
+            TokenString = refreshTokenString,
             ExpireAt = now.AddMinutes(5)
         };
 
