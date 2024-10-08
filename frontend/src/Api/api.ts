@@ -55,7 +55,7 @@ export async function getRecipeByUserId(userId: number) {
         const response: AxiosResponse = await client.get(`/recipes`, {
             params: {
                 userId: userId
-            }
+            },
         });
 
         return response;
@@ -133,3 +133,24 @@ export async function getMealTypes() {
     }  
 }
 
+export async function userLogin(username: string, password: string) {
+    try {
+        const response: AxiosResponse = await client.post(`/auth/login`, {
+                username: username,
+                password: password,
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }      
+}
+
+export async function refreshToken() {
+    try {
+        const response: AxiosResponse = await client.post(`/auth/refresh`,{});
+
+        return response.data; 
+    } catch (error) {
+        throw error;
+    }
+}

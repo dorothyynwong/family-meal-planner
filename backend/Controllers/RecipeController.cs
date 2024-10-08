@@ -2,6 +2,7 @@ using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Authorization;
 using NLog;
 
 namespace FamilyMealPlanner.Controllers;

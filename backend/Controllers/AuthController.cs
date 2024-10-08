@@ -6,68 +6,55 @@ using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Models.Request;
+using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.IdentityModel.Tokens;
 using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/auth")]
-public class AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
+public class AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration, IAuthenticationService authenticationService)
     : Controller
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
-    private readonly IConfiguration _configuration = configuration;
+    private readonly IAuthenticationService _authenticationService = authenticationService;
 
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
-
-    private SigningCredentials CreateSigningCredentials()
-    {
-        
-        string secret = _configuration["JWT:SECRET"];
-        if (secret == null)
-            throw new InvalidOperationException("Unable to find JWT Secret");
-
-        return new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)), 
-            SecurityAlgorithms.HmacSha256);
-    }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequest loginRequest)
     {
         var matchingUser = await _userManager.FindByNameAsync(loginRequest.UserName);
-        if (matchingUser != null && await _userManager.CheckPasswordAsync(matchingUser, loginRequest.Password))
+
+        var jwtAuthResult = await _authenticationService.AuthenticateUserAsync(matchingUser, loginRequest.Password);
+
+        if (jwtAuthResult == null)
         {
-            var matchingUserRoles = await _userManager.GetRolesAsync(matchingUser);
-            var authClaims = new List<Claim>
-            {
-                new(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
-                new(ClaimTypes.Name, matchingUser.UserName!),
-                // new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-            };
-            foreach (var role in matchingUserRoles)
-            {
-                authClaims.Add(new Claim(ClaimTypes.Role, role));
-            }
-
-            var jwt = new JwtSecurityToken(
-                        issuer:  _configuration["Jwt:Issuer"],
-                        audience: _configuration["Jwt:Audience"],
-                        claims: authClaims,
-                        expires: DateTime.UtcNow.AddHours(1),
-                        signingCredentials: CreateSigningCredentials()
-                        );
-
-            return Ok(
-                new JwtSecurityTokenHandler().WriteToken(jwt)
-            );
+            return Unauthorized();
         }
-        return Unauthorized();
+
+        _authenticationService
+                .SetTokensInsideCookie(
+                    jwtAuthResult.AccessToken, 
+                    jwtAuthResult.RefreshToken.TokenString, 
+                    matchingUser.UserName, 
+                    HttpContext
+                );
+
+        return Ok(
+            new UserLoginResponse
+            {
+                UserName = matchingUser.UserName,
+                AccessToken = jwtAuthResult.AccessToken,
+                RefreshToken = jwtAuthResult.RefreshToken.TokenString,
+                FirstName = matchingUser.FirstName,
+                LastName = matchingUser.LastName,
+            }
+        );
     }
 
     [HttpPost("register")]
@@ -120,4 +107,22 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
 
 
     }
+
+    [HttpPost("refresh")]
+    public async Task<IActionResult> Refresh()
+    {
+        Logger.Debug("refresh toekn");
+        var refreshToken = Request.Cookies["refreshToken"];
+        var userName = Request.Cookies["username"];
+
+        Logger.Debug(userName);
+
+        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, userName);
+
+        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, userName, HttpContext);
+
+        return Ok(jwtAuthResult);
+    }
+
+
 }
