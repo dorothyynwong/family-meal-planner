@@ -32,3 +32,11 @@ export interface MealDetailsInterface {
     addedByUserId: number;
     notes?: string;
 }
+
+export interface UserSignupInterface {
+    email: string;
+    username: string;
+    password: string;
+    firstname?: string;
+    lastname?: string;
+}
