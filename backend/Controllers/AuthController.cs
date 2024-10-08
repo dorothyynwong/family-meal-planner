@@ -27,17 +27,17 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    private SigningCredentials CreateSigningCredentials()
-    {
+    // private SigningCredentials CreateSigningCredentials()
+    // {
         
-        string secret = _configuration["JWT:SECRET"];
-        if (secret == null)
-            throw new InvalidOperationException("Unable to find JWT Secret");
+    //     string secret = _configuration["JWT:SECRET"];
+    //     if (secret == null)
+    //         throw new InvalidOperationException("Unable to find JWT Secret");
 
-        return new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)), 
-            SecurityAlgorithms.HmacSha256);
-    }
+    //     return new SigningCredentials(
+    //         new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)), 
+    //         SecurityAlgorithms.HmacSha256);
+    // }
 
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequest loginRequest)
@@ -57,19 +57,21 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                 authClaims.Add(new Claim(ClaimTypes.Role, role));
             }
 
-            var jwt = new JwtSecurityToken(
-                        issuer:  _configuration["Jwt:Issuer"],
-                        audience: _configuration["Jwt:Audience"],
-                        claims: authClaims,
-                        expires: DateTime.UtcNow.AddHours(1),
-                        signingCredentials: CreateSigningCredentials()
-                        );
+            JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser,authClaims, DateTime.Now);
 
-            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
-            _authenticationService.SetTokensInsideCookie(token, HttpContext);
+            // var jwt = new JwtSecurityToken(
+            //             issuer:  _configuration["Jwt:Issuer"],
+            //             audience: _configuration["Jwt:Audience"],
+            //             claims: authClaims,
+            //             expires: DateTime.UtcNow.AddHours(1),
+            //             signingCredentials: CreateSigningCredentials()
+            //             );
+
+            // var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, HttpContext);
 
             return Ok(
-                token
+                jwtAuthResult
             );
         }
         return Unauthorized();
