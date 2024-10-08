@@ -44,7 +44,6 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                     );
 
         var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        // var refreshTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
         var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, "AppName", "RefreshTokenName");
 
         var refreshTokenModel = new RefreshTokenViewModel
