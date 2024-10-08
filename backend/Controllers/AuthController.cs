@@ -6,6 +6,7 @@ using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Models.Request;
+using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,12 +16,13 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/auth")]
-public class AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration)
+public class AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration, IAuthenticationService authenticationService)
     : Controller
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly IConfiguration _configuration = configuration;
+    private readonly IAuthenticationService _authenticationService = authenticationService;
 
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -63,8 +65,11 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                         signingCredentials: CreateSigningCredentials()
                         );
 
+            var token = new JwtSecurityTokenHandler().WriteToken(jwt);
+            _authenticationService.SetTokensInsideCookie(token, HttpContext);
+
             return Ok(
-                new JwtSecurityTokenHandler().WriteToken(jwt)
+                token
             );
         }
         return Unauthorized();
