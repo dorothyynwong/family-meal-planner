@@ -90,7 +90,6 @@ builder.Services.AddAuthentication(options =>
                 .AddJwtBearer(options =>
                 {
                     string secret = builder.Configuration["JWT:SECRET"];
-                    Logger.Debug(secret);
                     if (secret == null)
                         throw new InvalidOperationException("Unable to find JWT Secret");
 

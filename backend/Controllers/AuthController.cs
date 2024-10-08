@@ -113,6 +113,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh([FromBody] string userName, string refreshToken)
     {
+        Logger.Debug("refresh toekn");
         var matchingUser = await _userManager.FindByNameAsync(userName);
 
         var isValid = await userManager.VerifyUserTokenAsync(matchingUser,

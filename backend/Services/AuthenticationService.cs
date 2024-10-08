@@ -39,7 +39,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                     issuer: _configuration["Jwt:Issuer"],
                     audience: _configuration["Jwt:Audience"],
                     claims: authClaims,
-                    expires: DateTime.UtcNow.AddHours(1),
+                    expires: DateTime.UtcNow.AddMinutes(15),
                     signingCredentials: CreateSigningCredentials()
                     );
 
@@ -50,7 +50,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         {
             UserName = user.UserName,
             TokenString = refreshTokenString,
-            ExpireAt = now.AddMinutes(5)
+            ExpireAt = now.AddDays(7)
         };
 
         return new JwtAuthResultViewModel
@@ -65,7 +65,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         context.Response.Cookies.Append("accessToken", accessToken,
             new CookieOptions
             {
-                Expires = DateTimeOffset.UtcNow.AddMinutes(5),
+                Expires = DateTimeOffset.UtcNow.AddMinutes(15),
                 HttpOnly = true,
                 IsEssential = true,
                 Secure = true,
