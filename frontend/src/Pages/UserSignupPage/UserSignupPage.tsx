@@ -10,20 +10,16 @@ const UserSignupPage: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-    const [signupData, setsignupData] = useState<UserSignupInterface>();
+    const [signupData, setSignupData] = useState<UserSignupInterface>();
 
     const navigate = useNavigate();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
-        // switch (name) {
-        //     case "username":
-        //         setUsername(value);
-        //         break;
-        //     case "password":
-        //         setPassword(value);
-        //         break;
-        // }
+        setSignupData({
+            ...signupData,
+            [name]: value,
+        })
     };
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
