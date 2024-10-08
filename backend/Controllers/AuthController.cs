@@ -43,7 +43,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                                                             jwtAuthResult.RefreshToken.TokenString
                                                         );
 
-            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, HttpContext);
+            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString,HttpContext);
 
             return Ok(
                 new UserLoginResponse
@@ -111,7 +111,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     }
 
     [HttpPost("refresh")]
-    public async Task<JwtAuthResultViewModel> Refresh([FromBody] string userName, string refreshToken)
+    public async Task<IActionResult> Refresh([FromBody] string userName, string refreshToken)
     {
         var matchingUser = await _userManager.FindByNameAsync(userName);
 
@@ -126,7 +126,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         }
 
         var authClaims = await GetUserClaims(matchingUser);
-        
+
         JwtAuthResultViewModel jwtAuthResult = await _authenticationService.GenerateTokens(matchingUser, authClaims, DateTime.Now);
         await userManager.SetAuthenticationTokenAsync(
                                                         matchingUser,
@@ -135,9 +135,9 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                                                         jwtAuthResult.RefreshToken.TokenString
                                                     );
 
-        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, HttpContext);
+        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString ,HttpContext);
 
-        return jwtAuthResult;
+        return Ok(jwtAuthResult);
     }
 
     private async Task<List<Claim>> GetUserClaims(User matchingUser)

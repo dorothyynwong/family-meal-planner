@@ -12,7 +12,7 @@ namespace FamilyMealPlanner.Services;
 
 public interface IAuthenticationService
 {
-    void SetTokensInsideCookie(string token, HttpContext context);
+    void SetTokensInsideCookie(string accessToken, string refreshToken, HttpContext context);
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
 }
 
@@ -60,9 +60,9 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         };
     }
 
-    public void SetTokensInsideCookie(string token, HttpContext context)
+    public void SetTokensInsideCookie(string accessToken, string refreshToken, HttpContext context)
     {
-        context.Response.Cookies.Append("accessToken", token,
+        context.Response.Cookies.Append("accessToken", accessToken,
             new CookieOptions
             {
                 Expires = DateTimeOffset.UtcNow.AddMinutes(5),
@@ -72,14 +72,14 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                 SameSite = SameSiteMode.None
             });
 
-        // context.Response.Cookies.Append("refreshToken", tokenDto.RefreshToken,
-        //     new CookieOptions
-        //     {
-        //         Expires = DateTimeOffset.UtcNow.AddDays(7),
-        //         HttpOnly = true,
-        //         IsEssential = true,
-        //         Secure = true,
-        //         SameSite = SameSiteMode.None
-        //     });
+        context.Response.Cookies.Append("refreshToken", refreshToken,
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(7),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
     }
 }
