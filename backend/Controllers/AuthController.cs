@@ -43,7 +43,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                                                             jwtAuthResult.RefreshToken.TokenString
                                                         );
 
-            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString,HttpContext);
+            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, matchingUser.UserName, HttpContext);
 
             return Ok(
                 new UserLoginResponse
@@ -111,9 +111,14 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     }
 
     [HttpPost("refresh")]
-    public async Task<IActionResult> Refresh([FromBody] string userName, string refreshToken)
+    public async Task<IActionResult> Refresh()
     {
         Logger.Debug("refresh toekn");
+        var refreshToken = Request.Cookies["refreshToken"];
+        var userName = Request.Cookies["username"];
+        
+        Logger.Debug(userName);
+
         var matchingUser = await _userManager.FindByNameAsync(userName);
 
         var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
@@ -136,7 +141,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                                                         jwtAuthResult.RefreshToken.TokenString
                                                     );
 
-        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString ,HttpContext);
+        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, matchingUser.UserName, HttpContext);
 
         return Ok(jwtAuthResult);
     }

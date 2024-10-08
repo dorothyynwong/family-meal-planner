@@ -147,8 +147,7 @@ export async function userLogin(username: string, password: string) {
 
 export async function refreshToken() {
     try {
-        const response: AxiosResponse = await client.post(`/auth/refresh`, {
-        });
+        const response: AxiosResponse = await client.post(`/auth/refresh`,{});
 
         return response.data; 
     } catch (error) {

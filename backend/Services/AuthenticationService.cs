@@ -4,7 +4,6 @@ using System.Text;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 
@@ -12,7 +11,7 @@ namespace FamilyMealPlanner.Services;
 
 public interface IAuthenticationService
 {
-    void SetTokensInsideCookie(string accessToken, string refreshToken, HttpContext context);
+    void SetTokensInsideCookie(string accessToken, string refreshToken, string userName, HttpContext context);
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
 }
 
@@ -60,7 +59,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         };
     }
 
-    public void SetTokensInsideCookie(string accessToken, string refreshToken, HttpContext context)
+    public void SetTokensInsideCookie(string accessToken, string refreshToken, string userName, HttpContext context)
     {
         context.Response.Cookies.Append("accessToken", accessToken,
             new CookieOptions
@@ -81,5 +80,9 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                 Secure = true,
                 SameSite = SameSiteMode.None
             });
+
+        context.Response.Cookies.Append("username", userName, 
+            new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
+
     }
 }
