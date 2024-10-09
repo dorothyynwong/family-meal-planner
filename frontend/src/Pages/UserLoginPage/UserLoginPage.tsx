@@ -9,7 +9,7 @@ const UserLoginPage: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-    const [username, setUsername] = useState("");
+    const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     
     const navigate = useNavigate();
@@ -19,8 +19,8 @@ const UserLoginPage: React.FC = () => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         switch (name) {
-            case "username":
-                setUsername(value);
+            case "email":
+                setEmail(value);
                 break;
             case "password":
                 setPassword(value);
@@ -32,7 +32,7 @@ const UserLoginPage: React.FC = () => {
         event.preventDefault();
         setStatus("loading");
         
-        userLogin(username, password)
+        userLogin(email, password)
             .then(response => {
                 if (response.statusText === "OK") {
                     // const recipeData = response.data;
@@ -52,8 +52,8 @@ const UserLoginPage: React.FC = () => {
     return (
         <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="user-name">
-                <Form.Label>Username</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Username" name="username" value={username} onChange={handleChange} />
+                <Form.Label>Email</Form.Label>
+                <Form.Control className="custom-form-control" type="text" placeholder="Enter Email" name="email" value={email} onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-password">
                 <Form.Label>Password</Form.Label>
