@@ -1,9 +1,16 @@
-import { Container, Nav, Navbar } from "react-bootstrap";
+import { Button, Container, Nav, Navbar } from "react-bootstrap";
 import logo from '../../Assets/watermelon.png';
 import { useAuth } from "../AuthProvider/AuthProvider";
+import { useNavigate } from "react-router-dom";
 
 const Navigation: React.FC = () => {
-    const { isAuthenticated } = useAuth();
+    const { isAuthenticated, logUserOut } = useAuth();
+    const navigate = useNavigate();
+
+    const handleLogout = () => {
+        logUserOut();
+        navigate("/");
+    }
 
     return (
         <Navbar expand="lg">
@@ -18,7 +25,7 @@ const Navigation: React.FC = () => {
                     <Nav.Link className="custom-nav-link" href="/shopping-list">Shopping List</Nav.Link>
                     {
                         isAuthenticated &&
-                        <Nav.Link className="custom-nav-link" href="/">Logout</Nav.Link>
+                        <Button onClick={handleLogout}>Logout</Button>
                     }
                     {
                         !isAuthenticated &&

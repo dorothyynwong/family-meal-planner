@@ -17,43 +17,44 @@ function App() {
 
   return (
     <AuthProvider>
-    <MealProvider>
-      <Layout>
+      <MealProvider>
+
         <Router>
-          <Routes>
-            <Route path="/"
-              element={<Home />} />
-            <Route path="/recipes"
-              element={<Recipes />} />
+          <Layout>
+            <Routes>
+              <Route path="/"
+                element={<Home />} />
+              <Route path="/recipes"
+                element={<Recipes />} />
 
-            <Route path="/recipes-list/:userId"
-              element={<RecipesList />} />
+              <Route path="/recipes-list/:userId"
+                element={<RecipesList />} />
 
-            <Route path="/recipe-add/:recipeId"
-              element={<RecipeCreation />} />
+              <Route path="/recipe-add/:recipeId"
+                element={<RecipeCreation />} />
 
-            <Route path="/recipe-add"
-              element={<RecipeCreation />} />
+              <Route path="/recipe-add"
+                element={<RecipeCreation />} />
 
-            <Route path="/recipe-details/:recipeId"
-              element={<RecipeDetails />} />
+              <Route path="/recipe-details/:recipeId"
+                element={<RecipeDetails />} />
 
-            <Route path="/recipe-edit/:recipeId"
-              element={<RecipeUpdate />} />
+              <Route path="/recipe-edit/:recipeId"
+                element={<RecipeUpdate />} />
 
-            <Route path="/meal-plans/:userId"
-              element={<MealPlanMonthly />} />
+              <Route path="/meal-plans/:userId"
+                element={<MealPlanMonthly />} />
 
-            <Route path="/login"
-              element={<UserLoginPage />} />
+              <Route path="/login"
+                element={<UserLoginPage />} />
 
-            <Route path="/signup"
-              element={<UserSignupPage />} />
-              
-          </Routes>
+              <Route path="/signup"
+                element={<UserSignupPage />} />
+
+            </Routes>
+          </Layout>
         </Router>
-      </Layout>
-    </MealProvider>
+      </MealProvider>
     </AuthProvider>
   )
 }

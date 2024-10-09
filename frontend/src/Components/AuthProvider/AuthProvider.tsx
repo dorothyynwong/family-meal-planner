@@ -1,8 +1,10 @@
 import { Context, ReactNode, createContext, useContext, useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   isAuthenticated: boolean;
   logUserIn: () => void;
+  logUserOut: () => void;
 };
 
 type AuthContextPropsType = {
@@ -16,13 +18,16 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 
   const logUserIn = () => {
-    // For the example I just set a prop. But you'll need to do more here
     setIsAuthenticated(true);
-    // Redirect to homepage
+
+  };
+
+  const logUserOut = () => {
+    setIsAuthenticated(false);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logUserIn }}>
+    <AuthContext.Provider value={{ isAuthenticated, logUserIn, logUserOut }}>
       {children}
     </AuthContext.Provider>
   );
