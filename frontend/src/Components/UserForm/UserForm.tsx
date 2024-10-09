@@ -14,22 +14,21 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [confirmPassword, setConfirmPassword] = useState("");
     const [signupData, setSignupData] = useState<UserSignupInterface>(data ? data : {
-                                                                            email: "",
-                                                                            nickname: "",
-                                                                            password: "",
-                                                                            familycode: ""
-                                                                        });
+        email: "",
+        nickname: "",
+        password: "",
+        familycode: ""
+    });
     const navigate = useNavigate();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const { name, value } = event.target;
         if (name === "confirmPassword") setConfirmPassword(value);
-        else
-        {
-                setSignupData({
-                    ...signupData,
-                    [name]: value,
-                })
+        else {
+            setSignupData({
+                ...signupData,
+                [name]: value,
+            })
         }
     };
 
@@ -38,27 +37,33 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
         setStatus("loading");
         setErrorMessages([]);
 
-        if(signupData.password !== confirmPassword) {
+        if (signupData.password !== confirmPassword) {
             setErrorMessages([...errorMessages, "Password isn't matched"]);
         }
 
         userSignup(signupData)
-        .then(response => {
-            if(response.statusText==="OK")
-            {
-                navigate(`/`);
-            }
-        })
-        .catch(error => {
-            console.log("Error signing up", error);
-            const errorMessage = error?.response?.data?.message || "Error signing up";
-            setStatus("error");
-            setErrorMessages([...errorMessages, errorMessage]);
-        });
+            .then(response => {
+                if (response.statusText === "OK") {
+                    navigate(`/`);
+                }
+            })
+            .catch(error => {
+                console.log("Error signing up", error);
+                const errorMessage = error?.response?.data?.message || "Error signing up";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
+            });
     }
 
     return (
         <Form onSubmit={handleSubmit}>
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Signing up ..."
+                successMessage="Signed Up Successfully!"
+            ><></>
+            </StatusHandler>
             <Form.Group className="mb-3" controlId="user-email">
                 <Form.Label>Email</Form.Label>
                 <Form.Control required className="custom-form-control" type="email" placeholder="Enter Email" name="email" value={signupData.email || ""} onChange={handleChange} />
@@ -79,18 +84,12 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
                 <Form.Label>Family Share Code</Form.Label>
                 <Form.Control className="custom-form-control" type="text" placeholder="Enter Family Share Code" name="familycode" value={signupData.familycode || ""} onChange={handleChange} />
             </Form.Group>
-            <StatusHandler
-                status={status}
-                errorMessages={errorMessages}
-                loadingMessage="Loggin In ..."
-                successMessage="Logged In Successfully!"
-            >
-                <div className="d-flex justify-content-end">
-                    <Button className="custom-button recipe-button" size="lg" type="submit">
-                        Submit
-                    </Button>
-                </div>
-            </StatusHandler>
+
+            <div className="d-flex justify-content-end">
+                <Button className="custom-button recipe-button" size="lg" type="submit">
+                    Submit
+                </Button>
+            </div>
         </Form>
     )
 }

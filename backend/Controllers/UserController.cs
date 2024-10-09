@@ -32,7 +32,6 @@ public class UserController(IUserService userService) : Controller
             UserResponse userResponse = new UserResponse
             {
                 Id = userId,
-                UserName = user.UserName,
                 Email = user.Email,
                 Nickname = user.Nickname,
             };

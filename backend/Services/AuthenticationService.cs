@@ -11,10 +11,10 @@ namespace FamilyMealPlanner.Services;
 
 public interface IAuthenticationService
 {
-    void SetTokensInsideCookie(string accessToken, string refreshToken, string userName, HttpContext context);
+    void SetTokensInsideCookie(string accessToken, string refreshToken, string email, HttpContext context);
     Task<JwtAuthResultViewModel> AuthenticateUserAsync(User user, string password);
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
-    Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string userName);
+    Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email);
 }
 
 public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationService
@@ -55,7 +55,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         var refreshTokenModel = new RefreshTokenViewModel
         {
-            UserName = user.UserName,
+            Email = user.Email,
             TokenString = refreshTokenString,
             ExpireAt = now.AddDays(_refreshTokenExpiry)
         };
@@ -87,7 +87,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         return null;
     }
 
-    public void SetTokensInsideCookie(string accessToken, string refreshToken, string userName, HttpContext context)
+    public void SetTokensInsideCookie(string accessToken, string refreshToken, string email, HttpContext context)
     {
         context.Response.Cookies.Append("accessToken", accessToken,
             new CookieOptions
@@ -109,14 +109,14 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                 SameSite = SameSiteMode.None
             });
 
-        context.Response.Cookies.Append("username", userName,
+        context.Response.Cookies.Append("email", email,
             new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
     }
 
-    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string userName)
+    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email)
     {
-        var matchingUser = await _userManager.FindByNameAsync(userName);
+        var matchingUser = await _userManager.FindByEmailAsync(email);
 
         var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
                                                             _appName,
@@ -147,7 +147,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         var authClaims = new List<Claim>
             {
                 new(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
-                new(ClaimTypes.Name, matchingUser.UserName!),
+                new(ClaimTypes.Name, matchingUser.Email),
                 // new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
         foreach (var role in matchingUserRoles)

@@ -48,7 +48,6 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
         {
             UserResponse userResponse = new UserResponse() {
                 Id = user.Id,
-                UserName = user.UserName,
                 Email = user.Email,
                 Nickname = user.Nickname,
             };
