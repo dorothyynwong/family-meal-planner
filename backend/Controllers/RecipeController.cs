@@ -83,6 +83,8 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
+        Logger.Debug(userId);
+
         try
         {
             List<Recipe> recipes = await _recipeService.GetRecipeByUserId(userId);

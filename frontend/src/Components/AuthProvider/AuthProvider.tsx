@@ -1,4 +1,5 @@
 import { Context, ReactNode, createContext, useContext, useState } from "react";
+import { userLogout } from "../../Api/api";
 
 type AuthContextType = {
   isAuthenticated: boolean;
@@ -22,6 +23,10 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
   };
 
   const logUserOut = () => {
+    userLogout()
+      .catch(error => {
+        console.log("Error during logout", error);
+      });
     setIsAuthenticated(false);
   };
 
