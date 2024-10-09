@@ -11,45 +11,50 @@ import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
 import { MealProvider } from './Components/MealContext/MealContext';
 import UserLoginPage from './Pages/UserLoginPage/UserLoginPage';
 import { AuthProvider } from './Components/AuthProvider/AuthProvider';
+import UserSignupPage from './Pages/UserSignupPage/UserSignupPage';
 
 function App() {
 
   return (
     <AuthProvider>
-    <MealProvider>
-      <Layout>
+      <MealProvider>
+
         <Router>
-          <Routes>
-            <Route path="/"
-              element={<Home />} />
-            <Route path="/recipes"
-              element={<Recipes />} />
+          <Layout>
+            <Routes>
+              <Route path="/"
+                element={<Home />} />
+              <Route path="/recipes"
+                element={<Recipes />} />
 
-            <Route path="/recipes-list/:userId"
-              element={<RecipesList />} />
+              <Route path="/recipes-list/:userId"
+                element={<RecipesList />} />
 
-            <Route path="/recipe-add/:recipeId"
-              element={<RecipeCreation />} />
+              <Route path="/recipe-add/:recipeId"
+                element={<RecipeCreation />} />
 
-            <Route path="/recipe-add"
-              element={<RecipeCreation />} />
+              <Route path="/recipe-add"
+                element={<RecipeCreation />} />
 
-            <Route path="/recipe-details/:recipeId"
-              element={<RecipeDetails />} />
+              <Route path="/recipe-details/:recipeId"
+                element={<RecipeDetails />} />
 
-            <Route path="/recipe-edit/:recipeId"
-              element={<RecipeUpdate />} />
+              <Route path="/recipe-edit/:recipeId"
+                element={<RecipeUpdate />} />
 
-            <Route path="/meal-plans/:userId"
-              element={<MealPlanMonthly />} />
+              <Route path="/meal-plans/:userId"
+                element={<MealPlanMonthly />} />
 
-            <Route path="/login"
-              element={<UserLoginPage />} />
+              <Route path="/login"
+                element={<UserLoginPage />} />
 
-          </Routes>
+              <Route path="/signup"
+                element={<UserSignupPage />} />
+
+            </Routes>
+          </Layout>
         </Router>
-      </Layout>
-    </MealProvider>
+      </MealProvider>
     </AuthProvider>
   )
 }

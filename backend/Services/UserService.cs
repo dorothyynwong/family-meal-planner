@@ -50,8 +50,7 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                Nickname = user.Nickname,
             };
             userResponses.Add(userResponse);
         }
@@ -66,8 +65,7 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
             User user= await GetUserById(userId);
 
             user.Id = userId;
-            user.FirstName = userRequest.FirstName;
-            user.LastName = userRequest.LastName;
+            user.Nickname = userRequest.Nickname;
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();

@@ -11,7 +11,7 @@ const SideMenu:React.FC = () => {
         <>
             <SideMenuToggleButton isOpen={isOpen} onClick={() => setIsOpen(!isOpen)} />
             <div className={isOpen? "side-menu-show" : "side-menu-hidden"} id="side-menu" data-testid="side-menu">
-                <Navigation />
+                <Navigation setIsOpen={setIsOpen}/>
             </div>
         </>
     );
