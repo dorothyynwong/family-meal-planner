@@ -34,8 +34,7 @@ public class UserController(IUserService userService) : Controller
                 Id = userId,
                 UserName = user.UserName,
                 Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName
+                Nickname = user.Nickname,
             };
 
             return Ok(userResponse);

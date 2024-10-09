@@ -51,8 +51,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                 UserName = matchingUser.UserName,
                 AccessToken = jwtAuthResult.AccessToken,
                 RefreshToken = jwtAuthResult.RefreshToken.TokenString,
-                FirstName = matchingUser.FirstName,
-                LastName = matchingUser.LastName,
+                Nickname = matchingUser.Nickname,
             }
         );
     }
@@ -69,8 +68,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         {
             User user = new User
             {
-                FirstName = userRequest.FirstName,
-                LastName = userRequest.LastName,
+                Nickname = userRequest.Nickname,
                 Email = userRequest.Email,
                 UserName = userRequest.UserName,
             };
@@ -94,8 +92,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                 Id = user.Id,
                 UserName = user.UserName,
                 Email = user.Email,
-                FirstName = user.FirstName,
-                LastName = user.LastName,
+                Nickname = user.Nickname,
             };
             return Ok(userResponse);
         }
