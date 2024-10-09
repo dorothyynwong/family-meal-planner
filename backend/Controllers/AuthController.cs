@@ -15,12 +15,19 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/auth")]
-public class AuthController(UserManager<User> userManager, RoleManager<Role> roleManager, IConfiguration configuration, IAuthenticationService authenticationService)
+public class AuthController(
+                            UserManager<User> userManager, 
+                            RoleManager<Role> roleManager, 
+                            IConfiguration configuration, 
+                            IAuthenticationService authenticationService,
+                            IFamilyUserService familyUserService
+                        )
     : Controller
 {
     private readonly UserManager<User> _userManager = userManager;
     private readonly RoleManager<Role> _roleManager = roleManager;
     private readonly IAuthenticationService _authenticationService = authenticationService;
+    private readonly IFamilyUserService _familyUserService = familyUserService;
 
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
@@ -93,6 +100,18 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                 Email = user.Email,
                 Nickname = user.Nickname,
             };
+
+            if (userRequest.FamilyCode != null && userRequest.FamilyCode != "")
+            {
+                FamilyUserRequest familyUserRequest = new FamilyUserRequest
+                {
+                    UserId = user.Id,
+                    FamilyShareCode = Guid.Parse(userRequest.FamilyCode!),
+                    FamilyRole = FamilyRoleType.Eater
+                };
+
+                await _familyUserService.AddFamilyUser(familyUserRequest);
+            }
             return Ok(userResponse);
         }
         catch (Exception ex)
