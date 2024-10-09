@@ -11,6 +11,7 @@ import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
 import { MealProvider } from './Components/MealContext/MealContext';
 import UserLoginPage from './Pages/UserLoginPage/UserLoginPage';
 import { AuthProvider } from './Components/AuthProvider/AuthProvider';
+import UserSignupPage from './Pages/UserSignupPage/UserSignupPage';
 
 function App() {
 
@@ -46,6 +47,9 @@ function App() {
             <Route path="/login"
               element={<UserLoginPage />} />
 
+            <Route path="/signup"
+              element={<UserSignupPage />} />
+              
           </Routes>
         </Router>
       </Layout>
