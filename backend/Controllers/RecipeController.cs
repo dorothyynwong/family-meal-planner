@@ -4,6 +4,7 @@ using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using NLog;
+using System.Security.Claims;
 
 namespace FamilyMealPlanner.Controllers;
 
@@ -71,8 +72,10 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByUserId([FromQuery] int userId)
+    public async Task<IActionResult> GetByUserId()
     {
+        int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+
         try
         {
             List<Recipe> recipes = await _recipeService.GetRecipeByUserId(userId);
