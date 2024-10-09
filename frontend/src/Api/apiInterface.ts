@@ -34,9 +34,9 @@ export interface MealDetailsInterface {
 }
 
 export interface UserSignupInterface {
-    email: string;
-    username: string;
-    password: string;
-    firstname?: string;
-    lastname?: string;
+    email?: string;
+    username?: string;
+    password?: string;
+    nickname?: string;
+    familycode?: string;
 }
