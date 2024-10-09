@@ -7,10 +7,10 @@ namespace FamilyMealPlanner.Services;
 
 public interface IMealService
 {
-    Task<int> AddMeal(MealRequest mealRequest);
+    Task<int> AddMeal(MealRequest mealRequest, int userId);
     Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId);
-    Task UpdateMeal(MealRequest mealRequest, int mealId);
-    Task Delete(int mealId);
+    Task UpdateMeal(MealRequest mealRequest, int mealId, int userId);
+    Task Delete(int mealId, int userId);
 }
 
 public class MealService(FamilyMealPlannerContext context) : IMealService
@@ -18,7 +18,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    public async Task<int> AddMeal(MealRequest mealRequest)
+    public async Task<int> AddMeal(MealRequest mealRequest, int userId)
     {
 
         try
@@ -27,7 +27,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
             {
                 Date = mealRequest.Date,
                 RecipeId = mealRequest.RecipeId,
-                UserId = mealRequest.UserId,
+                UserId = userId,
                 FamilyId = mealRequest.FamilyId,
                 MealType = mealRequest.GetMealTypeEnum(),
                 AddedByUserId = mealRequest.AddedByUserId,
@@ -94,7 +94,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
         return meal;
     }
 
-    public async Task UpdateMeal(MealRequest mealRequest, int mealId)
+    public async Task UpdateMeal(MealRequest mealRequest, int mealId, int userId)
     {
         try
         {
@@ -121,7 +121,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
     }
 
 
-    public async Task Delete(int mealId)
+    public async Task Delete(int mealId, int userId)
     {
         try
         {

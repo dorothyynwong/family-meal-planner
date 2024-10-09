@@ -42,6 +42,9 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     [HttpPost("")]
     public async Task<IActionResult> Add(RecipeRequest recipe)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
             int recipeId = await _recipeService.AddRecipe(recipe);
@@ -58,6 +61,9 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     [HttpGet("{recipeId}")]
     public async Task<IActionResult> GetById([FromRoute] int recipeId)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
             Recipe recipe = await _recipeService.GetRecipeById(recipeId);
@@ -74,7 +80,8 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     [HttpGet]
     public async Task<IActionResult> GetByUserId()
     {
-        int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
 
         try
         {
@@ -92,6 +99,9 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     [HttpPut("{recipeId}")]
     public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute] int recipeId)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
             await _recipeService.UpdateRecipe(recipeRequest, recipeId);
@@ -109,6 +119,9 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
     [HttpDelete("{recipeId}")]
     public async Task<IActionResult> Delete([FromRoute] int recipeId)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
             await _recipeService.Delete(recipeId);
