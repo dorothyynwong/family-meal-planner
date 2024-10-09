@@ -24,8 +24,7 @@ const RecipesList: React.FC = () => {
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
-        const userIdInt = parseInt(userId!, 10)
-        getRecipeByUserId(userIdInt)
+        getRecipeByUserId()
             .then(recipes => {
                 setRecipesList(recipes.data);
                 setStatus("success");

@@ -37,11 +37,8 @@ public class MealController(IMealService mealService) : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate)
+    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate, int userId)
     {
-        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
-            return Unauthorized();
-
         try
         {
             List<MealResponse> meals = await _mealService.GetMealByDateUserId(fromDate, toDate, userId);
@@ -79,7 +76,7 @@ public class MealController(IMealService mealService) : Controller
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
-            
+
         try
         {
             await _mealService.Delete(mealId, userId);

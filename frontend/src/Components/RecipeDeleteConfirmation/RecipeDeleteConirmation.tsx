@@ -33,7 +33,7 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({ data, onCancel 
 
     const handleClick = (event: { currentTarget: { id: string } }) => {
         const buttonId = event.currentTarget.id;
-        const userId = 1;
+ 
         switch (buttonId) {
             case "delete-recipe-button":
                 setStatus("loading");
@@ -41,7 +41,7 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({ data, onCancel 
                 deleteRecipe(recipeData.id ? recipeData.id : 0)
                     .then(() => {
                         setModalShow(false);
-                        navigate(`/recipes-list/${userId}`);
+                        navigate(`/recipes-list/`);
                         setStatus("success");
                     })
                     .catch(error => {

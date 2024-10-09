@@ -30,7 +30,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
                 UserId = userId,
                 FamilyId = mealRequest.FamilyId,
                 MealType = mealRequest.GetMealTypeEnum(),
-                AddedByUserId = mealRequest.AddedByUserId,
+                AddedByUserId = userId,
                 Notes = mealRequest.Notes,
             };
 

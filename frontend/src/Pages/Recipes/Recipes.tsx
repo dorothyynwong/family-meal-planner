@@ -12,11 +12,10 @@ const Recipes: React.FC = () => {
     const [url, setUrl] = useState("");
 
     const handleClick = (event: { currentTarget: { id: string } })  => {
-        const userId = 1;
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
           case "show-recipe-button":
-            navigate(`/recipes-list/${userId}`); 
+            navigate(`/recipes-list`); 
             break
           case "new-recipe-button":
             navigate("/recipe-add")
