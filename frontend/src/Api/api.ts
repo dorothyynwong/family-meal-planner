@@ -134,10 +134,10 @@ export async function getMealTypes() {
     }  
 }
 
-export async function userLogin(username: string, password: string) {
+export async function userLogin(email: string, password: string) {
     try {
         const response: AxiosResponse = await client.post(`/auth/login`, {
-                username: username,
+                email: email,
                 password: password,
         });
         return response;

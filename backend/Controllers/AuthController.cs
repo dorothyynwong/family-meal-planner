@@ -28,7 +28,7 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     [HttpPost("login")]
     public async Task<IActionResult> Login([FromBody] UserLoginRequest loginRequest)
     {
-        var matchingUser = await _userManager.FindByNameAsync(loginRequest.UserName);
+        var matchingUser = await _userManager.FindByEmailAsync(loginRequest.Email);
 
         var jwtAuthResult = await _authenticationService.AuthenticateUserAsync(matchingUser, loginRequest.Password);
 
@@ -41,14 +41,14 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
                 .SetTokensInsideCookie(
                     jwtAuthResult.AccessToken, 
                     jwtAuthResult.RefreshToken.TokenString, 
-                    matchingUser.UserName, 
+                    matchingUser.Email, 
                     HttpContext
                 );
 
         return Ok(
             new UserLoginResponse
             {
-                UserName = matchingUser.UserName,
+                Email = matchingUser.Email,
                 AccessToken = jwtAuthResult.AccessToken,
                 RefreshToken = jwtAuthResult.RefreshToken.TokenString,
                 Nickname = matchingUser.Nickname,
@@ -68,9 +68,9 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
         {
             User user = new User
             {
+                UserName = userRequest.Email,
                 Nickname = userRequest.Nickname,
                 Email = userRequest.Email,
-                UserName = userRequest.Email,
             };
 
             var result = await _userManager.CreateAsync(user, userRequest.Password);
@@ -90,7 +90,6 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
             UserResponse userResponse = new UserResponse
             {
                 Id = user.Id,
-                UserName = user.UserName,
                 Email = user.Email,
                 Nickname = user.Nickname,
             };
@@ -110,13 +109,11 @@ public class AuthController(UserManager<User> userManager, RoleManager<Role> rol
     {
         Logger.Debug("refresh toekn");
         var refreshToken = Request.Cookies["refreshToken"];
-        var userName = Request.Cookies["username"];
+        var email = Request.Cookies["email"];
 
-        Logger.Debug(userName);
+        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, email);
 
-        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, userName);
-
-        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, userName, HttpContext);
+        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, email, HttpContext);
 
         return Ok(jwtAuthResult);
     }
