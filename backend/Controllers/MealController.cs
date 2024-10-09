@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json;
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
@@ -33,8 +34,10 @@ public class MealController(IMealService mealService) : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate, int userId)
+    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate)
     {
+        int userId = int.Parse(User.FindFirstValue(ClaimTypes.NameIdentifier)); 
+        
         try
         {
             List<MealResponse> meals = await _mealService.GetMealByDateUserId(fromDate, toDate, userId);
