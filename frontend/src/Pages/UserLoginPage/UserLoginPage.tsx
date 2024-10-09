@@ -37,7 +37,7 @@ const UserLoginPage: React.FC = () => {
                 if (response.statusText === "OK") {
                     // const recipeData = response.data;
                     logUserIn();
-                    navigate(`/recipes-list/1`);
+                    navigate(`/recipes-list`);
                     setStatus("success");
                 }
             })
