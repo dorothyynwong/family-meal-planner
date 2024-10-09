@@ -51,13 +51,9 @@ export async function getRecipeById(recipeId: number) {
     }
 }
 
-export async function getRecipeByUserId(userId: number) {
+export async function getRecipeByUserId() {
     try {
-        const response: AxiosResponse = await client.get(`/recipes`, {
-            params: {
-                userId: userId
-            },
-        });
+        const response: AxiosResponse = await client.get(`/recipes`, {});
 
         return response;
     } catch (error) {

@@ -16,7 +16,6 @@ const RecipeDetails: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { recipeId } = useParams<{ recipeId: string }>();
-    const userId = 1;
     const navigate = useNavigate();
     const [isDelete, setIsDelete] = useState(false);
     const [recipeData, setRecipeData] = useState<RecipeDetailsInterface>({
@@ -85,7 +84,7 @@ const RecipeDetails: React.FC = () => {
             </StatusHandler>
                 <Row>
                     <Col xs={10}>
-                        <MdArrowBackIosNew size={20} onClick={() => navigate(`/recipes-list/${userId}`)} />
+                        <MdArrowBackIosNew size={20} onClick={() => navigate(`/recipes-list/`)} />
                     </Col>
                     <Col xs={2}>
                         <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />

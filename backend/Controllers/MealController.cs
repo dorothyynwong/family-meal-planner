@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json;
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
@@ -19,9 +20,12 @@ public class MealController(IMealService mealService) : Controller
     [HttpPost("")]
     public async Task<IActionResult> Add(MealRequest meal)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
-            int mealId = await _mealService.AddMeal(meal);
+            int mealId = await _mealService.AddMeal(meal, userId);
             return Ok(mealId);
         }
         catch (Exception ex)
@@ -51,9 +55,12 @@ public class MealController(IMealService mealService) : Controller
     [HttpPut("{mealId}")]
     public async Task<IActionResult> Update(MealRequest mealRequest, [FromRoute] int mealId)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
-            await _mealService.UpdateMeal(mealRequest, mealId);
+            await _mealService.UpdateMeal(mealRequest, mealId, userId);
             return Ok(mealRequest);
         }
         catch (Exception ex)
@@ -67,9 +74,12 @@ public class MealController(IMealService mealService) : Controller
     [HttpDelete("{mealId}")]
     public async Task<IActionResult> Delete([FromRoute] int mealId)
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
-            await _mealService.Delete(mealId);
+            await _mealService.Delete(mealId, userId);
             return Ok();
         }
         catch (Exception ex)
