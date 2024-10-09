@@ -3,12 +3,17 @@ import logo from '../../Assets/watermelon.png';
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
-const Navigation: React.FC = () => {
+interface NavigationProps {
+    setIsOpen: (newOpen: boolean)=>void;
+}
+
+const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
     const { isAuthenticated, logUserOut } = useAuth();
     const navigate = useNavigate();
 
     const handleLogout = () => {
         logUserOut();
+        setIsOpen(false);
         navigate("/");
     }
 
