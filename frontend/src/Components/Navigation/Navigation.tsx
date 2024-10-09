@@ -24,7 +24,7 @@ const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
                 navigate('/recipes');
                 break;
             case "meals":
-                navigate('/meal-plans/1');
+                navigate('/meal-plans');
                 break;
             case "shoppingList":
                 navigate('/shopping-list');

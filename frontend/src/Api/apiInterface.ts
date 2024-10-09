@@ -29,7 +29,7 @@ export interface MealDetailsInterface {
     userId?: number;
     familyId?: number;
     mealType: string;
-    addedByUserId: number;
+    addedByUserId?: number;
     notes?: string;
 }
 

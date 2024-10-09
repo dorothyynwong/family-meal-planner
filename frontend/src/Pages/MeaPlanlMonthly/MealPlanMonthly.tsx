@@ -13,7 +13,7 @@ import { useMeal } from "../../Components/MealContext/MealContext";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
-    const { userId } = useParams<{ userId: string }>();
+    // const { userId } = useParams<{ userId: string }>();
     const [startDate, setStartDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth(), 1-7));
     const [endDate, setEndDate] = useState(new Date(todaysDate.getFullYear(), todaysDate.getMonth() + 1, 7));
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -34,10 +34,11 @@ const MealPlanMonthly: React.FC = () => {
         setMeals([]);
         setErrorMessages([]);
 
-        if (userId)
-            getMealByDateUserId(startDate.toDateString(), endDate.toDateString(), userId)
+        // if (userId)
+            getMealByDateUserId(startDate.toDateString(), endDate.toDateString())
                 .then(meals => {
                     setMeals(meals.data);
+                    console.log(meals);
                     setStatus("success");
                 })
                 .catch(error => {
@@ -80,7 +81,7 @@ const MealPlanMonthly: React.FC = () => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Uploading recipes..."
+                loadingMessage="Loading Meals.."
                 successMessage=""
             >
                 <></>

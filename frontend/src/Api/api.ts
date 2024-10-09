@@ -103,17 +103,18 @@ export async function deleteMeal(mealId: number) {
     }
 }
 
-export async function getMealByDateUserId(fromDate: string, toDate: string, userId: string) {
+// export async function getMealByDateUserId(fromDate: string, toDate: string, userId: string) {
+    export async function getMealByDateUserId(fromDate: string, toDate: string) {
     try {
 
         const response: AxiosResponse = await client.get(`/meals`, {
             params: {
                 fromDate: fromDate,
                 toDate: toDate,
-                userId: parseInt(userId)
+                // userId: parseInt(userId)
             }
         });
-
+        
         return response;
     } catch (error) {
         throw error;

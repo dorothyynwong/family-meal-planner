@@ -12,7 +12,7 @@ import "./MealForm.scss";
 
 const MealForm: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-    const { userId } = useParams<{ userId: string }>();
+    // const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
     const { mode,
@@ -58,7 +58,7 @@ const MealForm: React.FC = () => {
 
     const handleClick = () => {
         const isFromMealForm = true;
-        navigate(`/recipes-list/${userId}`, { state: { isFromMealForm, mealDate, selectedMealType } });
+        navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } });
     }
 
     const handleDelete = () => {
@@ -107,9 +107,9 @@ const MealForm: React.FC = () => {
         const meal: MealDetailsInterface = {
             date: mealDate,
             notes: mealNotes,
-            userId: parseInt(userId!, 10),
+            // userId: parseInt(userId!, 10),
             mealType: selectedMealType,
-            addedByUserId: parseInt(userId!, 10),
+            // addedByUserId: parseInt(userId!, 10),
             ...(selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
 

@@ -42,7 +42,7 @@ function App() {
               <Route path="/recipe-edit/:recipeId"
                 element={<RecipeUpdate />} />
 
-              <Route path="/meal-plans/:userId"
+              <Route path="/meal-plans"
                 element={<MealPlanMonthly />} />
 
               <Route path="/login"

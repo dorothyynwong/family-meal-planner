@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using FamilyMealPlanner.Models;
 using Microsoft.EntityFrameworkCore;
 using NLog;
@@ -20,7 +21,6 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     public async Task<int> AddMeal(MealRequest mealRequest, int userId)
     {
-
         try
         {
             Meal meal = new Meal()
@@ -33,6 +33,8 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
                 AddedByUserId = userId,
                 Notes = mealRequest.Notes,
             };
+
+            Logger.Debug(userId);
 
             _context.Meals.Add(meal);
             await _context.SaveChangesAsync();
@@ -60,6 +62,8 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
                                                         meal.UserId == userId)
                                                 .ToListAsync();
         List<MealResponse> mealResponses = new();
+
+        Logger.Debug(meals[0].Recipe.DefaultImageUrl);
 
         foreach (Meal meal in meals)
         {
