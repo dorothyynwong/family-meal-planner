@@ -114,7 +114,7 @@ export async function deleteMeal(mealId: number) {
                 // userId: parseInt(userId)
             }
         });
-        
+
         return response;
     } catch (error) {
         throw error;
@@ -137,6 +137,15 @@ export async function userLogin(email: string, password: string) {
                 email: email,
                 password: password,
         });
+        return response;
+    } catch (error) {
+        throw error;
+    }      
+}
+
+export async function userLogout() {
+    try {
+        const response: AxiosResponse = await client.post(`/auth/logout`, {});
         return response;
     } catch (error) {
         throw error;
