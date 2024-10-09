@@ -53,7 +53,7 @@ const UserLoginPage: React.FC = () => {
         <Form onSubmit={handleSubmit}>
             <Form.Group className="mb-3" controlId="user-name">
                 <Form.Label>Email</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Email" name="email" value={email} onChange={handleChange} />
+                <Form.Control className="custom-form-control" type="email" placeholder="Enter Email" name="email" value={email} onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-password">
                 <Form.Label>Password</Form.Label>
