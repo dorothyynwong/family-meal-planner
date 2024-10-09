@@ -1,5 +1,4 @@
 import { Context, ReactNode, createContext, useContext, useState } from "react";
-import { useNavigate } from "react-router-dom";
 
 type AuthContextType = {
   isAuthenticated: boolean;

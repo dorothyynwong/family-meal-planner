@@ -9,7 +9,30 @@ interface NavigationProps {
 
 const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
     const { isAuthenticated, logUserOut } = useAuth();
+
     const navigate = useNavigate();
+
+    const handleClick = (event: { currentTarget: { id: string } }) => {
+        const targetId = event.currentTarget.id;
+
+        switch(targetId)
+        {
+            case "home":
+                navigate('/home');
+                break;
+            case "recipes":
+                navigate('/recipes');
+                break;
+            case "meals":
+                navigate('/meal-plans/1');
+                break;
+            case "shoppingList":
+                navigate('/shopping-list');
+                break;
+        }
+        setIsOpen(false);
+
+    }
 
     const handleLogout = () => {
         logUserOut();
@@ -24,10 +47,10 @@ const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
                     <img src={logo} alt="Family Meal Planner" style={{ height: '100px' }} />
                 </Navbar.Brand>
                 <Nav className="custom-navbar-links">
-                    <Nav.Link className="custom-nav-link" href="/home">Home</Nav.Link>
-                    <Nav.Link className="custom-nav-link" href="/recipes">Recipes</Nav.Link>
-                    <Nav.Link className="custom-nav-link" href="/meal-plans/1">Meals</Nav.Link>
-                    <Nav.Link className="custom-nav-link" href="/shopping-list">Shopping List</Nav.Link>
+                    <Nav.Link id="home" className="custom-nav-link" onClick={handleClick}>Home</Nav.Link>
+                    <Nav.Link id="recipes" className="custom-nav-link" onClick={handleClick}>Recipes</Nav.Link>
+                    <Nav.Link id="meals" className="custom-nav-link" onClick={handleClick}>Meals</Nav.Link>
+                    <Nav.Link id="shoppingList" className="custom-nav-link" onClick={handleClick}>Shopping List</Nav.Link>
                     {
                         isAuthenticated &&
                         <Button onClick={handleLogout}>Logout</Button>
