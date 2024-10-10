@@ -102,11 +102,18 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
 
     public async Task AddFamilyUser(FamilyUserRequest familyUserRequest, int userId)
     {
+        Family? family = await _familyService.GetFamilyByGuid(familyUserRequest.FamilyShareCode);
+        if (family == null) 
+        {
+            Logger.Error($"Family not found");
+            throw new InvalidOperationException("Family not found");
+        }
+        
         try
         {
             FamilyUser familyUser = new FamilyUser()
             {
-                FamilyId = _familyService.GetFamilyByGuid(familyUserRequest.FamilyShareCode).Id,
+                FamilyId = family.Id,
                 UserId = userId,
                 FamilyRole = familyUserRequest.FamilyRole,
                 IsApproved = familyUserRequest.IsApproved ?? false
