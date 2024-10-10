@@ -13,11 +13,15 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/families")]
-public class FamilyController(IFamilyService familyService, IEmailService emailService, IUserService userService) : ControllerBase
+public class FamilyController(IFamilyService familyService, 
+                                IEmailService emailService, 
+                                IUserService userService,
+                                IFamilyUserService familyUserService) : ControllerBase
 {
     private readonly IFamilyService _familyService = familyService;
     private readonly IEmailService _emailService = emailService;
     private readonly IUserService _userService = userService;
+    private readonly IFamilyUserService _familyUserService = familyUserService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -147,17 +151,18 @@ public class FamilyController(IFamilyService familyService, IEmailService emailS
     [HttpPost("share-code")]
     public async Task<IActionResult> ShareFamilyCode(int familyId, string senderName, string recipentName, string recipentEmail)
     {
-
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
+        User user = await _userService.GetUserById(userId);
         Family family = await _familyService.GetFamilyById(familyId);
+        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
+
+        if (familyUser == null || familyUser.FamilyRole != FamilyRoleType.Cook)
+            return Unauthorized();
+
         string familyCode = family.FamilyShareCode.ToString();
-
-        // User user = await _userService.GetUserById(userId);
-
         string familyName = family.FamilyName;
-
         string familyLink = $"http://localhost:3000/families/join/{familyCode}";
 
         string subject = $"Join {senderName}'s family in {familyName} of Family Meal Planner";
