@@ -13,9 +13,10 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/families")]
-public class FamilyController(IFamilyService familyService) : Controller
+public class FamilyController(IFamilyService familyService, IEmailService emailService) : ControllerBase
 {
     private readonly IFamilyService _familyService = familyService;
+    private readonly IEmailService _emailService = emailService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -140,5 +141,14 @@ public class FamilyController(IFamilyService familyService) : Controller
             Logger.Error($"Failed to get family {familyId}: {ex.Message}");
             return BadRequest($"Unable to get family {familyId}: {ex.Message}");
         }
+    }
+
+    [HttpPost("share-code")]
+    public async Task<IActionResult> ShareFamilyCode(string email)
+    {
+        string subject = "share code";
+        string message = "this is the code";
+        await emailService.SendEmailAsync(email, subject, message);
+        return Ok();
     }
 }
