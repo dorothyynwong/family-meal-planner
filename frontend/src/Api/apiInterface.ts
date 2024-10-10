@@ -39,3 +39,7 @@ export interface UserSignupInterface {
     nickname?: string;
     familycode?: string;
 }
+
+export interface FamilyInterface {
+    familyName: string;
+}

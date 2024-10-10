@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
+import { FamilyInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
 import { configure } from '@testing-library/react';
 
 export async function importRecipeFromUrl(url: string) {
@@ -165,6 +165,15 @@ export async function refreshToken() {
 export async function userSignup(user: UserSignupInterface) {
     try {
         const response: AxiosResponse = await client.post('/auth/signup', user,  {withCredentials: false} );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function addFamily(family: FamilyInterface) {
+    try {
+        const response: AxiosResponse = await client.post('families', family);
         return response;
     } catch (error) {
         throw error;

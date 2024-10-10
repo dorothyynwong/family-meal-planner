@@ -4,10 +4,14 @@ import "./Families.scss";
 import React, { useState } from "react";
 import Popup from "../../Components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
+import { addFamily } from "../../Api/api";
 
 
 
 const Families: React.FC = () => {
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
+
     const navigate = useNavigate();
     const [familyCode, setFamilyCode] = useState("");
     const [familyName, setFamilyName] = useState("");
@@ -21,8 +25,17 @@ const Families: React.FC = () => {
             navigate(`/families-list`); 
             break
           case "create-family-button":
-            navigate("/family-add", { state: familyName})
-            break
+            setStatus("loading");
+            setErrorMessages([]);
+            addFamily({familyName: familyName})
+            .catch(error => {
+                console.log("Error adding family", error);
+                const errorMessage = error?.response?.data?.message || "Error adding family";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
+            });
+            navigate(`/families-list`); 
+            break;
           case "join-family-button":
             navigate("/family-join", { state: familyCode })
             break
