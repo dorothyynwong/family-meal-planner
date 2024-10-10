@@ -12,6 +12,7 @@ import { MealProvider } from './Components/MealContext/MealContext';
 import UserLoginPage from './Pages/UserLoginPage/UserLoginPage';
 import { AuthProvider } from './Components/AuthProvider/AuthProvider';
 import UserSignupPage from './Pages/UserSignupPage/UserSignupPage';
+import Families from './Pages/Families/Families';
 
 function App() {
 
@@ -50,6 +51,9 @@ function App() {
 
               <Route path="/signup"
                 element={<UserSignupPage />} />
+
+              <Route path="/families"
+                element={<Families />} />
 
             </Routes>
           </Layout>

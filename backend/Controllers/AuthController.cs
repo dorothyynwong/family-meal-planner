@@ -113,12 +113,11 @@ public class AuthController(
             {
                 FamilyUserRequest familyUserRequest = new FamilyUserRequest
                 {
-                    UserId = user.Id,
                     FamilyShareCode = Guid.Parse(userRequest.FamilyCode!),
                     FamilyRole = FamilyRoleType.Eater
                 };
 
-                await _familyUserService.AddFamilyUser(familyUserRequest);
+                await _familyUserService.AddFamilyUser(familyUserRequest, user.Id);
             }
             return Ok(userResponse);
         }
