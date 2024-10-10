@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
@@ -90,9 +91,12 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
             return BadRequest(ModelState);
         }
 
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+            
         try
         {
-            await _familyUserService.AddFamilyUser(familyUserRequest);
+            await _familyUserService.AddFamilyUser(familyUserRequest, userId);
 
             return Ok(familyUserRequest);
         }

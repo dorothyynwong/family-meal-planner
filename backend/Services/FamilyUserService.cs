@@ -11,7 +11,7 @@ public interface IFamilyUserService
     Task<FamilyUser> GetFamilyUser(int familyId, int userId);
     Task<List<FamilyUserResponse>> GetFamilyUsersByUserId(int userId);
     Task<List<FamilyUserResponse>> GetFamilyUsersByFamilyId(int familyId);
-    Task AddFamilyUser(FamilyUserRequest familyUserRequest);
+    Task AddFamilyUser(FamilyUserRequest familyUserRequest, int userId);
     Task ApproveFamilyUser(int familyId, int userId);
     Task DeleteFamilyUser(int familyId, int userId);
 }
@@ -100,14 +100,14 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         return familyUserResponses;
     }
 
-    public async Task AddFamilyUser(FamilyUserRequest familyUserRequest)
+    public async Task AddFamilyUser(FamilyUserRequest familyUserRequest, int userId)
     {
         try
         {
             FamilyUser familyUser = new FamilyUser()
             {
                 FamilyId = _familyService.GetFamilyByGuid(familyUserRequest.FamilyShareCode).Id,
-                UserId = familyUserRequest.UserId,
+                UserId = userId,
                 FamilyRole = familyUserRequest.FamilyRole,
                 IsApproved = familyUserRequest.IsApproved ?? false
             };

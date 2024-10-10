@@ -43,3 +43,7 @@ export interface UserSignupInterface {
 export interface FamilyInterface {
     familyName: string;
 }
+
+export interface FamilyUserInterface {
+    familyShareCode: string;
+}

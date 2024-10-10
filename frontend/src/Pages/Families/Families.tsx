@@ -4,7 +4,7 @@ import "./Families.scss";
 import React, { useState } from "react";
 import Popup from "../../Components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
-import { addFamily } from "../../Api/api";
+import { addFamily, addFamilyUser } from "../../Api/api";
 
 
 
@@ -34,10 +34,21 @@ const Families: React.FC = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+            setStatus("success");
             navigate(`/families-list`); 
             break;
           case "join-family-button":
-            navigate("/family-join", { state: familyCode })
+            setStatus("loading");
+            setErrorMessages([]);
+            addFamilyUser({familyShareCode: familyCode})
+            .catch(error => {
+                console.log("Error adding family", error);
+                const errorMessage = error?.response?.data?.message || "Error adding family";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
+            });
+            setStatus("success");
+            navigate(`/families-list`); 
             break
           default:
             break
