@@ -6,6 +6,7 @@ using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Authorization;
 using NLog;
+using System.Security.Claims;
 
 namespace FamilyMealPlanner.Controllers;
 
@@ -52,7 +53,7 @@ public class FamilyController(IFamilyService familyService) : Controller
         try
         {
             List<FamilyResponse> familyResponses = await _familyService.GetFamilyByUserId(userId);
-            
+
             return Ok(familyResponses);
         }
         catch (Exception ex)
@@ -69,7 +70,7 @@ public class FamilyController(IFamilyService familyService) : Controller
         try
         {
             Family family = await _familyService.GetFamilyByGuid(guid);
-            
+
             return Ok(family);
         }
         catch (Exception ex)
@@ -81,12 +82,16 @@ public class FamilyController(IFamilyService familyService) : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> Add(FamilyRequest familyRequest, [FromQuery] int userId)
+    public async Task<IActionResult> Add(FamilyRequest familyRequest)
     {
-        if(!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
             int familyId = await _familyService.AddFamilyWithUser(familyRequest, userId);
@@ -103,7 +108,7 @@ public class FamilyController(IFamilyService familyService) : Controller
     [HttpPut("{familyId}")]
     public async Task<IActionResult> Update(FamilyRequest familyRequest, [FromRoute] int familyId)
     {
-        if(!ModelState.IsValid) 
+        if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
