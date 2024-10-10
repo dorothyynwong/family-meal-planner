@@ -15,6 +15,7 @@ public class EmailService(IConfiguration configure) : IEmailService
     public async Task SendEmailAsync(string recipentEmail, string recipentName, string subject, string plainTextContent, string htmlContent)
     {
         var apiKey = _configure["SendGrid:API_KEY"];
+        Logger.Debug(apiKey);
         var client = new SendGridClient(apiKey);
 
         var from = new EmailAddress(_configure["SendGrid:Email"], "Family Meal Planner");

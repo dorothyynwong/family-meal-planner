@@ -11,14 +11,15 @@ import "./FamilyCodeForm.scss";
 interface FamilyCodeProps {
     modalShow: boolean,
     setModalShow: (newModalShow: boolean) => void;
-    familyId: number,
+    f_id: number,
     data?: FamilyCodeShareInterface
 }
 
-const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, familyId, data }) => {
+const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_id, data }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyCodeData, setFamilyCodeData] = useState<FamilyCodeShareInterface>(data ? data : {
+        familyId: f_id,
         senderName: "",
         recipentName: "",
         recipentEmail: "",
@@ -41,6 +42,7 @@ const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, fa
             .then(response => {
                 if (response.statusText === "OK") {
                     setModalShow(false);
+                    setStatus("success");
                 }
             })
             .catch(error => {

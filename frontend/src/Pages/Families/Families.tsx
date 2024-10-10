@@ -99,7 +99,7 @@ const Families: React.FC = () => {
             </InputGroup>
             </Popup>
 
-            <FamilyCodeForm modalShow={true} setModalShow={setModalShow} familyId={1} />
+            {/* <FamilyCodeForm modalShow={true} setModalShow={setModalShow} f_id={1} /> */}
         </>
     );
 }
