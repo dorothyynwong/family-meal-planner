@@ -1,0 +1,10 @@
+@use "./../../Styles/variables.scss" as *;
+
+.meal-date, .meal-type, .meal-notes {
+    background-color: $primary-background;
+    border: 3px solid black;
+}
+
+.meal-form {
+    background-color: $secondary-background;
+}

@@ -149,14 +149,14 @@ public class FamilyController(IFamilyService familyService,
     }
 
     [HttpPost("share-code")]
-    public async Task<IActionResult> ShareFamilyCode(int familyId, string senderName, string recipentName, string recipentEmail)
+    public async Task<IActionResult> ShareFamilyCode(FamilyShareCodeRequest familyShareCodeRequest)
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
         User user = await _userService.GetUserById(userId);
-        Family family = await _familyService.GetFamilyById(familyId);
-        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
+        Family family = await _familyService.GetFamilyById(familyShareCodeRequest.FamilyId);
+        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyShareCodeRequest.FamilyId, userId);
 
         if (familyUser == null || familyUser.FamilyRole != FamilyRoleType.Cook)
             return Unauthorized();
@@ -165,10 +165,10 @@ public class FamilyController(IFamilyService familyService,
         string familyName = family.FamilyName;
         string familyLink = $"http://localhost:3000/families/join/{familyCode}";
 
-        string subject = $"Join {senderName}'s family in {familyName} of Family Meal Planner";
+        string subject = $"Join {familyShareCodeRequest.SenderName}'s family in {familyName} of Family Meal Planner";
         string plainTextContent = $"Please the below link to join: {familyLink}";
         string htmlTextContent = $"Please click <a href=\"{familyLink}\">here</a> to join";
-        await _emailService.SendEmailAsync(recipentEmail, recipentName, subject, plainTextContent, htmlTextContent);
+        await _emailService.SendEmailAsync(familyShareCodeRequest.RecipentEmail, familyShareCodeRequest.RecipentName, subject, plainTextContent, htmlTextContent);
 
         return Ok();
     }
