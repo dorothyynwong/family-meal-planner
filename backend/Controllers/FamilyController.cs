@@ -144,11 +144,17 @@ public class FamilyController(IFamilyService familyService, IEmailService emailS
     }
 
     [HttpPost("share-code")]
-    public async Task<IActionResult> ShareFamilyCode(string email)
+    public async Task<IActionResult> ShareFamilyCode(string email, string username)
     {
-        string subject = "share code";
-        string message = "this is the code";
-        await emailService.SendEmailAsync(email, subject, message);
+        string userName = "Evie";
+        string familyName = "Cheng";
+        string familyCode = "Ha";
+        string familyLink = $"http://localhost:3000/families/join/{familyCode}";
+
+        string subject = $"Join {userName}'s family in {familyName} of Family Meal Planner";
+        string plainTextContent = $"Please the below link to join: {familyLink}";
+        string htmlTextContent = $"Please click <a href=\"{familyLink}\">here</a> to join";
+        await _emailService.SendEmailAsync(email, username, subject, plainTextContent, htmlTextContent);
         return Ok();
     }
 }

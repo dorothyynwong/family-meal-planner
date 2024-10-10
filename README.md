@@ -42,9 +42,8 @@ dotnet restore
 dotnet ef database update
 dotnet user-secrets set "ImgBB:API_KEY" "YOUR API KEY"
 dotnet user-secrets set "JWT:SECRET" "YOUR SECRET"
-dotnet user-secrets set "Gmail:username" "YOUR SECRET"
-dotnet user-secrets set "Gmail:password" "YOUR SECRET"
-dotnet user-secrets set "SendGrid:API_KEY" "YOUR SECRET"
+dotnet user-secrets set "SendGrid:API_KEY" "YOUR API KEY"
+dotnet user-secrets set "SendGrid:Email" "Sender Email Address"
 ```
 
 ### Inside the `frontend/` directory
