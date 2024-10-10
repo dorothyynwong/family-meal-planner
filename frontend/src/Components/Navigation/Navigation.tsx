@@ -4,10 +4,10 @@ import { useAuth } from "../AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
 interface NavigationProps {
-    setIsOpen: (newOpen: boolean)=>void;
+    setIsOpen: (newOpen: boolean) => void;
 }
 
-const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
+const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
     const { isAuthenticated, logUserOut } = useAuth();
 
     const navigate = useNavigate();
@@ -15,8 +15,7 @@ const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
     const handleClick = (event: { currentTarget: { id: string } }) => {
         const targetId = event.currentTarget.id;
 
-        switch(targetId)
-        {
+        switch (targetId) {
             case "home":
                 navigate('/home');
                 break;
@@ -25,6 +24,9 @@ const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
                 break;
             case "meals":
                 navigate('/meal-plans');
+                break;
+            case "families":
+                navigate('/families');
                 break;
             case "shoppingList":
                 navigate('/shopping-list');
@@ -50,6 +52,7 @@ const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
                     <Nav.Link id="home" className="custom-nav-link" onClick={handleClick}>Home</Nav.Link>
                     <Nav.Link id="recipes" className="custom-nav-link" onClick={handleClick}>Recipes</Nav.Link>
                     <Nav.Link id="meals" className="custom-nav-link" onClick={handleClick}>Meals</Nav.Link>
+                    <Nav.Link id="families" className="custom-nav-link" onClick={handleClick}>Families</Nav.Link>
                     <Nav.Link id="shoppingList" className="custom-nav-link" onClick={handleClick}>Shopping List</Nav.Link>
                     {
                         isAuthenticated &&
@@ -61,7 +64,7 @@ const Navigation: React.FC<NavigationProps> = ({setIsOpen}) => {
                             <Nav.Link className="custom-nav-link" href="/login">Login</Nav.Link>
                             <Nav.Link className="custom-nav-link" href="/signup">Signup</Nav.Link>
                         </>
-                        
+
                     }
                 </Nav>
             </Container>
