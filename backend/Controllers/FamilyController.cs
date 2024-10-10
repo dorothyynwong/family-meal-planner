@@ -13,10 +13,11 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/families")]
-public class FamilyController(IFamilyService familyService, IEmailService emailService) : ControllerBase
+public class FamilyController(IFamilyService familyService, IEmailService emailService, IUserService userService) : ControllerBase
 {
     private readonly IFamilyService _familyService = familyService;
     private readonly IEmailService _emailService = emailService;
+    private readonly IUserService _userService = userService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -144,17 +145,26 @@ public class FamilyController(IFamilyService familyService, IEmailService emailS
     }
 
     [HttpPost("share-code")]
-    public async Task<IActionResult> ShareFamilyCode(string email, string username)
+    public async Task<IActionResult> ShareFamilyCode(int familyId, string senderName, string recipentName, string recipentEmail)
     {
-        string userName = "Evie";
-        string familyName = "Cheng";
-        string familyCode = "Ha";
+
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
+        Family family = await _familyService.GetFamilyById(familyId);
+        string familyCode = family.FamilyShareCode.ToString();
+
+        // User user = await _userService.GetUserById(userId);
+
+        string familyName = family.FamilyName;
+
         string familyLink = $"http://localhost:3000/families/join/{familyCode}";
 
-        string subject = $"Join {userName}'s family in {familyName} of Family Meal Planner";
+        string subject = $"Join {senderName}'s family in {familyName} of Family Meal Planner";
         string plainTextContent = $"Please the below link to join: {familyLink}";
         string htmlTextContent = $"Please click <a href=\"{familyLink}\">here</a> to join";
-        await _emailService.SendEmailAsync(email, username, subject, plainTextContent, htmlTextContent);
+        await _emailService.SendEmailAsync(recipentEmail, recipentName, subject, plainTextContent, htmlTextContent);
+
         return Ok();
     }
 }
