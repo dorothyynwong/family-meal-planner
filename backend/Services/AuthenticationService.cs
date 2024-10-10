@@ -12,6 +12,7 @@ namespace FamilyMealPlanner.Services;
 public interface IAuthenticationService
 {
     void SetTokensInsideCookie(string accessToken, string refreshToken, string email, HttpContext context);
+    void RemoveTokensFromCookie(HttpContext context);
     Task<JwtAuthResultViewModel> AuthenticateUserAsync(User user, string password);
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
     Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email);
@@ -113,6 +114,33 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
 
     }
+
+    public void RemoveTokensFromCookie(HttpContext context)
+    {
+        context.Response.Cookies.Append("accessToken", "",
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+
+        context.Response.Cookies.Append("refreshToken", "",
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
+
+        context.Response.Cookies.Append("email", "",
+            new CookieOptions { HttpOnly = true, Expires = DateTimeOffset.UtcNow.AddDays(-1), SameSite = SameSiteMode.Strict });
+    }
+
 
     public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email)
     {

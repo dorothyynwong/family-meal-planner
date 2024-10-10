@@ -16,9 +16,9 @@ namespace FamilyMealPlanner.Controllers;
 [ApiController]
 [Route("/auth")]
 public class AuthController(
-                            UserManager<User> userManager, 
-                            RoleManager<Role> roleManager, 
-                            IConfiguration configuration, 
+                            UserManager<User> userManager,
+                            RoleManager<Role> roleManager,
+                            IConfiguration configuration,
                             IAuthenticationService authenticationService,
                             IFamilyUserService familyUserService
                         )
@@ -46,9 +46,9 @@ public class AuthController(
 
         _authenticationService
                 .SetTokensInsideCookie(
-                    jwtAuthResult.AccessToken, 
-                    jwtAuthResult.RefreshToken.TokenString, 
-                    matchingUser.Email, 
+                    jwtAuthResult.AccessToken,
+                    jwtAuthResult.RefreshToken.TokenString,
+                    matchingUser.Email,
                     HttpContext
                 );
 
@@ -61,6 +61,14 @@ public class AuthController(
                 Nickname = matchingUser.Nickname,
             }
         );
+    }
+
+    [HttpPost("logout")]
+    public IActionResult Logout()
+    {
+        _authenticationService.RemoveTokensFromCookie(HttpContext);
+
+        return Ok();
     }
 
     [HttpPost("signup")]
