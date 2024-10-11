@@ -13,9 +13,15 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/families")]
-public class FamilyController(IFamilyService familyService) : Controller
+public class FamilyController(IFamilyService familyService, 
+                                IEmailService emailService, 
+                                IUserService userService,
+                                IFamilyUserService familyUserService) : ControllerBase
 {
     private readonly IFamilyService _familyService = familyService;
+    private readonly IEmailService _emailService = emailService;
+    private readonly IUserService _userService = userService;
+    private readonly IFamilyUserService _familyUserService = familyUserService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -140,5 +146,30 @@ public class FamilyController(IFamilyService familyService) : Controller
             Logger.Error($"Failed to get family {familyId}: {ex.Message}");
             return BadRequest($"Unable to get family {familyId}: {ex.Message}");
         }
+    }
+
+    [HttpPost("share-code")]
+    public async Task<IActionResult> ShareFamilyCode(FamilyShareCodeRequest familyShareCodeRequest)
+    {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
+        User user = await _userService.GetUserById(userId);
+        Family family = await _familyService.GetFamilyById(familyShareCodeRequest.FamilyId);
+        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyShareCodeRequest.FamilyId, userId);
+
+        if (familyUser == null || familyUser.FamilyRole != FamilyRoleType.Cook)
+            return Unauthorized();
+
+        string familyCode = family.FamilyShareCode.ToString();
+        string familyName = family.FamilyName;
+        string familyLink = $"http://localhost:3000/families/join/{familyCode}";
+
+        string subject = $"Join {familyShareCodeRequest.SenderName}'s family in {familyName} of Family Meal Planner";
+        string plainTextContent = $"Please the below link to join: {familyLink}";
+        string htmlTextContent = $"Please click <a href=\"{familyLink}\">here</a> to join";
+        await _emailService.SendEmailAsync(familyShareCodeRequest.RecipentEmail, familyShareCodeRequest.RecipentName, subject, plainTextContent, htmlTextContent);
+
+        return Ok();
     }
 }

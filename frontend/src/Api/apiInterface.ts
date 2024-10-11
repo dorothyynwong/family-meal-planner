@@ -47,3 +47,9 @@ export interface FamilyInterface {
 export interface FamilyUserInterface {
     familyShareCode: string;
 }
+export interface FamilyCodeShareInterface {
+    familyId?: number,
+    senderName?: string,
+    recipentName?: string,
+    recipentEmail?: string,
+}

@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { FamilyInterface, FamilyUserInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
+import { FamilyCodeShareInterface, FamilyInterface, FamilyUserInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
 import { configure } from '@testing-library/react';
 
 export async function importRecipeFromUrl(url: string) {
@@ -183,6 +183,15 @@ export async function addFamily(family: FamilyInterface) {
 export async function addFamilyUser(familyUser: FamilyUserInterface) {
     try {
         const response: AxiosResponse = await client.post('familyUsers', familyUser);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function familyCodeShare(familyCodeShare: FamilyCodeShareInterface) {
+    try {
+        const response: AxiosResponse = await client.post('/families/share-code', familyCodeShare );
         return response;
     } catch (error) {
         throw error;

@@ -5,6 +5,7 @@ import React, { useState } from "react";
 import Popup from "../../Components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
 import { addFamily, addFamilyUser } from "../../Api/api";
+import FamilyCodeForm from "../../Components/FamilyCodeForm/FamilyCodeForm";
 
 
 
@@ -15,8 +16,9 @@ const Families: React.FC = () => {
     const navigate = useNavigate();
     const [familyCode, setFamilyCode] = useState("");
     const [familyName, setFamilyName] = useState("");
-    const [modalCreateFamilyShow, setModalCreateFamilyShow] = React.useState(false);
-    const [modalJoinFamilyShow, setModalJoinFamilyShow] = React.useState(false);
+    const [modalCreateFamilyShow, setModalCreateFamilyShow] = useState(false);
+    const [modalJoinFamilyShow, setModalJoinFamilyShow] = useState(false);
+    const [modalShow, setModalShow] = useState(false); //test code
 
     const handleClick = (event: { currentTarget: { id: string } })  => {
         const buttonId = event.currentTarget.id;
@@ -96,6 +98,8 @@ const Families: React.FC = () => {
                 <Button id="join-family-button" className="custom-button" onClick={handleClick}>Submit</Button>
             </InputGroup>
             </Popup>
+
+            {/* <FamilyCodeForm modalShow={true} setModalShow={setModalShow} f_id={1} /> */}
         </>
     );
 }
