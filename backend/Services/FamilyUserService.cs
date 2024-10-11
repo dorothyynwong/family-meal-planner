@@ -11,6 +11,7 @@ public interface IFamilyUserService
     Task<FamilyUser> GetFamilyUser(int familyId, int userId);
     Task<List<FamilyUserResponse>> GetFamilyUsersByUserId(int userId);
     Task<List<FamilyUserResponse>> GetFamilyUsersByFamilyId(int familyId);
+    Task<List<FamilyResponse>> GetFamiliesWithUsersByUserId(int userId);
     Task AddFamilyUser(FamilyUserRequest familyUserRequest, int userId);
     Task ApproveFamilyUser(int familyId, int userId);
     Task DeleteFamilyUser(int familyId, int userId);
@@ -35,13 +36,13 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
 
     public async Task<List<FamilyUserResponse>> GetFamilyUsersByUserId(int userId)
     {
-       
+
         List<FamilyUser> familyUsers = await _context.FamilyUsers
                                                 .Include(fu => fu.Family)
-                                                .Include(fu => fu.User)  
-                                                .Where(fu => fu.UserId == userId)  
+                                                .Include(fu => fu.User)
+                                                .Where(fu => fu.UserId == userId)
                                                 .ToListAsync();
-                                                
+
         if (familyUsers == null || familyUsers.Count == 0)
         {
             Logger.Error($"No families for {userId}");
@@ -50,7 +51,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
 
         List<FamilyUserResponse> familyUserResponses = new List<FamilyUserResponse>();
 
-        foreach(FamilyUser familyUser in familyUsers)
+        foreach (FamilyUser familyUser in familyUsers)
         {
             FamilyUserResponse familyUserResponse = new FamilyUserResponse
             {
@@ -71,10 +72,10 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
     {
         List<FamilyUser> familyUsers = await _context.FamilyUsers
                                                 .Include(fu => fu.Family)
-                                                .Include(fu => fu.User)  
-                                                .Where(fu => fu.FamilyId == familyId)  
+                                                .Include(fu => fu.User)
+                                                .Where(fu => fu.FamilyId == familyId)
                                                 .ToListAsync();
-                                                
+
         if (familyUsers == null || familyUsers.Count == 0)
         {
             Logger.Error($"No users for {familyId}");
@@ -83,7 +84,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
 
         List<FamilyUserResponse> familyUserResponses = new List<FamilyUserResponse>();
 
-        foreach(FamilyUser familyUser in familyUsers)
+        foreach (FamilyUser familyUser in familyUsers)
         {
             FamilyUserResponse familyUserResponse = new FamilyUserResponse
             {
@@ -100,15 +101,46 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         return familyUserResponses;
     }
 
+    public async Task<List<FamilyResponse>> GetFamiliesWithUsersByUserId(int userId)
+    {
+        var familiesWithUsers = context.FamilyUsers
+                                .Where(fu => fu.UserId == userId)
+                                .Include(fu => fu.Family)
+                                .ThenInclude(f => f.FamilyUsers)
+                                .ThenInclude(fu => fu.User)
+                                .Select(fu => new FamilyResponse
+                                {
+                                    Id = fu.Family.Id,
+                                    FamilyName = fu.Family.FamilyName,
+                                    FamilyShareCode = fu.Family.FamilyShareCode,
+                                    FamilyUsers = fu.Family.FamilyUsers.Select(fu2 => new FamilyUserResponse
+                                    {
+                                        UserId = fu2.User.Id,
+                                        FamilyRole = fu2.FamilyRole,
+                                        UserNickName = fu2.User.Nickname,
+                                    }).ToList()
+                                })
+                                .ToList();
+
+        if (familiesWithUsers == null || familiesWithUsers.Count == 0)
+        {
+            Logger.Error($"No families for {userId}");
+            throw new InvalidOperationException($"No families for {userId}");
+        }
+
+
+        return familiesWithUsers;
+    }
+
     public async Task AddFamilyUser(FamilyUserRequest familyUserRequest, int userId)
     {
         Family? family = await _familyService.GetFamilyByGuid(familyUserRequest.FamilyShareCode);
-        if (family == null) 
+        if (family == null)
         {
             Logger.Error($"Family not found");
             throw new InvalidOperationException("Family not found");
         }
-        
+
         try
         {
             FamilyUser familyUser = new FamilyUser()

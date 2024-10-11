@@ -61,8 +61,30 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
     }
 
+    // [HttpGet("by-user")]
+    // public async Task<IActionResult> GetFamilyUsersByUserId([FromQuery] int userId)
+    // {
+    //     if (!ModelState.IsValid)
+    //     {
+    //         return BadRequest(ModelState);
+    //     }
+
+    //     try
+    //     {
+    //         List<FamilyUserResponse> familyUserResponses = await _familyUserService.GetFamilyUsersByUserId(userId);
+
+    //         return Ok(familyUserResponses);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Logger.Error($"Failed to get family-users of {userId}: {ex.Message}");
+    //         return BadRequest($"Unable to get family-users of {userId}: {ex.Message}");
+    //     }
+
+    // }
+
     [HttpGet("by-user")]
-    public async Task<IActionResult> GetFamilyUsersByUserId([FromQuery] int userId)
+    public async Task<IActionResult> GetFamiliesWithUsersByUserId([FromQuery] int userId)
     {
         if (!ModelState.IsValid)
         {
@@ -71,9 +93,9 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
         try
         {
-            List<FamilyUserResponse> familyUserResponses = await _familyUserService.GetFamilyUsersByUserId(userId);
+            List<FamilyResponse> familyResponses = await _familyUserService.GetFamiliesWithUsersByUserId(userId);
 
-            return Ok(familyUserResponses);
+            return Ok(familyResponses);
         }
         catch (Exception ex)
         {
