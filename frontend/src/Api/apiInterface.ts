@@ -59,7 +59,7 @@ export interface FamilyUserInterface {
     userId: number,
     userNickName: string,
     familyId: number,
-    familyRole: number,
+    familyRole: string,
     isApproved: boolean,
 }
 

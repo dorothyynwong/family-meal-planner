@@ -15,6 +15,7 @@ public interface IFamilyUserService
     Task<List<FamilyResponse>> GetFamiliesWithUsersByUserId(int userId);
     Task AddFamilyUser(FamilyUserRequest familyUserRequest, int userId);
     Task ApproveFamilyUser(int familyId, int userId);
+    Task UpdateFamilyUserRole(FamilyRoleUpdateRequest familyRoleUpdateRequest);
     Task DeleteFamilyUser(int familyId, int userId);
 }
 
@@ -149,7 +150,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
             {
                 FamilyId = family.Id,
                 UserId = userId,
-                FamilyRole = (FamilyRoleType) Enum.Parse(typeof(FamilyRoleType), familyUserRequest.FamilyRole),
+                FamilyRole = (FamilyRoleType)Enum.Parse(typeof(FamilyRoleType), familyUserRequest.FamilyRole),
                 IsApproved = familyUserRequest.IsApproved ?? false
             };
 
@@ -188,6 +189,34 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         catch (Exception ex)
         {
             Logger.Error($"Unexpected error on approving familyId {familyId} and userId {userId}: {ex.Message}");
+            throw new Exception("Unexpected error while updating record to database", ex);
+        }
+    }
+
+    public async Task UpdateFamilyUserRole(FamilyRoleUpdateRequest familyRoleUpdateRequest)
+    {
+        try
+        {
+            FamilyUser familyUser = await GetFamilyUser(familyRoleUpdateRequest.FamilyId, familyRoleUpdateRequest.UserId);
+
+            if (!Enum.TryParse<FamilyRoleType>(familyRoleUpdateRequest.FamilyRole, true, out var familyRoleTypeEnum))
+            {
+                throw new ArgumentException("Invalid Family Role Type");
+            }
+
+            familyUser.FamilyRole = familyRoleTypeEnum;
+
+            _context.FamilyUsers.Update(familyUser);
+            await _context.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            Logger.Error($"Database error on approving familyId {familyRoleUpdateRequest.FamilyId} and userId {familyRoleUpdateRequest.UserId}: {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error on approving familyId {familyRoleUpdateRequest.FamilyId} and userId {familyRoleUpdateRequest.UserId}: {ex.Message}");
             throw new Exception("Unexpected error while updating record to database", ex);
         }
     }

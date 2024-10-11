@@ -157,6 +157,28 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
     }
 
+    [HttpPut("update-role")]
+    public async Task<IActionResult> UpdateRole([FromBody]FamilyRoleUpdateRequest familyRoleUpdateRequest)
+    {
+        if (!ModelState.IsValid)
+        {
+            return BadRequest(ModelState);
+        }
+
+        try
+        {
+            await _familyUserService.UpdateFamilyUserRole(familyRoleUpdateRequest);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to approve family user with family Id {familyRoleUpdateRequest.FamilyId} and user Id {familyRoleUpdateRequest.UserId}: {ex.Message}");
+            return BadRequest($"Unable to approve family user with family Id {familyRoleUpdateRequest.FamilyId} and user Id {familyRoleUpdateRequest.UserId}: {ex.Message}");
+        }
+
+    }
+
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] int familyId, int userId)
