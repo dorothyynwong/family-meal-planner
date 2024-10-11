@@ -48,7 +48,6 @@ const FamiliesList: React.FC<FamiliesListProps> = ({data}) => {
             </StatusHandler>
             {familyUsersList.map((fu, index) => (
                 <Row className="mb-3" key={index}>
-                    {fu.familyName}
                     <FamilyCard data={fu.familyUsers} familyName={fu.familyName} />
                 </Row>
             ))}

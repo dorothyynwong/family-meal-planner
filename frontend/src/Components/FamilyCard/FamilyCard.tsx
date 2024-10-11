@@ -20,7 +20,7 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName }) => {
             <CardHeader title={familyName}  />
             <CardContent>
             {familyUsers.map(
-                fu => fu.userNickName
+                fu => fu.userNickName + fu.familyRole
             )}
             </CardContent>
         </Card>

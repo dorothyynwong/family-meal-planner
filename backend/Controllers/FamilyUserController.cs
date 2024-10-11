@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
@@ -175,5 +176,11 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
             Logger.Error($"Failed to delete family {familyId} and user {userId}: {ex.Message}");
             return BadRequest($"Unable to delete family {familyId} and user {userId}:: {ex.Message}");
         }
+    }
+
+    [HttpGet("familyRoleTypes")]
+    public async Task<IActionResult> GetFamilyRoleTypes()
+    {
+        return Ok(Enum.GetNames(typeof(FamilyRoleType)));
     }
 }

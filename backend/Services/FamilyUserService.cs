@@ -1,3 +1,4 @@
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using Microsoft.EntityFrameworkCore;
@@ -57,7 +58,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
             {
                 FamilyId = familyUser.FamilyId,
                 UserId = familyUser.UserId,
-                FamilyRole = familyUser.FamilyRole,
+                FamilyRole = familyUser.FamilyRole.ToString(),
                 IsApproved = familyUser.IsApproved
             };
 
@@ -90,7 +91,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
             {
                 FamilyId = familyUser.FamilyId,
                 UserId = familyUser.UserId,
-                FamilyRole = familyUser.FamilyRole,
+                FamilyRole = familyUser.FamilyRole.ToString(),
                 IsApproved = familyUser.IsApproved
             };
 
@@ -113,10 +114,11 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
                                     Id = fu.Family.Id,
                                     FamilyName = fu.Family.FamilyName,
                                     FamilyShareCode = fu.Family.FamilyShareCode,
+                                    FamilyRole = fu.FamilyRole.ToString(),
                                     FamilyUsers = fu.Family.FamilyUsers.Select(fu2 => new FamilyUserResponse
                                     {
                                         UserId = fu2.User.Id,
-                                        FamilyRole = fu2.FamilyRole,
+                                        FamilyRole = fu2.FamilyRole.ToString(),
                                         UserNickName = fu2.User.Nickname,
                                     }).ToList()
                                 })
@@ -147,7 +149,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
             {
                 FamilyId = family.Id,
                 UserId = userId,
-                FamilyRole = familyUserRequest.FamilyRole,
+                FamilyRole = (FamilyRoleType) Enum.Parse(typeof(FamilyRoleType), familyUserRequest.FamilyRole),
                 IsApproved = familyUserRequest.IsApproved ?? false
             };
 

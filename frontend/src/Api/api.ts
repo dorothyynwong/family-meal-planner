@@ -207,3 +207,13 @@ export async function getFamiliesWithUsersByUserId() {
         throw error;
     }
 }
+
+export async function getFamilyRoleTypes() {
+    try {
+
+        const response: AxiosResponse = await client.get(`/familyUsers/familyRoleTypes`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }  
+}
