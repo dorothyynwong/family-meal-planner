@@ -44,12 +44,28 @@ export interface FamilyInterface {
     familyName: string;
 }
 
-export interface FamilyUserInterface {
+export interface FamilyUserCreationInterface {
     familyShareCode: string;
 }
+
 export interface FamilyCodeShareInterface {
     familyId?: number,
     senderName?: string,
     recipentName?: string,
     recipentEmail?: string,
+}
+
+export interface FamilyUserInterface {
+    userId: number,
+    userNickName: string,
+    familyId: number,
+    familyRole: number,
+    isApproved: boolean,
+}
+
+export interface FamilyWithUsersInterface {
+    familyId: number,
+    familyName: string,
+    familyShareCode: string,
+    familyUsers: FamilyUserInterface[],
 }

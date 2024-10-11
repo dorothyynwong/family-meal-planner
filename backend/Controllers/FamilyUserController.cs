@@ -83,13 +83,17 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
     // }
 
+
     [HttpGet("by-user")]
-    public async Task<IActionResult> GetFamiliesWithUsersByUserId([FromQuery] int userId)
+    public async Task<IActionResult> GetFamiliesWithUsersByUserId()
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
+        
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
 
         try
         {
