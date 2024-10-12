@@ -24,10 +24,11 @@ public class SchoolMenuController(IPdfService pdfService, IAIService aiService) 
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
-        // var text = _pdfService.ImportPdf("");
-        string text = "Monday: Spaghetti\nTuesday: Pizza\nWednesday: Salad";
-        var result = _aiService.GetModelResponseAsync(text);
+        var text = _pdfService.ImportPdf("");
+        // string text = "Monday: Spaghetti\nTuesday: Pizza\nWednesday: Salad";
+        var result = _aiService.GetModelResponseAsync(text[0]);
         var json = System.Text.Json.JsonSerializer.Serialize(result); 
+        Logger.Debug(json);
 
         try
         {

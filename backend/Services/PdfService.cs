@@ -10,7 +10,7 @@ namespace FamilyMealPlanner.Services;
 
 public interface IPdfService
 {
-    string ImportPdf(string filePath);
+    List<string> ImportPdf(string filePath);
 }
 
 public class PdfService(FamilyMealPlannerContext context) : IPdfService
@@ -18,16 +18,21 @@ public class PdfService(FamilyMealPlannerContext context) : IPdfService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    public string ImportPdf(string filePath)
+    // public string ImportPdf(string filePath)
+    public List<string> ImportPdf(string filePath)
     {
+        List<string> result = new List<string>();
         using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu.pdf"))
         {
             var text = new StringBuilder();
             foreach (var page in pdf.GetPages())
             {
-                text.AppendLine(page.Text);
+                // text.AppendLine(page.Text);
+                result.Add(page.Text);
+
             }
-            return text.ToString();
+            // return text.ToString();
         }
+        return result;
     }
 }
