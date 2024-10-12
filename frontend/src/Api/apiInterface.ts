@@ -70,3 +70,9 @@ export interface FamilyWithUsersInterface {
     familyRole: string,
     familyUsers: FamilyUserInterface[],
 }
+
+export interface FamilyRoleUpdateInterface {
+    familyId: number;
+    userId: number;
+    newRole: string;
+}

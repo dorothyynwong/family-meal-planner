@@ -118,6 +118,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
                                     FamilyRole = fu.FamilyRole.ToString(),
                                     FamilyUsers = fu.Family.FamilyUsers.Select(fu2 => new FamilyUserResponse
                                     {
+                                        FamilyId = fu2.Family.Id,
                                         UserId = fu2.User.Id,
                                         FamilyRole = fu2.FamilyRole.ToString(),
                                         UserNickName = fu2.User.Nickname,
@@ -199,7 +200,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         {
             FamilyUser familyUser = await GetFamilyUser(familyRoleUpdateRequest.FamilyId, familyRoleUpdateRequest.UserId);
 
-            if (!Enum.TryParse<FamilyRoleType>(familyRoleUpdateRequest.FamilyRole, true, out var familyRoleTypeEnum))
+            if (!Enum.TryParse<FamilyRoleType>(familyRoleUpdateRequest.NewRole, true, out var familyRoleTypeEnum))
             {
                 throw new ArgumentException("Invalid Family Role Type");
             }

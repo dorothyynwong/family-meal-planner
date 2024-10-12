@@ -9,5 +9,5 @@ public class FamilyRoleUpdateRequest
     [Required]
     public int UserId { get; set; }
     [Required]
-    public string FamilyRole { get; set; }
+    public string NewRole { get; set; }
 }

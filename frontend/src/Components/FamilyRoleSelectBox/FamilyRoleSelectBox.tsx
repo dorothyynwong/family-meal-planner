@@ -1,4 +1,4 @@
-import { MenuItem, Select } from "@mui/material";
+import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
 import { useEffect, useState } from "react";
 import { getFamilyRoleTypes } from "../../Api/api";
 
@@ -9,22 +9,21 @@ interface FamilyRoleSelectBoxProps {
 }
 
 const FamilyRoleSelectBox: React.FC<FamilyRoleSelectBoxProps> = ({defaultRole, roles, onRoleChange}) => {
-    const [familyRole, setFamilyRole] = useState(defaultRole);
+    // const [familyRole, setFamilyRole] = useState(defaultRole);
     const [familyRoles, setFamilyRoles] = useState<string[]>(roles);
 
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        const newRole = event.target.value as string;
-        setFamilyRole(newRole); 
-        onRoleChange(newRole);  
+    const handleChange = (event: SelectChangeEvent<string>) => {
+            const { value } = event.target;
+            onRoleChange(value as string);
     };
 
     return(
     <Select
         labelId="family-role-label"
         id="family-role-select"
-        value={familyRole}
+        value={defaultRole}
         label="Family-Role"
-        onChange={() => handleChange}
+        onChange={handleChange}
     >
         {familyRoles.map((familyRole, index) => 
         <MenuItem key={index} value={familyRole}>{familyRole}</MenuItem>)

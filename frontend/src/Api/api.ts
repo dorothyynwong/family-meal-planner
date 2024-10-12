@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { FamilyCodeShareInterface, FamilyInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
+import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
 import { configure } from '@testing-library/react';
 
 export async function importRecipeFromUrl(url: string) {
@@ -216,4 +216,16 @@ export async function getFamilyRoleTypes() {
     } catch (error) {
         throw error;
     }  
+}
+
+export async function updateFamilyRole(familyRole: FamilyRoleUpdateInterface) {
+    try {
+        console.log(familyRole.familyId);
+        console.log(familyRole.userId);
+        console.log(familyRole.newRole);
+        const response: AxiosResponse = await client.put(`/familyUsers/update-role`, familyRole);
+        return response;
+    } catch (error) {
+        throw error;
+    }
 }
