@@ -7,7 +7,7 @@ public class FamilyUserRequest
 {
     [Required]
     public Guid FamilyShareCode { get; set; }
-    public string FamilyRole {get; set;}
+    public string? FamilyRole {get; set;}
     public bool? IsApproved { get; set; }
 
     public FamilyRoleType GetFamilyRoleTypeEnum()

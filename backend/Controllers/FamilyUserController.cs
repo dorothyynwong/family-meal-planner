@@ -92,7 +92,7 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
         {
             return BadRequest(ModelState);
         }
-        
+
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
@@ -120,7 +120,9 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
-            
+
+        familyUserRequest.FamilyRole = FamilyRoleType.Eater.ToString();
+
         try
         {
             await _familyUserService.AddFamilyUser(familyUserRequest, userId);
@@ -158,12 +160,17 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
     }
 
     [HttpPut("update-role")]
-    public async Task<IActionResult> UpdateRole([FromBody]FamilyRoleUpdateRequest familyRoleUpdateRequest)
+    public async Task<IActionResult> UpdateRole([FromBody] FamilyRoleUpdateRequest familyRoleUpdateRequest)
     {
         if (!ModelState.IsValid)
-        {
             return BadRequest(ModelState);
-        }
+
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+        
+        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyRoleUpdateRequest.FamilyId, userId);
+        if (familyUser.FamilyRole != FamilyRoleType.Cook)
+            return Unauthorized();         
 
         try
         {

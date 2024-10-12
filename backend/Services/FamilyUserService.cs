@@ -211,12 +211,12 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         }
         catch (DbUpdateException ex)
         {
-            Logger.Error($"Database error on approving familyId {familyRoleUpdateRequest.FamilyId} and userId {familyRoleUpdateRequest.UserId}: {ex.Message}");
+            Logger.Error($"Database error on changing role familyId {familyRoleUpdateRequest.FamilyId} and userId {familyRoleUpdateRequest.UserId}: {ex.Message}");
             throw new Exception("An error occurred while updating the database.", ex);
         }
         catch (Exception ex)
         {
-            Logger.Error($"Unexpected error on approving familyId {familyRoleUpdateRequest.FamilyId} and userId {familyRoleUpdateRequest.UserId}: {ex.Message}");
+            Logger.Error($"Unexpected error on changing role familyId {familyRoleUpdateRequest.FamilyId} and userId {familyRoleUpdateRequest.UserId}: {ex.Message}");
             throw new Exception("Unexpected error while updating record to database", ex);
         }
     }
