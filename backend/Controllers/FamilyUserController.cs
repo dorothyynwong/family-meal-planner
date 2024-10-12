@@ -167,6 +167,9 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
+
+        if (userId == familyRoleUpdateRequest.UserId)
+            return Unauthorized();
         
         FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyRoleUpdateRequest.FamilyId, userId);
         if (familyUser.FamilyRole != FamilyRoleType.Cook)

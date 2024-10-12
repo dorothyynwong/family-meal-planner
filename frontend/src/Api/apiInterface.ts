@@ -64,7 +64,8 @@ export interface FamilyUserInterface {
 }
 
 export interface FamilyWithUsersInterface {
-    id: number,
+    familyId: number,
+    userId: number,
     familyName: string,
     familyShareCode: string,
     familyRole: string,

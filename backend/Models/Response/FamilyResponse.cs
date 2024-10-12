@@ -6,7 +6,8 @@ namespace FamilyMealPlanner.Models;
 
 public class FamilyResponse
 {
-    public int Id {get; set;}
+    public int FamilyId {get; set;}
+    public int UserId {get; set;}
     public string FamilyName {get; set;}
     public Guid FamilyShareCode {get; set;}
     public string FamilyRole {get; set;}

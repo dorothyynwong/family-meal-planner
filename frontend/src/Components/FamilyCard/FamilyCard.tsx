@@ -9,9 +9,10 @@ import FamilyCodeForm from "../FamilyCodeForm/FamilyCodeForm";
 interface FamilyUsersProps {
     data: FamilyWithUsersInterface;
     familyId: number;
+    userId: number;
     roles: string[];
 }
-    const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, roles }) => {
+    const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, userId, roles }) => {
     const [familyUsers, setFamilyUsers] = useState<FamilyUserInterface[]>(data.familyUsers);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -56,7 +57,7 @@ interface FamilyUsersProps {
                                 <ListItemText
                                     primary={fu.userNickName}
                                 />
-                                {data.familyRole === "Cook" ? (
+                                {data.familyRole === "Cook" && userId !== fu.userId? (
                                     <FamilyRoleSelectBox
                                         defaultRole={fu.familyRole}
                                         roles={roles}
