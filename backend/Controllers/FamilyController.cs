@@ -39,7 +39,7 @@ public class FamilyController(IFamilyService familyService,
 
             FamilyResponse familyResponse = new FamilyResponse
             {
-                Id = familyId,
+                FamilyId = familyId,
                 FamilyName = family.FamilyName,
             };
 

@@ -49,7 +49,8 @@ const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
                 <FamilyCard
                     key={index}
                     data={fu}
-                    familyId={fu.id}
+                    familyId={fu.familyId}
+                    userId={fu.userId}
                     roles={familyRoles}
                 />
             ))}

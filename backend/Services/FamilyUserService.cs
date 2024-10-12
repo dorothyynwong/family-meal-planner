@@ -111,7 +111,8 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
                                 .ThenInclude(fu => fu.User)
                                 .Select(fu => new FamilyResponse
                                 {
-                                    Id = fu.Family.Id,
+                                    FamilyId = fu.Family.Id,
+                                    UserId = userId,
                                     FamilyName = fu.Family.FamilyName,
                                     FamilyShareCode = fu.Family.FamilyShareCode,
                                     FamilyRole = fu.FamilyRole.ToString(),

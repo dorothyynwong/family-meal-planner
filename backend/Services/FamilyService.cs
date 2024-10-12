@@ -118,7 +118,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
         {
             FamilyResponse familyResponse = new FamilyResponse
             {
-                Id = family.Id,
+                FamilyId = family.Id,
                 FamilyName = family.FamilyName,
             };
             familyResponses.Add(familyResponse);
