@@ -32,12 +32,14 @@ public class OpenAIService(IConfiguration configuration) : IAIService
     {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
 
+        string prompt = @$"Convert the following menu into a structured JSON format, including a list of Week Commencing dates.  Return the JSON structure with days as keys and meals as values. {text}";
+
              var requestBody = new
         {
             model = "gpt-3.5-turbo-1106", // Specify the model you want to use
             messages = new[]
             {
-                new { role = "user", content = text}
+                new { role = "user", content = prompt}
             },
             max_tokens = 1000 // Set a limit on the number of tokens in the response
         };
