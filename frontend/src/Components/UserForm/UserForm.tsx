@@ -78,7 +78,7 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-nickname">
                 <Form.Label>Nickname</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Nickname" name="nickname" value={signupData.nickname || ""} onChange={handleChange} />
+                <Form.Control required className="custom-form-control" type="text" placeholder="Enter Nickname" name="nickname" value={signupData.nickname || ""} onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-familycode">
                 <Form.Label>Family Share Code</Form.Label>
