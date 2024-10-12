@@ -13,8 +13,6 @@ interface FamilyUsersProps {
     familyCode: string;
     currentUserRole: string;
     roles: string[];
-    // modalShow: boolean;
-    // setModalShow: (newShow: boolean) => void;
 }
 
 const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, familyCode, currentUserRole, roles }) => {

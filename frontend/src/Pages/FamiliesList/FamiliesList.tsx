@@ -13,7 +13,6 @@ const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
-    // const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         setStatus("loading");
@@ -55,8 +54,6 @@ const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
                     familyCode={fu.familyShareCode}
                     currentUserRole={fu.familyRole}
                     roles={familyRoles}
-                    // modalShow={modalShow}
-                    // setModalShow={setModalShow}
                 />
             ))}
             

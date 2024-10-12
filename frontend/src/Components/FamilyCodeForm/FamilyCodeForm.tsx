@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Popup from "../Popup/Popup";
-import { Button, Form, InputGroup } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
-import { addMeal, deleteMeal, familyCodeShare, getMealTypes, updateMeal } from "../../Api/api";
-import { FaSearch } from "react-icons/fa";
-import { FamilyCodeShareInterface, MealDetailsInterface } from "../../Api/apiInterface";
+import { Button, Form } from "react-bootstrap";
+import {  familyCodeShare } from "../../Api/api";
+import { FamilyCodeShareInterface} from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./FamilyCodeForm.scss";
 
