@@ -57,7 +57,7 @@ const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_
             customclass="familyCode-form"
             show={modalShow}
             onHide={() => { setModalShow(false); }}
-            title={`Share Family Code of ${f_name} ${f_id}`}
+            title={`Share Family Code of ${f_name}`}
             body="">
             <Form onSubmit={handleSubmit}>
                 <Form.Control

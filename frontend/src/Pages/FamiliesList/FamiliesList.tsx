@@ -48,15 +48,11 @@ const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
             {familyUsersList.map((fu, index) => (
                 <FamilyCard
                     key={index}
-                    data={fu.familyUsers}
+                    data={fu}
                     familyId={fu.id}
-                    familyName={fu.familyName}
-                    familyCode={fu.familyShareCode}
-                    currentUserRole={fu.familyRole}
                     roles={familyRoles}
                 />
             ))}
-            
         </>
     );
 }

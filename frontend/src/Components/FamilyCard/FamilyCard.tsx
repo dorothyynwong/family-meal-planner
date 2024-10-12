@@ -1,4 +1,4 @@
-import { FamilyUserInterface } from "../../Api/apiInterface";
+import { FamilyUserInterface, FamilyWithUsersInterface } from "../../Api/apiInterface";
 import { Avatar, Button, Card, CardActions, CardContent, CardHeader, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { useState } from "react";
 import FamilyRoleSelectBox from "../FamilyRoleSelectBox/FamilyRoleSelectBox";
@@ -7,16 +7,12 @@ import StatusHandler from "../StatusHandler/StatusHandler";
 import FamilyCodeForm from "../FamilyCodeForm/FamilyCodeForm";
 
 interface FamilyUsersProps {
-    data: FamilyUserInterface[];
+    data: FamilyWithUsersInterface;
     familyId: number;
-    familyName: string;
-    familyCode: string;
-    currentUserRole: string;
     roles: string[];
 }
-
-const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, familyCode, currentUserRole, roles }) => {
-    const [familyUsers, setFamilyUsers] = useState<FamilyUserInterface[]>(data);
+    const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, roles }) => {
+    const [familyUsers, setFamilyUsers] = useState<FamilyUserInterface[]>(data.familyUsers);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [modalShow, setModalShow] = useState(false);
@@ -48,7 +44,7 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, fa
                 successMessage=""
             ><></>
             </StatusHandler>
-            <CardHeader title={familyName} />
+            <CardHeader title={data.familyName} />
             <CardContent>
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
                     {familyUsers.map(
@@ -60,7 +56,7 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, fa
                                 <ListItemText
                                     primary={fu.userNickName}
                                 />
-                                {currentUserRole === "Cook" ? (
+                                {data.familyRole === "Cook" ? (
                                     <FamilyRoleSelectBox
                                         defaultRole={fu.familyRole}
                                         roles={roles}
@@ -72,11 +68,11 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, fa
                 </List>
             </CardContent>
             <CardActions>
-                {currentUserRole === "Cook" ? familyCode : ""}
-                {currentUserRole === "Cook" && 
+                {data.familyRole === "Cook" ? data.familyShareCode : ""}
+                {data.familyRole === "Cook" && 
                     <Button id="share-family-button"  onClick={() => setModalShow(true)}>Share Family Code</Button>}
             </CardActions>
-            {modalShow && <FamilyCodeForm  modalShow={modalShow} setModalShow={setModalShow} f_id={familyId} f_name={familyName}/>}
+            {modalShow && <FamilyCodeForm  modalShow={modalShow} setModalShow={setModalShow} f_id={familyId} f_name={data.familyName}/>}
         </Card >
     )
 }
