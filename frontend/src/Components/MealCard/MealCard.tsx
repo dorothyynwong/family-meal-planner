@@ -20,7 +20,7 @@ const MealCard: React.FC<MealProps> = ({ meal }) => {
     }
 
     return (
-        <Card sx={{ maxWidth: 345, m:2 }} className="meal-card" onClick={handleClick}>
+        <Card sx={{ maxWidth: 345, m:2 }} onClick={handleClick}>
             <CardHeader title={meal.mealType} className={meal.mealType} />
             {(meal.recipeDefaultImage) && <CardMedia
                 component="img"

@@ -6,10 +6,11 @@ import FamilyRoleSelectBox from "../FamilyRoleSelectBox/FamilyRoleSelectBox";
 interface FamilyUsersProps {
     data: FamilyUserInterface[];
     familyName: string;
+    currentUserRole: string;
     roles: string[];
 }
 
-const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, roles }) => {
+const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName,  currentUserRole, roles }) => {
     const [familyUsers, setFamilyUsers] = useState<FamilyUserInterface[]>(data);
 
     const handleRoleChange = (index: number, newRole: string) => {
@@ -23,7 +24,7 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, roles }) => 
     }
 
     return (
-        <Card sx={{ maxWidth: 345, m: 2 }} className="family-user-card" onClick={handleClick}>
+        <Card sx={{ maxWidth: 345, m: 2 }} onClick={handleClick}>
             <CardHeader title={familyName} />
             <CardContent>
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -36,11 +37,14 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, roles }) => 
                                 <ListItemText
                                     primary={fu.userNickName}
                                 />
+                                {currentUserRole==="Cook" && 
                                 <FamilyRoleSelectBox 
                                     defaultRole={fu.familyRole} 
                                     roles={roles}
                                     onRoleChange={(newRole: string) => handleRoleChange(index, newRole)} 
-                                />
+                                />}
+
+                                {currentUserRole!=="Cook" && fu.familyRole} 
                             </ListItem>
                         )
                     )}

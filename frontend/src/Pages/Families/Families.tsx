@@ -24,7 +24,7 @@ const Families: React.FC = () => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
           case "show-family-button":
-            navigate(`/families-list`); 
+            navigate(`/my-families`); 
             break
           case "create-family-button":
             setStatus("loading");
@@ -37,7 +37,7 @@ const Families: React.FC = () => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
             setStatus("success");
-            navigate(`/families-list`); 
+            navigate(`/my-families`); 
             break;
           case "join-family-button":
             setStatus("loading");
@@ -50,7 +50,7 @@ const Families: React.FC = () => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
             setStatus("success");
-            navigate(`/families-list`); 
+            navigate(`/my-families`); 
             break
           default:
             break
