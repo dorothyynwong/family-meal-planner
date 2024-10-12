@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { FamilyCodeShareInterface, FamilyInterface, FamilyUserInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
+import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
 import { configure } from '@testing-library/react';
 
 export async function importRecipeFromUrl(url: string) {
@@ -180,7 +180,7 @@ export async function addFamily(family: FamilyInterface) {
     }
 }
 
-export async function addFamilyUser(familyUser: FamilyUserInterface) {
+export async function addFamilyUser(familyUser: FamilyUserCreationInterface) {
     try {
         const response: AxiosResponse = await client.post('familyUsers', familyUser);
         return response;
@@ -192,6 +192,35 @@ export async function addFamilyUser(familyUser: FamilyUserInterface) {
 export async function familyCodeShare(familyCodeShare: FamilyCodeShareInterface) {
     try {
         const response: AxiosResponse = await client.post('/families/share-code', familyCodeShare );
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getFamiliesWithUsersByUserId() {
+    try {
+        const response: AxiosResponse = await client.get(`/familyUsers/by-user/`);
+
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getFamilyRoleTypes() {
+    try {
+
+        const response: AxiosResponse = await client.get(`/familyUsers/familyRoleTypes`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }  
+}
+
+export async function updateFamilyRole(familyRole: FamilyRoleUpdateInterface) {
+    try {
+        const response: AxiosResponse = await client.put(`/familyUsers/update-role`, familyRole);
         return response;
     } catch (error) {
         throw error;

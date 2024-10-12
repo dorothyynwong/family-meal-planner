@@ -1,10 +1,8 @@
-import { useEffect, useState } from "react";
+import {  useState } from "react";
 import Popup from "../Popup/Popup";
-import { Button, Form, InputGroup } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
-import { addMeal, deleteMeal, familyCodeShare, getMealTypes, updateMeal } from "../../Api/api";
-import { FaSearch } from "react-icons/fa";
-import { FamilyCodeShareInterface, MealDetailsInterface } from "../../Api/apiInterface";
+import { Button, Form } from "react-bootstrap";
+import {  familyCodeShare } from "../../Api/api";
+import { FamilyCodeShareInterface} from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./FamilyCodeForm.scss";
 
@@ -12,10 +10,11 @@ interface FamilyCodeProps {
     modalShow: boolean,
     setModalShow: (newModalShow: boolean) => void;
     f_id: number,
+    f_name: string;
     data?: FamilyCodeShareInterface
 }
 
-const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_id, data }) => {
+const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_id, f_name, data }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyCodeData, setFamilyCodeData] = useState<FamilyCodeShareInterface>(data ? data : {
@@ -58,7 +57,7 @@ const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_
             customclass="familyCode-form"
             show={modalShow}
             onHide={() => { setModalShow(false); }}
-            title={`Share Family Code`}
+            title={`Share Family Code of ${f_name}`}
             body="">
             <Form onSubmit={handleSubmit}>
                 <Form.Control

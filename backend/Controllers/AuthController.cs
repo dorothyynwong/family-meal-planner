@@ -114,7 +114,7 @@ public class AuthController(
                 FamilyUserRequest familyUserRequest = new FamilyUserRequest
                 {
                     FamilyShareCode = Guid.Parse(userRequest.FamilyCode!),
-                    FamilyRole = FamilyRoleType.Eater
+                    FamilyRole = FamilyRoleType.Eater.ToString()
                 };
 
                 await _familyUserService.AddFamilyUser(familyUserRequest, user.Id);

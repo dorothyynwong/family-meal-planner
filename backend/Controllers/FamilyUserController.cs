@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
@@ -61,19 +62,45 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
     }
 
+    // [HttpGet("by-user")]
+    // public async Task<IActionResult> GetFamilyUsersByUserId([FromQuery] int userId)
+    // {
+    //     if (!ModelState.IsValid)
+    //     {
+    //         return BadRequest(ModelState);
+    //     }
+
+    //     try
+    //     {
+    //         List<FamilyUserResponse> familyUserResponses = await _familyUserService.GetFamilyUsersByUserId(userId);
+
+    //         return Ok(familyUserResponses);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Logger.Error($"Failed to get family-users of {userId}: {ex.Message}");
+    //         return BadRequest($"Unable to get family-users of {userId}: {ex.Message}");
+    //     }
+
+    // }
+
+
     [HttpGet("by-user")]
-    public async Task<IActionResult> GetFamilyUsersByUserId([FromQuery] int userId)
+    public async Task<IActionResult> GetFamiliesWithUsersByUserId()
     {
         if (!ModelState.IsValid)
         {
             return BadRequest(ModelState);
         }
 
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
         try
         {
-            List<FamilyUserResponse> familyUserResponses = await _familyUserService.GetFamilyUsersByUserId(userId);
+            List<FamilyResponse> familyResponses = await _familyUserService.GetFamiliesWithUsersByUserId(userId);
 
-            return Ok(familyUserResponses);
+            return Ok(familyResponses);
         }
         catch (Exception ex)
         {
@@ -93,7 +120,9 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
-            
+
+        familyUserRequest.FamilyRole = FamilyRoleType.Eater.ToString();
+
         try
         {
             await _familyUserService.AddFamilyUser(familyUserRequest, userId);
@@ -130,6 +159,33 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
     }
 
+    [HttpPut("update-role")]
+    public async Task<IActionResult> UpdateRole([FromBody] FamilyRoleUpdateRequest familyRoleUpdateRequest)
+    {
+        if (!ModelState.IsValid)
+            return BadRequest(ModelState);
+
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+        
+        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyRoleUpdateRequest.FamilyId, userId);
+        if (familyUser.FamilyRole != FamilyRoleType.Cook)
+            return Unauthorized();         
+
+        try
+        {
+            await _familyUserService.UpdateFamilyUserRole(familyRoleUpdateRequest);
+
+            return Ok();
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to approve family user with family Id {familyRoleUpdateRequest.FamilyId} and user Id {familyRoleUpdateRequest.UserId}: {ex.Message}");
+            return BadRequest($"Unable to approve family user with family Id {familyRoleUpdateRequest.FamilyId} and user Id {familyRoleUpdateRequest.UserId}: {ex.Message}");
+        }
+
+    }
+
 
     [HttpDelete]
     public async Task<IActionResult> Delete([FromQuery] int familyId, int userId)
@@ -149,5 +205,11 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
             Logger.Error($"Failed to delete family {familyId} and user {userId}: {ex.Message}");
             return BadRequest($"Unable to delete family {familyId} and user {userId}:: {ex.Message}");
         }
+    }
+
+    [HttpGet("familyRoleTypes")]
+    public async Task<IActionResult> GetFamilyRoleTypes()
+    {
+        return Ok(Enum.GetNames(typeof(FamilyRoleType)));
     }
 }

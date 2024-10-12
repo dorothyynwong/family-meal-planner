@@ -19,7 +19,6 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
 
   const logUserIn = () => {
     setIsAuthenticated(true);
-
   };
 
   const logUserOut = () => {
