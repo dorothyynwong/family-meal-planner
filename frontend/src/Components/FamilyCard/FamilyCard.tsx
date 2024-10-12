@@ -1,21 +1,27 @@
-import { FamilyUserInterface} from "../../Api/apiInterface";
-import { Avatar, Card, CardContent, CardHeader,List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { FamilyUserInterface } from "../../Api/apiInterface";
+import { Avatar, Button, Card, CardActions, CardContent, CardHeader, List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
 import { useState } from "react";
 import FamilyRoleSelectBox from "../FamilyRoleSelectBox/FamilyRoleSelectBox";
 import { updateFamilyRole } from "../../Api/api";
 import StatusHandler from "../StatusHandler/StatusHandler";
+import FamilyCodeForm from "../FamilyCodeForm/FamilyCodeForm";
 
 interface FamilyUsersProps {
     data: FamilyUserInterface[];
+    familyId: number;
     familyName: string;
+    familyCode: string;
     currentUserRole: string;
     roles: string[];
+    // modalShow: boolean;
+    // setModalShow: (newShow: boolean) => void;
 }
 
-const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, currentUserRole, roles }) => {
+const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, familyCode, currentUserRole, roles }) => {
     const [familyUsers, setFamilyUsers] = useState<FamilyUserInterface[]>(data);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
+    const [modalShow, setModalShow] = useState(false);
 
     const handleRoleChange = (index: number, newRole: string, familyId: number, userId: number) => {
         const updatedUsers = [...familyUsers];
@@ -70,6 +76,12 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, currentUserR
                     )}
                 </List>
             </CardContent>
+            <CardActions>
+                {currentUserRole === "Cook" ? familyCode : ""}
+                {currentUserRole === "Cook" && 
+                    <Button id="share-family-button"  onClick={() => setModalShow(true)}>Share Family Code</Button>}
+            </CardActions>
+            {modalShow && <FamilyCodeForm  modalShow={modalShow} setModalShow={setModalShow} f_id={familyId} f_name={familyName}/>}
         </Card >
     )
 }

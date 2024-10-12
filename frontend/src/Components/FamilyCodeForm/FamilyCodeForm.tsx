@@ -12,10 +12,11 @@ interface FamilyCodeProps {
     modalShow: boolean,
     setModalShow: (newModalShow: boolean) => void;
     f_id: number,
+    f_name: string;
     data?: FamilyCodeShareInterface
 }
 
-const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_id, data }) => {
+const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_id, f_name, data }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyCodeData, setFamilyCodeData] = useState<FamilyCodeShareInterface>(data ? data : {
@@ -58,7 +59,7 @@ const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_
             customclass="familyCode-form"
             show={modalShow}
             onHide={() => { setModalShow(false); }}
-            title={`Share Family Code`}
+            title={`Share Family Code of ${f_name} ${f_id}`}
             body="">
             <Form onSubmit={handleSubmit}>
                 <Form.Control

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { FamilyWithUsersInterface} from "../../Api/apiInterface";
+import { FamilyWithUsersInterface } from "../../Api/apiInterface";
 import { getFamiliesWithUsersByUserId, getFamilyRoleTypes } from "../../Api/api";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import FamilyCard from "../../Components/FamilyCard/FamilyCard";
@@ -8,11 +8,12 @@ interface FamiliesListProps {
     data: FamilyWithUsersInterface[];
 }
 
-const FamiliesList: React.FC<FamiliesListProps> = ({data}) => {
+const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
+    // const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
         setStatus("loading");
@@ -46,14 +47,19 @@ const FamiliesList: React.FC<FamiliesListProps> = ({data}) => {
                 <></>
             </StatusHandler>
             {familyUsersList.map((fu, index) => (
-                <FamilyCard 
-                    key={index} 
-                    data={fu.familyUsers} 
-                    familyName={fu.familyName} 
-                    currentUserRole={fu.familyRole} 
-                    roles={familyRoles}/>
+                <FamilyCard
+                    key={index}
+                    data={fu.familyUsers}
+                    familyId={fu.id}
+                    familyName={fu.familyName}
+                    familyCode={fu.familyShareCode}
+                    currentUserRole={fu.familyRole}
+                    roles={familyRoles}
+                    // modalShow={modalShow}
+                    // setModalShow={setModalShow}
+                />
             ))}
-        
+            
         </>
     );
 }

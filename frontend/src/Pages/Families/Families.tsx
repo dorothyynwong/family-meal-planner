@@ -1,13 +1,10 @@
 import { Button, Form, InputGroup } from "react-bootstrap";
-import SearchBar from "../../Components/SearchBar/SearchBar";
 import "./Families.scss";
 import React, { useState } from "react";
 import Popup from "../../Components/Popup/Popup";
 import { useNavigate } from "react-router-dom";
 import { addFamily, addFamilyUser } from "../../Api/api";
-import FamilyCodeForm from "../../Components/FamilyCodeForm/FamilyCodeForm";
-
-
+import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 
 const Families: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -18,7 +15,6 @@ const Families: React.FC = () => {
     const [familyName, setFamilyName] = useState("");
     const [modalCreateFamilyShow, setModalCreateFamilyShow] = useState(false);
     const [modalJoinFamilyShow, setModalJoinFamilyShow] = useState(false);
-    const [modalShow, setModalShow] = useState(false); //test code
 
     const handleClick = (event: { currentTarget: { id: string } })  => {
         const buttonId = event.currentTarget.id;
@@ -44,8 +40,8 @@ const Families: React.FC = () => {
             setErrorMessages([]);
             addFamilyUser({familyShareCode: familyCode})
             .catch(error => {
-                console.log("Error adding family", error);
-                const errorMessage = error?.response?.data?.message || "Error adding family";
+                console.log("Error joining family", error);
+                const errorMessage = error?.response?.data?.message || "Error joining family";
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
@@ -59,9 +55,17 @@ const Families: React.FC = () => {
 
     return (
         <>
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Adding/Updating family ..."
+                successMessage=""
+            >
+                <></>
+            </StatusHandler>
             <h1>My Families</h1>
             <div className="button-box">
-            <Button id="show-family-button" className="custom-button" size="lg" onClick={handleClick}>My Families</Button>
+                <Button id="show-family-button" className="custom-button" size="lg" onClick={handleClick}>My Families</Button>
                 <Button id="create-family-button"className="custom-button" size="lg" onClick={() => setModalCreateFamilyShow(true)}>Create Family</Button>
                 <Button id="join-family-button" className="custom-button" size="lg" onClick={() => setModalJoinFamilyShow(true)}>Join Family</Button>
             </div>
@@ -98,8 +102,6 @@ const Families: React.FC = () => {
                 <Button id="join-family-button" className="custom-button" onClick={handleClick}>Submit</Button>
             </InputGroup>
             </Popup>
-
-            {/* <FamilyCodeForm modalShow={true} setModalShow={setModalShow} f_id={1} /> */}
         </>
     );
 }
