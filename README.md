@@ -45,6 +45,7 @@ dotnet user-secrets set "JWT:SECRET" "YOUR SECRET"
 dotnet user-secrets set "SendGrid:API_KEY" "YOUR API KEY"
 dotnet user-secrets set "SendGrid:Email" "Sender Email Address"
 dotnet user-secrets set "HuggingFace:API_KEY" "YOUR API KEY" 
+dotnet user-secrets set "OpenAI:API_KEY" "YOUR API KEY" 
 ```
 
 ### Inside the `frontend/` directory

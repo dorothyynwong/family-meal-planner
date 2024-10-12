@@ -9,7 +9,6 @@ using NLog;
 
 namespace FamilyMealPlanner.Controllers;
 
-[Authorize]
 [ApiController]
 [Route("/schoolmenus")]
 public class SchoolMenuController(IPdfService pdfService, IAIService aiService) : Controller
@@ -21,9 +20,6 @@ public class SchoolMenuController(IPdfService pdfService, IAIService aiService) 
     [HttpGet]
     public async Task<IActionResult> Import()
     {
-        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
-            return Unauthorized();
-
         var text = _pdfService.ImportPdf("");
         // string text = "Monday: Spaghetti\nTuesday: Pizza\nWednesday: Salad";
         var result = _aiService.GetModelResponseAsync(text[0]);
