@@ -38,12 +38,9 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyId, familyName, fa
                 setErrorMessages([...errorMessages, errorMessage]);
             });
     };
-    const handleClick = () => {
-
-    }
 
     return (
-        <Card sx={{ maxWidth: 345, m: 2 }} onClick={handleClick}>
+        <Card sx={{ maxWidth: 345, m: 2 }}>
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
