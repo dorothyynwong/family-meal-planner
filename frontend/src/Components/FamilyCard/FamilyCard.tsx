@@ -1,6 +1,6 @@
-import { FamilyUserInterface, FamilyWithUsersInterface, MealDetailsInterface } from "../../Api/apiInterface";
-import { Avatar, Card, CardContent, CardHeader, CardMedia, List, ListItem, ListItemAvatar, ListItemText, Select, Typography } from "@mui/material";
-import { Fragment, useState } from "react";
+import { FamilyUserInterface} from "../../Api/apiInterface";
+import { Avatar, Card, CardContent, CardHeader,List, ListItem, ListItemAvatar, ListItemText } from "@mui/material";
+import { useState } from "react";
 import FamilyRoleSelectBox from "../FamilyRoleSelectBox/FamilyRoleSelectBox";
 import { updateFamilyRole } from "../../Api/api";
 import StatusHandler from "../StatusHandler/StatusHandler";
@@ -40,6 +40,13 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, currentUserR
 
     return (
         <Card sx={{ maxWidth: 345, m: 2 }} onClick={handleClick}>
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Updating family role ..."
+                successMessage=""
+            ><></>
+            </StatusHandler>
             <CardHeader title={familyName} />
             <CardContent>
                 <List sx={{ width: '100%', maxWidth: 360, bgcolor: 'background.paper' }}>
@@ -52,20 +59,12 @@ const FamilyCard: React.FC<FamilyUsersProps> = ({ data, familyName, currentUserR
                                 <ListItemText
                                     primary={fu.userNickName}
                                 />
-                                <StatusHandler
-                                    status={status}
-                                    errorMessages={errorMessages}
-                                    loadingMessage="Updating family role ..."
-                                    successMessage=""
-                                >
-                                    {currentUserRole === "Cook" &&
-                                        <FamilyRoleSelectBox
-                                            defaultRole={fu.familyRole}
-                                            roles={roles}
-                                            onRoleChange={(newRole: string) => handleRoleChange(index, newRole, fu.familyId, fu.userId)}
-                                        />}
-                                </StatusHandler>
-                                {currentUserRole !== "Cook" && fu.familyRole}
+                                {currentUserRole === "Cook" ? (
+                                    <FamilyRoleSelectBox
+                                        defaultRole={fu.familyRole}
+                                        roles={roles}
+                                        onRoleChange={(newRole: string) => handleRoleChange(index, newRole, fu.familyId, fu.userId)}
+                                    />) : (fu.familyRole)}
                             </ListItem>
                         )
                     )}

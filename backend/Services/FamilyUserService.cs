@@ -1,6 +1,5 @@
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
-using FamilyMealPlanner.Models.Data;
 using Microsoft.EntityFrameworkCore;
 using NLog;
 

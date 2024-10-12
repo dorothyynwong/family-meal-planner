@@ -220,9 +220,6 @@ export async function getFamilyRoleTypes() {
 
 export async function updateFamilyRole(familyRole: FamilyRoleUpdateInterface) {
     try {
-        console.log(familyRole.familyId);
-        console.log(familyRole.userId);
-        console.log(familyRole.newRole);
         const response: AxiosResponse = await client.put(`/familyUsers/update-role`, familyRole);
         return response;
     } catch (error) {
