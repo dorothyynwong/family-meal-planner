@@ -31,7 +31,6 @@ public class SchoolMenuController(IPdfService pdfService, IOpenAIService aiServi
             Logger.Debug(item);
         }
 
-
         try
         {
             return Ok(jsonList);

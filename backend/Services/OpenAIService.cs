@@ -69,11 +69,11 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
             Logger.Info("Response from OpenAI:");
             Logger.Info(responseBody);
 
-            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
 
             /**Test Code**/
-            // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
-            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
+            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
 
             foreach (var choice in openAIResponse.Choices)
             {
