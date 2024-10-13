@@ -88,18 +88,18 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
                 Logger.Debug(nestedJson);
                 try
                 {
-                    var schoolMenu = JsonSerializer.Deserialize<SchoolMenu>(nestedJson);
+                    var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
 
-                    foreach (var weekMenu in schoolMenu.WeekMenu)
+                    foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
                     {
-                        foreach (var dayMenu in weekMenu.DayMenus)
+                        foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
                         {
-                            Console.WriteLine($"Day: {dayMenu.Day}");
-                            foreach (var meal in dayMenu.SchoolMeals)
+                            Console.WriteLine($"Day: {dayMenuResponse.Day}");
+                            foreach (var mealResponse in dayMenuResponse.SchoolMeals)
                             {
-                                Console.WriteLine($"Meal Name: {meal.MealName}");
-                                Console.WriteLine($"Category: {meal.Category}");
-                                Console.WriteLine($"Allergens: {string.Join(", ", meal.Allergens)}");
+                                Console.WriteLine($"Meal Name: {mealResponse.MealName}");
+                                Console.WriteLine($"Category: {mealResponse.Category}");
+                                Console.WriteLine($"Allergens: {string.Join(", ", mealResponse.Allergens)}");
                             }
                         }
                     }
