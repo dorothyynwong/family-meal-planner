@@ -13,11 +13,8 @@ public interface IPdfService
     List<string> ImportPdf(string filePath);
 }
 
-public class PdfService(FamilyMealPlannerContext context) : IPdfService
+public class PdfService() : IPdfService
 {
-    private readonly FamilyMealPlannerContext _context = context;
-    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
-
     public List<string> ImportPdf(string filePath)
     {
         List<string> result = new List<string>();
