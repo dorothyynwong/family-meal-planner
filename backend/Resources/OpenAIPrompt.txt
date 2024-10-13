@@ -1,0 +1,19 @@
+Transform the following school menu text into JSON format. Each day should have a list of meals. Each meal should contain a "meal_name", "category" (e.g., "main_course", "dessert", "side", "extras"), and an array of "allergens." Use a flexible structure to accommodate variations in meal names and categories. 
+
+The JSON format should look like this:
+{
+    "week_menu": [
+        {
+            "days": [
+                {
+                    "day": "DAY_NAME",
+                    "meals": [
+                        { "meal_name": "MEAL_NAME", "category": "CATEGORY", "allergens": ["ALLERGENS"] }
+                    ]
+                }
+            ]
+        }
+    ]
+}
+
+Menu:

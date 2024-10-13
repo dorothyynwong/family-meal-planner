@@ -1,0 +1,30 @@
+{
+  "id": "chatcmpl-AHq6k3ZuXjiDgVbWXNiEbymlvq6jZ",
+  "object": "chat.completion",
+  "created": 1728815242,
+  "model": "gpt-3.5-turbo-1106",
+  "choices": [
+    {
+      "index": 0,
+      "message": {
+        "role": "assistant",
+        "content": "```json\n{\n  \"week_menu\": [\n    {\n      \"days\": [\n        {\n          \"day\": \"Monday\",\n          \"meals\": [\n            {\n              \"meal_name\": \"Buffalo Chicken with Smoked Paprika Wedges and Cajun Corn\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\", \"sulfites\"]\n            },\n            {\n              \"meal_name\": \"Bang Bang Cauliflower, Smoked Paprika Wedges and Cajun Corn (VE)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"gluten\"]\n            },\n            {\n              \"meal_name\": \"Chocolate Sponge & Chocolate Sauce\",\n              \"category\": \"dessert\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Buffalo Cauliflower Wings on Salt & Pepper Wedges (V)\",\n              \"category\": \"extras\",\n              \"allergens\": [\"gluten\"]\n            },\n            {\n              \"meal_name\": \"Chilli & Lime Glazed Tofu Skewer with Tomato Rice (VE)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"gluten\"]\n            }\n          ]\n        },\n        {\n          \"day\": \"Tuesday\",\n          \"meals\": [\n            {\n              \"meal_name\": \"Classic Beef Lasagne, Garden Salad & Homemade Garlic Bread\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Vegetable & Mixed Bean Lasagne, Garden Salad & Homemade Garlic Bread (V)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Apple Strudel & Custard\",\n              \"category\": \"dessert\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Garlic & Lemon Chicken Gyros\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Vegan Singapore Noodles(VE)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"gluten\"]\n            }\n          ]\n        },\n        {\n          \"day\": \"Wednesday\",\n          \"meals\": [\n            {\n              \"meal_name\": \"Glazed British Roast Gammon, Crisp Roasties, Seasonal Vegetables & House Gravy\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"pork\"]\n            },\n            {\n              \"meal_name\": \"Leek & Spinach Wellington, Crisp Roasties, Seasonal Vegetables & House Gravy (V)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Peach Kuchen\",\n              \"category\": \"dessert\",\n              \"allergens\": [\"gluten\"]\n            },\n            {\n              \"meal_name\": \"Chicken Yakitori with Rice\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Jerk Jackfruit Open Wrap(VE)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"gluten\"]\n            }\n          ]\n        },\n        {\n          \"day\": \"Thursday\",\n          \"meals\": [\n            {\n              \"meal_name\": \"Chicken Massaman Curry, Wholegrain & White Rice with Pineapple, Lime & Cucumber Salsa\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\", \"nuts\"]\n            },\n            {\n              \"meal_name\": \"Pea & Halloumi Fritters, Wholegrain & White Rice, Pineapple, Lime & Cucumber Salsa (V)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Pear & Cocoa Sponge\",\n              \"category\": \"dessert\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Loaded Potato Skins\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"dairy\", \"gluten\"]\n            },\n            {\n              \"meal_name\": \"Pakistani Tarka Dhal(VE)\",\n              \"category\": \"main_course\",\n              \"allergens\": [\"nuts\"]\n            }\n          ]\n        },\n        {\n          \"day\": \"Friday\",\n          \"meals\": [\n            {\n              \"meal_name\": \"Chip Shop 'Fryday",
+        "refusal": null
+      },
+      "logprobs": null,
+      "finish_reason": "length"
+    }
+  ],
+  "usage": {
+    "prompt_tokens": 651,
+    "completion_tokens": 1000,
+    "total_tokens": 1651,
+    "prompt_tokens_details": {
+      "cached_tokens": 0
+    },
+    "completion_tokens_details": {
+      "reasoning_tokens": 0
+    }
+  },
+  "system_fingerprint": "fp_c0b1db30f1"
+}

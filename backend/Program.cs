@@ -30,7 +30,7 @@ builder.Services.AddTransient<IFamilyUserService, FamilyUserService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IPdfService, PdfService>();
-builder.Services.AddTransient<IAIService, OpenAIService>();
+builder.Services.AddTransient<IOpenAIService, OpenAIService>();
 
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle

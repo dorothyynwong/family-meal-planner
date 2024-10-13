@@ -11,24 +11,30 @@ namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
 [Route("/schoolmenus")]
-public class SchoolMenuController(IPdfService pdfService, IAIService aiService) : Controller
+public class SchoolMenuController(IPdfService pdfService, IOpenAIService aiService) : Controller
 {
     private readonly IPdfService _pdfService = pdfService;
-    private readonly IAIService _aiService = aiService;
+    private readonly IOpenAIService _aiService = aiService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpGet]
     public async Task<IActionResult> Import()
     {
         var text = _pdfService.ImportPdf("");
-        // string text = "Monday: Spaghetti\nTuesday: Pizza\nWednesday: Salad";
-        var result = _aiService.GetModelResponseAsync(text[0]);
-        var json = System.Text.Json.JsonSerializer.Serialize(result); 
-        Logger.Debug(json);
+        List<string> jsonList = new List<string>();
+
+        foreach (var item in text)
+        {
+            var result = _aiService.GetModelResponseAsync(item);
+            var json = JsonSerializer.Serialize(result);
+            jsonList.Add(json);
+            Logger.Debug(item);
+        }
+
 
         try
         {
-            return Ok(json);
+            return Ok(jsonList);
         }
         catch (Exception ex)
         {
