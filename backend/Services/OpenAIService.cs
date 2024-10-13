@@ -50,7 +50,7 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
     public async Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId)
     {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
-
+        
         string prompt = GetPrompt() + text;
 
         var requestBody = new
@@ -64,34 +64,25 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
-
         if (response.IsSuccessStatusCode)
         {
             var responseBody = await response.Content.ReadAsStringAsync();
             Logger.Info("Response from OpenAI:");
             Logger.Info(responseBody);
 
-            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
 
             /**Test Code**/
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
-            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
+            // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
+            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
 
             foreach (var choice in openAIResponse.Choices)
             {
-                Console.WriteLine($"Choice Index: {choice.Index}");
-                Console.WriteLine($"Role: {choice.Message.Role}");
-
-                // Clean up the JSON content inside the message
                 var nestedJson = choice.Message.Content;
                 nestedJson = nestedJson.Replace("```json\n", "").Replace("\n```", "").Replace("\\n", "").Replace("\\\"", "\"");
-
-                Logger.Debug("Cleaned JSON Content:");
-                Logger.Debug(nestedJson);
                 try
                 {
                     var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
-
                     foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
                     {
                         SchoolMenu schoolMenu = new SchoolMenu
@@ -107,8 +98,9 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
 
                         foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
                         {
-                            Enum.TryParse<DayType>(dayMenuResponse.Day, true, out var mealDay);
-
+                            if(!Enum.TryParse<DayType>(dayMenuResponse.Day, true, out var mealDay))
+                                throw new InvalidOperationException("Invalid DayType");
+            
                             foreach (var mealResponse in dayMenuResponse.SchoolMeals)
                             {
                                 var mealName = mealResponse.MealName;
@@ -131,7 +123,7 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error parsing JSON content: {ex.Message}");
+                    Logger.Error($"Error parsing JSON content: {ex.Message}");
                 }
                
             }

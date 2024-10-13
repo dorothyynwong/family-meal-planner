@@ -18,21 +18,25 @@ public class PdfService(FamilyMealPlannerContext context) : IPdfService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    // public string ImportPdf(string filePath)
     public List<string> ImportPdf(string filePath)
     {
         List<string> result = new List<string>();
-        using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu2.pdf"))
+        try
         {
-            var text = new StringBuilder();
-            foreach (var page in pdf.GetPages())
+            using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu2.pdf"))
             {
-                // text.AppendLine(page.Text);
-                result.Add(page.Text);
-
+                var text = new StringBuilder();
+                foreach (var page in pdf.GetPages())
+                {
+                    result.Add(page.Text);
+                }
             }
-            // return text.ToString();
+            return result;
         }
-        return result;
+        catch (Exception ex)
+        {
+            throw new Exception("Unable to import PDF", ex);
+        }
+
     }
 }
