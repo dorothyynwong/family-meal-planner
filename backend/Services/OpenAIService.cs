@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using NLog;
 
@@ -8,14 +9,15 @@ namespace FamilyMealPlanner.Services;
 
 public interface IOpenAIService
 {
-    Task<OpenAIResponse> GetModelResponseAsync(string text);
+    Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId);
 }
 
-public class OpenAIService(IConfiguration configuration) : IOpenAIService
+public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContext context) : IOpenAIService
 {
     private static readonly HttpClient client = new HttpClient();
     private readonly IConfiguration _configure = configuration;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+    private readonly FamilyMealPlannerContext _context = context;
 
     private string GetFileContent(string filePath)
     {
@@ -45,10 +47,10 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
         }
     }
 
-    public async Task<OpenAIResponse> GetModelResponseAsync(string text)
+    public async Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId)
     {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
-
+        
         string prompt = GetPrompt() + text;
 
         var requestBody = new
@@ -62,51 +64,66 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
         var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
-
         if (response.IsSuccessStatusCode)
         {
             var responseBody = await response.Content.ReadAsStringAsync();
             Logger.Info("Response from OpenAI:");
             Logger.Info(responseBody);
 
-            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
 
             /**Test Code**/
-            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
-            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
+            // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
+            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
 
             foreach (var choice in openAIResponse.Choices)
             {
-                Console.WriteLine($"Choice Index: {choice.Index}");
-                Console.WriteLine($"Role: {choice.Message.Role}");
-
-                // Clean up the JSON content inside the message
                 var nestedJson = choice.Message.Content;
                 nestedJson = nestedJson.Replace("```json\n", "").Replace("\n```", "").Replace("\\n", "").Replace("\\\"", "\"");
-
-                Logger.Debug("Cleaned JSON Content:");
-                Logger.Debug(nestedJson);
                 try
                 {
-                    var schoolMenu = JsonSerializer.Deserialize<SchoolMenu>(nestedJson);
-
-                    foreach (var weekMenu in schoolMenu.WeekMenu)
+                    var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
+                    foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
                     {
-                        foreach (var dayMenu in weekMenu.DayMenus)
+                        SchoolMenu schoolMenu = new SchoolMenu
                         {
-                            Console.WriteLine($"Day: {dayMenu.Day}");
-                            foreach (var meal in dayMenu.SchoolMeals)
+                            Status = SchoolMenuStatus.Draft,
+                            FamilyId = familyId,
+                            UserId = userId,
+                        };
+
+                        _context.SchoolMenus.Add(schoolMenu);
+                        await _context.SaveChangesAsync();
+                        int schoolMenuId = schoolMenu.Id;
+
+                        foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
+                        {
+                            if(!Enum.TryParse<DayType>(dayMenuResponse.Day, true, out var mealDay))
+                                throw new InvalidOperationException("Invalid DayType");
+            
+                            foreach (var mealResponse in dayMenuResponse.SchoolMeals)
                             {
-                                Console.WriteLine($"Meal Name: {meal.MealName}");
-                                Console.WriteLine($"Category: {meal.Category}");
-                                Console.WriteLine($"Allergens: {string.Join(", ", meal.Allergens)}");
+                                var mealName = mealResponse.MealName;
+                                var mealCategory = mealResponse.Category;
+                                var allergens = string.Join(", ", mealResponse.Allergens);
+                                SchoolMeal schoolMeal = new SchoolMeal 
+                                {
+                                    Day = mealDay,
+                                    SchoolMenuId = schoolMenuId,
+                                    MealName = mealName,
+                                    Category = mealCategory,
+                                    Allergens = allergens
+                                };
+
+                                _context.SchoolMeals.Add(schoolMeal);
+                                await _context.SaveChangesAsync();
                             }
                         }
                     }
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine($"Error parsing JSON content: {ex.Message}");
+                    Logger.Error($"Error parsing JSON content: {ex.Message}");
                 }
                
             }

@@ -1,4 +1,3 @@
-using System.Collections.Generic;
 using System.Text.Json.Serialization;
 
 namespace FamilyMealPlanner.Models;
@@ -75,28 +74,28 @@ public class TokenDetails
     public int ReasoningTokens { get; set; }
 }
 
-public class SchoolMenu
+public class SchoolMenuResponse
 {
     [JsonPropertyName("week_menu")]
-    public List<WeekMenu> WeekMenu { get; set; }
+    public List<WeekMenuResponse> WeekMenu { get; set; }
 }
 
-public class WeekMenu
+public class WeekMenuResponse
 {
     [JsonPropertyName("days")]
-    public List<DayMenu> DayMenus {get; set;}
+    public List<DayMenuResponse> DayMenus {get; set;}
 }
 
-public class DayMenu
+public class DayMenuResponse
 {
     [JsonPropertyName("day")]
     public string Day { get; set; }
 
     [JsonPropertyName("meals")]
-    public List<SchoolMeal> SchoolMeals { get; set; }
+    public List<SchoolMealResponse> SchoolMeals { get; set; }
 }
 
-public class SchoolMeal
+public class SchoolMealResponse
 {
     [JsonPropertyName("meal_name")]
     public string MealName { get; set; }

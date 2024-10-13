@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FamilyMealPlanner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(FamilyMealPlannerContext))]
-    partial class FamilyMealPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20241013142539_ChangeAllergensFromListToString")]
+    partial class ChangeAllergensFromListToString
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -272,15 +275,18 @@ namespace backend.Migrations
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
                     b.Property<string>("Allergens")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<string>("Category")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("Day")
                         .HasColumnType("integer");
 
                     b.Property<string>("MealName")
+                        .IsRequired()
                         .HasColumnType("text");
 
                     b.Property<int>("SchoolMenuId")
@@ -310,7 +316,7 @@ namespace backend.Migrations
                     b.Property<int>("UserId")
                         .HasColumnType("integer");
 
-                    b.Property<DateOnly?>("WeekCommercing")
+                    b.Property<DateOnly>("WeekCommercing")
                         .HasColumnType("date");
 
                     b.HasKey("Id");

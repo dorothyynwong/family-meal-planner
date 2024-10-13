@@ -12,7 +12,9 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
     public DbSet<Family> Families { get; set; }
     public DbSet<Meal> Meals { get; set; }
     public DbSet<FamilyUser> FamilyUsers { get; set; }
-    public DBSet<LoginModel> LoginModels { get; set; }
+    public DbSet<SchoolMeal> SchoolMeals {get; set;}
+    public DbSet<SchoolMenu> SchoolMenus {get; set;}
+
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
@@ -49,8 +51,4 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
             .HasForeignKey(fu => fu.FamilyId);
 
     }
-}
-
-public class DBSet<T>
-{
 }
