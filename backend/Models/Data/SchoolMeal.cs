@@ -8,6 +8,7 @@ public class SchoolMeal
 {
     [Key]
     public int Id { get; set; }
+
     [ForeignKey("SchoolMenu")]
     public int SchoolMenuId { get; set; }
 
@@ -15,11 +16,11 @@ public class SchoolMeal
 
     public DayType Day { get; set; }
 
-    public string MealName { get; set; }
+    public string? MealName { get; set; }
 
-    public string Category { get; set; }
+    public string? Category { get; set; }
 
-    public List<string> Allergens { get; set; }
+    public string? Allergens { get; set; }
 
 
 }

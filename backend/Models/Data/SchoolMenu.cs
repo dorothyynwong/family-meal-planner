@@ -9,7 +9,7 @@ public class SchoolMenu
     [Key]
     public int Id { get; set; }
 
-    public DateOnly WeekCommercing { get; set; }
+    public DateOnly? WeekCommercing { get; set; }
 
     public ICollection<SchoolMeal> SchoolMeals { get; set; }
 

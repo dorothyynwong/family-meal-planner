@@ -92,7 +92,7 @@ public class DayMenuResponse
     public string Day { get; set; }
 
     [JsonPropertyName("meals")]
-    public List<SchoolMeal> SchoolMeals { get; set; }
+    public List<SchoolMealResponse> SchoolMeals { get; set; }
 }
 
 public class SchoolMealResponse

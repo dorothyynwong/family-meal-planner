@@ -1,6 +1,7 @@
 using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using NLog;
 
@@ -8,14 +9,15 @@ namespace FamilyMealPlanner.Services;
 
 public interface IOpenAIService
 {
-    Task<OpenAIResponse> GetModelResponseAsync(string text);
+    Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId);
 }
 
-public class OpenAIService(IConfiguration configuration) : IOpenAIService
+public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContext context) : IOpenAIService
 {
     private static readonly HttpClient client = new HttpClient();
     private readonly IConfiguration _configure = configuration;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+    private readonly FamilyMealPlannerContext _context = context;
 
     private string GetFileContent(string filePath)
     {
@@ -45,7 +47,7 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
         }
     }
 
-    public async Task<OpenAIResponse> GetModelResponseAsync(string text)
+    public async Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId)
     {
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
 
@@ -92,14 +94,37 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
 
                     foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
                     {
+                        SchoolMenu schoolMenu = new SchoolMenu
+                        {
+                            Status = SchoolMenuStatus.Draft,
+                            FamilyId = familyId,
+                            UserId = userId,
+                        };
+
+                        _context.SchoolMenus.Add(schoolMenu);
+                        await _context.SaveChangesAsync();
+                        int schoolMenuId = schoolMenu.Id;
+
                         foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
                         {
-                            Console.WriteLine($"Day: {dayMenuResponse.Day}");
+                            Enum.TryParse<DayType>(dayMenuResponse.Day, true, out var mealDay);
+
                             foreach (var mealResponse in dayMenuResponse.SchoolMeals)
                             {
-                                Console.WriteLine($"Meal Name: {mealResponse.MealName}");
-                                Console.WriteLine($"Category: {mealResponse.Category}");
-                                Console.WriteLine($"Allergens: {string.Join(", ", mealResponse.Allergens)}");
+                                var mealName = mealResponse.MealName;
+                                var mealCategory = mealResponse.Category;
+                                var allergens = string.Join(", ", mealResponse.Allergens);
+                                SchoolMeal schoolMeal = new SchoolMeal 
+                                {
+                                    Day = mealDay,
+                                    SchoolMenuId = schoolMenuId,
+                                    MealName = mealName,
+                                    Category = mealCategory,
+                                    Allergens = allergens
+                                };
+
+                                _context.SchoolMeals.Add(schoolMeal);
+                                await _context.SaveChangesAsync();
                             }
                         }
                     }

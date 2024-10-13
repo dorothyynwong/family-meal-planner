@@ -18,14 +18,14 @@ public class SchoolMenuController(IPdfService pdfService, IOpenAIService aiServi
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpGet]
-    public async Task<IActionResult> Import()
+    public async Task<IActionResult> Import([FromQuery] int familyId, int userId)
     {
         var text = _pdfService.ImportPdf("");
         List<string> jsonList = new List<string>();
 
         foreach (var item in text)
         {
-            var result = _aiService.GetModelResponseAsync(item);
+            var result = _aiService.GetModelResponseAsync(item, familyId, userId);
             var json = JsonSerializer.Serialize(result);
             jsonList.Add(json);
             Logger.Debug(item);
