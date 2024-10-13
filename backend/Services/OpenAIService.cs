@@ -33,11 +33,10 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
     private string GetPrompt()
     {
         string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\OpenAIPrompt.txt");
-        string prompt = GetFileContent(filePath);
 
         try
         {
-            return File.ReadAllText(filePath);
+            return GetFileContent(filePath);
         }
         catch (Exception ex)
         {
@@ -46,76 +45,80 @@ public class OpenAIService(IConfiguration configuration) : IOpenAIService
         }
     }
 
- public async Task<OpenAIResponse> GetModelResponseAsync(string text)
-{
-    client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
-
-    string prompt = GetPrompt() + text;
-
-    var requestBody = new
+    public async Task<OpenAIResponse> GetModelResponseAsync(string text)
     {
-        model = "gpt-3.5-turbo-1106",
-        messages = new[] { new { role = "user", content = prompt } },
-        max_tokens = 1000
-    };
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
 
-    var json = JsonSerializer.Serialize(requestBody);
-    var content = new StringContent(json, Encoding.UTF8, "application/json");
+        string prompt = GetPrompt() + text;
 
-    var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
-
-    if (response.IsSuccessStatusCode)
-    {
-        var responseBody = await response.Content.ReadAsStringAsync();
-        Logger.Info("Response from OpenAI:");
-        Logger.Info(responseBody);
-
-        // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
-        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
-        var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
-
-        var weekMenuJson = openAIResponse.Choices.FirstOrDefault()?.Message.Content;
-
-        if (!string.IsNullOrWhiteSpace(weekMenuJson))
+        var requestBody = new
         {
-            var weekMenu = JsonSerializer.Deserialize<WeekMenu>(weekMenuJson, new JsonSerializerOptions
-            {
-                PropertyNamingPolicy = JsonNamingPolicy.CamelCase,
-                WriteIndented = true
-            });
+            model = "gpt-3.5-turbo-1106",
+            messages = new[] { new { role = "user", content = prompt } },
+            max_tokens = 2000
+        };
 
-            // Log the details of the week menu
-            if (weekMenu != null && weekMenu.Days != null)
+        var json = JsonSerializer.Serialize(requestBody);
+        var content = new StringContent(json, Encoding.UTF8, "application/json");
+
+        var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
+
+        if (response.IsSuccessStatusCode)
+        {
+            var responseBody = await response.Content.ReadAsStringAsync();
+            Logger.Info("Response from OpenAI:");
+            Logger.Info(responseBody);
+
+            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+
+            /**Test Code**/
+            // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
+            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
+
+            foreach (var choice in openAIResponse.Choices)
             {
-                foreach (var dayMenu in weekMenu.Days)
+                Console.WriteLine($"Choice Index: {choice.Index}");
+                Console.WriteLine($"Role: {choice.Message.Role}");
+
+                // Clean up the JSON content inside the message
+                var nestedJson = choice.Message.Content;
+                nestedJson = nestedJson.Replace("```json\n", "").Replace("\n```", "").Replace("\\n", "").Replace("\\\"", "\"");
+
+                Logger.Debug("Cleaned JSON Content:");
+                Logger.Debug(nestedJson);
+                try
                 {
-                    Logger.Info(dayMenu.Day);
+                    var schoolMenu = JsonSerializer.Deserialize<SchoolMenu>(nestedJson);
 
-                    foreach (var schoolMeal in dayMenu.Meals)
+                    foreach (var weekMenu in schoolMenu.WeekMenu)
                     {
-                        Logger.Info($"- {schoolMeal.MealName} (Category: {schoolMeal.Category}, Allergens: {string.Join(", ", schoolMeal.Allergens)})");
+                        foreach (var dayMenu in weekMenu.DayMenus)
+                        {
+                            Console.WriteLine($"Day: {dayMenu.Day}");
+                            foreach (var meal in dayMenu.SchoolMeals)
+                            {
+                                Console.WriteLine($"Meal Name: {meal.MealName}");
+                                Console.WriteLine($"Category: {meal.Category}");
+                                Console.WriteLine($"Allergens: {string.Join(", ", meal.Allergens)}");
+                            }
+                        }
                     }
                 }
+                catch (Exception ex)
+                {
+                    Console.WriteLine($"Error parsing JSON content: {ex.Message}");
+                }
+               
             }
-            else
-            {
-                Logger.Error("Deserialized week menu is null.");
-            }
+            return openAIResponse;
         }
         else
-        {
-            Logger.Error("Week menu content is null or empty.");
+            {
+                Logger.Error($"Error: {response.StatusCode}");
+                var errorResponse = await response.Content.ReadAsStringAsync();
+                Logger.Error($"Error details: {errorResponse}");
+                throw new Exception(errorResponse);
+            }
         }
 
-        return openAIResponse;
     }
-    else
-    {
-        Logger.Error($"Error: {response.StatusCode}");
-        var errorResponse = await response.Content.ReadAsStringAsync();
-        Logger.Error($"Error details: {errorResponse}");
-        throw new Exception(errorResponse);
-    }
-}
-
-}

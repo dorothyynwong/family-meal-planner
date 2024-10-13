@@ -22,7 +22,7 @@ public class PdfService(FamilyMealPlannerContext context) : IPdfService
     public List<string> ImportPdf(string filePath)
     {
         List<string> result = new List<string>();
-        using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu.pdf"))
+        using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu2.pdf"))
         {
             var text = new StringBuilder();
             foreach (var page in pdf.GetPages())
