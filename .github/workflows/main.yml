@@ -23,11 +23,9 @@ jobs:
     - name: Restore backend dependencies
       run: dotnet restore backend/backend.csproj
     - name: Build backend
-      run:  dotnet build backend/backend.csproj
-    - name: Print IMGBB_API_KEY
       env:
         IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
-      run: echo $IMGBB_API_KEY
+      run:  dotnet build backend/backend.csproj
     - name: Run backend tests
       env:
         IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
