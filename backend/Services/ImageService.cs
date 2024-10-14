@@ -15,7 +15,8 @@ public class ImageService(IConfiguration configuration) : IImageService
 
     public async Task<string> UploadImageAsync(IFormFile file)
     {
-        var imgbbApiKey = _configuration["ImgBB:API_KEY"];
+        // var imgbbApiKey = _configuration["ImgBB:API_KEY"];
+        var imgbbApiKey = Environment.GetEnvironmentVariable("IMGBB_API_KEY");
         if (imgbbApiKey == null || imgbbApiKey == "")
         {
             Logger.Error("ImgBB API key cannot be found or is invalid.");
