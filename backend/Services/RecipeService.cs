@@ -19,10 +19,21 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
+    private void ValidateRequest(RecipeRequest recipeRequest)
+    {
+        if (recipeRequest == null)
+        {
+            throw new ArgumentNullException(nameof(recipeRequest), "Request cannot be null");
+        }
+
+        if (string.IsNullOrWhiteSpace(recipeRequest.Name))
+            throw new ArgumentException("Name cannot be empty");
+
+    }
+
     public async Task<int> AddRecipe(RecipeRequest recipeRequest)
     {
-        if (recipeRequest.Name.Length <= 0) 
-            throw new InvalidOperationException("Name cannot be empty");
+        ValidateRequest(recipeRequest);
         try
         {
             Recipe recipe = new Recipe()
@@ -67,7 +78,7 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
 
     public async Task<List<Recipe>> GetRecipeByUserId(int userId)
     {
-        List<Recipe> recipes =  await _context.Recipes
+        List<Recipe> recipes = await _context.Recipes
                                                 .Where(recipe => recipe.Id != 0)
                                                 .ToListAsync();
         if (recipes == null || recipes.Count == 0)
@@ -81,6 +92,8 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
 
     public async Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId)
     {
+        ValidateRequest(recipeRequest);
+        
         try
         {
             Recipe recipe = await GetRecipeById(recipeId);

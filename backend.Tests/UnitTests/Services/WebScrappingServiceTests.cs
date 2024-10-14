@@ -62,7 +62,7 @@ public class WebScrappingServiceTests
     }
 
     [Test]
-    public async Task ImportRecipe_InValidUrl_ReturnsRecipe()
+    public void ImportRecipe_InValidUrl_ReturnsRecipe()
     {
         var url = "http://google.com";
         

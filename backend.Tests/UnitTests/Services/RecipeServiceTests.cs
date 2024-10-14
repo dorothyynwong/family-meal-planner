@@ -166,7 +166,7 @@ public class RecipeServiceTests
     }
 
    [Test]
-    public async Task AddRecipe_WithoutName()
+    public void AddRecipe_WithoutName()
     {
         RecipeRequest recipe = new RecipeRequest();
         recipe.Name = "";
@@ -204,14 +204,23 @@ public class RecipeServiceTests
 
         var nowDateTime = DateTime.UtcNow;
 
-        var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+        var exception = Assert.ThrowsAsync<ArgumentException>(async () =>
         {
             var recipeId = await _recipeService.AddRecipe(recipe);
         });
     }
 
+     [Test]
+    public void AddRecipe_WithoutRequest()
+    {
+        var exception = Assert.ThrowsAsync<ArgumentNullException>(async () =>
+        {
+            var recipeId = await _recipeService.AddRecipe(null);
+        });
+    }
+
     [Test]
-    public async Task UpdateNonExistRecipe()
+    public void UpdateNonExistRecipe()
     {
         int recipeId = 100;
 
@@ -258,7 +267,7 @@ public class RecipeServiceTests
     }
 
     [Test]
-    public async Task DeleteNonExistRecipe()
+    public void DeleteNonExistRecipe()
     {
         int recipeId = 100;
 

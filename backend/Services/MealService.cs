@@ -12,6 +12,7 @@ public interface IMealService
     Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId);
     Task UpdateMeal(MealRequest mealRequest, int mealId, int userId);
     Task Delete(int mealId, int userId);
+    Task<Meal> GetMealById(int mealId);
 }
 
 public class MealService(FamilyMealPlannerContext context) : IMealService
@@ -19,8 +20,23 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
+    private void ValidateRequest(MealRequest mealRequest)
+    {
+        if (mealRequest == null)
+        {
+            throw new ArgumentNullException(nameof(mealRequest), "Request cannot be null");
+        }
+
+        if (mealRequest.Date == default || string.IsNullOrEmpty(mealRequest.MealType) || mealRequest.AddedByUserId <= 0)
+        {
+            throw new ArgumentException("Name is required");
+        }
+    }
+
     public async Task<int> AddMeal(MealRequest mealRequest, int userId)
     {
+        ValidateRequest(mealRequest);
+
         try
         {
             Meal meal = new Meal()
@@ -92,7 +108,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
         return mealResponses;
     }
 
-    private async Task<Meal> GetMealById(int mealId)
+    public async Task<Meal> GetMealById(int mealId)
     {
         Meal meal = await _context.Meals.SingleAsync(meal => meal.Id == mealId);
         return meal;
@@ -105,7 +121,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
             Meal meal = await GetMealById(mealId);
 
             meal.Date = mealRequest.Date;
-            meal.RecipeId = mealRequest.RecipeId != null? mealRequest.RecipeId: meal.RecipeId;
+            meal.RecipeId = mealRequest.RecipeId != null ? mealRequest.RecipeId : meal.RecipeId;
             meal.MealType = mealRequest.GetMealTypeEnum();
             meal.Notes = mealRequest.Notes;
 
