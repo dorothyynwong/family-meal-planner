@@ -28,7 +28,8 @@ public class ImageServiceTests
     public async Task UploadImageAsync_ShouldReturnImageUrl_WhenFileIsUploaded()
     {
         var fileName = "image_upload_test.jpg";
-        var imagePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\Resources", fileName);
+        // var imagePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\Resources", fileName);
+        var imagePath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Resources", fileName);
         if (!File.Exists(imagePath))
         {
             Logger.Error("Image file not found: " + imagePath);
@@ -62,7 +63,8 @@ public class ImageServiceTests
     public async Task UploadImageAsync_ShouldReturnExceptions_WhenInvalidFileIsUploaded()
     {
         var fileName = "schoolmenu.pdf";
-        var imagePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\Resources", fileName);
+        // var imagePath = Path.Combine(Directory.GetCurrentDirectory(), @"..\..\..\Resources", fileName);
+        var imagePath = Path.Combine(AppContext.BaseDirectory, "..", "..", "..", "Resources", fileName);
 
         if (!File.Exists(imagePath))
         {
