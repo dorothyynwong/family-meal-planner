@@ -1,0 +1,28 @@
+# This workflow will build a .NET project
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
+
+name: .NET
+
+on:
+  push:
+    branches: [ $default-branch ]
+  pull_request:
+    branches: [ $default-branch ]
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore backend dependencies
+      run: dotnet restore backend/backend.csproj
+    - name: Build backend
+      run:  dotnet build backend/backend.csproj --configuration Release
+    - name: Run backend tests
+      run: dotnet test backend.test/backend.test.csproj --configuration Release --no-restore --verbosity normal 
