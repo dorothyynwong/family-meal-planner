@@ -25,4 +25,4 @@ jobs:
     - name: Build backend
       run:  dotnet build backend/backend.csproj
     - name: Run backend tests
-      run: dotnet test backend.test/backend.test.csproj
+      run: dotnet test backend.Tests/backend.Tests.csproj
