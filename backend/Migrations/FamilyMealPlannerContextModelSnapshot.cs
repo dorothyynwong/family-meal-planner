@@ -156,7 +156,7 @@ namespace backend.Migrations
                     b.HasIndex("FamilyShareCode")
                         .HasDatabaseName("IX_FamilyShareCode_Ascending");
 
-                    b.ToTable("Families");
+                    b.ToTable("Families", (string)null);
                 });
 
             modelBuilder.Entity("FamilyMealPlanner.Models.FamilyUser", b =>
@@ -177,7 +177,7 @@ namespace backend.Migrations
 
                     b.HasIndex("FamilyId");
 
-                    b.ToTable("FamilyUsers");
+                    b.ToTable("FamilyUsers", (string)null);
                 });
 
             modelBuilder.Entity("FamilyMealPlanner.Models.Meal", b =>
@@ -219,7 +219,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Meals");
+                    b.ToTable("Meals", (string)null);
                 });
 
             modelBuilder.Entity("FamilyMealPlanner.Models.Recipe", b =>
@@ -260,7 +260,7 @@ namespace backend.Migrations
 
                     b.HasKey("Id");
 
-                    b.ToTable("Recipes");
+                    b.ToTable("Recipes", (string)null);
                 });
 
             modelBuilder.Entity("FamilyMealPlanner.Models.SchoolMeal", b =>
@@ -290,7 +290,7 @@ namespace backend.Migrations
 
                     b.HasIndex("SchoolMenuId");
 
-                    b.ToTable("SchoolMeals");
+                    b.ToTable("SchoolMeals", (string)null);
                 });
 
             modelBuilder.Entity("FamilyMealPlanner.Models.SchoolMenu", b =>
@@ -319,7 +319,7 @@ namespace backend.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("SchoolMenus");
+                    b.ToTable("SchoolMenus", (string)null);
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<int>", b =>

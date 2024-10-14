@@ -4,7 +4,8 @@ namespace FamilyMealPlanner.Models;
 
 public class RecipeRequest
 {
-    [Required]
+    [Required(ErrorMessage = "Name cannot be blank")]
+    [MinLength(1, ErrorMessage = "Name cannot be blank")]
     public string Name { get; set; }
     public List<string>? Images { get; set; }
     public string? Notes { get; set; }

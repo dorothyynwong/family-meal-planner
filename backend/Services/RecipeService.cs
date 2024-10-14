@@ -21,7 +21,8 @@ public class RecipeService(FamilyMealPlannerContext context) : IRecipeService
 
     public async Task<int> AddRecipe(RecipeRequest recipeRequest)
     {
-
+        if (recipeRequest.Name.Length <= 0) 
+            throw new InvalidOperationException("Name cannot be empty");
         try
         {
             Recipe recipe = new Recipe()
