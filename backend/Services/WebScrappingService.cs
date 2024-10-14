@@ -8,7 +8,6 @@ namespace FamilyMealPlanner.Services;
 
 public interface IWebScrappingService
 {
-        // Task<string> GetRecipeJson(string url);
         Task<ImportRecipeResponse> GetRecipeFromUrl([FromRoute] string url);
 }
 

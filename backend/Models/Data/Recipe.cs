@@ -6,8 +6,9 @@ public class Recipe
 {
     [Key]
     public int Id { get; set; }
-    
-    [Required]
+
+    [Required(ErrorMessage = "Name cannot be blank")]
+    [MinLength(1, ErrorMessage = "Name cannot be blank")]
     public string Name { get; set; }
 
     public string? Notes {get ; set;}
