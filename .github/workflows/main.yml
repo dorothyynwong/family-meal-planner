@@ -26,5 +26,5 @@ jobs:
       run:  dotnet build backend/backend.csproj
     - name: Run backend tests
       env:
-          API_KEY: ${{ IMGBB_API_KEY}}  
+          IMGBB_API_KEY: ${{ IMGBB_API_KEY}}  
       run: dotnet test backend.Tests/backend.Tests.csproj
