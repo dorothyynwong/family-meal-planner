@@ -23,6 +23,8 @@ jobs:
     - name: Restore backend dependencies
       run: dotnet restore backend/backend.csproj
     - name: Build backend
-      run:  dotnet build backend/backend.csproj --configuration Release
+      run:  dotnet build backend/backend.csproj
     - name: Run backend tests
-      run: dotnet test backend.test/backend.test.csproj --configuration Release --no-restore --verbosity normal 
+      env:
+          IMGBB_API_KEY: ${{ IMGBB_API_KEY}}  
+      run: dotnet test backend.Tests/backend.Tests.csproj
