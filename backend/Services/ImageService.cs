@@ -1,6 +1,6 @@
-
-using System.Text.Json;
 using NLog;
+
+namespace FamilyMealPlanner.Services;
 
 public interface IImageService
 {
