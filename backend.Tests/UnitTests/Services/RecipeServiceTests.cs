@@ -11,7 +11,7 @@ public class RecipeServiceTests
 {
     private IRecipeService _recipeService;
     private FamilyMealPlannerContext _context;
-    private DateTime _dateTime = new DateTime(2024,10,14,09,00,00);
+    private DateTime _dateTime = new DateTime(2024, 10, 14, 09, 00, 00);
 
     [SetUp]
     public void Setup()
@@ -29,7 +29,7 @@ public class RecipeServiceTests
 
     private void SeedDatabase(FamilyMealPlannerContext context)
     {
-        
+
         var initialRecipes = new List<Recipe>
         {
             new Recipe { Name = "Recipe 1", CreationDateTime = _dateTime, LastUpdatedDateTime = _dateTime },
@@ -151,6 +151,20 @@ public class RecipeServiceTests
         newRecipe.CreationDateTime.Should().Be(_dateTime);
         newRecipe.LastUpdatedDateTime.Should().BeAfter(nowDateTime);
     }
+
+    [Test]
+    public async Task DeleteRecipe()
+    {
+        int recipeId = 2;
+
+        await _recipeService.Delete(recipeId);
+
+        var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+        {
+            await _recipeService.GetRecipeById(recipeId);
+        });
+    }
+
 
     [TearDown]
     public void TearDown()
