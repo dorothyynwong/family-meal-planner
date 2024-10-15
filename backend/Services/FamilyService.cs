@@ -20,20 +20,41 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
     private readonly FamilyMealPlannerContext _context = context;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
+    private void ValidateRequest(FamilyRequest familyRequest, int userId)
+    {
+        if (userId <=0)
+        {
+            throw new ArgumentException("User Id is required");
+        }
+
+        if (familyRequest == null)
+        {
+            throw new ArgumentNullException(nameof(familyRequest), "Request cannot be null");
+        }
+
+        if (familyRequest.FamilyName == null || familyRequest.FamilyName == "");
+        {
+            throw new ArgumentException("Name is required");
+        }
+    }
+
+
     public async Task<int> AddFamilyWithUser(FamilyRequest familyRequest, int userId)
     {
+        ValidateRequest(familyRequest, userId);
+
         Guid guid;
         int counter = 5;
         Family? familyGuid = null;
         do
         {
-            guid=Guid.NewGuid();
+            guid = Guid.NewGuid();
             familyGuid = await GetFamilyByGuid(guid);
             counter--;
-        } 
+        }
         while (familyGuid != null && counter > 0);
 
-        if (counter <= 0) 
+        if (counter <= 0)
         {
             Logger.Error("Unable to generate unique Guid");
             throw new InvalidOperationException("Unable to generate unique Guid");
@@ -103,10 +124,10 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
     public async Task<List<FamilyResponse>> GetFamilyByUserId(int userId)
     {
         List<Family> families = await _context.Families
-                                                .Include(family => family.FamilyUsers)  
-                                                .Where(family => family.FamilyUsers.Any(fu => fu.UserId == userId))  
+                                                .Include(family => family.FamilyUsers)
+                                                .Where(family => family.FamilyUsers.Any(fu => fu.UserId == userId))
                                                 .ToListAsync();
-                                                
+
         if (families == null || families.Count == 0)
         {
             Logger.Error($"No families for {userId}");
@@ -114,7 +135,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
         }
 
         List<FamilyResponse> familyResponses = new List<FamilyResponse>();
-        foreach(Family family in families)
+        foreach (Family family in families)
         {
             FamilyResponse familyResponse = new FamilyResponse
             {
