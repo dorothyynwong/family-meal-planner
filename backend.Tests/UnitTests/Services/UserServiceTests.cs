@@ -12,6 +12,7 @@ using FamilyMealPlanner.Services;
 using FamilyMealPlanner;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Models;
+using FamilyMealPlanner.Enums;
 
 [TestFixture]
 public class UserServiceTests
@@ -57,27 +58,59 @@ public class UserServiceTests
     {
         var user1 = new User { Email = "user1@abc.com", UserName = "user1@abc.com", Nickname = "user1" };
         var user2 = new User { Email = "user2@abc.com", UserName = "user2@abc.com", Nickname = "user2" };
+        var user3 = new User { Email = "user3@abc.com", UserName = "user3@abc.com", Nickname = "user3" };
         var password = "Pa$$word1";
 
         await _userManager.CreateAsync(user1, password);
         await _userManager.CreateAsync(user2, password);
-    }
+        await _userManager.CreateAsync(user3, password);
 
-    [TearDown]
-    public void TearDown()
-    {
-        _context?.Dispose();
-        _userManager.Dispose();
-        _roleManager.Dispose();
+        var initialFamilies = new List<Family>
+        {
+            new Family { FamilyName = "Family 1"},
+            new Family { FamilyName = "Family 2"},
+        };
+
+        if (!context.Families.Any())
+        {
+            context.Families.AddRange(initialFamilies);
+            context.SaveChanges();
+        }
+        var initialFamilyUsers = new List<FamilyUser>
+        {
+            new FamilyUser { UserId = 1, FamilyId = 1, FamilyRole = FamilyRoleType.Cook },
+            new FamilyUser { UserId = 2, FamilyId = 1, FamilyRole = FamilyRoleType.Eater },
+        };
+
+        if (!context.FamilyUsers.Any())
+        {
+            context.FamilyUsers.AddRange(initialFamilyUsers);
+            context.SaveChanges();
+        }
     }
 
     [Test]
     public async Task GetUserById_Return_User()
     {
-        var user = await _userService.GetUserById(1);
-        user.Id.Should().Be(1);
-        user.Email.Should().Be("user1@abc.com");
-        user.Nickname.Should().Be("user1");
+        var user = await _userService.GetUserById(2);
+        user.Id.Should().Be(2);
+        user.Email.Should().Be("user2@abc.com");
+        user.Nickname.Should().Be("user2");
+    }
+
+    [Test]
+    public async Task GetUserByFamilyId_Return_UserResponses()
+    {
+        var users = await _userService.GetUserByFamilyId(1);
+        users.Count.Should().Be(2);
+        var user1 = users[0];
+        var user2 = users[1];
+        user1.Id.Should().Be(1);
+        user2.Id.Should().Be(2);
+        user1.Email.Should().Be("user1@abc.com");
+        user2.Email.Should().Be("user2@abc.com");
+        user1.Nickname.Should().Be("user1");
+        user2.Nickname.Should().Be("user2");
     }
 
     [Test]
@@ -87,10 +120,10 @@ public class UserServiceTests
 
         UserUpdateRequest user = new UserUpdateRequest();
         user.Nickname = "user1_updated";
-        
+
         await _userService.UpdateUser(user, userId);
 
-        var newUser= await _userService.GetUserById(userId);
+        var newUser = await _userService.GetUserById(userId);
 
         newUser.Id.Should().Be(userId);
         newUser.Nickname.Should().Be("user1_updated");
@@ -99,9 +132,9 @@ public class UserServiceTests
     }
 
     [Test]
-    public async Task DeleteMeal()
+    public async Task DeleteUser()
     {
-        int userId = 2;
+        int userId = 3;
 
         await _userService.DeleteUser(userId);
 
@@ -109,5 +142,13 @@ public class UserServiceTests
         {
             await _userService.GetUserById(userId);
         });
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        _context?.Dispose();
+        _userManager.Dispose();
+        _roleManager.Dispose();
     }
 }

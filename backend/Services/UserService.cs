@@ -40,7 +40,7 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
         if (users== null || users.Count == 0)
         {
             Logger.Error($"No users for family {familyId}");
-            throw new InvalidOperationException($"No recipes for family {familyId}");
+            throw new InvalidOperationException($"No users for family {familyId}");
         }
 
         List<UserResponse> userResponses = new();
