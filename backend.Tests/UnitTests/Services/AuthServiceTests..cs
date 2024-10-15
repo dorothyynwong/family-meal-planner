@@ -1,8 +1,11 @@
 using FamilyMealPlanner;
 using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
+using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
 using FluentAssertions;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
@@ -10,24 +13,66 @@ using Moq;
 [TestFixture]
 public class AuthServiceTests
 {
-    // private IMealService _mealService;
-    // private FamilyMealPlannerContext _context;
-    // private DateTime _dateTime = new DateTime(2024, 10, 14, 09, 00, 00);
-    // private int _defaultUserId = 1;
+    private Mock<HttpContext> _mockHttpContext;
+    private Mock<IResponseCookies> _mockCookies;
+    private Mock<IConfiguration> _mockConfiguration;
+    private Mock<UserManager<User>> _mockUserManager;
+    private AuthenticationService _authService; 
 
-    // [SetUp]
-    // public void Setup()
-    // {
-    //     var options = new DbContextOptionsBuilder<FamilyMealPlannerContext>()
-    //         .UseInMemoryDatabase(databaseName: "TestDatabase")
-    //         .Options;
+    [SetUp]
+    public void SetUp()
+    {
+        _mockHttpContext = new Mock<HttpContext>();
+        _mockCookies = new Mock<IResponseCookies>();
+        _mockHttpContext.Setup(c => c.Response.Cookies).Returns(_mockCookies.Object);
+        _mockConfiguration = new Mock<IConfiguration>();
+        _mockConfiguration.SetupGet(x => x["Jwt:AccessTokenExpiryMinutes"]).Returns("15");
+        _mockConfiguration.SetupGet(x => x["Jwt:RefreshTokenExpiryDays"]).Returns("7");
+        _mockConfiguration.SetupGet(x => x["Jwt:Issuer"]).Returns("FamilyMealPlannerTest");
+        _mockConfiguration.SetupGet(x => x["Jwt:Audience"]).Returns("audience");
+        _mockConfiguration.SetupGet(x => x["Jwt:RefreshTokenName"]).Returns("TokenName");
+        _mockUserManager = new Mock<UserManager<User>>(
+            new Mock<IUserStore<User>>().Object, 
+            null, null, null, null, null, null, null, null
+        );
 
-    //     _context = new FamilyMealPlannerContext(options);
+        _authService = new AuthenticationService(_mockConfiguration.Object, _mockUserManager.Object);
+    }
 
-    //     _mealService = new MealService(_context);
+    [Test]
+    public void SetTokensInsideCookie_ShouldSetCookiesCorrectly()
+    {
+        var accessToken = "testAccessToken";
+        var refreshToken = "testRefreshToken";
+        var email = "test@example.com";
 
-    //     SeedDatabase(_context);
-    // }
+        _authService.SetTokensInsideCookie(accessToken, refreshToken, email, _mockHttpContext.Object);
+
+        _mockCookies.Verify(c => c.Append("accessToken", accessToken, It.Is<CookieOptions>(o => 
+            o.HttpOnly && o.IsEssential && o.Secure && o.SameSite == SameSiteMode.None)), Times.Once);
+
+        _mockCookies.Verify(c => c.Append("refreshToken", refreshToken, It.Is<CookieOptions>(o => 
+            o.HttpOnly && o.IsEssential && o.Secure && o.SameSite == SameSiteMode.None)), Times.Once);
+
+        _mockCookies.Verify(c => c.Append("email", email, It.Is<CookieOptions>(o => 
+            o.HttpOnly && o.SameSite == SameSiteMode.Strict)), Times.Once);
+    }
+
+    [Test]
+    public void RemoveTokensFromCookie_ShouldRemoveCookiesCorrectly()
+    {
+        _authService.RemoveTokensFromCookie(_mockHttpContext.Object);
+
+    
+        _mockCookies.Verify(c => c.Append("accessToken", "", It.Is<CookieOptions>(o => 
+            o.Expires <= DateTimeOffset.UtcNow)), Times.Once);
+
+        _mockCookies.Verify(c => c.Append("refreshToken", "", It.Is<CookieOptions>(o => 
+            o.Expires <= DateTimeOffset.UtcNow)), Times.Once);
+
+        _mockCookies.Verify(c => c.Append("email", "", It.Is<CookieOptions>(o => 
+            o.Expires <= DateTimeOffset.UtcNow)), Times.Once);
+    }
 
     // private void SeedDatabase(FamilyMealPlannerContext context)
     // {
