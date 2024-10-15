@@ -33,20 +33,21 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
 
     public async Task<List<UserResponse>> GetUserByFamilyId(int familyId)
     {
-        List<User> users= await _context.Users
+        List<User> users = await _context.Users
                                                 .Include(user => user.FamilyUsers)
-                                                .Where(user => user.FamilyUsers.Any(fu => fu.FamilyId == familyId))  
+                                                .Where(user => user.FamilyUsers.Any(fu => fu.FamilyId == familyId))
                                                 .ToListAsync();
-        if (users== null || users.Count == 0)
+        if (users == null || users.Count == 0)
         {
             Logger.Error($"No users for family {familyId}");
             throw new InvalidOperationException($"No users for family {familyId}");
         }
 
         List<UserResponse> userResponses = new();
-        foreach(User user in users)
+        foreach (User user in users)
         {
-            UserResponse userResponse = new UserResponse() {
+            UserResponse userResponse = new UserResponse()
+            {
                 Id = user.Id,
                 Email = user.Email,
                 Nickname = user.Nickname,
@@ -61,8 +62,7 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
     {
         try
         {
-            User user= await GetUserById(userId);
-
+            User user = await GetUserById(userId);
             user.Id = userId;
             user.Nickname = userRequest.Nickname;
 

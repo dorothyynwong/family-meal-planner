@@ -132,6 +132,20 @@ public class UserServiceTests
     }
 
     [Test]
+    public void UpdateNonExistUser()
+    {
+        int userId = 100;
+
+        UserUpdateRequest user = new UserUpdateRequest();
+        user.Nickname = "user1_updated";
+
+        var exception = Assert.ThrowsAsync<Exception>(async () =>
+        {
+            await _userService.UpdateUser(user, userId);
+        });
+    }
+
+    [Test]
     public async Task DeleteUser()
     {
         int userId = 3;
@@ -141,6 +155,17 @@ public class UserServiceTests
         var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
         {
             await _userService.GetUserById(userId);
+        });
+    }
+
+    [Test]
+    public void DeleteNonExistUser()
+    {
+        int userId = 100;
+
+        var exception = Assert.ThrowsAsync<Exception>(async () =>
+        {
+            await _userService.DeleteUser(userId);
         });
     }
 
