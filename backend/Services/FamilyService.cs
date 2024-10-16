@@ -32,7 +32,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
             throw new ArgumentNullException(nameof(familyRequest), "Request cannot be null");
         }
 
-        if (familyRequest.FamilyName == null || familyRequest.FamilyName == "");
+        if (familyRequest.FamilyName == null || familyRequest.FamilyName == "")
         {
             throw new ArgumentException("Name is required");
         }
@@ -141,6 +141,7 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
             {
                 FamilyId = family.Id,
                 FamilyName = family.FamilyName,
+                FamilyShareCode = family.FamilyShareCode
             };
             familyResponses.Add(familyResponse);
 

@@ -200,7 +200,7 @@ public class MealServiceTests
     }
 
     [Test]
-    public void DeleteNonExistRecipe()
+    public void DeleteNonExistMeal()
     {
         int mealId = 100;
 
