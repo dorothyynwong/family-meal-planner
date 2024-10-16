@@ -2,28 +2,26 @@ import { useEffect, useState } from "react";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import { getMealByDateUserId } from "../../Api/api";
 import MealCard from "../MealCard/MealCard";
+import StatusHandler from "../StatusHandler/StatusHandler";
 
 interface MealDailyProps {
     mealDate: Date;
+    familyId: number;
     userId: number;
 }
 
-const MealDaily: React.FC<MealDailyProps> = ({ mealDate, userId }) => {
+const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-    const [meals, setMeals] = useState<MealDetailsInterface[]>();
-    const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealsOfDate, setMealsOfDate] = useState<MealDetailsInterface[]>();
-    const [currentUserId, setCurrentUserId] = useState(userId);
 
 
     useEffect(() => {
         setStatus("loading");
-        setMeals([]);
         setErrorMessages([]);
 
-        getMealByDateUserId(mealDate.toDateString(), mealDate.toDateString(), currentUserId)
+        getMealByDateUserId(mealDate.toDateString(), mealDate.toDateString(), familyId, userId)
             .then(meals => {
                 setMealsOfDate(meals.data);
                 setStatus("success");
@@ -35,23 +33,18 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, userId }) => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
     }
-        , [mealDate, currentUserId])
+        , [mealDate, userId])
 
-    // useEffect(() => {
-    //     if (meals) {
-    //         setMealsOfDate([]);
-    //         const selectedDateLocal = selectedDate.toLocaleDateString();
-    //         setMealsOfDate(
-    //             meals.filter((meal) => {
-    //                 const mealDateLocal = new Date(meal.date).toLocaleDateString();
-    //                 return mealDateLocal === selectedDateLocal;
-    //             })
-    //         );
-    //     }
-
-    // }, [selectedDate, meals])
     return (
         <>
+            <StatusHandler
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Loading Meals.."
+                successMessage=""
+            >
+                <></>
+            </StatusHandler>
             {
                 mealsOfDate &&
                 mealsOfDate.map((meal, index) => (

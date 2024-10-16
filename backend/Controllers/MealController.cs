@@ -13,9 +13,10 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/meals")]
-public class MealController(IMealService mealService) : Controller
+public class MealController(IMealService mealService, IFamilyUserService familyUserService) : Controller
 {
     private readonly IMealService _mealService = mealService;
+    private readonly IFamilyUserService _familyUserService = familyUserService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpPost("")]
@@ -39,16 +40,19 @@ public class MealController(IMealService mealService) : Controller
     }
 
     [HttpGet]
-    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate, int userIdInput)
+    public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate, int familyId, int userId)
     {
-        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int requestUserId))
             return Unauthorized();
-        
-        userId = userIdInput > 0 ? userIdInput : userId;
 
+        if (userId != requestUserId && !await _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId))
+        {
+           return Unauthorized();
+        }
+            
         try
         {
-            List<MealResponse> meals = await _mealService.GetMealByDateUserId(fromDate, toDate, userId);
+            List<MealResponse> meals = await _mealService.GetMealByDateUserId(fromDate, toDate, familyId, userId, requestUserId);
             return Ok(meals);
         }
         catch (ArgumentNullException ex)

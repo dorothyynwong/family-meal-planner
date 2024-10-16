@@ -16,6 +16,7 @@ public interface IFamilyUserService
     Task ApproveFamilyUser(int familyId, int userId);
     Task UpdateFamilyUserRole(FamilyRoleUpdateRequest familyRoleUpdateRequest);
     Task DeleteFamilyUser(int familyId, int userId);
+    Task<bool> IsRequestUserAuthorised(int familyId, int userId, int requestUserId);
 }
 
 public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService familyService) : IFamilyUserService
@@ -242,6 +243,11 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         }
     }
 
+    public async Task<bool> IsRequestUserAuthorised(int familyId, int userId, int requestUserId)
+    {
+        FamilyUser requestFamilyUser = await GetFamilyUser(familyId, requestUserId);
+        return requestFamilyUser.FamilyRole == FamilyRoleType.Cook;
+    }
 }
 
 

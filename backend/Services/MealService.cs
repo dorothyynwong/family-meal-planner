@@ -9,15 +9,16 @@ namespace FamilyMealPlanner.Services;
 public interface IMealService
 {
     Task<int> AddMeal(MealRequest mealRequest, int userId);
-    Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId);
+    Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId);
     Task UpdateMeal(MealRequest mealRequest, int mealId, int userId);
     Task Delete(int mealId, int userId);
     Task<Meal> GetMealById(int mealId);
 }
 
-public class MealService(FamilyMealPlannerContext context) : IMealService
+public class MealService(FamilyMealPlannerContext context, IFamilyUserService familyUserService) : IMealService
 {
     private readonly FamilyMealPlannerContext _context = context;
+    private readonly IFamilyUserService _familyUserService = familyUserService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private void ValidateRequest(MealRequest mealRequest)
@@ -69,8 +70,13 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     }
 
-    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId)
+    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId)
     {
+        if (requestUserId != userId)
+        {
+            _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId);
+        }
+            
         try
         {
             List<Meal> meals = await _context.Meals

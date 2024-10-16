@@ -19,6 +19,10 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
         setValue(newValue);
     };
 
+    const familiesAsCook = data.filter(fu => fu.familyRole === "Cook");
+
+    if (familiesAsCook.length <= 0) return (<>No families meal plans to manage</>);
+
     return (
         <Box sx={{ maxWidth: { xs: 320, sm: 480 }, bgcolor: 'background.paper' }}>
             <Tabs
@@ -28,30 +32,19 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
                 scrollButtons="auto"
                 aria-label="families-meals-tabs"
             >
-                {data.map((fu, index) => (
+                {familiesAsCook.map((fu, index) => (
                     <Tab
                         key={index} 
                         label={fu.familyName}
-                        // key={index}
-                        // data={fu}
-                        // familyId={fu.familyId}
-                        // userId={fu.userId}
-                        // roles={familyRoles}
                     />
                 ))}
             </Tabs>
-            {data.map((fu, index) => (
+            {familiesAsCook.map((fu, index) => (
                     <FamilyTabPanel 
                         key={index}
                         value={value}
                         index={index}
-                        // key={index}
-                        // data={fu}
-                        // familyId={fu.familyId}
-                        // userId={fu.userId}
-                        // roles={familyRoles}
                     >
-                    {fu.familyShareCode}
                     {fu.familyUsers.map(
                         (user, index) => (
                             <UserMealsCard key={index} mealDate={new Date()} data={user} />

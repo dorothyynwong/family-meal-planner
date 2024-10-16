@@ -11,6 +11,7 @@ using Moq;
 public class MealServiceTests
 {
     private IMealService _mealService;
+    private IFamilyUserService _familyUserService;
     private FamilyMealPlannerContext _context;
     private DateTime _dateTime = new DateTime(2024, 10, 14, 09, 00, 00);
     private int _defaultUserId = 1;
@@ -24,7 +25,7 @@ public class MealServiceTests
 
         _context = new FamilyMealPlannerContext(options);
 
-        _mealService = new MealService(_context);
+        _mealService = new MealService(_context, _familyUserService);
 
         SeedDatabase(_context);
     }
