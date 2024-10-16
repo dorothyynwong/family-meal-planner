@@ -24,7 +24,6 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, userId }) => {
         getMealByDateUserId(mealDate.toDateString(), mealDate.toDateString())
             .then(meals => {
                 setMeals(meals.data);
-                console.log(meals);
                 setStatus("success");
             })
             .catch(error => {

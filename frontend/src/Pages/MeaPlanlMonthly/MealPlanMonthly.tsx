@@ -22,6 +22,8 @@ const MealPlanMonthly: React.FC = () => {
     const { modalShow, setModalShow, setMode } = useMeal();
     const [convertedEvents, setConvertedEvents] = useState<EventInterface[]>([]);
 
+    const userId = 1;
+
     const handleClick = () => {
         setMode("Add");
         setModalShow(true);

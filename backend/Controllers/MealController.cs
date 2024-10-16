@@ -5,6 +5,7 @@ using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
 using NLog;
 
 namespace FamilyMealPlanner.Controllers;
@@ -40,8 +41,16 @@ public class MealController(IMealService mealService) : Controller
     [HttpGet]
     public async Task<IActionResult> GetByDateUserId([FromQuery] DateOnly fromDate, DateOnly toDate)
     {
+        // Logger.Debug(userIdStr);
+
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
+        
+        // if (userIdStr.IsNullOrEmpty())
+        // {
+        //     if(!int.TryParse(userIdStr, out userId))
+        //         return BadRequest("Invalid user Id");
+        // }
 
         try
         {
