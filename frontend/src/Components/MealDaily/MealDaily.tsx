@@ -15,15 +15,17 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, userId }) => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealsOfDate, setMealsOfDate] = useState<MealDetailsInterface[]>();
+    const [currentUserId, setCurrentUserId] = useState(userId);
+
 
     useEffect(() => {
         setStatus("loading");
         setMeals([]);
         setErrorMessages([]);
 
-        getMealByDateUserId(mealDate.toDateString(), mealDate.toDateString())
+        getMealByDateUserId(mealDate.toDateString(), mealDate.toDateString(), currentUserId)
             .then(meals => {
-                setMeals(meals.data);
+                setMealsOfDate(meals.data);
                 setStatus("success");
             })
             .catch(error => {
@@ -33,21 +35,21 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, userId }) => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
     }
-        , [mealDate])
+        , [mealDate, currentUserId])
 
-    useEffect(() => {
-        if (meals) {
-            setMealsOfDate([]);
-            const selectedDateLocal = selectedDate.toLocaleDateString();
-            setMealsOfDate(
-                meals.filter((meal) => {
-                    const mealDateLocal = new Date(meal.date).toLocaleDateString();
-                    return mealDateLocal === selectedDateLocal;
-                })
-            );
-        }
+    // useEffect(() => {
+    //     if (meals) {
+    //         setMealsOfDate([]);
+    //         const selectedDateLocal = selectedDate.toLocaleDateString();
+    //         setMealsOfDate(
+    //             meals.filter((meal) => {
+    //                 const mealDateLocal = new Date(meal.date).toLocaleDateString();
+    //                 return mealDateLocal === selectedDateLocal;
+    //             })
+    //         );
+    //     }
 
-    }, [selectedDate, meals])
+    // }, [selectedDate, meals])
     return (
         <>
             {

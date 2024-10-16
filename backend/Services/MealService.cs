@@ -71,41 +71,47 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId)
     {
-        List<Meal> meals = await _context.Meals
-                                                .Include(meal => meal.Recipe)
-                                                .Where(meal => meal.Date >= fromDate &&
-                                                        meal.Date <= toDate &&
-                                                        meal.UserId == userId)
-                                                .ToListAsync();
-        List<MealResponse> mealResponses = new();
-
-        Logger.Debug(meals[0].Recipe.DefaultImageUrl);
-
-        foreach (Meal meal in meals)
+        try
         {
-            MealResponse mealResponse = new MealResponse
+            List<Meal> meals = await _context.Meals
+                                                    .Include(meal => meal.Recipe)
+                                                    .Where(meal => meal.Date >= fromDate &&
+                                                            meal.Date <= toDate &&
+                                                            meal.UserId == userId)
+                                                    .ToListAsync();
+            List<MealResponse> mealResponses = new();
+
+            foreach (Meal meal in meals)
             {
-                Id = meal.Id,
-                Date = meal.Date,
-                RecipeId = meal.RecipeId,
-                RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
-                RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
-                UserId = meal.UserId,
-                FamilyId = meal.FamilyId,
-                MealType = meal.MealType.ToString(),
-                AddedByUserId = meal.AddedByUserId,
-                Notes = meal.Notes,
-            };
-            mealResponses.Add(mealResponse);
-        }
+                MealResponse mealResponse = new MealResponse
+                {
+                    Id = meal.Id,
+                    Date = meal.Date,
+                    RecipeId = meal.RecipeId,
+                    RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
+                    RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
+                    UserId = meal.UserId,
+                    FamilyId = meal.FamilyId,
+                    MealType = meal.MealType.ToString(),
+                    AddedByUserId = meal.AddedByUserId,
+                    Notes = meal.Notes,
+                };
+                mealResponses.Add(mealResponse);
+            }
 
-        if (meals == null || meals.Count == 0)
+            if (meals == null || meals.Count == 0)
+            {
+                Logger.Error($"No meals between {fromDate} to {toDate} for user {userId}");
+                throw new ArgumentNullException($"No meals between {fromDate} to {toDate} for user {userId}");
+            }
+
+            return mealResponses;
+        }
+        catch (Exception ex)
         {
-            Logger.Error($"No meals between {fromDate} to {toDate} for user {userId}");
-            throw new InvalidOperationException($"No meals between {fromDate} to {toDate} for user {userId}");
+            Logger.Error($"Error while getting meals from database from {fromDate} to {toDate} for user {userId}, {ex}");
+            throw new Exception($"Error while getting meals from database");
         }
-
-        return mealResponses;
     }
 
     public async Task<Meal> GetMealById(int mealId)

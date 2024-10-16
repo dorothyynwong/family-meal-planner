@@ -67,7 +67,7 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
                     </ExpandMore>
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
-                    <CardContent>
+                    <CardContent> 
                         <MealDaily mealDate={mealDate} userId={data.userId}/>
                     </CardContent>
                 </Collapse>
