@@ -29,7 +29,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
         if (mealRequest.Date == default || string.IsNullOrEmpty(mealRequest.MealType) || mealRequest.AddedByUserId <= 0)
         {
-            throw new ArgumentException("Name is required");
+            throw new ArgumentException($"Meal Date , Meal Type and AddedByUserId are required, {mealRequest.Date}, {mealRequest.MealType}, {mealRequest.AddedByUserId} are given");
         }
     }
 

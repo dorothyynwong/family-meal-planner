@@ -25,6 +25,7 @@ public class MealController(IMealService mealService) : Controller
 
         try
         {
+            meal.AddedByUserId = userId;
             int mealId = await _mealService.AddMeal(meal, userId);
             return Ok(mealId);
         }

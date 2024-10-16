@@ -5,6 +5,7 @@ import Box from '@mui/material/Box';
 import { SyntheticEvent, useState } from 'react';
 import FamilyTabPanel from '../FamilyTabPanel/FamilyTabPanel';
 import { FamilyWithUsersInterface } from '../../Api/apiInterface';
+import MealDaily from '../MealDaily/MealDaily';
 
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
@@ -27,7 +28,9 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
                 aria-label="families-meals-tabs"
             >
                 {data.map((fu, index) => (
-                    <Tab label={fu.familyName}
+                    <Tab
+                        key={index} 
+                        label={fu.familyName}
                         // key={index}
                         // data={fu}
                         // familyId={fu.familyId}
@@ -38,6 +41,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
             </Tabs>
             {data.map((fu, index) => (
                     <FamilyTabPanel 
+                        key={index}
                         value={value}
                         index={index}
                         // key={index}
@@ -47,6 +51,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
                         // roles={familyRoles}
                     >
                     {fu.familyShareCode}
+                    <MealDaily mealDate={new Date()} userId={fu.userId}/>
                     </FamilyTabPanel>
                 ))}
         </Box>
