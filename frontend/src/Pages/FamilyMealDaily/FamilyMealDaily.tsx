@@ -3,12 +3,19 @@ import { FamilyWithUsersInterface } from "../../Api/apiInterface";
 import { getFamiliesWithUsersByUserId, getFamilyRoleTypes } from "../../Api/api";
 import FamilyTabs from "../../Components/FamilyTabs/FamilyTabs";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
+import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
+import dayjs, { Dayjs } from 'dayjs';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import 'dayjs/locale/en-gb';
 
 const FamilyMealDaily: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
+    const [selectedDate, setSelectedDate] = useState<Dayjs | null>(dayjs());
+    // const browserLocale = navigator.language;
+    // console.log(browserLocale);
 
     useEffect(() => {
         setStatus("loading");
@@ -31,7 +38,7 @@ const FamilyMealDaily: React.FC = () => {
             });
     }, []);
     return (
-        <>
+        <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale='en-gb'>
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
@@ -40,6 +47,9 @@ const FamilyMealDaily: React.FC = () => {
             >
                 <></>
             </StatusHandler>
+            <DatePicker 
+                value={selectedDate}
+                onChange={(newValue) => setSelectedDate(newValue)} />
             <FamilyTabs data={familyUsersList} />
             {/* {familyUsersList.map((fu, index) => (
                 <FamilyTabs
@@ -50,7 +60,7 @@ const FamilyMealDaily: React.FC = () => {
                     roles={familyRoles}
                 />
             ))} */}
-        </>
+        </LocalizationProvider>
     );
 }
 

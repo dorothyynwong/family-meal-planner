@@ -13,7 +13,6 @@ interface MealDailyProps {
 const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
-
     const [mealsOfDate, setMealsOfDate] = useState<MealDetailsInterface[]>();
 
 
