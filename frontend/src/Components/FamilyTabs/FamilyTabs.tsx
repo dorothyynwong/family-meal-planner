@@ -18,23 +18,27 @@ interface FamilyTabsProps {
 const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     const familiesAsCook = data.filter(fu => fu.familyRole === "Cook");
     const [value, setValue] = useState<number>(familiesAsCook[0]?.familyId);
-
+    
     const {
-        selectedFamilyId,
-        setSelectedFamilyId,
+        selectedFamily,
+        setSelectedFamily,
     } = useMeal();
 
     useEffect(() => {
-        if (familiesAsCook.length > 0 && !value) {
-            setValue(familiesAsCook[0].familyId);
-            setSelectedFamilyId(familiesAsCook[0].familyId);
-        }
-    }, [familiesAsCook, value, setSelectedFamilyId]);
-    
+        setSelectedFamily(familiesAsCook[0]);
+    }, []);
+
+    // useEffect(() => {
+    //     if (familiesAsCook.length > 0 && !value) {
+    //         setValue(familiesAsCook[0].familyId);
+    //         setSelectedFamily(familiesAsCook[0]);
+    //     }
+    // }, [familiesAsCook, value, selectedFamily]);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
+        const family = familiesAsCook.find(fu => fu.familyId === newValue);
         setValue(newValue);
-        setSelectedFamilyId(newValue);
+        setSelectedFamily(family!);
     };
 
     if (familiesAsCook.length <= 0) return (<>No families meal plans to manage</>);

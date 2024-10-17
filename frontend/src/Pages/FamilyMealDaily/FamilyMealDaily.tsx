@@ -55,7 +55,7 @@ const FamilyMealDaily: React.FC = () => {
                 <div>No families available</div>
             )}
             <FamilyMealsBottomBar/>
-            <MealForm isFromFamily={true}/>
+            <MealForm isForFamily={true}/>
         </>
     );
 }

@@ -10,10 +10,10 @@ import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
 
 interface MealFormProps {
-    isFromFamily?: boolean
+    isForFamily?: boolean
 }
 
-const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
+const MealForm: React.FC<MealFormProps> = ({isForFamily}) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
@@ -31,8 +31,8 @@ const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
             modalShow, 
             setModalShow, 
             resetMealContext, 
-            selectedFamilyId,
-            setSelectedFamilyId,
+            selectedFamily,
+            setSelectedFamily,
             } = useMeal();
 
     const navigate = useNavigate();
@@ -175,7 +175,7 @@ const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
                         readOnly
                     />
                 </InputGroup>
-{selectedFamilyId}
+{selectedFamily?.familyId}
                 <Form.Control
                     type="date"
                     className="mt-3 meal-date"
