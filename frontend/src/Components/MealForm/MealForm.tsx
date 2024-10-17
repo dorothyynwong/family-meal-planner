@@ -31,8 +31,8 @@ const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
             modalShow, 
             setModalShow, 
             resetMealContext, 
-            familyId,
-            setFamilyId,
+            selectedFamilyId,
+            setSelectedFamilyId,
             } = useMeal();
 
     const navigate = useNavigate();
@@ -175,7 +175,7 @@ const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
                         readOnly
                     />
                 </InputGroup>
-
+{selectedFamilyId}
                 <Form.Control
                     type="date"
                     className="mt-3 meal-date"

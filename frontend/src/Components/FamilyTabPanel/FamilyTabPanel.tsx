@@ -1,5 +1,5 @@
 import { Box } from "@mui/material";
-import { FamilyWithUsersInterface } from "../../Api/apiInterface";
+import { FamilyUserInterface, FamilyWithUsersInterface } from "../../Api/apiInterface";
 
 interface FamilyTabPanelProps {
     children?: React.ReactNode;
