@@ -7,12 +7,14 @@ import FamilyTabPanel from '../FamilyTabPanel/FamilyTabPanel';
 import { FamilyUserInterface, FamilyWithUsersInterface } from '../../Api/apiInterface';
 import MealDaily from '../MealDaily/MealDaily';
 import UserMealsCard from '../UserMealsCard/UserMealsCard';
+import dayjs, { Dayjs } from 'dayjs';
 
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
+    selectedDate: Dayjs;
 }
 
-const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
+const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     const [value, setValue] = useState(0);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
@@ -47,7 +49,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data }) => {
                     >
                     {fu.familyUsers.map(
                         (user, index) => (
-                            <UserMealsCard key={index} mealDate={new Date()} data={user} />
+                            <UserMealsCard key={index} mealDate={selectedDate.toDate()} data={user} />
                         )
                     )}
                     

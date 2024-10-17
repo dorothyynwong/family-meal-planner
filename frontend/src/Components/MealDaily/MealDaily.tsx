@@ -26,6 +26,7 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId }) => 
                 setStatus("success");
             })
             .catch(error => {
+                setMealsOfDate([]);
                 console.log("Error getting meals", error);
                 const errorMessage = error?.response?.data?.message || "Error getting meals";
                 setStatus("error");
@@ -33,6 +34,8 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId }) => 
             });
     }
         , [mealDate, userId])
+
+    if (!mealsOfDate || mealsOfDate.length <= 0) return (<>No meals found</>);
 
     return (
         <>

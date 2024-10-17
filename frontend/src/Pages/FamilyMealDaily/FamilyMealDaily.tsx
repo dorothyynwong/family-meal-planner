@@ -3,8 +3,8 @@ import { FamilyWithUsersInterface } from "../../Api/apiInterface";
 import { getFamiliesWithUsersByUserId, getFamilyRoleTypes } from "../../Api/api";
 import FamilyTabs from "../../Components/FamilyTabs/FamilyTabs";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
-import DateSelectionBar from "../../Components/DateBar/DateBar";
 import DateBar from "../../Components/DateBar/DateBar";
+import dayjs, { Dayjs } from 'dayjs';
 
 
 const FamilyMealDaily: React.FC = () => {
@@ -12,6 +12,7 @@ const FamilyMealDaily: React.FC = () => {
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
+    const [selectedDate, setSelectedDate] = useState(dayjs());
     
     useEffect(() => {
         setStatus("loading");
@@ -43,17 +44,8 @@ const FamilyMealDaily: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-            <DateBar />
-            <FamilyTabs data={familyUsersList} />
-            {/* {familyUsersList.map((fu, index) => (
-                <FamilyTabs
-                    key={index}
-                    data={fu}
-                    familyId={fu.familyId}
-                    userId={fu.userId}
-                    roles={familyRoles}
-                />
-            ))} */}
+            <DateBar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
+            <FamilyTabs data={familyUsersList} selectedDate={selectedDate}/>
         </>
     );
 }

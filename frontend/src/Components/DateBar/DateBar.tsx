@@ -7,17 +7,20 @@ import { AppBar, Box, IconButton, TextField, Toolbar, Typography } from "@mui/ma
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
-const DateBar: React.FC = () => {
-    const [selectedDate, setSelectedDate] = useState(dayjs());
+interface DateBarProps {
+    selectedDate: Dayjs,
+    setSelectedDate: (newDate: Dayjs) => void;
+}
 
+const DateBar: React.FC<DateBarProps> = ({selectedDate, setSelectedDate}) => {
     const [open, setOpen] = useState(false);
 
     const handlePreviousDate = () => {
-        setSelectedDate((prevDate) => prevDate.subtract(1, 'day'));
+        setSelectedDate(selectedDate.subtract(1, 'day'));
     };
 
     const handleNextDate = () => {
-        setSelectedDate((prevDate) => prevDate.add(1, 'day'));
+        setSelectedDate(selectedDate.add(1, 'day'));
     };
 
     const handleOpenDatePicker = () => {
