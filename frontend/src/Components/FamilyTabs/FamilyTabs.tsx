@@ -16,9 +16,13 @@ interface FamilyTabsProps {
 
 const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     const [value, setValue] = useState(0);
+    const [selectedFamilyId, setSelectedFamilyId] = useState(0);
+    const [usersInSelectedFamily, setUsersInSelectedFamily] = useState<FamilyWithUsersInterface>();
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         setValue(newValue);
+        setSelectedFamilyId(newValue);
+        console.log(newValue);
     };
 
     const familiesAsCook = data.filter(fu => fu.familyRole === "Cook");
@@ -38,6 +42,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
                     <Tab
                         key={index} 
                         label={fu.familyName}
+                        value={fu.familyId}
                     />
                 ))}
             </Tabs>

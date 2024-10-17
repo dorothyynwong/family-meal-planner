@@ -21,8 +21,6 @@ interface MealContextProps {
     resetMealContext: () => void;
     familyId: number;
     setFamilyId: (newFamilyId: number) => void;
-    addedByUserId: number;
-    setAddedByUserId: (newUserId: number) => void;
 }
 
 const MealContext = createContext<MealContextProps | undefined>(undefined);
@@ -67,8 +65,6 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                         resetMealContext, 
                                         familyId,
                                         setFamilyId,
-                                        addedByUserId,
-                                        setAddedByUserId
                                         }}>
             {children}
         </MealContext.Provider>

@@ -33,8 +33,6 @@ const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
             resetMealContext, 
             familyId,
             setFamilyId,
-            addedByUserId,
-            setAddedByUserId
             } = useMeal();
 
     const navigate = useNavigate();
