@@ -19,6 +19,10 @@ interface MealContextProps {
     modalShow: boolean;
     setModalShow: (newModalShow: boolean) => void;
     resetMealContext: () => void;
+    familyId: number;
+    setFamilyId: (newFamilyId: number) => void;
+    addedByUserId: number;
+    setAddedByUserId: (newUserId: number) => void;
 }
 
 const MealContext = createContext<MealContextProps | undefined>(undefined);
@@ -32,6 +36,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mealDate, setMealDate] = useState(new Date().toISOString().split('T')[0]);
     const [mealNotes, setMealNotes] = useState("");
     const [modalShow, setModalShow] = useState(false);
+    const [familyId, setFamilyId] = useState(0);
+    const [addedByUserId, setAddedByUserId] = useState(0);
 
     const resetMealContext = () => {
         setSelectedMealType("");
@@ -58,7 +64,12 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                         setMealNotes, 
                                         modalShow,
                                         setModalShow,
-                                        resetMealContext }}>
+                                        resetMealContext, 
+                                        familyId,
+                                        setFamilyId,
+                                        addedByUserId,
+                                        setAddedByUserId
+                                        }}>
             {children}
         </MealContext.Provider>
     );

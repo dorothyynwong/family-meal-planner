@@ -9,10 +9,12 @@ import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
 
+interface MealFormProps {
+    isFromFamily?: boolean
+}
 
-const MealForm: React.FC = () => {
+const MealForm: React.FC<MealFormProps> = ({isFromFamily}) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-    // const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
     const { mode,
@@ -28,7 +30,12 @@ const MealForm: React.FC = () => {
             setMealNotes, 
             modalShow, 
             setModalShow, 
-            resetMealContext } = useMeal();
+            resetMealContext, 
+            familyId,
+            setFamilyId,
+            addedByUserId,
+            setAddedByUserId
+            } = useMeal();
 
     const navigate = useNavigate();
 
@@ -107,9 +114,7 @@ const MealForm: React.FC = () => {
         const meal: MealDetailsInterface = {
             date: mealDate,
             notes: mealNotes,
-            // userId: parseInt(userId!, 10),
             mealType: selectedMealType,
-            // addedByUserId: parseInt(userId!, 10),
             ...(selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
 

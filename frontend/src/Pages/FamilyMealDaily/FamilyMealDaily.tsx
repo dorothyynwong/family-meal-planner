@@ -6,6 +6,8 @@ import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import DateBar from "../../Components/DateBar/DateBar";
 import dayjs, { Dayjs } from 'dayjs';
 import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
+import MealForm from "../../Components/MealForm/MealForm";
+import { useMeal } from "../../Components/MealContext/MealContext";
 
 
 const FamilyMealDaily: React.FC = () => {
@@ -14,6 +16,7 @@ const FamilyMealDaily: React.FC = () => {
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
+    const { modalShow, setModalShow, setMode } = useMeal();
     
     useEffect(() => {
         setStatus("loading");
@@ -40,7 +43,7 @@ const FamilyMealDaily: React.FC = () => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Getting recipes..."
+                loadingMessage="Getting families and meals..."
                 successMessage=""
             >
                 <></>
@@ -48,6 +51,7 @@ const FamilyMealDaily: React.FC = () => {
             <DateBar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
             <FamilyTabs data={familyUsersList} selectedDate={selectedDate}/>
             <FamilyMealsBottomBar/>
+            <MealForm isFromFamily={true}/>
         </>
     );
 }
