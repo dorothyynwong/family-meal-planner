@@ -8,8 +8,22 @@ import dayjs, { Dayjs } from 'dayjs';
 import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
 import MealForm from "../../Components/MealForm/MealForm";
 import { useMeal } from "../../Components/MealContext/MealContext";
+import { createTheme, ThemeProvider } from "@mui/material";
 
+const theme = createTheme({
+    palette: {
+      primary: {
+        main: '#8E9D76',
+        contrastText: '#000000'
+      },
+      secondary: {
+        main: '#796C50',
+        contrastText: '#FFFFFF'
+      }
+    }
+  });
 
+  
 const FamilyMealDaily: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -39,7 +53,7 @@ const FamilyMealDaily: React.FC = () => {
             });
     }, []);
     return (
-        <>
+        <ThemeProvider theme={theme}>
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
@@ -56,7 +70,7 @@ const FamilyMealDaily: React.FC = () => {
             )}
             <FamilyMealsBottomBar/>
             <MealForm isForFamily={true}/>
-        </>
+        </ThemeProvider>
     );
 }
 

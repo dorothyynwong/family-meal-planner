@@ -3,7 +3,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en-gb';
 import { useState } from "react";
-import { AppBar, Box, IconButton, TextField, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box, createTheme, IconButton, TextField, ThemeProvider, Toolbar, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
@@ -32,7 +32,7 @@ const DateBar: React.FC<DateBarProps> = ({selectedDate, setSelectedDate}) => {
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={browserLocale}>
             <AppBar position="static">
-                <Toolbar>
+                <Toolbar color="primary">
                     <IconButton edge="start" color="inherit" onClick={handlePreviousDate}>
                         <ArrowBackIcon />
                     </IconButton>

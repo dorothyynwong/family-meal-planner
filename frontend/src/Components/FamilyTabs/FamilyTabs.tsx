@@ -28,13 +28,6 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
         setSelectedFamily(familiesAsCook[0]);
     }, []);
 
-    // useEffect(() => {
-    //     if (familiesAsCook.length > 0 && !value) {
-    //         setValue(familiesAsCook[0].familyId);
-    //         setSelectedFamily(familiesAsCook[0]);
-    //     }
-    // }, [familiesAsCook, value, selectedFamily]);
-
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         const family = familiesAsCook.find(fu => fu.familyId === newValue);
         setValue(newValue);
