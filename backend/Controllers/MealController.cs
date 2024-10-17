@@ -49,20 +49,23 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
 
         Logger.Debug($"Meal Controller {familyId}, {userId}, {requestUserId}");
 
-        if (userId != requestUserId && !await _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId))
-        {
-           return Unauthorized();
-        }
-            
         try
         {
             List<MealResponse> meals = await _mealService.GetMealByDateUserId(fromDate, toDate, familyId, userId, requestUserId);
+
+            if (meals == null || meals.Count <= 0) return NoContent();  
             return Ok(meals);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
+            return Unauthorized();
         }
         catch (ArgumentNullException ex)
         {
-            Logger.Error($"No meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
-            return BadRequest($"No meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");   
+            Logger.Info($"No meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
+            return NoContent(); 
+            
         }
         catch (Exception ex)
         {
