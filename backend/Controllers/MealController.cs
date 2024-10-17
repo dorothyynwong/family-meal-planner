@@ -44,6 +44,10 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int requestUserId))
             return Unauthorized();
+            
+        if (userId == 0) userId = requestUserId;
+
+        Logger.Debug($"Meal Controller {familyId}, {userId}, {requestUserId}");
 
         if (userId != requestUserId && !await _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId))
         {
