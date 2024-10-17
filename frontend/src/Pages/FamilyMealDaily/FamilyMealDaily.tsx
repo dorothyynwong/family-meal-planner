@@ -49,7 +49,11 @@ const FamilyMealDaily: React.FC = () => {
                 <></>
             </StatusHandler>
             <DateBar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
-            <FamilyTabs data={familyUsersList} selectedDate={selectedDate}/>
+            {familyUsersList.length > 0 ? ( 
+                <FamilyTabs data={familyUsersList} selectedDate={selectedDate} />
+            ) : (
+                <div>No families available</div>
+            )}
             <FamilyMealsBottomBar/>
             <MealForm isFromFamily={true}/>
         </>
