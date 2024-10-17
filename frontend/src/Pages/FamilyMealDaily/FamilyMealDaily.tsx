@@ -5,6 +5,7 @@ import FamilyTabs from "../../Components/FamilyTabs/FamilyTabs";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import DateBar from "../../Components/DateBar/DateBar";
 import dayjs, { Dayjs } from 'dayjs';
+import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
 
 
 const FamilyMealDaily: React.FC = () => {
@@ -46,6 +47,7 @@ const FamilyMealDaily: React.FC = () => {
             </StatusHandler>
             <DateBar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
             <FamilyTabs data={familyUsersList} selectedDate={selectedDate}/>
+            <FamilyMealsBottomBar/>
         </>
     );
 }
