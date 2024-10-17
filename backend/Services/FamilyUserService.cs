@@ -39,7 +39,7 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         }
         catch (Exception ex)
         {
-            Logger.Error($"Unexpected error while getting family user relationship for family {familyId} and user {userId}");
+            Logger.Error($"Unexpected error while getting family user relationship for family {familyId} and user {userId} : {ex.Message}");
             throw new Exception($"Unexpected error while getting family user relationship for family {familyId} and user {userId}");
         }
 
