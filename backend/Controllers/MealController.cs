@@ -13,10 +13,9 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/meals")]
-public class MealController(IMealService mealService, IFamilyUserService familyUserService) : Controller
+public class MealController(IMealService mealService) : Controller
 {
     private readonly IMealService _mealService = mealService;
-    private readonly IFamilyUserService _familyUserService = familyUserService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpPost("")]
@@ -30,6 +29,12 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
             meal.AddedByUserId = userId;
             int mealId = await _mealService.AddMeal(meal, userId);
             return Ok(mealId);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.Error($"Unauthorised Access: {ex.Message}");
+            return Unauthorized();
+
         }
         catch (Exception ex)
         {
@@ -46,8 +51,6 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
             return Unauthorized();
             
         if (userId == 0) userId = requestUserId;
-
-        Logger.Debug($"Meal Controller {familyId}, {userId}, {requestUserId}");
 
         try
         {

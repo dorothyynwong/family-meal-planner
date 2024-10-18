@@ -38,6 +38,12 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
     {
         ValidateRequest(mealRequest);
 
+        if (mealRequest.FamilyId > 0 && !await _familyUserService.IsCook((int)mealRequest.FamilyId, userId))
+        {
+            Logger.Error($"Unauthorised access of family {mealRequest.FamilyId} by {userId}");
+            throw new UnauthorizedAccessException($"Unauthorised access of family {mealRequest.FamilyId} by {userId}");
+        }
+
         try
         {
             Meal meal = new Meal()
