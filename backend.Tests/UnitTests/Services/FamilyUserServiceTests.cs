@@ -209,7 +209,7 @@ public class FamilyUserServiceTests
         int userId = 3;
         await _familyUserService.DeleteFamilyUser(familyId, userId);
 
-        var exception = Assert.ThrowsAsync<InvalidOperationException>(async () =>
+        var exception = Assert.ThrowsAsync<Exception>(async () =>
         {
             await _familyUserService.GetFamilyUser(familyId, userId);
         });

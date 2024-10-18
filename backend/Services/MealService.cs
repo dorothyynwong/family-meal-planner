@@ -9,15 +9,16 @@ namespace FamilyMealPlanner.Services;
 public interface IMealService
 {
     Task<int> AddMeal(MealRequest mealRequest, int userId);
-    Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId);
+    Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId);
     Task UpdateMeal(MealRequest mealRequest, int mealId, int userId);
     Task Delete(int mealId, int userId);
     Task<Meal> GetMealById(int mealId);
 }
 
-public class MealService(FamilyMealPlannerContext context) : IMealService
+public class MealService(FamilyMealPlannerContext context, IFamilyUserService familyUserService) : IMealService
 {
     private readonly FamilyMealPlannerContext _context = context;
+    private readonly IFamilyUserService _familyUserService = familyUserService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private void ValidateRequest(MealRequest mealRequest)
@@ -29,7 +30,7 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
         if (mealRequest.Date == default || string.IsNullOrEmpty(mealRequest.MealType) || mealRequest.AddedByUserId <= 0)
         {
-            throw new ArgumentException("Name is required");
+            throw new ArgumentException($"Meal Date , Meal Type and AddedByUserId are required, {mealRequest.Date}, {mealRequest.MealType}, {mealRequest.AddedByUserId} are given");
         }
     }
 
@@ -69,43 +70,58 @@ public class MealService(FamilyMealPlannerContext context) : IMealService
 
     }
 
-    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int userId)
+    public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId)
     {
-        List<Meal> meals = await _context.Meals
-                                                .Include(meal => meal.Recipe)
-                                                .Where(meal => meal.Date >= fromDate &&
-                                                        meal.Date <= toDate &&
-                                                        meal.UserId == userId)
-                                                .ToListAsync();
-        List<MealResponse> mealResponses = new();
-
-        Logger.Debug(meals[0].Recipe.DefaultImageUrl);
-
-        foreach (Meal meal in meals)
+        if (requestUserId != userId && !await _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId))
         {
-            MealResponse mealResponse = new MealResponse
+                Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
+                throw new UnauthorizedAccessException("Unathorised Access");
+        }
+            
+        try
+        {
+            List<Meal> meals = await _context.Meals
+                                                    .Include(meal => meal.Recipe)
+                                                    .Where(meal => meal.Date >= fromDate &&
+                                                            meal.Date <= toDate &&
+                                                            meal.UserId == userId)
+                                                    .ToListAsync();
+
+            if (meals == null || meals.Count <=0 ) return [];
+
+            List<MealResponse> mealResponses = new();
+
+            foreach (Meal meal in meals)
             {
-                Id = meal.Id,
-                Date = meal.Date,
-                RecipeId = meal.RecipeId,
-                RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
-                RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
-                UserId = meal.UserId,
-                FamilyId = meal.FamilyId,
-                MealType = meal.MealType.ToString(),
-                AddedByUserId = meal.AddedByUserId,
-                Notes = meal.Notes,
-            };
-            mealResponses.Add(mealResponse);
-        }
+                MealResponse mealResponse = new MealResponse
+                {
+                    Id = meal.Id,
+                    Date = meal.Date,
+                    RecipeId = meal.RecipeId,
+                    RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
+                    RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
+                    UserId = meal.UserId,
+                    FamilyId = meal.FamilyId,
+                    MealType = meal.MealType.ToString(),
+                    AddedByUserId = meal.AddedByUserId,
+                    Notes = meal.Notes,
+                };
+                mealResponses.Add(mealResponse);
+            }
 
-        if (meals == null || meals.Count == 0)
+            if (meals == null || meals.Count == 0)
+            {
+                Logger.Error($"No meals between {fromDate} to {toDate} for user {userId}");
+                throw new ArgumentNullException($"No meals between {fromDate} to {toDate} for user {userId}");
+            }
+
+            return mealResponses;
+        }
+        catch (Exception ex)
         {
-            Logger.Error($"No meals between {fromDate} to {toDate} for user {userId}");
-            throw new InvalidOperationException($"No meals between {fromDate} to {toDate} for user {userId}");
+            Logger.Error($"Error while getting meals from database from {fromDate} to {toDate} for user {userId}, {ex}");
+            throw new Exception($"Error while getting meals from database");
         }
-
-        return mealResponses;
     }
 
     public async Task<Meal> GetMealById(int mealId)

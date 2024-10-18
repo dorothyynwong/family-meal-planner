@@ -16,6 +16,7 @@ public interface IFamilyUserService
     Task ApproveFamilyUser(int familyId, int userId);
     Task UpdateFamilyUserRole(FamilyRoleUpdateRequest familyRoleUpdateRequest);
     Task DeleteFamilyUser(int familyId, int userId);
+    Task<bool> IsRequestUserAuthorised(int familyId, int userId, int requestUserId);
 }
 
 public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService familyService) : IFamilyUserService
@@ -26,13 +27,22 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
 
     public async Task<FamilyUser> GetFamilyUser(int familyId, int userId)
     {
-        FamilyUser familyUser = await _context.FamilyUsers.SingleAsync(fu => fu.FamilyId == familyId && fu.UserId == userId);
-        if (familyUser == null)
+        try
         {
-            Logger.Error($"Family User relationship not found family Id: {familyId}, user Id: {userId}");
-            throw new InvalidOperationException($"Family User relationship not found family Id: {familyId}, user Id: {userId}");
+            FamilyUser familyUser = await _context.FamilyUsers.SingleAsync(fu => fu.FamilyId == familyId && fu.UserId == userId);
+            if (familyUser == null)
+            {
+                Logger.Error($"Family User relationship not found family Id: {familyId}, user Id: {userId}");
+                throw new InvalidOperationException($"Family User relationship not found family Id: {familyId}, user Id: {userId}");
+            }
+            return familyUser;
         }
-        return familyUser;
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error while getting family user relationship for family {familyId} and user {userId} : {ex.Message}");
+            throw new Exception($"Unexpected error while getting family user relationship for family {familyId} and user {userId}");
+        }
+
     }
 
     public async Task<List<FamilyUserResponse>> GetFamilyUsersByUserId(int userId)
@@ -242,6 +252,11 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
         }
     }
 
+    public async Task<bool> IsRequestUserAuthorised(int familyId, int userId, int requestUserId)
+    {
+        FamilyUser requestFamilyUser = await GetFamilyUser(familyId, requestUserId);
+        return requestFamilyUser.FamilyRole == FamilyRoleType.Cook;
+    }
 }
 
 

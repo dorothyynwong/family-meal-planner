@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
-import { Button, Form, InputGroup } from "react-bootstrap";
+import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
 import { useNavigate, useParams } from "react-router-dom";
 import { addMeal, deleteMeal, getMealTypes, updateMeal } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
@@ -9,26 +9,31 @@ import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
 
+interface MealFormProps {
+    isForFamily?: boolean
+}
 
-const MealForm: React.FC = () => {
+const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-    // const { userId } = useParams<{ userId: string }>();
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
     const { mode,
-            currentMeal,
-            recipeName,
-            setRecipeName,
-            selectedRecipe,
-            selectedMealType, 
-            setSelectedMealType, 
-            mealDate, 
-            setMealDate, 
-            mealNotes, 
-            setMealNotes, 
-            modalShow, 
-            setModalShow, 
-            resetMealContext } = useMeal();
+        currentMeal,
+        recipeName,
+        setRecipeName,
+        selectedRecipe,
+        selectedMealType,
+        setSelectedMealType,
+        mealDate,
+        setMealDate,
+        mealNotes,
+        setMealNotes,
+        modalShow,
+        setModalShow,
+        resetMealContext,
+        selectedFamily,
+        setSelectedFamily,
+    } = useMeal();
 
     const navigate = useNavigate();
 
@@ -51,7 +56,7 @@ const MealForm: React.FC = () => {
 
     useEffect(() => {
         if (selectedRecipe) {
-            setRecipeName(selectedRecipe.name? selectedRecipe.name : "");
+            setRecipeName(selectedRecipe.name ? selectedRecipe.name : "");
             setModalShow(true);
         }
     }, [selectedRecipe, modalShow]);
@@ -63,17 +68,17 @@ const MealForm: React.FC = () => {
 
     const handleDelete = () => {
         deleteMeal(currentMeal!.id!)
-        .then(response => {
-            if (response.statusText === "OK") {
-                setStatus("success");
-            }
-        })
-        .catch(error => {
-            console.log("Error deleting meal", error);
-            const errorMessage = error?.response?.data?.message || "Error deleting meal";
-            setStatus("error");
-            setErrorMessages([...errorMessages, errorMessage]);
-        });
+            .then(response => {
+                if (response.statusText === "OK") {
+                    setStatus("success");
+                }
+            })
+            .catch(error => {
+                console.log("Error deleting meal", error);
+                const errorMessage = error?.response?.data?.message || "Error deleting meal";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
+            });
 
         setModalShow(false);
         resetMealContext();
@@ -107,14 +112,11 @@ const MealForm: React.FC = () => {
         const meal: MealDetailsInterface = {
             date: mealDate,
             notes: mealNotes,
-            // userId: parseInt(userId!, 10),
             mealType: selectedMealType,
-            // addedByUserId: parseInt(userId!, 10),
             ...(selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
 
-        if (mode === "Add")
-        {
+        if (mode === "Add") {
             addMeal(meal)
                 .then(response => {
                     if (response.statusText === "OK") {
@@ -128,8 +130,7 @@ const MealForm: React.FC = () => {
                     setErrorMessages([...errorMessages, errorMessage]);
                 });
         }
-        else
-        {
+        else {
             updateMeal(meal, currentMeal!.id!)
                 .then(response => {
                     if (response.statusText === "OK") {
@@ -153,10 +154,22 @@ const MealForm: React.FC = () => {
         <Popup
             customclass="meal-form"
             show={modalShow}
-            onHide={() => {setModalShow(false); resetMealContext();}}
+            onHide={() => { setModalShow(false); resetMealContext(); }}
             title={`${mode} Meal`}
             body="">
             <Form onSubmit={handleSubmit}>
+                {isForFamily &&
+                (
+                    <Form.Group className="mb-3" controlId="meal-family-name">
+                        {/* <Form.Label column sm="1">Family</Form.Label> */}
+                        <Form.Control 
+                            type="text" 
+                            className="mt-3 meal-family-name"
+                            readOnly 
+                            placeholder={selectedFamily?.familyName} />
+                  </Form.Group>
+                )}
+
                 <InputGroup className="mt-3 recipe-search-container">
                     <InputGroup.Text className="recipe-search-icon-box" id="basic-addon1">
                         <FaSearch className="recipe-search-icon" />

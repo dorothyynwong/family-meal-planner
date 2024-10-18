@@ -37,7 +37,7 @@ interface FamilyUsersProps {
     };
 
     return (
-        <Card sx={{ maxWidth: 345, m: 2 }}>
+        <Card sx={{ maxWidth: 345, mx: 0, mb: 1}}>
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}

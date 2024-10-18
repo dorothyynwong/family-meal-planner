@@ -14,6 +14,7 @@ import { AuthProvider } from './Components/AuthProvider/AuthProvider';
 import UserSignupPage from './Pages/UserSignupPage/UserSignupPage';
 import Families from './Pages/Families/Families';
 import FamiliesList from './Pages/FamiliesList/FamiliesList';
+import FamilyMealDaily from './Pages/FamilyMealDaily/FamilyMealDaily';
 
 function App() {
 
@@ -58,6 +59,9 @@ function App() {
 
               <Route path="/my-families"
                 element={<FamiliesList data={[]} />} />
+
+              <Route path="/family-meals" 
+                element={<FamilyMealDaily />} />
 
             </Routes>
           </Layout>
