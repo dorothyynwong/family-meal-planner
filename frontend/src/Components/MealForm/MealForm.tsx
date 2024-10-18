@@ -110,6 +110,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
         setErrorMessages([]);
 
         const meal: MealDetailsInterface = {
+            familyId: selectedFamily?.familyId,
             date: mealDate,
             notes: mealNotes,
             mealType: selectedMealType,
