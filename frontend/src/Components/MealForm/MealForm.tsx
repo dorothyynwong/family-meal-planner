@@ -88,6 +88,8 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
+        console.log("Selected Family:", selectedFamily);  
+        
         if (!mealNotes.trim() && !selectedRecipe && !recipeName) {
             setErrorMessages(["Please enter notes or select a recipe."]);
             setStatus("error");
@@ -162,7 +164,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
                 {isForFamily &&
                 (
                     <Form.Group className="mb-3" controlId="meal-family-name">
-                        {/* <Form.Label column sm="1">Family</Form.Label> */}
                         <Form.Control 
                             type="text" 
                             className="mt-3 meal-family-name"
