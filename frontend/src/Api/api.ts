@@ -120,6 +120,22 @@ export async function getMealByDateUserId(fromDate: string, toDate: string, fami
     }
 }
 
+export async function getMealByDateFamilyId(fromDate: string, toDate: string, familyId: number) {
+    try {
+        const response: AxiosResponse = await client.get(`/meals/by-family`, {
+            params: {
+                fromDate: fromDate,
+                toDate: toDate,
+                familyId: familyId,
+            }
+        });
+
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
 export async function getMealTypes() {
     try {
 
