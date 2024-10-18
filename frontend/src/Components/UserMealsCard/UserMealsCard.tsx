@@ -47,7 +47,7 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
 
     return (
         <>
-            <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0 }}>
+            <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0.5 }}>
                 <CardHeader
                     avatar={
                         <Avatar sx={{ bgcolor: red[500] }} aria-label="user avator">

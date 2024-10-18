@@ -37,7 +37,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     if (familiesAsCook.length <= 0) return (<>No families meal plans to manage</>);
 
     return (
-        <Box sx={{ bgcolor: 'background.paper' }}>
+        <Box sx={{ bgcolor: 'background.paper'}}>
             <Tabs
                 value={value}
                 onChange={handleChange}
