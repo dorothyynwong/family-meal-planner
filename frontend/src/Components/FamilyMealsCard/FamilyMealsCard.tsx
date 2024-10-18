@@ -64,10 +64,12 @@ const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data}) => {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent> 
-                        <MealDaily mealDate={mealDate} 
-                                    familyId={data?.familyId ? data?.familyId : 0} 
-                                    userId={data?.userId ? data?.userId : 0} 
-                                    isByFamily={true}/>
+                        {data &&
+                            <MealDaily mealDate={mealDate} 
+                                        familyId={data.familyId} 
+                                        userId={data.userId} 
+                                        isByFamily={true}/>
+                        }
                     </CardContent>
                 </Collapse>
             </Card>
