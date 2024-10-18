@@ -55,7 +55,7 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
                     <Nav.Link id="home" className="custom-nav-link" onClick={handleClick}>Home</Nav.Link>
                     <Nav.Link id="recipes" className="custom-nav-link" onClick={handleClick}>Recipes</Nav.Link>
                     <Nav.Link id="meals" className="custom-nav-link" onClick={handleClick}>My Meals</Nav.Link>
-                    <Nav.Link id="family-meals" className="custom-nav-link" onClick={handleClick}>Families Meals</Nav.Link>
+                    <Nav.Link id="family-meals" className="custom-nav-link" onClick={handleClick}>Families' Meals</Nav.Link>
                     <Nav.Link id="families" className="custom-nav-link" onClick={handleClick}>Families</Nav.Link>
                     <Nav.Link id="shoppingList" className="custom-nav-link" onClick={handleClick}>Shopping List</Nav.Link>
                     {
