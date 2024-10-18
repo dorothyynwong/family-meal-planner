@@ -46,18 +46,22 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
 
         try
         {
-            Meal meal = new Meal()
-            {
-                Date = mealRequest.Date,
-                RecipeId = mealRequest.RecipeId,
-                UserId = userId,
-                FamilyId = mealRequest.FamilyId,
-                MealType = mealRequest.GetMealTypeEnum(),
-                AddedByUserId = userId,
-                Notes = mealRequest.Notes,
-            };
+            Meal meal = new Meal();
+            meal.Date = mealRequest.Date;
+            meal.RecipeId = mealRequest.RecipeId;
 
-            Logger.Debug(userId);
+            if (mealRequest.FamilyId > 0)
+            {
+                meal.FamilyId = mealRequest.FamilyId;
+            }
+            else
+            {
+                meal.UserId = userId;
+            }
+
+            meal.MealType = mealRequest.GetMealTypeEnum();
+            meal.AddedByUserId = userId;
+            meal.Notes = mealRequest.Notes;
 
             _context.Meals.Add(meal);
             await _context.SaveChangesAsync();
@@ -80,10 +84,10 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
     {
         if (requestUserId != userId && !await _familyUserService.IsCook(familyId, requestUserId))
         {
-                Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
-                throw new UnauthorizedAccessException("Unathorised Access");
+            Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
+            throw new UnauthorizedAccessException("Unathorised Access");
         }
-            
+
         try
         {
             List<Meal> meals = await _context.Meals
@@ -93,7 +97,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                             meal.UserId == userId)
                                                     .ToListAsync();
 
-            if (meals == null || meals.Count <=0 ) return [];
+            if (meals == null || meals.Count <= 0) return [];
 
             List<MealResponse> mealResponses = new();
 

@@ -43,6 +43,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMealNotes("");
         setSelectedRecipe(null);
         setRecipeName("");
+        setSelectedFamily(null);
     };
 
     return (
