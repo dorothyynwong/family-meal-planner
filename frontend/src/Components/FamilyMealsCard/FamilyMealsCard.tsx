@@ -3,15 +3,15 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
 import { red } from "@mui/material/colors";
 import MealDaily from "../MealDaily/MealDaily";
-import { FamilyUserInterface } from "../../Api/apiInterface";
+import { FamilyUserInterface, FamilyWithUsersInterface } from "../../Api/apiInterface";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
 
-interface UserMealsProps {
+interface FamilyMealsProps {
     mealDate: Date;
-    data: FamilyUserInterface;
+    data: FamilyWithUsersInterface;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -38,7 +38,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     ],
 }));
 
-const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
+const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data}) => {
     const [expanded, setExpanded] = useState(false);
     
     const handleExpandClick = () => {
@@ -49,12 +49,7 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
         <>
             <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0.5 }}>
                 <CardHeader
-                    avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="user avator">
-                            {data.userNickName}
-                        </Avatar>
-                    }
-                    title={data.userNickName}
+                    title={`Family Meals`}
                     sx={{p:0, mx:0 }}
                 />
                 <CardActions disableSpacing>
@@ -69,7 +64,7 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent> 
-                        <MealDaily mealDate={mealDate} familyId={data.familyId} userId={data.userId} isByFamily={false}/>
+                        <MealDaily mealDate={mealDate} familyId={data.familyId} userId={data.userId} isByFamily={true}/>
                     </CardContent>
                 </Collapse>
             </Card>
@@ -77,4 +72,4 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
     )
 }
 
-export default UserMealsCard;
+export default FamilyMealsCard;

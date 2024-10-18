@@ -9,6 +9,8 @@ import MealDaily from '../MealDaily/MealDaily';
 import UserMealsCard from '../UserMealsCard/UserMealsCard';
 import dayjs, { Dayjs } from 'dayjs';
 import { useMeal } from '../MealContext/MealContext';
+import FamilyMealsCard from '../FamilyMealsCard/FamilyMealsCard';
+import { getMealByDateFamilyId } from '../../Api/api';
 
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
@@ -59,6 +61,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
                     value={value}
                     index={fu.familyId}
                 >
+                    {selectedFamily && <FamilyMealsCard key={index} mealDate={selectedDate.toDate()} data={selectedFamily}/>}
                     {fu.familyUsers.map(
                         (user, index) => (
                             <UserMealsCard key={index} mealDate={selectedDate.toDate()} data={user} />

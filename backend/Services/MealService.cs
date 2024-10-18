@@ -148,7 +148,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                     .Include(meal => meal.Recipe)
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
-                                                            meal.FamilyId== familyId)
+                                                            meal.FamilyId == familyId)
                                                     .ToListAsync();
 
             if (meals == null || meals.Count <= 0) return [];
