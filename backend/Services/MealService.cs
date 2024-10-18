@@ -72,7 +72,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
 
     public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId)
     {
-        if (requestUserId != userId && !await _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId))
+        if (requestUserId != userId && !await _familyUserService.IsCook(familyId, requestUserId))
         {
                 Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
                 throw new UnauthorizedAccessException("Unathorised Access");
