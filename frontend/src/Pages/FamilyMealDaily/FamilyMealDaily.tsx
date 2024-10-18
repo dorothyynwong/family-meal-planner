@@ -31,6 +31,7 @@ const FamilyMealDaily: React.FC = () => {
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
     const { modalShow, setModalShow, setMode } = useMeal();
+    const [selectedFamilyId, setSelectedFamilyId] = useState(0);
     
     useEffect(() => {
         setStatus("loading");
@@ -64,7 +65,12 @@ const FamilyMealDaily: React.FC = () => {
             </StatusHandler>
             <DateBar selectedDate={selectedDate} setSelectedDate={setSelectedDate}/>
             {familyUsersList.length > 0 ? ( 
-                <FamilyTabs data={familyUsersList} selectedDate={selectedDate} />
+                <FamilyTabs 
+                    data={familyUsersList} 
+                    selectedDate={selectedDate} 
+                    selectedFamilyId={selectedFamilyId}
+                    setSelectedFamilyId={setSelectedFamilyId}
+                />
             ) : (
                 <div>No families available</div>
             )}

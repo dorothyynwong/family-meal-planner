@@ -15,6 +15,8 @@ import { getMealByDateFamilyId } from '../../Api/api';
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
     selectedDate: Dayjs;
+    selectedFamilyId: number;
+    setSelectedFamilyId: (newFamilyId: number) => void;
 }
 
 const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
@@ -28,7 +30,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
 
     useEffect(() => {
         setSelectedFamily(familiesAsCook[0]);
-    }, []);
+    }, [familiesAsCook, setSelectedFamily]);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         const family = familiesAsCook.find(fu => fu.familyId === newValue);

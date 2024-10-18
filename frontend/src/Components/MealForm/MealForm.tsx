@@ -88,8 +88,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
-        console.log("Selected Family:", selectedFamily);  
-        
         if (!mealNotes.trim() && !selectedRecipe && !recipeName) {
             setErrorMessages(["Please enter notes or select a recipe."]);
             setStatus("error");
