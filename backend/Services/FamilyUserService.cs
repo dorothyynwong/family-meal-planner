@@ -17,6 +17,7 @@ public interface IFamilyUserService
     Task UpdateFamilyUserRole(FamilyRoleUpdateRequest familyRoleUpdateRequest);
     Task DeleteFamilyUser(int familyId, int userId);
     Task<bool> IsCook(int familyId, int userId);
+    Task<bool> IsSameFamily(int userId1, int userId2);
 }
 
 public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService familyService) : IFamilyUserService
@@ -256,6 +257,14 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
     {
         FamilyUser requestFamilyUser = await GetFamilyUser(familyId, userId);
         return requestFamilyUser.FamilyRole == FamilyRoleType.Cook;
+    }
+
+    public async Task<bool> IsSameFamily(int userId1, int userId2)
+    {
+        var familyUsers = _context.FamilyUsers
+                                        .GroupBy(fu => fu.FamilyId)
+                                        .Any(g => g.Any(fu => fu.UserId == userId1) && g.Any(fu => fu.UserId == userId2));
+        return familyUsers;
     }
 }
 

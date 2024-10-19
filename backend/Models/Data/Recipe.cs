@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using FamilyMealPlanner.Models.Data;
 
 namespace FamilyMealPlanner.Models;
 
@@ -20,4 +21,6 @@ public class Recipe
     public DateTime? LastUpdatedDateTime {get; set;} = DateTime.UtcNow;
     public string? DefaultImageUrl   { get; set; }
     public int AddedByUserId {get; set; }
+
+    public User AddedByUser {get; set;}
 }
