@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Form, InputGroup} from "react-bootstrap";
+import { useNavigate} from "react-router-dom";
 import { addMeal, deleteMeal, getMealTypes, updateMeal } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
