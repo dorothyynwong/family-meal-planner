@@ -4,19 +4,14 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import FamilyTabPanel from '../FamilyTabPanel/FamilyTabPanel';
-import { FamilyUserInterface, FamilyWithUsersInterface } from '../../Api/apiInterface';
-import MealDaily from '../MealDaily/MealDaily';
+import { FamilyWithUsersInterface } from '../../Api/apiInterface';
 import UserMealsCard from '../UserMealsCard/UserMealsCard';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useMeal } from '../MealContext/MealContext';
 import FamilyMealsCard from '../FamilyMealsCard/FamilyMealsCard';
-import { getMealByDateFamilyId } from '../../Api/api';
-
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
     selectedDate: Dayjs;
-    // selectedFamilyId: number;
-    // setSelectedFamilyId: (newFamilyId: number) => void;
 }
 
 const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
@@ -32,14 +27,12 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
 
     useEffect(() => {
         if(!selectedFamily) setSelectedFamily(familiesAsCook[0]);
-        // if(selectedFamilyId < 0) setSelectedFamilyId(initialValue);
     }, [familiesAsCook, setSelectedFamily]);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         const family = familiesAsCook.find(fu => fu.familyId === newValue);
         setValue(newValue);
         setSelectedFamily(family!);
-        // setSelectedFamilyId(newValue)
     };
 
     if (familiesAsCook.length <= 0) return (<>No families meal plans to manage</>);

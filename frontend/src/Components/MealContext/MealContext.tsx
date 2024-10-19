@@ -35,7 +35,6 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mealNotes, setMealNotes] = useState("");
     const [modalShow, setModalShow] = useState(false);
     const [selectedFamily, setSelectedFamily] = useState<FamilyWithUsersInterface | null>(null);
-    const [addedByUserId, setAddedByUserId] = useState(0);
 
     const resetMealContext = () => {
         setSelectedMealType("");
@@ -43,7 +42,6 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMealNotes("");
         setSelectedRecipe(null);
         setRecipeName("");
-        // setSelectedFamily(null);
     };
 
     return (

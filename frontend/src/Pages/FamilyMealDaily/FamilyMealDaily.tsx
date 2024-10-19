@@ -4,7 +4,7 @@ import { getFamiliesWithUsersByUserId, getFamilyRoleTypes } from "../../Api/api"
 import FamilyTabs from "../../Components/FamilyTabs/FamilyTabs";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import DateBar from "../../Components/DateBar/DateBar";
-import dayjs, { Dayjs } from 'dayjs';
+import dayjs from 'dayjs';
 import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
 import MealForm from "../../Components/MealForm/MealForm";
 import { useMeal } from "../../Components/MealContext/MealContext";
@@ -22,7 +22,6 @@ const theme = createTheme({
       }
     }
   });
-
   
 const FamilyMealDaily: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -30,8 +29,6 @@ const FamilyMealDaily: React.FC = () => {
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [familyRoles, setFamilyRoles] = useState<string[]>([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
-    const { modalShow, setModalShow, setMode } = useMeal();
-    const [selectedFamilyId, setSelectedFamilyId] = useState(0);
     
     useEffect(() => {
         setStatus("loading");
@@ -68,8 +65,6 @@ const FamilyMealDaily: React.FC = () => {
                 <FamilyTabs 
                     data={familyUsersList} 
                     selectedDate={selectedDate} 
-                        // selectedFamilyId={selectedFamilyId}
-                    // setSelectedFamilyId={setSelectedFamilyId}
                 />
             ) : (
                 <div>No families available</div>

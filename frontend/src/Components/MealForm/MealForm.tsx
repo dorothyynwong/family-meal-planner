@@ -32,7 +32,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
         setModalShow,
         resetMealContext,
         selectedFamily,
-        setSelectedFamily,
     } = useMeal();
 
     const navigate = useNavigate();
@@ -150,7 +149,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
         setStatus("idle");
     }
 
-
     return (
         <Popup
             customclass="meal-form"
@@ -223,7 +221,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
                     <Button id="delete-meal-button" className="mt-3 custom-button" type="button" onClick={handleDelete}>Delete</Button>
                 }
 
-
                 <StatusHandler
                     status={status}
                     errorMessages={errorMessages}
@@ -232,7 +229,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
                 >
                     <></>
                 </StatusHandler>
-
             </Form>
         </Popup>);
 }
