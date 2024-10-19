@@ -102,7 +102,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
     public async Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate)
     {
         var dayOfWeek = menuDate.DayOfWeek;
-        DayType day = (FamilyMealPlanner.Enums.DayType)(dayOfWeek + 1);
+        DayType day = (FamilyMealPlanner.Enums.DayType)dayOfWeek;
 
         DateOnly monday = menuDate.AddDays(-(int)dayOfWeek + (int)DayOfWeek.Monday);
 
