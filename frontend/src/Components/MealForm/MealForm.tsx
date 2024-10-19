@@ -9,6 +9,9 @@ import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
 import dayjs, { Dayjs } from 'dayjs';
+import MealTypeSelect from "../MealTypeSelect/MealTypeSelect";
+import RecipeSearch from "../RecipeSearch/RecipeSearch";
+import DateInput from "../MealDateInput/MealDateInput";
 
 interface MealFormProps {
     isForFamily?: boolean
@@ -63,10 +66,11 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         }
     }, [selectedRecipe, modalShow]);
 
-    const handleClick = () => {
-        const isFromMealForm = true;
-        navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } });
-    }
+    // const handleClick = () => {
+    //     const isFromMealForm = true;
+    //     navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } });
+    // }
+    const isFromMealForm = true;
 
     const handleDelete = () => {
         deleteMeal(currentMeal!.id!)
@@ -171,42 +175,9 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                   </Form.Group>
                 )}
 
-                <InputGroup className="mt-3 recipe-search-container">
-                    <InputGroup.Text className="recipe-search-icon-box" id="basic-addon1">
-                        <FaSearch className="recipe-search-icon" />
-                    </InputGroup.Text>
-
-                    <Form.Control
-                        className="recipe-search-box"
-                        placeholder="Search Recipe"
-                        aria-label="Search"
-                        aria-describedby="basic-addon1"
-                        onClick={handleClick}
-                        value={recipeName}
-                        readOnly
-                    />
-                </InputGroup>
-
-                <Form.Control
-                    type="date"
-                    className="mt-3 meal-date"
-                    placeholder="Meal Date"
-                    aria-label="Meal-Date"
-                    aria-describedby="basic-addon1"
-                    value={mealDate}
-                    onChange={(e) => setMealDate(e.target.value)}
-                />
-
-                <Form.Select
-                    className="mt-3 meal-type"
-                    aria-label="Meal Type"
-                    onChange={(e) => setSelectedMealType(e.target.value)}
-                    value={selectedMealType}>
-                    <option value="">Select a Meal Type</option>
-                    {mealTypes.map((mealType, index) => (
-                        <option key={index} value={mealType}>{mealType}</option>
-                    ))}
-                </Form.Select>
+                <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
+                <DateInput mealDate={mealDate} setMealDate={setMealDate} />
+                <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
 
                 <Form.Group controlId="meal-notes">
                     <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
