@@ -14,13 +14,15 @@ namespace FamilyMealPlanner.Controllers;
 public class SchoolMenuController(IPdfService pdfService,
                                     IOpenAIService aiService,
                                     IFamilyUserService familyUserService,
-                                    IUserService userService
+                                    IUserService userService,
+                                    ISchoolMenuService schoolMenuService
                                  ) : Controller
 {
     private readonly IPdfService _pdfService = pdfService;
     private readonly IOpenAIService _aiService = aiService;
     private readonly IFamilyUserService _familyUserService = familyUserService;
     private readonly IUserService _userService = userService;
+    private readonly ISchoolMenuService _schoolMenuService = schoolMenuService;
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
@@ -47,8 +49,23 @@ public class SchoolMenuController(IPdfService pdfService,
 
             foreach (var item in text)
             {
-                var result = await _aiService.GetModelResponseAsync(item, familyId, userId);
-                var json = JsonSerializer.Serialize(result);
+                var openAIResponse = await _aiService.GetModelResponseAsync(item, familyId, userId);
+                foreach (var choice in openAIResponse.Choices)
+                {
+                    var nestedJson = choice.Message.Content;
+                    nestedJson = nestedJson.Replace("```json\n", "").Replace("\n```", "").Replace("\\n", "").Replace("\\\"", "\"");
+                    try
+                    {
+                        var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
+                        await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, familyId, userId);
+                    }
+                    catch (Exception ex)
+                    {
+                        Logger.Error($"Error parsing JSON content: {ex.Message}");
+                    }
+
+                }
+                var json = JsonSerializer.Serialize(openAIResponse);
                 jsonList.Add(json);
             }
 

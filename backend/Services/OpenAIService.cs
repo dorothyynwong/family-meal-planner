@@ -12,11 +12,10 @@ public interface IOpenAIService
     Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId);
 }
 
-public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContext context, ISchoolMenuService schoolMenuService) : IOpenAIService
+public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContext context) : IOpenAIService
 {
     private static readonly HttpClient client = new HttpClient();
     private readonly IConfiguration _configure = configuration;
-    private readonly ISchoolMenuService _schoolMenuService = schoolMenuService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
     private readonly FamilyMealPlannerContext _context = context;
 
@@ -76,22 +75,7 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
             /**Test Code**/
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
             var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
-
-            foreach (var choice in openAIResponse.Choices)
-            {
-                var nestedJson = choice.Message.Content;
-                nestedJson = nestedJson.Replace("```json\n", "").Replace("\n```", "").Replace("\\n", "").Replace("\\\"", "\"");
-                try
-                {
-                    var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
-                    await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, familyId, userId);
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error($"Error parsing JSON content: {ex.Message}");
-                }
-               
-            }
+            
             return openAIResponse;
         // }
         // else
