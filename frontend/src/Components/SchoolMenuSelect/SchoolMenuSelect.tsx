@@ -19,8 +19,6 @@ const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({}) => {
         .then(response => {
             setStatus("loading");
             setSchoolMeals(response.data);
-            console.log(schoolMeals);
-        
         })
         .catch(error => {
             setSchoolMeals([]);
@@ -29,7 +27,7 @@ const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({}) => {
             setStatus("error");
             setErrorMessages([...errorMessages, errorMessage]);
         });
-    } ,[]);
+    } ,[mealDate]);
 
     return (<>
         {schoolMeals && <Form.Select aria-label="Default select example">
