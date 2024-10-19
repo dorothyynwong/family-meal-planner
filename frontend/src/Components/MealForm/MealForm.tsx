@@ -13,6 +13,7 @@ import MealTypeSelect from "../MealTypeSelect/MealTypeSelect";
 import RecipeSearch from "../RecipeSearch/RecipeSearch";
 import DateInput from "../MealDateInput/MealDateInput";
 import MealDateInput from "../MealDateInput/MealDateInput";
+import SchoolMenuSelect from "../SchoolMenuSelect/SchoolMenuSelect";
 
 interface MealFormProps {
     isForFamily?: boolean
@@ -173,6 +174,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                 )}
 
                 <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
+                <SchoolMenuSelect />
                 <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
                 <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
 
