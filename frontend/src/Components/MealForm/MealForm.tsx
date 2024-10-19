@@ -8,12 +8,14 @@ import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
+import dayjs, { Dayjs } from 'dayjs';
 
 interface MealFormProps {
     isForFamily?: boolean
+    selectedDate?: Dayjs
 }
 
-const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
+const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
@@ -38,6 +40,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
 
 
     useEffect(() => {
+        setMealDate(dayjs(selectedDate).format('YYYY-MM-DD'));
         setStatus("loading");
         setErrorMessages([]);
         getMealTypes()

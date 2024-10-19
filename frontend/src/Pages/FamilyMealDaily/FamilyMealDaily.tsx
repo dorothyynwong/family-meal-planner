@@ -69,7 +69,7 @@ const FamilyMealDaily: React.FC = () => {
                 <div>No families available</div>
             )}
             <FamilyMealsBottomBar/>
-            <MealForm isForFamily={true}/>
+            <MealForm isForFamily={true} selectedDate={selectedDate}/>
         </ThemeProvider>
     );
 }
