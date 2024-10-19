@@ -77,7 +77,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
             throw new InvalidOperationException($"Recipe with id {recipeId} is not found.");
         }
 
-        if(recipe.AddedByUserId != userId && !await _familyUserService.IsSameFamily(recipe.AddedByUserId, userId))
+        if (recipe.AddedByUserId != userId && !await _familyUserService.IsSameFamily(recipe.AddedByUserId, userId))
         {
             Logger.Error($"Unauthroised access of user {userId} to recipe {recipeId}");
             throw new UnauthorizedAccessException($"Unauthroised access of user {userId} to recipe {recipeId}");
@@ -91,7 +91,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         List<Recipe> recipes = await _context.Recipes
                                                 .Where(recipe => recipe.AddedByUserId == userId)
                                                 .ToListAsync();
-                                                
+
         if (recipes == null || recipes.Count == 0)
         {
             Logger.Error($"No recipes for {userId}");
@@ -109,12 +109,6 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         {
             Recipe recipe = await GetRecipeById(recipeId, userId);
 
-            if (recipe.Id != userId)
-            {
-                Logger.Error($"{userId} is not authorised to delete recipe {recipeId}");
-                throw new UnauthorizedAccessException($"{userId} is not authorised to delete recipe {recipeId}");
-            }
-
             recipe.Id = recipeId;
             recipe.Name = recipeRequest.Name;
             recipe.Notes = recipeRequest.Notes;
@@ -127,6 +121,11 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
 
             _context.Recipes.Update(recipe);
             await _context.SaveChangesAsync();
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.Error($"{userId} is not authorised to update recipe {recipeId}: {ex.Message}");
+            throw new UnauthorizedAccessException($"{userId} is not authorised to update recipe {recipeId}");
         }
         catch (DbUpdateException ex)
         {
@@ -145,13 +144,13 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         try
         {
             Recipe recipe = await GetRecipeById(recipeId, userId);
-            if (recipe.AddedByUserId != userId)
-            {
-                Logger.Error($"{userId} is not authorised to delete recipe {recipeId}");
-                throw new UnauthorizedAccessException($"{userId} is not authorised to delete recipe {recipeId}");
-            }
             _context.Recipes.Remove(recipe);
             await _context.SaveChangesAsync();
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.Error($"{userId} is not authorised to update recipe {recipeId}: {ex.Message}");
+            throw new UnauthorizedAccessException($"{userId} is not authorised to update recipe {recipeId}");
         }
         catch (DbUpdateException ex)
         {
