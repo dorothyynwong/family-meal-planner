@@ -7,7 +7,6 @@ import DateBar from "../../Components/DateBar/DateBar";
 import dayjs from 'dayjs';
 import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
 import MealForm from "../../Components/MealForm/MealForm";
-import { useMeal } from "../../Components/MealContext/MealContext";
 import { createTheme, ThemeProvider } from "@mui/material";
 
 const theme = createTheme({

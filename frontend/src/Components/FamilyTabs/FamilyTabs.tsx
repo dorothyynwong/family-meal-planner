@@ -23,7 +23,6 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
 
     const initialValue = familiesAsCook[0]?.familyId;
     const [value, setValue] = useState<number>(selectedFamily ? selectedFamily?.familyId : initialValue);
-    console.log(selectedFamily?.familyId);
 
     useEffect(() => {
         if(!selectedFamily) setSelectedFamily(familiesAsCook[0]);
