@@ -10,7 +10,7 @@ public interface ISchoolMenuService
 {
     Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, string weekCommencings, int familyId, int userId);
     Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId);
-    Task<List<SchoolMenuWeek>> GetSchoolMenuByDate(int familyId, int userId, DateOnly menuDate);
+    Task<List<SchoolMenuWeek>> GetSchoolWeekMenuByDate(int familyId, int userId, DateOnly menuDate);
     Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate);
 }
 
@@ -84,7 +84,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
         return schoolMenu;
     }
 
-    public async Task<List<SchoolMenuWeek>> GetSchoolMenuByDate(int familyId, int userId, DateOnly menuDate)
+    public async Task<List<SchoolMenuWeek>> GetSchoolWeekMenuByDate(int familyId, int userId, DateOnly menuDate)
     {
         var dayOfWeek = menuDate.DayOfWeek;
         DateOnly monday = menuDate.AddDays(-(int)dayOfWeek + (int)DayOfWeek.Monday);

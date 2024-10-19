@@ -102,13 +102,13 @@ public class SchoolMenuController(IPdfService pdfService,
         return Ok(schoolMenus);
     }
 
-    [HttpGet("menu-by-date")]
+    [HttpGet("weekmenu-by-date")]
     public async Task<IActionResult> GetSchoolMenusByDate([FromQuery] int familyId, DateOnly menuDate)
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
-        var schoolMenus = await _schoolMenuService.GetSchoolMenuByDate(familyId, userId, menuDate);
+        var schoolMenus = await _schoolMenuService.GetSchoolWeekMenuByDate(familyId, userId, menuDate);
         return Ok(schoolMenus);
     }
 

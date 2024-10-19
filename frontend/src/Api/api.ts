@@ -242,9 +242,41 @@ export async function updateFamilyRole(familyRole: FamilyRoleUpdateInterface) {
     }
 }
 
-export async function getSchoolMenus(familyId: number) {
+export async function getSchoolMenusByFamilyId(familyId: number) {
     try {
-        const response: AxiosResponse = await client.get(`/schoolMenus`);
+        const response: AxiosResponse = await client.get(`/schoolMenus`, {
+            params: {
+                familyId: familyId,
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getSchoolMenuByDate(familyId: number, weekCommercing: string) {
+    try {
+        const response: AxiosResponse = await client.get(`/schoolMenus/weekmenu-by-date`, {
+            params: {
+                familyId: familyId,
+                menuDate: weekCommercing
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getSchoolMealsByDate(familyId: number, menuDate: string) {
+    try {
+        const response: AxiosResponse = await client.get(`/schoolMenus/meals-by-date`, {
+            params: {
+                familyId: familyId,
+                menuDate: menuDate
+            }
+        });
         return response;
     } catch (error) {
         throw error;

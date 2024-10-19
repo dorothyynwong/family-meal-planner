@@ -89,10 +89,13 @@ export interface SchoolMealInterface {
 
 export interface SchoolMenuInterface {
     id: number;
-    weekCommercing: Date;
     schoolmeals: SchoolMealInterface[];
     status: string;
     familyId: number;
     userId: number;
 }
 
+export interface SchoolMenuWeekInterface {
+    weekCommercing: Date;
+    schoolMenuId: number;
+}
