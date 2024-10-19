@@ -68,8 +68,8 @@ const FamilyMealDaily: React.FC = () => {
                 <FamilyTabs 
                     data={familyUsersList} 
                     selectedDate={selectedDate} 
-                    selectedFamilyId={selectedFamilyId}
-                    setSelectedFamilyId={setSelectedFamilyId}
+                        // selectedFamilyId={selectedFamilyId}
+                    // setSelectedFamilyId={setSelectedFamilyId}
                 />
             ) : (
                 <div>No families available</div>

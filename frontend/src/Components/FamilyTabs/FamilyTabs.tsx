@@ -15,33 +15,37 @@ import { getMealByDateFamilyId } from '../../Api/api';
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
     selectedDate: Dayjs;
-    selectedFamilyId: number;
-    setSelectedFamilyId: (newFamilyId: number) => void;
+    // selectedFamilyId: number;
+    // setSelectedFamilyId: (newFamilyId: number) => void;
 }
 
 const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     const familiesAsCook = data.filter(fu => fu.familyRole === "Cook");
-    const [value, setValue] = useState<number>(familiesAsCook[0]?.familyId);
-    
     const {
         selectedFamily,
         setSelectedFamily,
     } = useMeal();
 
+    const initialValue = familiesAsCook[0]?.familyId;
+    const [value, setValue] = useState<number>(selectedFamily ? selectedFamily?.familyId : initialValue);
+    console.log(selectedFamily?.familyId);
+
     useEffect(() => {
-        setSelectedFamily(familiesAsCook[0]);
+        if(!selectedFamily) setSelectedFamily(familiesAsCook[0]);
+        // if(selectedFamilyId < 0) setSelectedFamilyId(initialValue);
     }, [familiesAsCook, setSelectedFamily]);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         const family = familiesAsCook.find(fu => fu.familyId === newValue);
         setValue(newValue);
         setSelectedFamily(family!);
+        // setSelectedFamilyId(newValue)
     };
 
     if (familiesAsCook.length <= 0) return (<>No families meal plans to manage</>);
 
     return (
-        <Box sx={{ bgcolor: 'background.paper'}}>
+        <Box sx={{ bgcolor: 'background.paper' }}>
             <Tabs
                 value={value}
                 onChange={handleChange}
@@ -63,7 +67,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
                     value={value}
                     index={fu.familyId}
                 >
-                    <FamilyMealsCard key={index} mealDate={selectedDate.toDate()} data={selectedFamily}/>
+                    <FamilyMealsCard key={index} mealDate={selectedDate.toDate()} data={selectedFamily} />
                     {fu.familyUsers.map(
                         (user, index) => (
                             <UserMealsCard key={index} mealDate={selectedDate.toDate()} data={user} />
