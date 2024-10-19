@@ -102,13 +102,23 @@ public class SchoolMenuController(IPdfService pdfService,
         return Ok(schoolMenus);
     }
 
-    [HttpGet("by-date")]
+    [HttpGet("menu-by-date")]
     public async Task<IActionResult> GetSchoolMenusByDate([FromQuery] int familyId, DateOnly menuDate)
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
         var schoolMenus = await _schoolMenuService.GetSchoolMenuByDate(familyId, userId, menuDate);
+        return Ok(schoolMenus);
+    }
+
+    [HttpGet("meals-by-date")]
+    public async Task<IActionResult> GetSchoolMealsByDate([FromQuery] int familyId, DateOnly menuDate)
+    {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
+        var schoolMenus = await _schoolMenuService.GetSchoolMealsByDate(familyId, userId, menuDate);
         return Ok(schoolMenus);
     }
 }

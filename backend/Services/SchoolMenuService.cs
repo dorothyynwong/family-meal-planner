@@ -11,6 +11,7 @@ public interface ISchoolMenuService
     Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, string weekCommencings, int familyId, int userId);
     Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId);
     Task<List<SchoolMenuWeek>> GetSchoolMenuByDate(int familyId, int userId, DateOnly menuDate);
+    Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate);
 }
 
 public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuService
@@ -85,12 +86,34 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
 
     public async Task<List<SchoolMenuWeek>> GetSchoolMenuByDate(int familyId, int userId, DateOnly menuDate)
     {
+        var dayOfWeek = menuDate.DayOfWeek;
+        DateOnly monday = menuDate.AddDays(-(int)dayOfWeek + (int)DayOfWeek.Monday);
+
         var schoolMenuWeeks = await _context.SchoolMenuWeeks
                                         .Include(sw => sw.SchoolMenu)
                                         .ThenInclude(sm => sm.SchoolMeals)
-                                        .Where(sw => sw.WeekCommercing == menuDate)
+                                        .Where(sw => sw.WeekCommercing == monday)
                                         .ToListAsync();
+                
 
         return schoolMenuWeeks;
+    }
+
+    public async Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate)
+    {
+        var dayOfWeek = menuDate.DayOfWeek;
+        DayType day = (FamilyMealPlanner.Enums.DayType)(dayOfWeek + 1);
+
+        DateOnly monday = menuDate.AddDays(-(int)dayOfWeek + (int)DayOfWeek.Monday);
+
+        var schoolMeals = await _context.SchoolMenuWeeks
+                                .Include(sw => sw.SchoolMenu)
+                                .ThenInclude(sm => sm.SchoolMeals)
+                                .Where(sw => sw.WeekCommercing == monday)
+                                .SelectMany(sw => sw.SchoolMenu.SchoolMeals) 
+                                .Where(sm => sm.Day == day) 
+                                .ToListAsync();
+
+        return schoolMeals;
     }
 }
