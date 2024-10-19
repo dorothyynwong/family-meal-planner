@@ -67,10 +67,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         }
     }, [selectedRecipe, modalShow]);
 
-    // const handleClick = () => {
-    //     const isFromMealForm = true;
-    //     navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } });
-    // }
     const isFromMealForm = true;
 
     const handleDelete = () => {
