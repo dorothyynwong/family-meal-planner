@@ -63,7 +63,7 @@ export async function getRecipeByUserId() {
 
 export async function uploadImage(uploadImage: File) {
     const formData = new FormData();
-    formData.append('uploadImage',uploadImage);
+    formData.append('uploadImage', uploadImage);
     try {
         const response: AxiosResponse = await client.post('recipes/upload-image', formData, {
             headers: {
@@ -143,19 +143,19 @@ export async function getMealTypes() {
         return response;
     } catch (error) {
         throw error;
-    }  
+    }
 }
 
 export async function userLogin(email: string, password: string) {
     try {
         const response: AxiosResponse = await client.post(`/auth/login`, {
-                email: email,
-                password: password,
+            email: email,
+            password: password,
         });
         return response;
     } catch (error) {
         throw error;
-    }      
+    }
 }
 
 export async function userLogout() {
@@ -164,14 +164,14 @@ export async function userLogout() {
         return response;
     } catch (error) {
         throw error;
-    }      
+    }
 }
 
 export async function refreshToken() {
     try {
-        const response: AxiosResponse = await client.post(`/auth/refresh`,{});
+        const response: AxiosResponse = await client.post(`/auth/refresh`, {});
 
-        return response.data; 
+        return response.data;
     } catch (error) {
         throw error;
     }
@@ -179,7 +179,7 @@ export async function refreshToken() {
 
 export async function userSignup(user: UserSignupInterface) {
     try {
-        const response: AxiosResponse = await client.post('/auth/signup', user,  {withCredentials: false} );
+        const response: AxiosResponse = await client.post('/auth/signup', user, { withCredentials: false });
         return response;
     } catch (error) {
         throw error;
@@ -206,7 +206,7 @@ export async function addFamilyUser(familyUser: FamilyUserCreationInterface) {
 
 export async function familyCodeShare(familyCodeShare: FamilyCodeShareInterface) {
     try {
-        const response: AxiosResponse = await client.post('/families/share-code', familyCodeShare );
+        const response: AxiosResponse = await client.post('/families/share-code', familyCodeShare);
         return response;
     } catch (error) {
         throw error;
@@ -230,12 +230,53 @@ export async function getFamilyRoleTypes() {
         return response;
     } catch (error) {
         throw error;
-    }  
+    }
 }
 
 export async function updateFamilyRole(familyRole: FamilyRoleUpdateInterface) {
     try {
         const response: AxiosResponse = await client.put(`/familyUsers/update-role`, familyRole);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getSchoolMenusByFamilyId(familyId: number) {
+    try {
+        const response: AxiosResponse = await client.get(`/schoolMenus`, {
+            params: {
+                familyId: familyId,
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getSchoolMenuByDate(familyId: number, weekCommercing: string) {
+    try {
+        const response: AxiosResponse = await client.get(`/schoolMenus/weekmenu-by-date`, {
+            params: {
+                familyId: familyId,
+                menuDate: weekCommercing
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getSchoolMealsByDate(familyId: number, menuDate: string) {
+    try {
+        const response: AxiosResponse = await client.get(`/schoolMenus/meals-by-date`, {
+            params: {
+                familyId: familyId,
+                menuDate: menuDate
+            }
+        });
         return response;
     } catch (error) {
         throw error;

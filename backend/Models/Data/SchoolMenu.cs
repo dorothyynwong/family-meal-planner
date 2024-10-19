@@ -9,8 +9,7 @@ public class SchoolMenu
     [Key]
     public int Id { get; set; }
 
-    public DateOnly? WeekCommercing { get; set; }
-
+    // public DateOnly? WeekCommercing { get; set; }
     public ICollection<SchoolMeal> SchoolMeals { get; set; }
 
     public SchoolMenuStatus Status { get; set; }
@@ -20,4 +19,8 @@ public class SchoolMenu
 
     public Family Family { get; set; }
     public User User { get; set; }
+}
+
+public class SchoolMenuDate
+{
 }

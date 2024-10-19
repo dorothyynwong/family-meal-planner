@@ -61,81 +61,30 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
         };
 
         var json = JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        // var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
-        if (response.IsSuccessStatusCode)
-        {
-            var responseBody = await response.Content.ReadAsStringAsync();
-            Logger.Info("Response from OpenAI:");
-            Logger.Info(responseBody);
+        // var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
+        // if (response.IsSuccessStatusCode)
+        // {
+        //     var responseBody = await response.Content.ReadAsStringAsync();
+        //     Logger.Info("Response from OpenAI:");
+        //     Logger.Info(responseBody);
 
-            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+        //     var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
 
             /**Test Code**/
-            // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
-            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
+            string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
+            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
 
-            foreach (var choice in openAIResponse.Choices)
-            {
-                var nestedJson = choice.Message.Content;
-                nestedJson = nestedJson.Replace("```json\n", "").Replace("\n```", "").Replace("\\n", "").Replace("\\\"", "\"");
-                try
-                {
-                    var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
-                    foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
-                    {
-                        SchoolMenu schoolMenu = new SchoolMenu
-                        {
-                            Status = SchoolMenuStatus.Draft,
-                            FamilyId = familyId,
-                            UserId = userId,
-                        };
-
-                        _context.SchoolMenus.Add(schoolMenu);
-                        await _context.SaveChangesAsync();
-                        int schoolMenuId = schoolMenu.Id;
-
-                        foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
-                        {
-                            if(!Enum.TryParse<DayType>(dayMenuResponse.Day, true, out var mealDay))
-                                throw new InvalidOperationException("Invalid DayType");
-            
-                            foreach (var mealResponse in dayMenuResponse.SchoolMeals)
-                            {
-                                var mealName = mealResponse.MealName;
-                                var mealCategory = mealResponse.Category;
-                                var allergens = string.Join(", ", mealResponse.Allergens);
-                                SchoolMeal schoolMeal = new SchoolMeal 
-                                {
-                                    Day = mealDay,
-                                    SchoolMenuId = schoolMenuId,
-                                    MealName = mealName,
-                                    Category = mealCategory,
-                                    Allergens = allergens
-                                };
-
-                                _context.SchoolMeals.Add(schoolMeal);
-                                await _context.SaveChangesAsync();
-                            }
-                        }
-                    }
-                }
-                catch (Exception ex)
-                {
-                    Logger.Error($"Error parsing JSON content: {ex.Message}");
-                }
-               
-            }
             return openAIResponse;
-        }
-        else
-            {
-                Logger.Error($"Error: {response.StatusCode}");
-                var errorResponse = await response.Content.ReadAsStringAsync();
-                Logger.Error($"Error details: {errorResponse}");
-                throw new Exception(errorResponse);
-            }
+        // }
+        // else
+        //     {
+        //         Logger.Error($"Error: {response.StatusCode}");
+        //         var errorResponse = await response.Content.ReadAsStringAsync();
+        //         Logger.Error($"Error details: {errorResponse}");
+        //         throw new Exception(errorResponse);
+        //     }
         }
 
     }

@@ -12,7 +12,7 @@ public class SchoolMeal
     [ForeignKey("SchoolMenu")]
     public int SchoolMenuId { get; set; }
 
-    public SchoolMenu SchoolMenu { get; set; }
+    // public SchoolMenu SchoolMenu { get; set; }
 
     public DayType Day { get; set; }
 
