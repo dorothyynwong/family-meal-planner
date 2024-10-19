@@ -9,6 +9,7 @@ import {
 
 import "./MealPlanCalendar.scss";
 import { EventInterface } from '../../Utils/convertMealsToEvents';
+import { useMeal } from '../MealContext/MealContext';
 
 const mLocalizer = momentLocalizer(moment);
 
@@ -38,9 +39,9 @@ const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   );
 }
 
-const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate, mealEvents}) => {
+const Basic: React.FC<MealPlanCalendarProps> = ({ startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate, mealEvents }) => {
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
-  // const [mealEvents, setMealEvents] = useState(events);
+  const { setMealDate } = useMeal();
 
   const clickRef = useRef<number | null>(null);
 
@@ -48,6 +49,12 @@ const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDat
     clickRef.current = window.setTimeout(() => {
       setSelectedSlot(slotInfo);
       setSelectedDate(slotInfo.start);
+      const date = slotInfo.start;
+      const year = date.getFullYear();
+      const month = String(date.getMonth() + 1).padStart(2, '0'); 
+      const day = String(date.getDate()).padStart(2, '0');
+      const formattedDate = `${year}-${month}-${day}`
+      setMealDate(formattedDate);
     }, 100);
   }, []);
 
@@ -62,7 +69,7 @@ const Basic: React.FC<MealPlanCalendarProps> = ({startDate, endDate, selectedDat
     []
   );
 
-  const customDayPropGetter = (date:Date) => {
+  const customDayPropGetter = (date: Date) => {
     if (date.getDate() === selectedSlot?.start.getDate() && date.getMonth() === selectedSlot?.start.getMonth())
       return {
         className: "selected-date",

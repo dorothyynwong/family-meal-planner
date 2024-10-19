@@ -12,6 +12,7 @@ import dayjs, { Dayjs } from 'dayjs';
 import MealTypeSelect from "../MealTypeSelect/MealTypeSelect";
 import RecipeSearch from "../RecipeSearch/RecipeSearch";
 import DateInput from "../MealDateInput/MealDateInput";
+import MealDateInput from "../MealDateInput/MealDateInput";
 
 interface MealFormProps {
     isForFamily?: boolean
@@ -43,7 +44,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
 
 
     useEffect(() => {
-        setMealDate(dayjs(selectedDate).format('YYYY-MM-DD'));
+        if (!mealDate) setMealDate(dayjs(selectedDate).format('YYYY-MM-DD'));
         setStatus("loading");
         setErrorMessages([]);
         getMealTypes()
@@ -176,7 +177,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                 )}
 
                 <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
-                <DateInput mealDate={mealDate} setMealDate={setMealDate} />
+                <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
                 <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
 
                 <Form.Group controlId="meal-notes">
