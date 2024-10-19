@@ -9,7 +9,7 @@ interface SchoolMenuSelectProps {
 }
 
 const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({ }) => {
-    const { mealDate } = useMeal();
+    const { mealDate, schoolMealId, setSchoolMealId } = useMeal();
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [schoolMeals, setSchoolMeals] = useState<SchoolMealInterface[]>([]);
@@ -40,7 +40,8 @@ const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({ }) => {
         >
             <></>
         </StatusHandler>
-        {schoolMeals && schoolMeals.length >0 && <Form.Select aria-label="Default select example">
+        {schoolMeals && schoolMeals.length >0 && 
+        <Form.Select aria-label="Default select example" onChange={(e) => setSchoolMealId(Number(e.target.value))}>
             <option>Select a Meal</option>
             {schoolMeals.map((meal, index) => <option key={index} value={meal.id}>{meal.mealName} - {meal.category}</option>)}
         </Form.Select>}
