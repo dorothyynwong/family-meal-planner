@@ -9,6 +9,7 @@ namespace FamilyMealPlanner.Services;
 public interface ISchoolMenuService
 {
     Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, int familyId, int userId);
+    Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId);
 }
 
 public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuService
@@ -53,5 +54,16 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
                 }
             }
         }
+    }
+
+    public async Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId)
+    {
+        var schoolMenu = await _context.SchoolMenus
+                                        .Include(schoolMenu => schoolMenu.SchoolMeals)
+                                        .Where(schoolMenu => schoolMenu.FamilyId == familyId 
+                                                            && schoolMenu.UserId == userId)
+                                        .ToListAsync();
+
+        return schoolMenu;
     }
 }

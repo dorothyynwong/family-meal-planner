@@ -26,7 +26,7 @@ public class SchoolMenuController(IPdfService pdfService,
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    [HttpGet]
+    [HttpGet("import")]
     public async Task<IActionResult> Import([FromQuery] int familyId)
     {
         if (!ModelState.IsValid)
@@ -57,7 +57,8 @@ public class SchoolMenuController(IPdfService pdfService,
                     try
                     {
                         var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
-                        await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, familyId, userId);
+                        if (schoolMenuResponse != null)
+                            await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, familyId, userId);
                     }
                     catch (Exception ex)
                     {
@@ -76,5 +77,16 @@ public class SchoolMenuController(IPdfService pdfService,
             Logger.Error($"Failed to import school menu: {ex.Message}");
             return BadRequest($"Unable to import school menu: {ex.Message}");
         }
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> GetSchoolMenus([FromQuery] int familyId)
+    {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
+        var schoolMenus = await _schoolMenuService.GetSchoolMenus(familyId, userId);
+
+        return Ok(schoolMenus);
     }
 }

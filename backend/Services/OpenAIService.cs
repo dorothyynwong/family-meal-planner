@@ -61,21 +61,21 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
         };
 
         var json = JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
+        // var content = new StringContent(json, Encoding.UTF8, "application/json");
 
         // var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
         // if (response.IsSuccessStatusCode)
         // {
-            // var responseBody = await response.Content.ReadAsStringAsync();
-            // Logger.Info("Response from OpenAI:");
-            // Logger.Info(responseBody);
+        //     var responseBody = await response.Content.ReadAsStringAsync();
+        //     Logger.Info("Response from OpenAI:");
+        //     Logger.Info(responseBody);
 
-            // var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+        //     var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
 
             /**Test Code**/
             string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\test.txt");
             var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
-            
+
             return openAIResponse;
         // }
         // else
