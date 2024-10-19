@@ -77,3 +77,22 @@ export interface FamilyRoleUpdateInterface {
     userId: number;
     newRole: string;
 }
+
+export interface SchoolMealInterface {
+    id: number;
+    schoolMenuId: number;
+    day: string;
+    mealName?: string;
+    category?: string;
+    allergens?: string;
+}
+
+export interface SchoolMenuInterface {
+    id: number;
+    weekCommercing: Date;
+    schoolmeals: SchoolMealInterface[];
+    status: string;
+    familyId: number;
+    userId: number;
+}
+
