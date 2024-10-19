@@ -247,4 +247,24 @@ public class FamilyUserServiceTests
         result.Should().BeFalse();
     }
 
+    [Test]
+    public async Task IsSameFamily_ReturnTrue()
+    {
+        int userId1 = 1;
+        int userId2 = 2;
+
+        bool result = await _familyUserService.IsSameFamily(userId1, userId2);
+        result.Should().BeTrue();
+    }
+
+    [Test]
+    public async Task IsSameFamily_ReturnFalse()
+    {
+        int userId1 = 3;
+        int userId2 = 4;
+
+        bool result = await _familyUserService.IsSameFamily(userId1, userId2);
+        result.Should().BeFalse();
+    }
+
 }

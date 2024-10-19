@@ -11,7 +11,9 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/recipes")]
-public class RecipeController(IWebScrappingService webScrappingService, IRecipeService recipeService, IImageService imageService) : Controller
+public class RecipeController(IWebScrappingService webScrappingService, 
+                                IRecipeService recipeService, 
+                                IImageService imageService) : Controller
 {
     private readonly IWebScrappingService _webScrappingService = webScrappingService;
     private readonly IRecipeService _recipeService = recipeService;
@@ -47,7 +49,7 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
         try
         {
-            int recipeId = await _recipeService.AddRecipe(recipe);
+            int recipeId = await _recipeService.AddRecipe(recipe, userId);
             return Ok(recipeId);
         }
         catch (Exception ex)
@@ -66,7 +68,7 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
         try
         {
-            Recipe recipe = await _recipeService.GetRecipeById(recipeId);
+            Recipe recipe = await _recipeService.GetRecipeById(recipeId, userId);
             return Ok(recipe);
         }
         catch (Exception ex)
@@ -106,7 +108,7 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
         try
         {
-            await _recipeService.UpdateRecipe(recipeRequest, recipeId);
+            await _recipeService.UpdateRecipe(recipeRequest, recipeId, userId);
             return Ok(recipeRequest);
         }
         catch (Exception ex)
@@ -126,7 +128,7 @@ public class RecipeController(IWebScrappingService webScrappingService, IRecipeS
 
         try
         {
-            await _recipeService.Delete(recipeId);
+            await _recipeService.Delete(recipeId, userId);
             return Ok();
         }
         catch (Exception ex)
