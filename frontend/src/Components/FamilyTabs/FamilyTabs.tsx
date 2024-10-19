@@ -4,12 +4,11 @@ import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
 import { SyntheticEvent, useEffect, useState } from 'react';
 import FamilyTabPanel from '../FamilyTabPanel/FamilyTabPanel';
-import { FamilyUserInterface, FamilyWithUsersInterface } from '../../Api/apiInterface';
-import MealDaily from '../MealDaily/MealDaily';
+import { FamilyWithUsersInterface } from '../../Api/apiInterface';
 import UserMealsCard from '../UserMealsCard/UserMealsCard';
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { useMeal } from '../MealContext/MealContext';
-
+import FamilyMealsCard from '../FamilyMealsCard/FamilyMealsCard';
 interface FamilyTabsProps {
     data: FamilyWithUsersInterface[];
     selectedDate: Dayjs;
@@ -17,16 +16,17 @@ interface FamilyTabsProps {
 
 const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     const familiesAsCook = data.filter(fu => fu.familyRole === "Cook");
-    const [value, setValue] = useState<number>(familiesAsCook[0]?.familyId);
-    
     const {
         selectedFamily,
         setSelectedFamily,
     } = useMeal();
 
+    const initialValue = familiesAsCook[0]?.familyId;
+    const [value, setValue] = useState<number>(selectedFamily ? selectedFamily?.familyId : initialValue);
+
     useEffect(() => {
-        setSelectedFamily(familiesAsCook[0]);
-    }, []);
+        if(!selectedFamily) setSelectedFamily(familiesAsCook[0]);
+    }, [familiesAsCook, setSelectedFamily]);
 
     const handleChange = (event: SyntheticEvent, newValue: number) => {
         const family = familiesAsCook.find(fu => fu.familyId === newValue);
@@ -37,7 +37,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
     if (familiesAsCook.length <= 0) return (<>No families meal plans to manage</>);
 
     return (
-        <Box sx={{ bgcolor: 'background.paper'}}>
+        <Box sx={{ bgcolor: 'background.paper' }}>
             <Tabs
                 value={value}
                 onChange={handleChange}
@@ -59,6 +59,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
                     value={value}
                     index={fu.familyId}
                 >
+                    <FamilyMealsCard key={index} mealDate={selectedDate.toDate()} data={selectedFamily} />
                     {fu.familyUsers.map(
                         (user, index) => (
                             <UserMealsCard key={index} mealDate={selectedDate.toDate()} data={user} />

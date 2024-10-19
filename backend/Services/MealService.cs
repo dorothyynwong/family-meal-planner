@@ -10,6 +10,7 @@ public interface IMealService
 {
     Task<int> AddMeal(MealRequest mealRequest, int userId);
     Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId);
+    Task<List<MealResponse>> GetMealByDateFamilyId(DateOnly fromDate, DateOnly toDate, int familyId, int requestUserId);
     Task UpdateMeal(MealRequest mealRequest, int mealId, int userId);
     Task Delete(int mealId, int userId);
     Task<Meal> GetMealById(int mealId);
@@ -38,20 +39,30 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
     {
         ValidateRequest(mealRequest);
 
+        if (mealRequest.FamilyId > 0 && !await _familyUserService.IsCook((int)mealRequest.FamilyId, userId))
+        {
+            Logger.Error($"Unauthorised access of family {mealRequest.FamilyId} by {userId}");
+            throw new UnauthorizedAccessException($"Unauthorised access of family {mealRequest.FamilyId} by {userId}");
+        }
+
         try
         {
-            Meal meal = new Meal()
-            {
-                Date = mealRequest.Date,
-                RecipeId = mealRequest.RecipeId,
-                UserId = userId,
-                FamilyId = mealRequest.FamilyId,
-                MealType = mealRequest.GetMealTypeEnum(),
-                AddedByUserId = userId,
-                Notes = mealRequest.Notes,
-            };
+            Meal meal = new Meal();
+            meal.Date = mealRequest.Date;
+            meal.RecipeId = mealRequest.RecipeId;
 
-            Logger.Debug(userId);
+            if (mealRequest.FamilyId > 0)
+            {
+                meal.FamilyId = mealRequest.FamilyId;
+            }
+            else
+            {
+                meal.UserId = userId;
+            }
+
+            meal.MealType = mealRequest.GetMealTypeEnum();
+            meal.AddedByUserId = userId;
+            meal.Notes = mealRequest.Notes;
 
             _context.Meals.Add(meal);
             await _context.SaveChangesAsync();
@@ -72,12 +83,12 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
 
     public async Task<List<MealResponse>> GetMealByDateUserId(DateOnly fromDate, DateOnly toDate, int familyId, int userId, int requestUserId)
     {
-        if (requestUserId != userId && !await _familyUserService.IsRequestUserAuthorised(familyId, userId, requestUserId))
+        if (requestUserId != userId && !await _familyUserService.IsCook(familyId, requestUserId))
         {
-                Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
-                throw new UnauthorizedAccessException("Unathorised Access");
+            Logger.Error($"Unauthorised Access for user {userId} by user {requestUserId}");
+            throw new UnauthorizedAccessException("Unathorised Access");
         }
-            
+
         try
         {
             List<Meal> meals = await _context.Meals
@@ -87,7 +98,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                             meal.UserId == userId)
                                                     .ToListAsync();
 
-            if (meals == null || meals.Count <=0 ) return [];
+            if (meals == null || meals.Count <= 0) return [];
 
             List<MealResponse> mealResponses = new();
 
@@ -123,7 +134,59 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
             throw new Exception($"Error while getting meals from database");
         }
     }
+    public async Task<List<MealResponse>> GetMealByDateFamilyId(DateOnly fromDate, DateOnly toDate, int familyId, int requestUserId)
+    {
+        if (!await _familyUserService.IsCook(familyId, requestUserId))
+        {
+            Logger.Error($"Unauthorised Access for family {familyId} by user {requestUserId}");
+            throw new UnauthorizedAccessException("Unathorised Access");
+        }
 
+        try
+        {
+            List<Meal> meals = await _context.Meals
+                                                    .Include(meal => meal.Recipe)
+                                                    .Where(meal => meal.Date >= fromDate &&
+                                                            meal.Date <= toDate &&
+                                                            meal.FamilyId == familyId)
+                                                    .ToListAsync();
+
+            if (meals == null || meals.Count <= 0) return [];
+
+            List<MealResponse> mealResponses = new();
+
+            foreach (Meal meal in meals)
+            {
+                MealResponse mealResponse = new MealResponse
+                {
+                    Id = meal.Id,
+                    Date = meal.Date,
+                    RecipeId = meal.RecipeId,
+                    RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
+                    RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
+                    UserId = meal.UserId,
+                    FamilyId = meal.FamilyId,
+                    MealType = meal.MealType.ToString(),
+                    AddedByUserId = meal.AddedByUserId,
+                    Notes = meal.Notes,
+                };
+                mealResponses.Add(mealResponse);
+            }
+
+            if (meals == null || meals.Count == 0)
+            {
+                Logger.Error($"No meals between {fromDate} to {toDate} for family {familyId}");
+                throw new ArgumentNullException($"No meals between {fromDate} to {toDate} for family {familyId}");
+            }
+
+            return mealResponses;
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Error while getting meals from database from {fromDate} to {toDate} for family {familyId}, {ex}");
+            throw new Exception($"Error while getting meals from database");
+        }
+    }
     public async Task<Meal> GetMealById(int mealId)
     {
         Meal meal = await _context.Meals.SingleAsync(meal => meal.Id == mealId);

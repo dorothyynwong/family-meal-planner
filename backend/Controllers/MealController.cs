@@ -13,10 +13,9 @@ namespace FamilyMealPlanner.Controllers;
 [Authorize]
 [ApiController]
 [Route("/meals")]
-public class MealController(IMealService mealService, IFamilyUserService familyUserService) : Controller
+public class MealController(IMealService mealService) : Controller
 {
     private readonly IMealService _mealService = mealService;
-    private readonly IFamilyUserService _familyUserService = familyUserService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpPost("")]
@@ -30,6 +29,12 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
             meal.AddedByUserId = userId;
             int mealId = await _mealService.AddMeal(meal, userId);
             return Ok(mealId);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.Error($"Unauthorised Access: {ex.Message}");
+            return Unauthorized();
+
         }
         catch (Exception ex)
         {
@@ -46,8 +51,6 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
             return Unauthorized();
             
         if (userId == 0) userId = requestUserId;
-
-        Logger.Debug($"Meal Controller {familyId}, {userId}, {requestUserId}");
 
         try
         {
@@ -71,6 +74,40 @@ public class MealController(IMealService mealService, IFamilyUserService familyU
         {
             Logger.Error($"Failed to get meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
             return BadRequest($"Failed to get meals bewteen {fromDate} to {toDate} for {userId}: {ex.Message}");
+        }
+
+    }
+
+    [HttpGet("by-family")]
+    public async Task<IActionResult> GetByDateFamilyId([FromQuery] DateOnly fromDate, DateOnly toDate, int familyId, int userId)
+    {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int requestUserId))
+            return Unauthorized();
+            
+        if (userId == 0) userId = requestUserId;
+
+        try
+        {
+            List<MealResponse> meals = await _mealService.GetMealByDateFamilyId(fromDate, toDate, familyId, userId);
+
+            if (meals == null || meals.Count <= 0) return NoContent();  
+            return Ok(meals);
+        }
+        catch (UnauthorizedAccessException ex)
+        {
+            Logger.Error($"Unauthorised Access for family {familyId} by user {userId}: {ex.Message}");
+            return Unauthorized();
+        }
+        catch (ArgumentNullException ex)
+        {
+            Logger.Info($"No meals bewteen {fromDate} to {toDate} for {familyId}: {ex.Message}");
+            return NoContent(); 
+            
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Failed to get meals bewteen {fromDate} to {toDate} for {familyId}: {ex.Message}");
+            return BadRequest($"Failed to get meals bewteen {fromDate} to {toDate} for {familyId}: {ex.Message}");
         }
 
     }

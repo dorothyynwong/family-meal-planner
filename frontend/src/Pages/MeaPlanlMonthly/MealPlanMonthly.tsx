@@ -22,8 +22,6 @@ const MealPlanMonthly: React.FC = () => {
     const { modalShow, setModalShow, setMode } = useMeal();
     const [convertedEvents, setConvertedEvents] = useState<EventInterface[]>([]);
 
-    const userId = 1;
-
     const handleClick = () => {
         setMode("Add");
         setModalShow(true);
@@ -37,7 +35,6 @@ const MealPlanMonthly: React.FC = () => {
         getMealByDateUserId(startDate.toDateString(), endDate.toDateString())
             .then(meals => {
                 setMeals(meals.data);
-                console.log(meals);
                 setStatus("success");
             })
             .catch(error => {
@@ -92,7 +89,7 @@ const MealPlanMonthly: React.FC = () => {
             {
                 mealOfDate &&
                 mealOfDate.map((meal, index) => (
-                    <MealCard key={index} meal={meal} />
+                    <MealCard key={index} meal={meal} isReadOnly={false} />
                 ))}
         </>
 

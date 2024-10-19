@@ -227,5 +227,24 @@ public class FamilyUserServiceTests
 
     }
 
+    [Test]
+    public async Task IsUserCook_Return_True()
+    {
+        int familyId = 1;
+        int userId = 1;
+        bool result = await _familyUserService.IsCook(familyId, userId);
+
+        result.Should().BeTrue();
+    }
+
+    [Test]
+    public async Task IsUserCook_Return_False()
+    {
+        int familyId = 1;
+        int userId = 3;
+        bool result = await _familyUserService.IsCook(familyId, userId);
+
+        result.Should().BeFalse();
+    }
 
 }

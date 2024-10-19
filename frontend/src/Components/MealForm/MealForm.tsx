@@ -1,19 +1,21 @@
 import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
-import { Button, Col, Form, InputGroup, Row } from "react-bootstrap";
-import { useNavigate, useParams } from "react-router-dom";
+import { Button, Form, InputGroup} from "react-bootstrap";
+import { useNavigate} from "react-router-dom";
 import { addMeal, deleteMeal, getMealTypes, updateMeal } from "../../Api/api";
 import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
+import dayjs, { Dayjs } from 'dayjs';
 
 interface MealFormProps {
     isForFamily?: boolean
+    selectedDate?: Dayjs
 }
 
-const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
+const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
@@ -32,13 +34,13 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
         setModalShow,
         resetMealContext,
         selectedFamily,
-        setSelectedFamily,
     } = useMeal();
 
     const navigate = useNavigate();
 
 
     useEffect(() => {
+        setMealDate(dayjs(selectedDate).format('YYYY-MM-DD'));
         setStatus("loading");
         setErrorMessages([]);
         getMealTypes()
@@ -110,6 +112,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
         setErrorMessages([]);
 
         const meal: MealDetailsInterface = {
+            familyId: selectedFamily?.familyId,
             date: mealDate,
             notes: mealNotes,
             mealType: selectedMealType,
@@ -149,7 +152,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
         setStatus("idle");
     }
 
-
     return (
         <Popup
             customclass="meal-form"
@@ -161,7 +163,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
                 {isForFamily &&
                 (
                     <Form.Group className="mb-3" controlId="meal-family-name">
-                        {/* <Form.Label column sm="1">Family</Form.Label> */}
                         <Form.Control 
                             type="text" 
                             className="mt-3 meal-family-name"
@@ -223,7 +224,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
                     <Button id="delete-meal-button" className="mt-3 custom-button" type="button" onClick={handleDelete}>Delete</Button>
                 }
 
-
                 <StatusHandler
                     status={status}
                     errorMessages={errorMessages}
@@ -232,7 +232,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily }) => {
                 >
                     <></>
                 </StatusHandler>
-
             </Form>
         </Popup>);
 }

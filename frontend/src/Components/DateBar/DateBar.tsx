@@ -1,9 +1,9 @@
 import { DatePicker, LocalizationProvider } from "@mui/x-date-pickers";
-import dayjs, { Dayjs } from 'dayjs';
+import { Dayjs } from 'dayjs';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import 'dayjs/locale/en-gb';
 import { useState } from "react";
-import { AppBar, Box, createTheme, IconButton, TextField, ThemeProvider, Toolbar, Typography } from "@mui/material";
+import { AppBar, Box,  IconButton, TextField, Toolbar, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
 
