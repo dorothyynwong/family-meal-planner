@@ -1,0 +1,57 @@
+using FamilyMealPlanner.Enums;
+using FamilyMealPlanner.Models;
+using Microsoft.EntityFrameworkCore;
+using NLog;
+
+
+namespace FamilyMealPlanner.Services;
+
+public interface ISchoolMenuService
+{
+    Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, int familyId, int userId);
+}
+
+public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuService
+{
+    private readonly FamilyMealPlannerContext _context = context;
+    public async Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, int familyId, int userId)
+    {
+        foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
+        {
+            SchoolMenu schoolMenu = new SchoolMenu
+            {
+                Status = SchoolMenuStatus.Draft,
+                FamilyId = familyId,
+                UserId = userId,
+            };
+
+            _context.SchoolMenus.Add(schoolMenu);
+            await _context.SaveChangesAsync();
+            int schoolMenuId = schoolMenu.Id;
+
+            foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
+            {
+                if (!Enum.TryParse<DayType>(dayMenuResponse.Day, true, out var mealDay))
+                    throw new InvalidOperationException("Invalid DayType");
+
+                foreach (var mealResponse in dayMenuResponse.SchoolMeals)
+                {
+                    var mealName = mealResponse.MealName;
+                    var mealCategory = mealResponse.Category;
+                    var allergens = string.Join(", ", mealResponse.Allergens);
+                    SchoolMeal schoolMeal = new SchoolMeal
+                    {
+                        Day = mealDay,
+                        SchoolMenuId = schoolMenuId,
+                        MealName = mealName,
+                        Category = mealCategory,
+                        Allergens = allergens
+                    };
+
+                    _context.SchoolMeals.Add(schoolMeal);
+                    await _context.SaveChangesAsync();
+                }
+            }
+        }
+    }
+}

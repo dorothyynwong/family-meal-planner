@@ -33,7 +33,7 @@ public class SchoolMenuController(IPdfService pdfService,
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
-        if (_userService.GetUserById(userId) == null)
+        if (await _userService.GetUserById(userId) == null)
             return Unauthorized();
 
         FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
