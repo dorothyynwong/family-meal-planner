@@ -1,11 +1,11 @@
 import { Form } from "react-bootstrap";
 
-interface DateInputProps {
+interface MealDateInputProps {
   mealDate: string;
   setMealDate: (value: string) => void;
 }
 
-const DateInput: React.FC<DateInputProps> = ({ mealDate, setMealDate }) => (
+const MealDateInput: React.FC<MealDateInputProps> = ({ mealDate, setMealDate }) => (
   <Form.Control
     type="date"
     className="mt-3 meal-date"
@@ -14,4 +14,4 @@ const DateInput: React.FC<DateInputProps> = ({ mealDate, setMealDate }) => (
   />
 );
 
-export default DateInput;
+export default MealDateInput;

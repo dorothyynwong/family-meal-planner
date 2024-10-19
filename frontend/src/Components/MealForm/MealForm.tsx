@@ -183,17 +183,8 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                     <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
                 </Form.Group>
 
-                {mode === "Add" &&
-                    <Button id="add-meal-button" className="mt-3 custom-button" type="submit">Add</Button>
-                }
-
-                {mode === "Edit" &&
-                    <Button id="update-meal-button" className="mt-3 custom-button" type="submit">Update</Button>
-                }
-
-                {mode === "Edit" &&
-                    <Button id="delete-meal-button" className="mt-3 custom-button" type="button" onClick={handleDelete}>Delete</Button>
-                }
+                <Button className="mt-3 custom-button" type="submit">{mode === "Add" ? "Add" : "Update"}</Button>
+                {mode === "Edit" && <Button className="mt-3 custom-button" onClick={handleDelete}>Delete</Button>}
 
                 <StatusHandler
                     status={status}
