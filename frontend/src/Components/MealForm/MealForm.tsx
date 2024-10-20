@@ -14,6 +14,7 @@ import RecipeSearch from "../RecipeSearch/RecipeSearch";
 import DateInput from "../MealDateInput/MealDateInput";
 import MealDateInput from "../MealDateInput/MealDateInput";
 import SchoolMenuSelect from "../SchoolMenuSelect/SchoolMenuSelect";
+import MealFormSelection from "../MealFormSelection/MealFormSelection";
 
 interface MealFormProps {
     isForFamily?: boolean
@@ -24,6 +25,8 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
+    const [mealFormType, setMealFormType] = useState("recipe");
+
     const { mode,
         currentMeal,
         recipeName,
@@ -173,8 +176,11 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                   </Form.Group>
                 )}
 
-                <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
-                <SchoolMenuSelect />
+                <MealFormSelection mealFormType={mealFormType} setMealFormType={setMealFormType}/>
+                {mealFormType==="recipe" ?
+                    <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
+                :   <SchoolMenuSelect />}
+                
                 <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
                 <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
 
