@@ -20,8 +20,9 @@ const SchoolMealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
         <Card sx={{ maxWidth: 345, mx: 0, mb: 1 }} >
             <CardContent>
                 <SchoolMealDaySelect 
-                    mealDay={meal.day}
                     mealDays={mealDays}
+                    mealDay={meal.day!}
+                    mealId={meal.id!}
                     selectedMealDay={selectedMealDay}
                     setSelectedMealDay={setSelectedMealDay} />
 

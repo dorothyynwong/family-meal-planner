@@ -15,7 +15,6 @@ const SchoolMenuEdit: React.FC = () => {
 
         getSchoolMenuWeekByMenuId(66)
             .then(response => {
-                console.log(response.data);
                 setSchoolMenu(response.data);
                 setStatus("success");
             })
