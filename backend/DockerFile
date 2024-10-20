@@ -9,11 +9,11 @@ WORKDIR /src
 
 # Copy the project files to the container. 
 # Make sure to include the correct path to your backend project directory.
-COPY ["familyplanner/backend/backend.csproj", "./"]
+COPY ["family-meal-planner/backend/backend.csproj", "./"]
 RUN dotnet restore "backend.csproj"
 
 # Copy the rest of the backend files
-COPY ./familyplanner/backend .
+COPY ./family-meal-planner/backend .
 
 # Build the application
 RUN dotnet build "backend.csproj" -c Release -o /app/build
