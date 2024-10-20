@@ -282,3 +282,12 @@ export async function getSchoolMealsByDate(familyId: number, menuDate: string) {
         throw error;
     }
 }
+
+export async function getSchoolMenuWeekByMenuId(schoolMenuId: number) {
+    try {
+        const response = await client.get(`/api/schoolmenus/${schoolMenuId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }  
+}

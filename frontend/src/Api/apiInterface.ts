@@ -101,3 +101,12 @@ export interface SchoolMenuWeekInterface {
     weekCommercing: Date;
     schoolMenuId: number;
 }
+
+export interface SchoolMenuWeekMealsInterface {
+    weekCommercing: Date[];
+    schoolMenuId: number;
+    status: string;
+    familyId: number;
+    userId: number;
+    schoolMeal: SchoolMealInterface[];
+}
