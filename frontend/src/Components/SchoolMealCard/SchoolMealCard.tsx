@@ -11,6 +11,7 @@ interface SchoolMealProps {
 
 const SchoolMealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
     const [selectedMealDay, setSelectedMealDay] = useState("");
+    
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
     };

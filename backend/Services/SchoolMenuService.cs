@@ -142,4 +142,17 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
 
         return schoolMeals;
     }
+
+    public async Task UpdateSchoolMeal(SchoolMeal schoolMeal, int schoolMealId)
+    {
+        SchoolMeal meal =  _context.SchoolMeals.SingleOrDefault(sm => sm.Id == schoolMealId);
+        if (meal == null)
+        {
+            Logger.Error($"School meal {schoolMealId} not found");
+            throw new ArgumentException($"School meal {schoolMealId} not found");
+        }
+
+        _context.SchoolMeals.Update(meal);
+        await _context.SaveChangesAsync();
+    }
 }
