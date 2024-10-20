@@ -61,7 +61,7 @@ const MealPlanMonthly: React.FC = () => {
 
     }, [selectedDate, meals])
 
-    if (!meals) return (<>No data</>);
+    // if (!meals) return (<>No data</>);
 
     return (
         <>

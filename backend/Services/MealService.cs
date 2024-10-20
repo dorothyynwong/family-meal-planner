@@ -49,7 +49,8 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
         {
             Meal meal = new Meal();
             meal.Date = mealRequest.Date;
-            meal.RecipeId = mealRequest.RecipeId;
+            if (mealRequest.RecipeId > 0) meal.RecipeId = mealRequest.RecipeId;
+            if (mealRequest.SchoolMealId > 0) meal.SchoolMealId = mealRequest.SchoolMealId;
 
             if (mealRequest.FamilyId > 0)
             {
@@ -93,6 +94,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
         {
             List<Meal> meals = await _context.Meals
                                                     .Include(meal => meal.Recipe)
+                                                    .Include(meal => meal.SchoolMeal)
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
                                                             meal.UserId == userId)
@@ -109,7 +111,9 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                     Id = meal.Id,
                     Date = meal.Date,
                     RecipeId = meal.RecipeId,
+                    SchoolMealId = meal.SchoolMealId,
                     RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
+                    SchoolMealName = meal.SchoolMeal != null ? meal.SchoolMeal.MealName : "",
                     RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
                     UserId = meal.UserId,
                     FamilyId = meal.FamilyId,
@@ -146,6 +150,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
         {
             List<Meal> meals = await _context.Meals
                                                     .Include(meal => meal.Recipe)
+                                                    .Include(meal => meal.SchoolMeal)
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
                                                             meal.FamilyId == familyId)
@@ -162,8 +167,10 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                     Id = meal.Id,
                     Date = meal.Date,
                     RecipeId = meal.RecipeId,
+                    SchoolMealId = meal.SchoolMealId,
                     RecipeName = meal.Recipe != null ? meal.Recipe.Name : "",
                     RecipeDefaultImage = meal.Recipe != null ? meal.Recipe.DefaultImageUrl : "",
+                    SchoolMealName = meal.SchoolMeal != null ? meal.SchoolMeal.MealName : "",
                     UserId = meal.UserId,
                     FamilyId = meal.FamilyId,
                     MealType = meal.MealType.ToString(),
@@ -201,6 +208,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
 
             meal.Date = mealRequest.Date;
             meal.RecipeId = mealRequest.RecipeId != null ? mealRequest.RecipeId : meal.RecipeId;
+            meal.SchoolMealId = mealRequest.SchoolMealId != null ? mealRequest.SchoolMealId : meal.SchoolMealId;
             meal.MealType = mealRequest.GetMealTypeEnum();
             meal.Notes = mealRequest.Notes;
 

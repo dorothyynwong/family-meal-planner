@@ -11,8 +11,10 @@ public class MealResponse
     public string? Name {get; set;}
 
     public int? RecipeId {get; set;}
+    public int? SchoolMealId {get; set;}
     public string? RecipeName {get; set;}
     public string? RecipeDefaultImage {get; set;}
+    public string? SchoolMealName {get; set;}
 
     public int? UserId {get; set;}
     

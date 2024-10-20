@@ -1,10 +1,5 @@
 using System.Text;
-using FamilyMealPlanner.Models;
-using Microsoft.EntityFrameworkCore;
-using NLog;
 using UglyToad.PdfPig;
-using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-
 
 namespace FamilyMealPlanner.Services;
 
@@ -20,7 +15,7 @@ public class PdfService() : IPdfService
         List<string> result = new List<string>();
         try
         {
-            using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu.pdf"))
+            using (var pdf = PdfDocument.Open(filePath))
             {
                 var text = new StringBuilder();
                 foreach (var page in pdf.GetPages())
