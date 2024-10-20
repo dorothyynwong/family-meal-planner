@@ -20,7 +20,3 @@ public class SchoolMenu
     public Family Family { get; set; }
     public User User { get; set; }
 }
-
-public class SchoolMenuDate
-{
-}

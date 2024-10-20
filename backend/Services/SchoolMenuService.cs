@@ -12,6 +12,8 @@ public interface ISchoolMenuService
     Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId);
     Task<List<SchoolMenuWeek>> GetSchoolWeekMenuByDate(int familyId, int userId, DateOnly menuDate);
     Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate);
+    Task<SchoolMenu> GetSchoolMenuById(int schoolMenuId);
+    Task<List<SchoolMenuWeek>> GetWeekCommencingBySchoolMenuId(int schoolMenuId);
 }
 
 public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuService
@@ -37,7 +39,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
             int schoolMenuId = schoolMenu.Id;
             menuIds.Add(schoolMenuId);
 
-            foreach( var weekCommence in dates)
+            foreach (var weekCommence in dates)
             {
                 SchoolMenuWeek schoolMenuWeek = new SchoolMenuWeek
                 {
@@ -47,7 +49,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
 
                 _context.SchoolMenuWeeks.Add(schoolMenuWeek);
                 await _context.SaveChangesAsync();
-                
+
             }
 
             foreach (var dayMenuResponse in weekMenuResponse.DayMenus)
@@ -81,11 +83,31 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
     {
         var schoolMenu = await _context.SchoolMenus
                                         .Include(schoolMenu => schoolMenu.SchoolMeals)
-                                        .Where(schoolMenu => schoolMenu.FamilyId == familyId 
+                                        .Where(schoolMenu => schoolMenu.FamilyId == familyId
                                                             && schoolMenu.UserId == userId)
                                         .ToListAsync();
 
         return schoolMenu;
+    }
+
+    public async Task<SchoolMenu> GetSchoolMenuById(int schoolMenuId)
+    {
+        var schoolMenu = await _context.SchoolMenus
+                                       .Include(schoolMenu => schoolMenu.SchoolMeals)
+                                       .SingleOrDefaultAsync(schoolMenu => schoolMenu.Id == schoolMenuId);
+
+
+        return schoolMenu;
+    }
+
+
+    public async Task<List<SchoolMenuWeek>> GetWeekCommencingBySchoolMenuId(int schoolMenuId)
+    {
+        var schoolMenuWeek = await _context.SchoolMenuWeeks
+                                        .Where(sw => sw.SchoolMenuId == schoolMenuId)
+                                        .ToListAsync();
+
+        return schoolMenuWeek;
     }
 
     public async Task<List<SchoolMenuWeek>> GetSchoolWeekMenuByDate(int familyId, int userId, DateOnly menuDate)
@@ -98,7 +120,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
                                         .ThenInclude(sm => sm.SchoolMeals)
                                         .Where(sw => sw.WeekCommercing == monday)
                                         .ToListAsync();
-                
+
 
         return schoolMenuWeeks;
     }
@@ -114,8 +136,8 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
                                 .Include(sw => sw.SchoolMenu)
                                 .ThenInclude(sm => sm.SchoolMeals)
                                 .Where(sw => sw.WeekCommercing == monday)
-                                .SelectMany(sw => sw.SchoolMenu.SchoolMeals) 
-                                .Where(sm => sm.Day == day) 
+                                .SelectMany(sw => sw.SchoolMenu.SchoolMeals)
+                                .Where(sm => sm.Day == day)
                                 .ToListAsync();
 
         return schoolMeals;

@@ -53,7 +53,7 @@ public class SchoolMenuController(IPdfService pdfService,
             await txtFile.CopyToAsync(stream);
         }
 
-        string[] lines =  System.IO.File.ReadAllLines(txtFilePath);
+        string[] lines = System.IO.File.ReadAllLines(txtFilePath);
         List<string> weekCommencings = new List<string>();
         List<int> menuIds = new List<int>();
 
@@ -92,10 +92,10 @@ public class SchoolMenuController(IPdfService pdfService,
                         if (schoolMenuResponse != null)
                         {
                             var menus = await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, weekCommencings[i], familyId, userId);
-                            foreach(var menuId in menus)
+                            foreach (var menuId in menus)
                                 menuIds.Add(menuId);
                         }
-                            
+
                     }
                     catch (Exception ex)
                     {
@@ -108,7 +108,6 @@ public class SchoolMenuController(IPdfService pdfService,
                 i++;
             }
 
-            // return Ok(jsonList);
             return Ok(menuIds);
         }
         catch (Exception ex)
@@ -118,15 +117,33 @@ public class SchoolMenuController(IPdfService pdfService,
         }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetSchoolMenus([FromQuery] int familyId)
+    [HttpGet("{schoolMenuId}")]
+    public async Task<IActionResult> GetSchoolMenusById([FromRoute] int schoolMenuId)
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
-        var schoolMenus = await _schoolMenuService.GetSchoolMenus(familyId, userId);
+        var schoolMenus = await _schoolMenuService.GetSchoolMenuById(schoolMenuId);
+        var schoolMenuWeeks = await _schoolMenuService.GetWeekCommencingBySchoolMenuId(schoolMenuId);
 
-        return Ok(schoolMenus);
+        List<DateOnly> weekCommencings = new List<DateOnly>();
+        foreach (var schoolMenuWeek in schoolMenuWeeks)
+        {
+            if (schoolMenuWeek.WeekCommercing != null)
+                weekCommencings.Add((DateOnly)schoolMenuWeek.WeekCommercing);
+        }
+
+        SchoolMenuWeekResponse schoolMenuWeekResponse = new SchoolMenuWeekResponse
+        {
+            WeekCommencing = weekCommencings,
+            SchoolMenuId = schoolMenus.Id,
+            Status = schoolMenus.Status,
+            FamilyId = schoolMenus.FamilyId,
+            UserId = schoolMenus.UserId,
+            SchoolMeals = schoolMenus.SchoolMeals.ToList() 
+        };
+
+        return Ok(schoolMenuWeekResponse);
     }
 
     [HttpGet("weekmenu-by-date")]
