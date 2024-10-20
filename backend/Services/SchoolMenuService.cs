@@ -8,7 +8,7 @@ namespace FamilyMealPlanner.Services;
 
 public interface ISchoolMenuService
 {
-    Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, string weekCommencings, int familyId, int userId);
+    Task<List<int>> AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, string weekCommencings, int familyId, int userId);
     Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId);
     Task<List<SchoolMenuWeek>> GetSchoolWeekMenuByDate(int familyId, int userId, DateOnly menuDate);
     Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate);
@@ -17,9 +17,11 @@ public interface ISchoolMenuService
 public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuService
 {
     private readonly FamilyMealPlannerContext _context = context;
-    public async Task AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, string weekCommencings, int familyId, int userId)
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+    public async Task<List<int>> AddSchoolMenu(SchoolMenuResponse schoolMenuResponse, string weekCommencings, int familyId, int userId)
     {
         var dates = weekCommencings.Split(",");
+        List<int> menuIds = new List<int>();
 
         foreach (var weekMenuResponse in schoolMenuResponse.WeekMenu)
         {
@@ -33,6 +35,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
             _context.SchoolMenus.Add(schoolMenu);
             await _context.SaveChangesAsync();
             int schoolMenuId = schoolMenu.Id;
+            menuIds.Add(schoolMenuId);
 
             foreach( var weekCommence in dates)
             {
@@ -71,6 +74,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
                 }
             }
         }
+        return menuIds;
     }
 
     public async Task<List<SchoolMenu>> GetSchoolMenus(int familyId, int userId)

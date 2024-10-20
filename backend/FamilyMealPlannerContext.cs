@@ -50,5 +50,8 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
             .WithMany(f => f.FamilyUsers)
             .HasForeignKey(fu => fu.FamilyId);
 
+        builder.Entity<SchoolMenuWeek>()
+                .HasKey(sm => new { sm.WeekCommercing, sm.SchoolMenuId });
+
     }
 }

@@ -7,7 +7,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 namespace FamilyMealPlanner.Models;
 public class SchoolMenuWeek
 {
-    [Key]
     public DateOnly? WeekCommercing { get; set; }
 
     [ForeignKey("SchoolMenu")]

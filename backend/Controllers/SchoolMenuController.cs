@@ -55,10 +55,11 @@ public class SchoolMenuController(IPdfService pdfService,
 
         string[] lines =  System.IO.File.ReadAllLines(txtFilePath);
         List<string> weekCommencings = new List<string>();
+        List<int> menuIds = new List<int>();
 
         foreach (var line in lines)
         {
-            string cleanedLine = line.Trim().Replace("[", "").Replace("]", "");
+            string cleanedLine = line.Trim();
             weekCommencings.Add(cleanedLine);
         }
 
@@ -89,7 +90,12 @@ public class SchoolMenuController(IPdfService pdfService,
                     {
                         var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
                         if (schoolMenuResponse != null)
-                            await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, weekCommencings[i], familyId, userId);
+                        {
+                            var menus = await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, weekCommencings[i], familyId, userId);
+                            foreach(var menuId in menus)
+                                menuIds.Add(menuId);
+                        }
+                            
                     }
                     catch (Exception ex)
                     {
@@ -103,7 +109,7 @@ public class SchoolMenuController(IPdfService pdfService,
             }
 
             // return Ok(jsonList);
-            return Ok(text);
+            return Ok(menuIds);
         }
         catch (Exception ex)
         {
