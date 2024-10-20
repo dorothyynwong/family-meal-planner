@@ -21,6 +21,8 @@ interface MealContextProps {
     resetMealContext: () => void;
     selectedFamily: FamilyWithUsersInterface | null;
     setSelectedFamily: (newFamily: FamilyWithUsersInterface) => void;
+    schoolMealId: number;
+    setSchoolMealId: (newSchoolMealId: number) => void;
 }
 
 const MealContext = createContext<MealContextProps | undefined>(undefined);
@@ -35,6 +37,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mealNotes, setMealNotes] = useState("");
     const [modalShow, setModalShow] = useState(false);
     const [selectedFamily, setSelectedFamily] = useState<FamilyWithUsersInterface | null>(null);
+    const [schoolMealId, setSchoolMealId] = useState(0);
 
     const resetMealContext = () => {
         setSelectedMealType("");
@@ -42,6 +45,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setMealNotes("");
         setSelectedRecipe(null);
         setRecipeName("");
+        setSchoolMealId(0);
     };
 
     return (
@@ -64,6 +68,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                         resetMealContext, 
                                         selectedFamily,
                                         setSelectedFamily,
+                                        schoolMealId,
+                                        setSchoolMealId,
                                         }}>
             {children}
         </MealContext.Provider>

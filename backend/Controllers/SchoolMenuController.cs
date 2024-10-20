@@ -48,7 +48,7 @@ public class SchoolMenuController(IPdfService pdfService,
             List<string> jsonList = new List<string>();
             int i = 0;
             List<string> weekCommencings = new List<string>();
-            string weekCommencing = "2024-09-02, 2024-09-23, 2024-10-14, 2024-11-25, 2024-12-16, 2025-01-06, 2025-01-27, 2025-02-17, 2025-03-10, 2025-03-31";
+            string weekCommencing = "2024-09-02, 2024-09-23, 2024-10-14, 2024-11-04, 2024-11-25, 2024-12-16, 2025-01-06, 2025-01-27, 2025-02-17, 2025-03-10, 2025-03-31";
             weekCommencings.Add(weekCommencing);
 
             weekCommencing = "2024-09-09, 2024-09-30, 2024-10-21, 2024-11-11, 2024-12-02, 2025-01-13, 2025-02-03, 2025-02-24, 2025-03-17";

@@ -15,6 +15,8 @@ public class Meal
 
     [ForeignKey("Recipe")]
     public int? RecipeId {get; set;}
+    [ForeignKey("SchoolMeal")]
+    public int? SchoolMealId {get; set;}
 
     [ForeignKey("User")]
     public int? UserId {get; set;}
@@ -30,6 +32,7 @@ public class Meal
     public string? Notes {get; set;}
 
     public Recipe? Recipe {get; set;}
+    public SchoolMeal? SchoolMeal {get; set;}
     public User? User {get; set;}
     public Family? Family {get; set;}
     public User AddedByUser {get; set;}

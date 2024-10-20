@@ -33,7 +33,7 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
             />}
             <CardContent>
                 <Typography gutterBottom variant="subtitle1" component="div">
-                    {meal.recipeName}
+                    {meal.schoolMealId && meal.schoolMealId >= 0 ? meal.schoolMealName : meal.recipeName}
                 </Typography>
                 {meal.notes}
             </CardContent>
