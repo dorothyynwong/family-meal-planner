@@ -27,24 +27,39 @@ public class SchoolMenuController(IPdfService pdfService,
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     [HttpPost("import")]
-    public async Task<IActionResult> Import(IFormFile file, [FromQuery] int familyId)
+    public async Task<IActionResult> Import(IFormFile pdfFile, IFormFile txtFile, [FromQuery] int familyId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
 
-        if (file == null || file.Length == 0)
+        if (pdfFile == null || pdfFile.Length == 0 || txtFile == null || txtFile.Length == 0)
             return BadRequest("No file uploaded.");
 
-        var filePath = Path.Combine("Uploads", file.FileName);
+        var pdfFilePath = Path.Combine("Uploads", pdfFile.FileName);
+        var txtFilePath = Path.Combine("Uploads", txtFile.FileName);
 
         if (!Directory.Exists("Uploads"))
         {
             Directory.CreateDirectory("Uploads");
         }
 
-        using (var stream = new FileStream(filePath, FileMode.Create))
+        using (var stream = new FileStream(pdfFilePath, FileMode.Create))
         {
-            await file.CopyToAsync(stream);
+            await pdfFile.CopyToAsync(stream);
+        }
+
+        using (var stream = new FileStream(txtFilePath, FileMode.Create))
+        {
+            await txtFile.CopyToAsync(stream);
+        }
+
+        string[] lines =  System.IO.File.ReadAllLines(txtFilePath);
+        List<string> weekCommencings = new List<string>();
+
+        foreach (var line in lines)
+        {
+            string cleanedLine = line.Trim().Replace("[", "").Replace("]", "");
+            weekCommencings.Add(cleanedLine);
         }
 
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
@@ -59,19 +74,9 @@ public class SchoolMenuController(IPdfService pdfService,
 
         try
         {
-            var text = _pdfService.ImportPdf(filePath);
+            var text = _pdfService.ImportPdf(pdfFilePath);
             List<string> jsonList = new List<string>();
             int i = 0;
-            List<string> weekCommencings = new List<string>();
-            string weekCommencing = "2024-09-02, 2024-09-23, 2024-10-14, 2024-11-04, 2024-11-25, 2024-12-16, 2025-01-06, 2025-01-27, 2025-02-17, 2025-03-10, 2025-03-31";
-            weekCommencings.Add(weekCommencing);
-
-            weekCommencing = "2024-09-09, 2024-09-30, 2024-10-21, 2024-11-11, 2024-12-02, 2025-01-13, 2025-02-03, 2025-02-24, 2025-03-17";
-            weekCommencings.Add(weekCommencing);
-
-            weekCommencing = "2024-08-26, 2024-09-16, 2024-10-07, 2024-10-28, 2024-11-18, 2024-12-09, 2024-12-30, 2025-01-20, 2025-02-10, 2025-03-03, 2025-03-24";
-            weekCommencings.Add(weekCommencing);
-
             foreach (var item in text)
             {
                 var openAIResponse = await _aiService.GetModelResponseAsync(item, familyId, userId);
