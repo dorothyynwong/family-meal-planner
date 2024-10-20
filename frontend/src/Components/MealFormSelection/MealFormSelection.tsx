@@ -24,10 +24,10 @@ const MealFormSelection: React.FC<MealFormSelectProps> = ({mealFormType, setMeal
                 inline
                 label="School Menu"
                 name="meal-form-type"
-                value="school-menu"
+                value="school-meal"
                 type="radio"
-                checked={mealFormType === "school-menu"}
-                onChange={(e) => setMealFormType("school-menu")}
+                checked={mealFormType === "school-meal"}
+                onChange={(e) => setMealFormType("school-meal")}
             />
         </div>
 
