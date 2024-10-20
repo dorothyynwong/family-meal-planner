@@ -167,10 +167,17 @@ public class SchoolMenuController(IPdfService pdfService,
         return Ok(schoolMenus);
     }
 
- 
     [HttpGet("days-of-week")]
     public async Task<IActionResult> GetMealDays()
     {
         return Ok(Enum.GetNames(typeof(DayType)));
     }   
+
+    [HttpPut("meal/{schoolMealId}")]
+    public async Task<IActionResult> UpdateSchoolMeal(SchoolMealUpdateRequest schoolMeal, [FromRoute] int schoolMealId)
+    {
+        await _schoolMenuService.UpdateSchoolMeal(schoolMeal, schoolMealId);
+
+        return Ok();
+    }
 }

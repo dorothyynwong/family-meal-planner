@@ -14,6 +14,7 @@ public interface ISchoolMenuService
     Task<List<SchoolMeal>> GetSchoolMealsByDate(int familyId, int userId, DateOnly menuDate);
     Task<SchoolMenu> GetSchoolMenuById(int schoolMenuId);
     Task<List<SchoolMenuWeek>> GetWeekCommencingBySchoolMenuId(int schoolMenuId);
+    Task UpdateSchoolMeal(SchoolMealUpdateRequest schoolMeal, int schoolMealId);
 }
 
 public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuService
@@ -143,7 +144,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
         return schoolMeals;
     }
 
-    public async Task UpdateSchoolMeal(SchoolMeal schoolMeal, int schoolMealId)
+    public async Task UpdateSchoolMeal(SchoolMealUpdateRequest schoolMeal, int schoolMealId)
     {
         SchoolMeal meal =  _context.SchoolMeals.SingleOrDefault(sm => sm.Id == schoolMealId);
         if (meal == null)
@@ -151,6 +152,11 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
             Logger.Error($"School meal {schoolMealId} not found");
             throw new ArgumentException($"School meal {schoolMealId} not found");
         }
+
+        meal.MealName = schoolMeal.MealName != null && schoolMeal.MealName != "" ? schoolMeal.MealName : meal.MealName;
+        meal.Day = schoolMeal.Day != null && schoolMeal.Day != 0 ? (DayType)schoolMeal.Day : meal.Day;
+        meal.Category = schoolMeal.Category != null && schoolMeal.Category != "" ? schoolMeal.Category : meal.Category;
+        meal.Allergens = schoolMeal.Allergens != null && schoolMeal.Allergens != "" ? schoolMeal.Allergens : meal.Allergens;
 
         _context.SchoolMeals.Update(meal);
         await _context.SaveChangesAsync();

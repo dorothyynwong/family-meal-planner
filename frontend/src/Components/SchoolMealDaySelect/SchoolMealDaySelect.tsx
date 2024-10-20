@@ -9,12 +9,16 @@ interface SchoolMealDaySelectProps {
 
 
 const SchoolMealDaySelect: React.FC<SchoolMealDaySelectProps> = ({ mealDays, mealDay, selectedMealDay, setSelectedMealDay }) => {
+    const handleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+        setSelectedMealDay(e.target.value); 
+    };
+
     return (
         <Form.Select
             className="mt-3 meal-day"
             aria-label="School Meal Day"
             defaultValue={mealDays[mealDay]}
-            onChange={(e) => setSelectedMealDay(e.target.value)}
+            onChange={handleChange}
         >
             <option value="">Select a Meal Day</option>
             {mealDays.map((mealDay, index) => (
