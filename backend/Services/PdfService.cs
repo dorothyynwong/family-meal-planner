@@ -1,10 +1,5 @@
 using System.Text;
-using FamilyMealPlanner.Models;
-using Microsoft.EntityFrameworkCore;
-using NLog;
 using UglyToad.PdfPig;
-using UglyToad.PdfPig.DocumentLayoutAnalysis.TextExtractor;
-
 
 namespace FamilyMealPlanner.Services;
 
