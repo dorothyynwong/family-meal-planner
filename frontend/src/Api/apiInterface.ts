@@ -83,7 +83,7 @@ export interface FamilyRoleUpdateInterface {
 export interface SchoolMealInterface {
     id: number;
     schoolMenuId: number;
-    day: string;
+    day: number;
     mealName?: string;
     category?: string;
     allergens?: string;

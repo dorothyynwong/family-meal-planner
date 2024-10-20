@@ -41,8 +41,8 @@ const SchoolMenuEdit: React.FC = () => {
 
     return (
         <>
-            {schoolMenu && schoolMenu.schoolMeals.map(sm =>
-                <SchoolMealCard meal={sm} mealDays={dayTypes} />
+            {schoolMenu && schoolMenu.schoolMeals.map((sm, index) =>
+                <SchoolMealCard key={index} meal={sm} mealDays={dayTypes} />
             )}
 
         </>

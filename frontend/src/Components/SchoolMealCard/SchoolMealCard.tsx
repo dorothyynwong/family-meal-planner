@@ -1,4 +1,4 @@
-import {  SchoolMealInterface } from "../../Api/apiInterface";
+import { SchoolMealInterface } from "../../Api/apiInterface";
 import { Card, CardContent, CardHeader } from "@mui/material";
 import { Form } from "react-bootstrap";
 import SchoolMealDaySelect from "../SchoolMealDaySelect/SchoolMealDaySelect";
@@ -17,9 +17,12 @@ const SchoolMealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
 
     return (
         <Card sx={{ maxWidth: 345, mx: 0, mb: 1 }} >
-            <CardHeader title={meal.mealName} />
             <CardContent>
-                <SchoolMealDaySelect mealDays={mealDays} selectedMealDay={selectedMealDay} setSelectedMealDay={setSelectedMealDay} />
+                <SchoolMealDaySelect 
+                    mealDay={meal.day}
+                    mealDays={mealDays}
+                    selectedMealDay={selectedMealDay}
+                    setSelectedMealDay={setSelectedMealDay} />
 
                 <Form.Group className="mb-3" controlId="school-meal-name">
                     <Form.Label>Name</Form.Label>
