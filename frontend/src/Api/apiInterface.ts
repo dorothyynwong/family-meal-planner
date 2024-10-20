@@ -31,6 +31,7 @@ export interface MealDetailsInterface {
     mealType: string;
     addedByUserId?: number;
     notes?: string;
+    schoolMealId: number;
 }
 
 export interface UserSignupInterface {

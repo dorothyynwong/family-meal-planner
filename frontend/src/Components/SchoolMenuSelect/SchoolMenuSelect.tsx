@@ -41,9 +41,17 @@ const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({ }) => {
             <></>
         </StatusHandler>
         {schoolMeals && schoolMeals.length >0 ? 
-            <Form.Select aria-label="Default select example" onChange={(e) => setSchoolMealId(Number(e.target.value))}>
+            <Form.Select aria-label="Default select example" 
+                onChange={(e) => setSchoolMealId(Number(e.target.value))}
+                defaultValue={schoolMealId}
+                >
                 <option>Select a Meal</option>
-                {schoolMeals.map((meal, index) => <option key={index} value={meal.id}>{meal.mealName} - {meal.category}</option>)}
+                
+                {schoolMeals.map((meal, index) => 
+                    <option key={index} 
+                            value={meal.id}>{meal.mealName} - {meal.category}
+                    </option>
+                )}
             </Form.Select>
             :
             <div>No school menu for today</div>

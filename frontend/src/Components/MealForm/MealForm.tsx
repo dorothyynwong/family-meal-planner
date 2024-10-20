@@ -42,6 +42,8 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         setModalShow,
         resetMealContext,
         selectedFamily,
+        schoolMealId,
+        setSchoolMealId
     } = useMeal();
 
     const navigate = useNavigate();
@@ -95,13 +97,19 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
-        if (!mealNotes.trim() && !selectedRecipe && !recipeName) {
+        if (mealFormType === "recipe" && !mealNotes.trim() && !selectedRecipe && !recipeName) {
             setErrorMessages(["Please enter notes or select a recipe."]);
             setStatus("error");
             return;
         }
 
-        if (!selectedMealType) {
+        if (mealFormType === "school-meal" && schoolMealId === 0) {
+            setErrorMessages(["Please select a school menu"]);
+            setStatus("error");
+            return;
+        }
+
+        if (mealFormType === "recipe" && !selectedMealType) {
             setErrorMessages(["Please choose a meal type. "]);
             setStatus("error");
             return;
@@ -120,8 +128,9 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
             familyId: selectedFamily?.familyId,
             date: mealDate,
             notes: mealNotes,
-            mealType: selectedMealType,
-            ...(selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
+            mealType: mealFormType === "recipe" ? selectedMealType : "Lunch",
+            schoolMealId: mealFormType === "school-meal" ? schoolMealId : 0,
+            ...(mealFormType === "recipe" && selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
 
         if (mode === "Add") {
@@ -180,9 +189,12 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                 {mealFormType==="recipe" ?
                     <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
                 :   <SchoolMenuSelect />}
-                
+
                 <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
-                <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
+
+                {mealFormType==="recipe"  && 
+                    <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
+                }
 
                 <Form.Group controlId="meal-notes">
                     <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
