@@ -1,28 +1,30 @@
-# Use the official .NET 6 SDK image to build the project
-FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
-
-# Set the working directory inside the container
+# Use the official ASP.NET runtime as a base image
+FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS base
 WORKDIR /app
-
-# Copy the project files into the container
-COPY *.csproj ./
-RUN dotnet restore
-
-# Copy the rest of the source code and build the app
-COPY . ./
-RUN dotnet publish -c Release -o out
-
-# Use the official .NET 6 runtime image to run the app
-FROM mcr.microsoft.com/dotnet/aspnet:6.0 AS runtime
-
-# Set the working directory inside the container
-WORKDIR /app
-
-# Copy the built app from the previous stage
-COPY --from=build /app/out .
-
-# Expose the port your app will run on
 EXPOSE 80
 
-# Set the entry point to run your app
-ENTRYPOINT ["dotnet", "YourAppName.dll"]
+# Use the SDK image for building the app
+FROM mcr.microsoft.com/dotnet/sdk:6.0 AS build
+WORKDIR /src
+
+# Copy the project files to the container. 
+# Make sure to include the correct path to your backend project directory.
+COPY ["familyplanner/backend/backend.csproj", "./"]
+RUN dotnet restore "backend.csproj"
+
+# Copy the rest of the backend files
+COPY ./familyplanner/backend .
+
+# Build the application
+RUN dotnet build "backend.csproj" -c Release -o /app/build
+
+# Publish the application
+FROM build AS publish
+RUN dotnet publish "backend.csproj" -c Release -o /app/publish
+
+# Final image: copy the published application and set the entry point
+FROM base AS final
+WORKDIR /app
+COPY --from=publish /app/publish .
+ENTRYPOINT ["dotnet", "backend.dll"]
+
