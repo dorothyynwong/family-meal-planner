@@ -26,11 +26,26 @@ public class SchoolMenuController(IPdfService pdfService,
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    [HttpGet("import")]
-    public async Task<IActionResult> Import([FromQuery] int familyId)
+    [HttpPost("import")]
+    public async Task<IActionResult> Import(IFormFile file, [FromQuery] int familyId)
     {
         if (!ModelState.IsValid)
             return BadRequest(ModelState);
+
+        if (file == null || file.Length == 0)
+            return BadRequest("No file uploaded.");
+
+        var filePath = Path.Combine("Uploads", file.FileName);
+
+        if (!Directory.Exists("Uploads"))
+        {
+            Directory.CreateDirectory("Uploads");
+        }
+
+        using (var stream = new FileStream(filePath, FileMode.Create))
+        {
+            await file.CopyToAsync(stream);
+        }
 
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
@@ -44,7 +59,7 @@ public class SchoolMenuController(IPdfService pdfService,
 
         try
         {
-            var text = _pdfService.ImportPdf("");
+            var text = _pdfService.ImportPdf(filePath);
             List<string> jsonList = new List<string>();
             int i = 0;
             List<string> weekCommencings = new List<string>();
@@ -60,7 +75,7 @@ public class SchoolMenuController(IPdfService pdfService,
             foreach (var item in text)
             {
                 var openAIResponse = await _aiService.GetModelResponseAsync(item, familyId, userId);
-                
+
                 foreach (var choice in openAIResponse.Choices)
                 {
                     var nestedJson = choice.Message.Content;
@@ -82,7 +97,8 @@ public class SchoolMenuController(IPdfService pdfService,
                 i++;
             }
 
-            return Ok(jsonList);
+            // return Ok(jsonList);
+            return Ok(text);
         }
         catch (Exception ex)
         {

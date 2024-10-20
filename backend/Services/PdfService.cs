@@ -20,7 +20,8 @@ public class PdfService() : IPdfService
         List<string> result = new List<string>();
         try
         {
-            using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu.pdf"))
+            // using (var pdf = PdfDocument.Open(@"C:\temp\schoolmenu.pdf"))
+            using (var pdf = PdfDocument.Open(filePath))
             {
                 var text = new StringBuilder();
                 foreach (var page in pdf.GetPages())
