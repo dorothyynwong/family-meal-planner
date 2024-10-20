@@ -12,6 +12,8 @@ WORKDIR /src
 COPY ["family-meal-planner/backend/backend.csproj", "./"]
 RUN dotnet restore "backend.csproj"
 
+RUN dotnet ef database update
+
 # Copy the rest of the backend files
 COPY ./family-meal-planner/backend .
 
