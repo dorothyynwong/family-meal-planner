@@ -1,6 +1,5 @@
-import { MealDetailsInterface, SchoolMealInterface } from "../../Api/apiInterface";
-import { Card, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
-import { useMeal } from "../MealContext/MealContext";
+import {  SchoolMealInterface } from "../../Api/apiInterface";
+import { Card, CardContent, CardHeader } from "@mui/material";
 import { Form } from "react-bootstrap";
 import SchoolMealDaySelect from "../SchoolMealDaySelect/SchoolMealDaySelect";
 import { useState } from "react";
@@ -10,7 +9,7 @@ interface SchoolMealProps {
     mealDays: string[];
 }
 
-const MealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
+const SchoolMealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
     const [selectedMealDay, setSelectedMealDay] = useState("");
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
 
@@ -54,4 +53,4 @@ const MealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
     )
 }
 
-export default MealCard;
+export default SchoolMealCard;

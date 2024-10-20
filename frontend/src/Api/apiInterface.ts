@@ -108,5 +108,5 @@ export interface SchoolMenuWeekMealsInterface {
     status: string;
     familyId: number;
     userId: number;
-    schoolMeal: SchoolMealInterface[];
+    schoolMeals: SchoolMealInterface[];
 }

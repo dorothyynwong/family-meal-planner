@@ -6,7 +6,7 @@ interface SchoolMealDaySelectProps {
   setSelectedMealDay: (newMealDay: string) => void;
 }
 
-const MealTypeSelect: React.FC<SchoolMealDaySelectProps> = ({ mealDays, selectedMealDay, setSelectedMealDay }) => (
+const SchoolMealDaySelect: React.FC<SchoolMealDaySelectProps> = ({ mealDays, selectedMealDay, setSelectedMealDay }) => (
   <Form.Select
     className="mt-3 meal-day"
     aria-label="School Meal Day"
@@ -22,4 +22,4 @@ const MealTypeSelect: React.FC<SchoolMealDaySelectProps> = ({ mealDays, selected
   </Form.Select>
 );
 
-export default MealTypeSelect;
+export default SchoolMealDaySelect;

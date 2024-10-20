@@ -285,9 +285,19 @@ export async function getSchoolMealsByDate(familyId: number, menuDate: string) {
 
 export async function getSchoolMenuWeekByMenuId(schoolMenuId: number) {
     try {
-        const response = await client.get(`/api/schoolmenus/${schoolMenuId}`);
+        const response = await client.get(`/schoolmenus/${schoolMenuId}`);
         return response;
     } catch (error) {
         throw error;
     }  
+}
+
+export async function getDayTypes() {
+    try {
+
+        const response: AxiosResponse = await client.get(`/schoolmenus/days-of-week`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }
 }

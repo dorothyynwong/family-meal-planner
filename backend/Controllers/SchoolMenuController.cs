@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -165,4 +166,11 @@ public class SchoolMenuController(IPdfService pdfService,
         var schoolMenus = await _schoolMenuService.GetSchoolMealsByDate(familyId, userId, menuDate);
         return Ok(schoolMenus);
     }
+
+ 
+    [HttpGet("days-of-week")]
+    public async Task<IActionResult> GetMealDays()
+    {
+        return Ok(Enum.GetNames(typeof(DayType)));
+    }   
 }
