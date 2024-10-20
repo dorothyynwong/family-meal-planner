@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
 import Popup from "../Popup/Popup";
-import { Button, Form, InputGroup} from "react-bootstrap";
+import { Button, Form} from "react-bootstrap";
 import { useNavigate} from "react-router-dom";
 import { addMeal, deleteMeal, getMealTypes, updateMeal } from "../../Api/api";
-import { FaSearch } from "react-icons/fa";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
@@ -11,7 +10,6 @@ import "./MealForm.scss";
 import dayjs, { Dayjs } from 'dayjs';
 import MealTypeSelect from "../MealTypeSelect/MealTypeSelect";
 import RecipeSearch from "../RecipeSearch/RecipeSearch";
-import DateInput from "../MealDateInput/MealDateInput";
 import MealDateInput from "../MealDateInput/MealDateInput";
 import SchoolMenuSelect from "../SchoolMenuSelect/SchoolMenuSelect";
 import MealFormSelection from "../MealFormSelection/MealFormSelection";
