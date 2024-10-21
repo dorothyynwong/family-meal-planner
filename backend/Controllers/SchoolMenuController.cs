@@ -10,7 +10,7 @@ using NLog;
 namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Roles="Admin")]
 [Route("/schoolmenus")]
 public class SchoolMenuController(IPdfService pdfService,
                                     IOpenAIService aiService,
@@ -70,13 +70,17 @@ public class SchoolMenuController(IPdfService pdfService,
         if (await _userService.GetUserById(userId) == null)
             return Unauthorized();
 
-        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
-        if (familyUser == null || familyUser.FamilyRole != Enums.FamilyRoleType.Cook)
-            return Unauthorized();
+        // FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
+        // if (familyUser == null || familyUser.FamilyRole != Enums.FamilyRoleType.Cook)
+        //     return Unauthorized();
 
+        if(User.FindFirstValue(ClaimTypes.Role) != RoleType.Admin.ToString())
+            return Unauthorized();
+            
         try
         {
             var text = _pdfService.ImportPdf(pdfFilePath);
+            Logger.Debug(text);
             List<string> jsonList = new List<string>();
             int i = 0;
             foreach (var item in text)
