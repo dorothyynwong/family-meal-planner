@@ -3,6 +3,7 @@ import { getDayTypes, getSchoolMenuWeekByMenuId } from "../../Api/api";
 import { SchoolMealInterface, SchoolMenuWeekMealsInterface } from "../../Api/apiInterface";
 import SchoolMealCard from "../../Components/SchoolMealCard/SchoolMealCard";
 import { useLocation } from "react-router-dom";
+import SchoolMenuCard from "../../Components/SchoolMenuCard/SchoolMenuCard";
 
 const SchoolMenuEdit: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -31,7 +32,6 @@ const SchoolMenuEdit: React.FC = () => {
                         setStatus("error");
                         setErrorMessages([...errorMessages, errorMessage]);
                     });
-
             }
         )
 
@@ -49,14 +49,10 @@ const SchoolMenuEdit: React.FC = () => {
     }, []);
 
     return (
-        <>
-            {schoolMenus && schoolMenus.map(schoolMenu => {
-                return(
-                schoolMenu && schoolMenu.schoolMeals.map((sm, index) =>
-                    <SchoolMealCard key={index} meal={sm} mealDays={dayTypes} />
-            ))}
-            )}
-        </>
+        schoolMenus && schoolMenus.map(schoolMenu => (
+            <SchoolMenuCard schoolMenu={schoolMenu} dayTypes={dayTypes} />
+        ))
+
     )
 }
 
