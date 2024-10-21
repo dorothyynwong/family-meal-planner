@@ -58,7 +58,7 @@ const SchoolMenuEdit: React.FC = () => {
             <></>
         </StatusHandler>
         {schoolMenus && schoolMenus.map((schoolMenu, index) => (
-            <SchoolMenuCard key={index} schoolMenu={schoolMenu} dayTypes={dayTypes} />
+            <SchoolMenuCard key={index} schoolMenu={schoolMenu} dayTypes={dayTypes} index={index + 1} />
         ))}
     </>)
 }

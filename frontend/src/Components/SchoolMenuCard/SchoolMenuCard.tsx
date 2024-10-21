@@ -6,7 +6,8 @@ import { useState } from "react";
 
 interface SchoolMenuCardProps {
     schoolMenu: SchoolMenuWeekMealsInterface;
-    dayTypes: string[]
+    dayTypes: string[];
+    index: number;
 }
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -35,20 +36,19 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     ],
 }));
 
-const SchoolMenuCard: React.FC<SchoolMenuCardProps> = ({ schoolMenu, dayTypes }) => {
+const SchoolMenuCard: React.FC<SchoolMenuCardProps> = ({ schoolMenu, dayTypes, index }) => {
     const [expanded, setExpanded] = useState(false);
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-    // const weeks = schoolMenu && schoolMenu.weekCommencing ? schoolMenu.weekCommencing.map(w => w.getDate()) : "";
-    console.log(schoolMenu.weekCommencing);
 
     return (
         <Card sx={{ maxWidth: 345, mx: 0, mb: 1, p: 0.5 }}>
-            <CardHeader
-                title=""
-                sx={{ p: 0, mx: 0 }}
-            />
+            <CardHeader title={`School Menu ${index}`} />
+            <CardContent>
+                Week Commencing: 
+                {schoolMenu.weekCommencing.join(",")}
+            </CardContent>
             <CardActions disableSpacing>
                 <ExpandMore
                     expand={expanded}
