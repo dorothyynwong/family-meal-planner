@@ -2,28 +2,38 @@ import { useEffect, useState } from "react";
 import { getDayTypes, getSchoolMenuWeekByMenuId } from "../../Api/api";
 import { SchoolMealInterface, SchoolMenuWeekMealsInterface } from "../../Api/apiInterface";
 import SchoolMealCard from "../../Components/SchoolMealCard/SchoolMealCard";
+import { useLocation } from "react-router-dom";
 
 const SchoolMenuEdit: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [dayTypes, setDayTypes] = useState<string[]>([])
-    const [schoolMenu, setSchoolMenu] = useState<SchoolMenuWeekMealsInterface>();
+    const [schoolMenus, setSchoolMenus] = useState<SchoolMenuWeekMealsInterface[]>([]);
+
+    const location = useLocation();
+    const schoolMenuIds = (location.state?.schoolMenuIds || []).map(Number) as number[];
 
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
 
-        getSchoolMenuWeekByMenuId(66)
-            .then(response => {
-                setSchoolMenu(response.data);
-                setStatus("success");
-            })
-            .catch(error => {
-                console.log("Error getting school menus", error);
-                const errorMessage = error?.response?.data?.message || "Error getting school menus";
-                setStatus("error");
-                setErrorMessages([...errorMessages, errorMessage]);
-            });
+        schoolMenuIds.forEach(
+            schoolMenuId => {
+                getSchoolMenuWeekByMenuId(schoolMenuId)
+                    .then(response => {
+                        const newMenus = response.data;
+                        setSchoolMenus(prev => [...prev, ...newMenus]);
+                        setStatus("success");
+                    })
+                    .catch(error => {
+                        console.log("Error getting school menus", error);
+                        const errorMessage = error?.response?.data?.message || "Error getting school menus";
+                        setStatus("error");
+                        setErrorMessages([...errorMessages, errorMessage]);
+                    });
+
+            }
+        )
 
         getDayTypes()
             .then(dayTypesList => {
@@ -40,9 +50,15 @@ const SchoolMenuEdit: React.FC = () => {
 
     return (
         <>
-            {schoolMenu && schoolMenu.schoolMeals.map((sm, index) =>
-                <SchoolMealCard key={index} meal={sm} mealDays={dayTypes} />
+            {schoolMenus && schoolMenus.forEach(schoolMenu => {
+                ( 
+                    schoolMenu && schoolMenu.schoolMeals.map((sm, index) =>
+                        <SchoolMealCard key={index} meal={sm} mealDays={dayTypes} />
+                    )
+                )
+            }
             )}
+
 
         </>
     )
