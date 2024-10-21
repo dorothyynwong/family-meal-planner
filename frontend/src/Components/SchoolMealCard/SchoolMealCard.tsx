@@ -58,7 +58,7 @@ const SchoolMealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
                     <Form.Control className="custom-form-control"
                         type="text"
                         placeholder="Name"
-                        name="name" 
+                        name="mealName" 
                         // value={meal.mealName ? meal.mealName : ""}
                         value={mealData.mealName}
                         onChange={handleChange} />
