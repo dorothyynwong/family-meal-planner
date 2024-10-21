@@ -30,7 +30,18 @@ builder.Services.AddTransient<IFamilyUserService, FamilyUserService>();
 builder.Services.AddTransient<IAuthenticationService, AuthenticationService>();
 builder.Services.AddTransient<IEmailService, EmailService>();
 builder.Services.AddTransient<IPdfService, PdfService>();
-builder.Services.AddTransient<IOpenAIService, OpenAIService>();
+
+var useMockService = builder.Configuration.GetValue<bool>("UseMockService");
+
+if (useMockService)
+{
+    builder.Services.AddTransient<IOpenAIService, MockOpenAIService>();
+}
+else
+{
+    builder.Services.AddTransient<IOpenAIService, OpenAIService>();
+}
+
 builder.Services.AddTransient<ISchoolMenuService, SchoolMenuService>();
 
 // Add services to the container.

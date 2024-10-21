@@ -1,5 +1,6 @@
 using System.Security.Claims;
 using System.Text.Json;
+using FamilyMealPlanner.Enums;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Authorization;
@@ -9,7 +10,7 @@ using NLog;
 namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
-[Authorize]
+[Authorize(Roles="Admin")]
 [Route("/schoolmenus")]
 public class SchoolMenuController(IPdfService pdfService,
                                     IOpenAIService aiService,
@@ -53,12 +54,13 @@ public class SchoolMenuController(IPdfService pdfService,
             await txtFile.CopyToAsync(stream);
         }
 
-        string[] lines =  System.IO.File.ReadAllLines(txtFilePath);
+        string[] lines = System.IO.File.ReadAllLines(txtFilePath);
         List<string> weekCommencings = new List<string>();
+        List<int> menuIds = new List<int>();
 
         foreach (var line in lines)
         {
-            string cleanedLine = line.Trim().Replace("[", "").Replace("]", "");
+            string cleanedLine = line.Trim();
             weekCommencings.Add(cleanedLine);
         }
 
@@ -68,13 +70,17 @@ public class SchoolMenuController(IPdfService pdfService,
         if (await _userService.GetUserById(userId) == null)
             return Unauthorized();
 
-        FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
-        if (familyUser == null || familyUser.FamilyRole != Enums.FamilyRoleType.Cook)
+        // FamilyUser familyUser = await _familyUserService.GetFamilyUser(familyId, userId);
+        // if (familyUser == null || familyUser.FamilyRole != Enums.FamilyRoleType.Cook)
+        //     return Unauthorized();
+
+        if(User.FindFirstValue(ClaimTypes.Role) != RoleType.Admin.ToString())
             return Unauthorized();
 
         try
         {
             var text = _pdfService.ImportPdf(pdfFilePath);
+          
             List<string> jsonList = new List<string>();
             int i = 0;
             foreach (var item in text)
@@ -89,7 +95,12 @@ public class SchoolMenuController(IPdfService pdfService,
                     {
                         var schoolMenuResponse = JsonSerializer.Deserialize<SchoolMenuResponse>(nestedJson);
                         if (schoolMenuResponse != null)
-                            await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, weekCommencings[i], familyId, userId);
+                        {
+                            var menus = await _schoolMenuService.AddSchoolMenu(schoolMenuResponse, weekCommencings[i], familyId, userId);
+                            foreach (var menuId in menus)
+                                menuIds.Add(menuId);
+                        }
+
                     }
                     catch (Exception ex)
                     {
@@ -102,8 +113,7 @@ public class SchoolMenuController(IPdfService pdfService,
                 i++;
             }
 
-            // return Ok(jsonList);
-            return Ok(text);
+            return Ok(menuIds);
         }
         catch (Exception ex)
         {
@@ -112,15 +122,33 @@ public class SchoolMenuController(IPdfService pdfService,
         }
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetSchoolMenus([FromQuery] int familyId)
+    [HttpGet("{schoolMenuId}")]
+    public async Task<IActionResult> GetSchoolMenusById([FromRoute] int schoolMenuId)
     {
         if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
             return Unauthorized();
 
-        var schoolMenus = await _schoolMenuService.GetSchoolMenus(familyId, userId);
+        var schoolMenus = await _schoolMenuService.GetSchoolMenuById(schoolMenuId);
+        var schoolMenuWeeks = await _schoolMenuService.GetWeekCommencingBySchoolMenuId(schoolMenuId);
 
-        return Ok(schoolMenus);
+        List<DateOnly> weekCommencings = new List<DateOnly>();
+        foreach (var schoolMenuWeek in schoolMenuWeeks)
+        {
+            if (schoolMenuWeek.WeekCommencing != null)
+                weekCommencings.Add((DateOnly)schoolMenuWeek.WeekCommencing);
+        }
+
+        SchoolMenuWeekResponse schoolMenuWeekResponse = new SchoolMenuWeekResponse
+        {
+            WeekCommencing = weekCommencings,
+            SchoolMenuId = schoolMenus.Id,
+            Status = schoolMenus.Status,
+            FamilyId = schoolMenus.FamilyId,
+            UserId = schoolMenus.UserId,
+            SchoolMeals = schoolMenus.SchoolMeals.ToList()
+        };
+
+        return Ok(schoolMenuWeekResponse);
     }
 
     [HttpGet("weekmenu-by-date")]
@@ -141,5 +169,19 @@ public class SchoolMenuController(IPdfService pdfService,
 
         var schoolMenus = await _schoolMenuService.GetSchoolMealsByDate(familyId, userId, menuDate);
         return Ok(schoolMenus);
+    }
+
+    [HttpGet("days-of-week")]
+    public async Task<IActionResult> GetMealDays()
+    {
+        return Ok(Enum.GetNames(typeof(DayType)));
+    }
+
+    [HttpPut("meal/{schoolMealId}")]
+    public async Task<IActionResult> UpdateSchoolMeal(SchoolMealUpdateRequest schoolMeal, [FromRoute] int schoolMealId)
+    {
+        await _schoolMenuService.UpdateSchoolMeal(schoolMeal, schoolMealId);
+
+        return Ok();
     }
 }

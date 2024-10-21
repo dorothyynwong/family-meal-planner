@@ -2,7 +2,8 @@ namespace FamilyMealPlanner.Enums;
 
 public enum DayType
 {
-    Monday = 1,
+    Everyday = 0,
+    Monday,
     Tuesday,
     Wednesday,
     Thursday,

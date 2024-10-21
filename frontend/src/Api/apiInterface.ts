@@ -81,9 +81,9 @@ export interface FamilyRoleUpdateInterface {
 }
 
 export interface SchoolMealInterface {
-    id: number;
-    schoolMenuId: number;
-    day: string;
+    id?: number;
+    schoolMenuId?: number;
+    day?: number;
     mealName?: string;
     category?: string;
     allergens?: string;
@@ -98,6 +98,15 @@ export interface SchoolMenuInterface {
 }
 
 export interface SchoolMenuWeekInterface {
-    weekCommercing: Date;
+    weekCommencing: Date;
     schoolMenuId: number;
+}
+
+export interface SchoolMenuWeekMealsInterface {
+    weekCommencing: Date[];
+    schoolMenuId: number;
+    status: string;
+    familyId: number;
+    userId: number;
+    schoolMeals: SchoolMealInterface[];
 }

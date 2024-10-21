@@ -7,12 +7,7 @@ using NLog;
 
 namespace FamilyMealPlanner.Services;
 
-public interface IOpenAIService
-{
-    Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId);
-}
-
-public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContext context) : IOpenAIService
+public class MockOpenAIService(IConfiguration configuration, FamilyMealPlannerContext context) : IOpenAIService
 {
     private static readonly HttpClient client = new HttpClient();
     private readonly IConfiguration _configure = configuration;
@@ -49,7 +44,8 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
 
     public async Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId)
     {
-        Logger.Info("OpenAI is being used");
+        Logger.Info("Mock OpenAI is being used");
+
         client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
 
         string prompt = GetPrompt() + text;
@@ -58,30 +54,16 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
         {
             model = "gpt-3.5-turbo-1106",
             messages = new[] { new { role = "user", content = prompt } },
-            max_tokens = 3000
+            max_tokens = 2000
         };
 
         var json = JsonSerializer.Serialize(requestBody);
-        var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-        var response = await client.PostAsync("https://api.openai.com/v1/chat/completions", content);
-        if (response.IsSuccessStatusCode)
-        {
-            var responseBody = await response.Content.ReadAsStringAsync();
-            Logger.Info("Response from OpenAI:");
-            Logger.Info(responseBody);
+        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\DevResources\test.txt");
+        var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(GetFileContent(filePath));
 
-            var openAIResponse = JsonSerializer.Deserialize<OpenAIResponse>(responseBody);
+        return openAIResponse;
 
-            return openAIResponse;
-        }
-        else
-        {
-            Logger.Error($"Error: {response.StatusCode}");
-            var errorResponse = await response.Content.ReadAsStringAsync();
-            Logger.Error($"Error details: {errorResponse}");
-            throw new Exception(errorResponse);
-        }
     }
 
 }

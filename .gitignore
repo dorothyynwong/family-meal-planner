@@ -21,3 +21,4 @@ backend.Tests/obj/
 .env
 
 backend/Logs/
+backend/DevResources/

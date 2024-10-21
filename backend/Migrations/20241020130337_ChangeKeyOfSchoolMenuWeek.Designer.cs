@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using FamilyMealPlanner;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -12,9 +13,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace backend.Migrations
 {
     [DbContext(typeof(FamilyMealPlannerContext))]
-    partial class FamilyMealPlannerContextModelSnapshot : ModelSnapshot
+    [Migration("20241020130337_ChangeKeyOfSchoolMenuWeek")]
+    partial class ChangeKeyOfSchoolMenuWeek
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -331,13 +334,13 @@ namespace backend.Migrations
 
             modelBuilder.Entity("FamilyMealPlanner.Models.SchoolMenuWeek", b =>
                 {
-                    b.Property<DateOnly?>("WeekCommencing")
+                    b.Property<DateOnly?>("WeekCommercing")
                         .HasColumnType("date");
 
                     b.Property<int>("SchoolMenuId")
                         .HasColumnType("integer");
 
-                    b.HasKey("WeekCommencing", "SchoolMenuId");
+                    b.HasKey("WeekCommercing", "SchoolMenuId");
 
                     b.HasIndex("SchoolMenuId");
 

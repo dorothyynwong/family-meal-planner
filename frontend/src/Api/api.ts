@@ -1,6 +1,6 @@
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, UserSignupInterface } from './apiInterface';
+import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, SchoolMealInterface, UserSignupInterface } from './apiInterface';
 import { configure } from '@testing-library/react';
 
 export async function importRecipeFromUrl(url: string) {
@@ -277,6 +277,33 @@ export async function getSchoolMealsByDate(familyId: number, menuDate: string) {
                 menuDate: menuDate
             }
         });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getSchoolMenuWeekByMenuId(schoolMenuId: number) {
+    try {
+        const response = await client.get(`/schoolmenus/${schoolMenuId}`);
+        return response;
+    } catch (error) {
+        throw error;
+    }  
+}
+
+export async function getDayTypes() {
+    try {
+        const response: AxiosResponse = await client.get(`/schoolmenus/days-of-week`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function updateSchoolMeal(schoolMealId: number, schoolMeal: SchoolMealInterface) {
+    try {
+        const response: AxiosResponse = await client.put(`/schoolmenus/meal/${schoolMealId}`, schoolMeal);
         return response;
     } catch (error) {
         throw error;
