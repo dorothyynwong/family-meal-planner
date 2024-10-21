@@ -98,12 +98,12 @@ export interface SchoolMenuInterface {
 }
 
 export interface SchoolMenuWeekInterface {
-    weekCommercing: Date;
+    weekCommencing: Date;
     schoolMenuId: number;
 }
 
 export interface SchoolMenuWeekMealsInterface {
-    weekCommercing: Date[];
+    weekCommencing: Date[];
     schoolMenuId: number;
     status: string;
     familyId: number;

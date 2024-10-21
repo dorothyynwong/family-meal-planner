@@ -44,7 +44,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
             {
                 SchoolMenuWeek schoolMenuWeek = new SchoolMenuWeek
                 {
-                    WeekCommercing = DateOnly.Parse(weekCommence),
+                    WeekCommencing = DateOnly.Parse(weekCommence),
                     SchoolMenuId = schoolMenuId
                 };
 
@@ -119,7 +119,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
         var schoolMenuWeeks = await _context.SchoolMenuWeeks
                                         .Include(sw => sw.SchoolMenu)
                                         .ThenInclude(sm => sm.SchoolMeals)
-                                        .Where(sw => sw.WeekCommercing == monday)
+                                        .Where(sw => sw.WeekCommencing == monday)
                                         .ToListAsync();
 
 
@@ -136,7 +136,7 @@ public class SchoolMenuService(FamilyMealPlannerContext context) : ISchoolMenuSe
         var schoolMeals = await _context.SchoolMenuWeeks
                                 .Include(sw => sw.SchoolMenu)
                                 .ThenInclude(sm => sm.SchoolMeals)
-                                .Where(sw => sw.WeekCommercing == monday)
+                                .Where(sw => sw.WeekCommencing == monday)
                                 .SelectMany(sw => sw.SchoolMenu.SchoolMeals)
                                 .Where(sm => sm.Day == day)
                                 .ToListAsync();

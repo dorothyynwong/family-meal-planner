@@ -130,8 +130,8 @@ public class SchoolMenuController(IPdfService pdfService,
         List<DateOnly> weekCommencings = new List<DateOnly>();
         foreach (var schoolMenuWeek in schoolMenuWeeks)
         {
-            if (schoolMenuWeek.WeekCommercing != null)
-                weekCommencings.Add((DateOnly)schoolMenuWeek.WeekCommercing);
+            if (schoolMenuWeek.WeekCommencing != null)
+                weekCommencings.Add((DateOnly)schoolMenuWeek.WeekCommencing);
         }
 
         SchoolMenuWeekResponse schoolMenuWeekResponse = new SchoolMenuWeekResponse

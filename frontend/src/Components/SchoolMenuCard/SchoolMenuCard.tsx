@@ -40,12 +40,13 @@ const SchoolMenuCard: React.FC<SchoolMenuCardProps> = ({ schoolMenu, dayTypes })
     const handleExpandClick = () => {
         setExpanded(!expanded);
     };
-
+    // const weeks = schoolMenu && schoolMenu.weekCommencing ? schoolMenu.weekCommencing.map(w => w.getDate()) : "";
+    console.log(schoolMenu.weekCommencing);
 
     return (
         <Card sx={{ maxWidth: 345, mx: 0, mb: 1, p: 0.5 }}>
             <CardHeader
-                title={schoolMenu.schoolMenuId}
+                title=""
                 sx={{ p: 0, mx: 0 }}
             />
             <CardActions disableSpacing>

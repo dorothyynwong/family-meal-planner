@@ -51,7 +51,7 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
             .HasForeignKey(fu => fu.FamilyId);
 
         builder.Entity<SchoolMenuWeek>()
-                .HasKey(sm => new { sm.WeekCommercing, sm.SchoolMenuId });
+                .HasKey(sm => new { sm.WeekCommencing, sm.SchoolMenuId });
 
     }
 }
