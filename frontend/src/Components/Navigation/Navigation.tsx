@@ -50,7 +50,6 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
 
     const schoolMenuIds = [64, 65, 66]; 
 
-
     return (
         <Navbar expand="lg">
             <Container className="custom-navbar-container">

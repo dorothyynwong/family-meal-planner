@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { getDayTypes, getSchoolMenuWeekByMenuId } from "../../Api/api";
-import { SchoolMealInterface, SchoolMenuWeekMealsInterface } from "../../Api/apiInterface";
-import SchoolMealCard from "../../Components/SchoolMealCard/SchoolMealCard";
+import { SchoolMenuWeekMealsInterface } from "../../Api/apiInterface";
 import { useLocation } from "react-router-dom";
 import SchoolMenuCard from "../../Components/SchoolMenuCard/SchoolMenuCard";
+import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 
 const SchoolMenuEdit: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -17,6 +17,7 @@ const SchoolMenuEdit: React.FC = () => {
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
+        setSchoolMenus([]);
 
         schoolMenuIds.forEach(
             schoolMenuId => {
@@ -24,7 +25,6 @@ const SchoolMenuEdit: React.FC = () => {
                     .then(response => {
                         const newMenu = response.data;
                         setSchoolMenus(prev => [...prev, newMenu]);
-                        setStatus("success");
                     })
                     .catch(error => {
                         console.log("Error getting school menus", error);
@@ -48,12 +48,19 @@ const SchoolMenuEdit: React.FC = () => {
             });
     }, []);
 
-    return (
-        schoolMenus && schoolMenus.map(schoolMenu => (
-            <SchoolMenuCard schoolMenu={schoolMenu} dayTypes={dayTypes} />
-        ))
-
-    )
+    return (<>
+        <StatusHandler
+            status={status}
+            errorMessages={errorMessages}
+            loadingMessage="Getting school menus..."
+            successMessage=""
+        >
+            <></>
+        </StatusHandler>
+        {schoolMenus && schoolMenus.map((schoolMenu, index) => (
+            <SchoolMenuCard key={index} schoolMenu={schoolMenu} dayTypes={dayTypes} />
+        ))}
+    </>)
 }
 
 export default SchoolMenuEdit;

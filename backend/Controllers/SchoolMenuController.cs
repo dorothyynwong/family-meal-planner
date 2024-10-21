@@ -141,7 +141,7 @@ public class SchoolMenuController(IPdfService pdfService,
             Status = schoolMenus.Status,
             FamilyId = schoolMenus.FamilyId,
             UserId = schoolMenus.UserId,
-            SchoolMeals = schoolMenus.SchoolMeals.ToList() 
+            SchoolMeals = schoolMenus.SchoolMeals.ToList()
         };
 
         return Ok(schoolMenuWeekResponse);
@@ -171,7 +171,7 @@ public class SchoolMenuController(IPdfService pdfService,
     public async Task<IActionResult> GetMealDays()
     {
         return Ok(Enum.GetNames(typeof(DayType)));
-    }   
+    }
 
     [HttpPut("meal/{schoolMealId}")]
     public async Task<IActionResult> UpdateSchoolMeal(SchoolMealUpdateRequest schoolMeal, [FromRoute] int schoolMealId)
