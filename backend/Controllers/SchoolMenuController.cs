@@ -76,11 +76,11 @@ public class SchoolMenuController(IPdfService pdfService,
 
         if(User.FindFirstValue(ClaimTypes.Role) != RoleType.Admin.ToString())
             return Unauthorized();
-            
+
         try
         {
             var text = _pdfService.ImportPdf(pdfFilePath);
-            Logger.Debug(text);
+          
             List<string> jsonList = new List<string>();
             int i = 0;
             foreach (var item in text)
