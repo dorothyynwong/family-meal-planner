@@ -21,8 +21,8 @@ const SchoolMenuEdit: React.FC = () => {
             schoolMenuId => {
                 getSchoolMenuWeekByMenuId(schoolMenuId)
                     .then(response => {
-                        const newMenus = response.data;
-                        setSchoolMenus(prev => [...prev, ...newMenus]);
+                        const newMenu = response.data;
+                        setSchoolMenus(prev => [...prev, newMenu]);
                         setStatus("success");
                     })
                     .catch(error => {
@@ -50,16 +50,12 @@ const SchoolMenuEdit: React.FC = () => {
 
     return (
         <>
-            {schoolMenus && schoolMenus.forEach(schoolMenu => {
-                ( 
-                    schoolMenu && schoolMenu.schoolMeals.map((sm, index) =>
-                        <SchoolMealCard key={index} meal={sm} mealDays={dayTypes} />
-                    )
-                )
-            }
+            {schoolMenus && schoolMenus.map(schoolMenu => {
+                return(
+                schoolMenu && schoolMenu.schoolMeals.map((sm, index) =>
+                    <SchoolMealCard key={index} meal={sm} mealDays={dayTypes} />
+            ))}
             )}
-
-
         </>
     )
 }
