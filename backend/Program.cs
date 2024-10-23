@@ -104,7 +104,7 @@ builder
     .Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<FamilyMealPlannerContext>()
     .AddDefaultTokenProviders()
-    .AddTokenProvider<DataProtectorTokenProvider<User>>(builder.Configuration["Jwt:AppName"]);
+    .AddTokenProvider<DataProtectorTokenProvider<User>>(builder.Configuration["Jwt_AppName"]);
 
 builder.Services.AddAuthentication(options =>
                 {
@@ -114,16 +114,16 @@ builder.Services.AddAuthentication(options =>
                 })
                 .AddJwtBearer(options =>
                 {
-                    string secret = builder.Configuration["JWT:SECRET"];
+                    string secret = builder.Configuration["Jwt_Secret"];
                     if (secret == null)
                         throw new InvalidOperationException("Unable to find JWT Secret");
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidIssuer = builder.Configuration["Jwt_Issuer"],
                         ValidateAudience = true,
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        ValidAudience = builder.Configuration["Jwt_Audience"],
                         ValidateLifetime = true,
                         IssuerSigningKey =
                             new SymmetricSecurityKey(
