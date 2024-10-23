@@ -20,9 +20,9 @@ RUN dotnet build "backend.csproj" -c Release -o /app/build
 
 RUN dotnet tool install --global dotnet-ef
 ENV PATH="$PATH:/root/.dotnet/tools"
-
-RUN dotnet ef database update 
 RUN echo "Connection String: $ConnectionStrings__DefaultConnection"
+RUN dotnet ef database update 
+
 
 # Publish the application
 FROM build AS publish
