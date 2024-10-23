@@ -14,6 +14,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var configurationBuilder = new ConfigurationBuilder()
+    .AddEnvironmentVariables(); 
+
+var configuration = configurationBuilder.Build();
+
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
