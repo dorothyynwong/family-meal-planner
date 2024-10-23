@@ -15,7 +15,7 @@ RUN dotnet restore
 RUN dotnet ef database update
 
 # Copy the rest of the backend files
-COPY ./backend/ ./
+COPY ./ ./
 
 # Build the application
 RUN dotnet build "backend.csproj" -c Release -o /app/build
