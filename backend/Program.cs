@@ -21,9 +21,14 @@ GlobalDiagnosticsContext.Set("configDir", @$"{currentDirectory}\Logs");
 
 if (builder.Environment.IsDevelopment())
 {
-    Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-    Logger.Warn("console logging is great");
+    Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.development.config").GetCurrentClassLogger();
 }
+else
+{
+    Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+}
+
+Logger.Info($"Is development? {builder.Environment.IsDevelopment()}");
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
