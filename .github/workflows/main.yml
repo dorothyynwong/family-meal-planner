@@ -31,8 +31,7 @@ jobs:
       
     - name: Run backend tests
       env:  
-        IMGBB_API_KEY: ${{ secrets.IMGBB_API_KEY }}
-        ConnectionStrings_DefaultConnection: ${{ secrets.ConnectionStrings_DefaultConnection}}
+        IMGBB_API_KEY: ${{ secrets.ImgBB_API_Key }}
       run: dotnet test backend.Tests/backend.Tests.csproj
 
 
