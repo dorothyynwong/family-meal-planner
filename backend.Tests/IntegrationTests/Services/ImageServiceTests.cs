@@ -18,7 +18,7 @@ public class ImageServiceTests
     {
 
         var configurationBuilder = new ConfigurationBuilder()
-                                .AddUserSecrets<ImageServiceTests>()
+                                .AddEnvironmentVariables()
                                 .Build();
 
         _imageService = new ImageService(configurationBuilder);

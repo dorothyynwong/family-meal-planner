@@ -104,7 +104,6 @@ public class FamilyService(FamilyMealPlannerContext context) : IFamilyService
 
     public async Task<Family> GetFamilyById(int familyId)
     {
-        Logger.Debug(familyId);
         Family family = await _context.Families.SingleAsync(family => family.Id == familyId);
         if (family == null)
         {

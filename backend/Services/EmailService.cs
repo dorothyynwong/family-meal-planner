@@ -14,11 +14,10 @@ public class EmailService(IConfiguration configure) : IEmailService
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
     public async Task SendEmailAsync(string recipentEmail, string recipentName, string subject, string plainTextContent, string htmlContent)
     {
-        var apiKey = _configure["SendGrid:API_KEY"];
-        Logger.Debug(apiKey);
+        var apiKey = _configure["SendGrid_API_Key"];
         var client = new SendGridClient(apiKey);
 
-        var from = new EmailAddress(_configure["SendGrid:Email"], "Family Meal Planner");
+        var from = new EmailAddress(_configure["SendGrid_Email"], "Family Meal Planner");
         var to = new EmailAddress(recipentEmail, recipentName);
 
         var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);

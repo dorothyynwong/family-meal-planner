@@ -50,7 +50,7 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
     public async Task<OpenAIResponse> GetModelResponseAsync(string text, int familyId, int userId)
     {
         Logger.Info("OpenAI is being used");
-        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI:API_KEY"]);
+        client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Bearer", _configure["OpenAI_API_Key"]);
 
         string prompt = GetPrompt() + text;
 

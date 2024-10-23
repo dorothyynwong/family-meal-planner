@@ -24,14 +24,14 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     private readonly UserManager<User> _userManager = userManager;
     private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
     private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
-    private string _issuer = configuration["Jwt:Issuer"];
-    private string _audience = configuration["Jwt:Audience"];
-    private string _appName = configuration["Jwt:AppName"];
-    private string _refreshTokenName = configuration["Jwt:RefreshTokenName"];
+    private string _issuer = configuration["Jwt_Issuer"];
+    private string _audience = configuration["Jwt_Audience"];
+    private string _appName = configuration["Jwt_AppName"];
+    private string _refreshTokenName = configuration["Jwt_RefreshTokenName"];
     private SigningCredentials CreateSigningCredentials()
     {
 
-        string secret = _configuration["JWT:SECRET"];
+        string secret = _configuration["Jwt_Secret"];
         if (secret == null)
             throw new InvalidOperationException("Unable to find JWT Secret");
 
@@ -78,8 +78,8 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
             await _userManager.SetAuthenticationTokenAsync(
                                                             user,
-                                                            _configuration["Jwt:AppName"],
-                                                            _configuration["Jwt:RefreshTokenName"],
+                                                            _configuration["Jwt_AppName"],
+                                                            _configuration["Jwt_RefreshTokenName"],
                                                             jwtAuthResult.RefreshToken.TokenString
                                                         );
 
