@@ -15,10 +15,20 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
 GlobalDiagnosticsContext.Set("configDir", @$"{currentDirectory}\Logs");
-Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-Logger.Warn("console logging is great");
+
+if (builder.Environment.IsDevelopment())
+{
+    Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.development.config").GetCurrentClassLogger();
+}
+else
+{
+    Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+}
+
+Logger.Info($"Is development? {builder.Environment.IsDevelopment()}");
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
@@ -87,14 +97,14 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
+    options.UseNpgsql(builder.Configuration["ConnectionStrings_DefaultConnection"]);
 });
 
 builder
     .Services.AddIdentity<User, Role>()
     .AddEntityFrameworkStores<FamilyMealPlannerContext>()
     .AddDefaultTokenProviders()
-    .AddTokenProvider<DataProtectorTokenProvider<User>>(builder.Configuration["Jwt:AppName"]);
+    .AddTokenProvider<DataProtectorTokenProvider<User>>(builder.Configuration["Jwt_AppName"]);
 
 builder.Services.AddAuthentication(options =>
                 {
@@ -104,16 +114,16 @@ builder.Services.AddAuthentication(options =>
                 })
                 .AddJwtBearer(options =>
                 {
-                    string secret = builder.Configuration["JWT:SECRET"];
+                    string secret = builder.Configuration["Jwt_Secret"];
                     if (secret == null)
                         throw new InvalidOperationException("Unable to find JWT Secret");
 
                     options.TokenValidationParameters = new TokenValidationParameters
                     {
                         ValidateIssuer = true,
-                        ValidIssuer = builder.Configuration["Jwt:Issuer"],
+                        ValidIssuer = builder.Configuration["Jwt_Issuer"],
                         ValidateAudience = true,
-                        ValidAudience = builder.Configuration["Jwt:Audience"],
+                        ValidAudience = builder.Configuration["Jwt_Audience"],
                         ValidateLifetime = true,
                         IssuerSigningKey =
                             new SymmetricSecurityKey(
