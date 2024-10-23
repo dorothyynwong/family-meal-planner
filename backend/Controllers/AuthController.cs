@@ -133,7 +133,6 @@ public class AuthController(
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
-        Logger.Debug("refresh toekn");
         var refreshToken = Request.Cookies["refreshToken"];
         var email = Request.Cookies["email"];
 
