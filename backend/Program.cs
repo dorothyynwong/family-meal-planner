@@ -15,10 +15,15 @@ using System.Text;
 var builder = WebApplication.CreateBuilder(args);
 
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
+
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
 GlobalDiagnosticsContext.Set("configDir", @$"{currentDirectory}\Logs");
-Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
-Logger.Warn("console logging is great");
+
+if (builder.Environment.IsDevelopment())
+{
+    Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
+    Logger.Warn("console logging is great");
+}
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
