@@ -18,6 +18,9 @@ COPY ./ ./
 # Build the application
 RUN dotnet build "backend.csproj" -c Release -o /app/build
 
+RUN dotnet tool install --global dotnet-ef
+ENV PATH="$PATH:/root/.dotnet/tools"
+
 RUN dotnet ef database update
 
 # Publish the application
