@@ -33,7 +33,6 @@ jobs:
       env:  
         ImgBB_API_Key: ${{ secrets.ImgBB_API_Key }}
       run: 
-        echo $ImgBB_API_Key
         dotnet test backend.Tests/backend.Tests.csproj
 
 
