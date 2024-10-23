@@ -97,7 +97,7 @@ builder.Services.AddCors(options =>
 
 builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
 {
-    options.UseNpgsql(builder.Configuration.GetConnectionString("Postgres"));
+    options.UseNpgsql(builder.Configuration["ConnectionStrings_DefaultConnection"]);
 });
 
 builder

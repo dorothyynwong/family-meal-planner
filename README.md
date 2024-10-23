@@ -79,3 +79,28 @@ After changing any Models/Data
 dotnet ef migrations add <YOUR MIGRATION NAME HERE>
 dotnet ef database update
 ```
+
+## Production Setup
+
+### Environmemnt Variables
+This project requires the following environment variables to be set in the production environment:
+
+### Database Configuration
+- `ConnectionStrings_DefaultConnection` : connection strings to the database
+    **Example**: `Host=<host>; Port=<port>; Database=<database name>; Username=<database usename>; Password=<passowrd>`
+
+### API Keys
+- `SendGrid_Email` : sender email address for sending email to users
+- `SendGrid_API_Key` : API Key for using SendGrid
+- `OpenAI_API_Key` : API Key for using OpenAI
+- `ImgBB_API_Key` : API Key for using ImgBB
+- `JWT_Issuer` : JWT Issuer
+    **Example**: `http://localhost:5107`
+- `JWT_Audience`: JWT Audience
+    **Example**: `http://localhost:3000`
+- `JWT_AppName`: JWT AppName
+    **Example**: `FamilyMealPlanner`
+- `JWT_RefreshTokenName`: JWT Refresh Token Name
+    **Example**: `FMPToken`
+- `JWT_Secret`: JWT Secret
+    **Example**: `dummy-jwt-secret-xxxxxxxxxxxxxxx`
