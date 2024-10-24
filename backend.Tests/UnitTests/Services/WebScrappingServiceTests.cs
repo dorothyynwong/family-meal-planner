@@ -15,39 +15,29 @@ public class WebScrappingServiceTests
     [Test]
     public async Task ImportRecipe_ValidUrl_ReturnsRecipe()
     {
-        var url = "https://www.bbc.co.uk/food/recipes/air_fryer_chicken_kyiv_98492";
+        var url = "https://www.bbc.co.uk/food/recipes/air_fryer_chicken_27325";
 
         Recipe recipe = new Recipe();
-        recipe.Name = "Air fryer chicken kyiv";
+        recipe.Name = "Air fryer sticky chicken drumsticks";
         recipe.Images = [
-                        "https://food-images.files.bbci.co.uk/food/recipes/air_fryer_chicken_kyiv_98492_16x9.jpg"
+                        "https://food-images.files.bbci.co.uk/food/recipes/air_fryer_chicken_27325_16x9.jpg"
                         ];
-        recipe.Description =  "A crispy chicken classic that works perfectly in the air fryer! Freeze the garlic butter in advance for an easy midweek meal.";
+        recipe.Description =  "This sticky marinade is a winner – super quick to make and adds a wonderfully sweet and rich flavour to chicken pieces.";
         recipe.RecipeIngredients = [
-                                    "80g/2¾oz butter, softened ",
-                                    "1 garlic clove, crushed",
-                                    "10g⅓oz fresh parsley leaves, roughly chopped",
-                                    "freshly grated nutmeg, to taste",
-                                    "salt and freshly ground black pepper",
-                                    "4 chicken breasts, the chunkier the better",
-                                    "2 free-range eggs, beaten",
-                                    "80g/2¾oz plain flour",
-                                    "100g/3½oz panko breadcrumbs",
-                                    "olive oil spray",
-                                    "salt and freshly ground black pepper",
-                                    "green salad",
-                                    "1 lemon, cut into wedges"
+                                    "2 tbsp light soy sauce",
+                                    "3 tbsp tomato chutney (or any type will work)",
+                                    "2 tbsp runny honey",
+                                    "1 tsp Worcestershire sauce",
+                                    "8 chicken legs (see recipe tip)",
+                                    "potato salad and green crunchy leaves",
                                   ];
         recipe.RecipeInstructions = [
-                                    "To make the garlic butter, mix the softened butter in a bowl with the garlic, parsley and nutmeg. Season well with salt and pepper. Wrap the butter in cling film to form a log shape, then place in the freezer until hard, about 20 minutes.",
-                                    "To make the chicken kyivs, use a sharp knife to cut a slit into the side of each chicken breast to make a pocket, starting from the thicker end of the breast and cutting down as far as you can go without making any holes. ",
-                                    "Slice the garlic butter into 1cm/½in-thick pieces, then divide between the chicken breasts and stuff into the pockets. Secure well with a few toothpicks or butcher’s twine.",
-                                    "Preheat the air fryer to 200C.",
-                                    "Place the flour on a large plate and season with salt and pepper. Place the breadcrumbs on another plate. Place the beaten eggs in a shallow bowl.",
-                                    "Dip the chicken breasts in the flour, egg and finally the panko breadcrumbs. Spray the crumbed breasts all over with the olive oil spray, then place in the air fryer to bake for 20 minutes.",
-                                    "Serve with a green salad and a big wedge of lemon. "
+                                    "In a large bowl, mix together the marinade ingredients, then add the chicken and coat well with the marinade. Cover and keep in the fridge for anything from 20 minutes up to 24 hours.",
+                                    "When ready to cook, preheat the air fryer to 180C.",
+                                    "Lay the drumsticks in a single layer in the basket and cook for 10 minutes, then turn over and cook for another 10–12 minutes until they are crispy and charred.",
+                                    "Serve with a potato salad and green crunchy leaves.",
                                     ];
-        recipe.DefaultImageUrl = "https://food-images.files.bbci.co.uk/food/recipes/air_fryer_chicken_kyiv_98492_16x9.jpg";
+        recipe.DefaultImageUrl = "https://food-images.files.bbci.co.uk/food/recipes/air_fryer_chicken_27325_16x9.jpg";
 
 
         var result = await _service.GetRecipeFromUrl(url);
