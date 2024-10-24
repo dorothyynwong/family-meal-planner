@@ -40,12 +40,12 @@ npm install
 ```bash
 dotnet restore
 dotnet ef database update
-dotnet user-secrets set "ImgBB:API_KEY" "YOUR API KEY"
-dotnet user-secrets set "JWT:SECRET" "YOUR SECRET"
-dotnet user-secrets set "SendGrid:API_KEY" "YOUR API KEY"
-dotnet user-secrets set "SendGrid:Email" "Sender Email Address"
-dotnet user-secrets set "HuggingFace:API_KEY" "YOUR API KEY" 
-dotnet user-secrets set "OpenAI:API_KEY" "YOUR API KEY" 
+dotnet user-secrets set "ImgBB_API_Key" "YOUR API KEY"
+dotnet user-secrets set "JWT_Secret" "YOUR SECRET"
+dotnet user-secrets set "SendGrid_API_Key" "YOUR API KEY"
+dotnet user-secrets set "SendGrid_Email" "Sender Email Address"
+dotnet user-secrets set "OpenAI_API_Key" "YOUR API KEY" 
+dotnet user-secrets set "ConnectionStrings_DefaultConnection" "Host=localhost; Port=5432; Database=familyplanner; Username=familyplanner; Password=familyplanner"
 ```
 
 ### Inside the `frontend/` directory
