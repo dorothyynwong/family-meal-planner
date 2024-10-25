@@ -51,7 +51,8 @@ dotnet user-secrets set "ConnectionStrings_DefaultConnection" "Host=localhost; P
 ### Inside the `backend.Tests` 
 ```bash
 dotnet user-secrets set "ImgBB_API_Key" "YOUR API KEY"
-dotnet user-secrets set "ConnectionStrings_DefaultConnection" "Host=localhost; Port=5432; Database=familyplanner; Username=familyplanner; Password=familyplanner; <other setting such as SSL>"
+dotnet user-secrets set "DB_CONNECTION_STRING" "Host=localhost; Port=5432; Database=familyplanner; Username=familyplanner; Password=familyplanner; <other setting such as SSL>"
+
 ```
 
 ### Inside the `frontend/` directory
