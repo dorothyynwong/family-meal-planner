@@ -48,6 +48,12 @@ dotnet user-secrets set "OpenAI_API_Key" "YOUR API KEY"
 dotnet user-secrets set "ConnectionStrings_DefaultConnection" "Host=localhost; Port=5432; Database=familyplanner; Username=familyplanner; Password=familyplanner"
 ```
 
+### Inside the `backend.Tests` 
+```bash
+dotnet user-secrets set "ImgBB_API_Key" "YOUR API KEY"
+dotnet user-secrets set "ConnectionStrings_DefaultConnection" "Host=localhost; Port=5432; Database=familyplanner; Username=familyplanner; Password=familyplanner; <other setting such as SSL>"
+```
+
 ### Inside the `frontend/` directory
 create a .env file by referring to .env.template
 
