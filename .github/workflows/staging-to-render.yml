@@ -42,7 +42,7 @@ jobs:
       run: |
         # Trigger deployment to Render
         curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_STAGING }} \
-        -H "Authorization: Bearer $RENDER_API_KEY_STAGING" \
+        -H "Authorization: Bearer $RENDER_API_KEY" \
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
