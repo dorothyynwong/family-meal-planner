@@ -1,7 +1,6 @@
-import { AppBar, Box, Fab, IconButton, styled, Toolbar } from "@mui/material";
+import { AppBar, Box, Fab, styled, Toolbar } from "@mui/material";
 import AddIcon from '@mui/icons-material/Add';
 import { useMeal } from "../MealContext/MealContext";
-import MealForm from "../MealForm/MealForm";
 
 const StyledFab = styled(Fab)({
     position: 'absolute',
@@ -13,7 +12,7 @@ const StyledFab = styled(Fab)({
   });
 
 const FamilyMealsBottomBar: React.FC = () => {
-    const { modalShow, setModalShow, setMode } = useMeal();
+    const { setModalShow, setMode } = useMeal();
     
     const handleClick = () => {
         setMode("Add");

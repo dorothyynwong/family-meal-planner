@@ -8,7 +8,7 @@ interface FamilyRoleSelectBoxProps {
 }
 
 const FamilyRoleSelectBox: React.FC<FamilyRoleSelectBoxProps> = ({defaultRole, roles, onRoleChange}) => {
-    const [familyRoles, setFamilyRoles] = useState<string[]>(roles);
+    const [familyRoles] = useState<string[]>(roles);
 
     const handleChange = (event: SelectChangeEvent<string>) => {
             const { value } = event.target;

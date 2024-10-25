@@ -8,7 +8,7 @@ import StatusHandler from "../StatusHandler/StatusHandler";
 interface SchoolMenuSelectProps {
 }
 
-const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({ }) => {
+const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = () => {
     const { mealDate, schoolMealId, setSchoolMealId } = useMeal();
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
