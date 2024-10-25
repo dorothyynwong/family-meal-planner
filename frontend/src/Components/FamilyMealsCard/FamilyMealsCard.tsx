@@ -1,9 +1,8 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
+import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
-import { red } from "@mui/material/colors";
 import MealDaily from "../MealDaily/MealDaily";
-import { FamilyUserInterface, FamilyWithUsersInterface } from "../../Api/apiInterface";
+import { FamilyWithUsersInterface } from "../../Api/apiInterface";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
