@@ -1,12 +1,10 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: .NET
+name: Backend Tests
 
 on:
   push:
-    branches: main
-  pull_request:
     branches: main
 
 jobs:
@@ -32,6 +30,7 @@ jobs:
     - name: Run backend tests
       env:  
         ImgBB_API_Key: ${{ secrets.ImgBB_API_Key }}
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING}}
       run: 
         dotnet test backend.Tests/backend.Tests.csproj
 
