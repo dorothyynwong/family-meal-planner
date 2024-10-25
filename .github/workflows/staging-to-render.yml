@@ -67,7 +67,7 @@ jobs:
     # Step 11: Run EF Core database update
     - name: Run EF Core Migrations
       env:
-        ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS }}
+        ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
         SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
         SendGrid_API_Key: ${{ secrets.SENDGRID_API_KEY }}
         OpenAI_API_Key: ${{ secrets.OPENAI_API_KEY }}
