@@ -98,7 +98,7 @@ builder.Services.AddCors(options =>
 builder.Services.AddDbContext<FamilyMealPlannerContext>(options =>
 {
     options.UseNpgsql(builder.Configuration["ConnectionStrings_DefaultConnection"],
-                npgsqlOptions => npgsqlOptions.CommandTimeout(120));
+                npgsqlOptions => npgsqlOptions.CommandTimeout(60));
 });
 
 builder
