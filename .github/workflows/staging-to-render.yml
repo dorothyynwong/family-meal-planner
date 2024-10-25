@@ -47,8 +47,8 @@ jobs:
         -d '{"branch": "staging"}'  
 
     # Step 7: Navigate to the backend folder
-      - name: Navigate to backend folder
-        run: cd backend  
+    - name: Navigate to backend folder
+      run: cd backend  
 
     # Step 8: Set up .NET Core environment
     - name: Setup .NET Core
