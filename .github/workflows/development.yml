@@ -45,41 +45,9 @@ jobs:
       run: |
         IMAGE_TAG=${GITHUB_SHA::7}
         docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} -f backend/DockerFile backend/
-        git tag -a $IMAGE_TAG -m "Promoting image to staging"
         echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-
+        
     - name: 9. Push Docker image
       run: |
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
-
-    - name: 10. Trigger Render Deployment
-      env:
-        RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}  
-      run: |
-        # Trigger deployment to Render
-        curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_STAGING }} \
-        -H "Authorization: Bearer $RENDER_API_KEY" \
-        -H "Content-Type: application/json" \
-        -d '{"branch": "staging"}'  
-
-    - name: 11. Navigate to backend folder
-      run: cd backend  
-
-    - name: 12. Install EF Core CLI
-      run: dotnet tool install --global dotnet-ef
-
-    - name: 13. Run EF Core Migrations
-      env:
-        ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
-        SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
-        SendGrid_API_Key: ${{ secrets.SENDGRID_API_KEY }}
-        OpenAI_API_Key: ${{ secrets.OPENAI_API_KEY }}
-        ImgBB_API_Key: ${{ secrets.IMGBB_API_KEY }}
-        JWT_Issuer: ${{ secrets.JWT_ISSUER }}
-        JWT_Audience: ${{ secrets.JWT_AUDIENCE }}
-        JWT_AppName: ${{ secrets.JWT_APPNAME }}
-        JWT_RefreshTokenName: ${{ secrets.JWT_REFRESHTOKENNAME }}
-        JWT_Secret: ${{ secrets.JWT_SECRET }}
-      run: |
-        dotnet ef database update --project backend/backend.csproj --context FamilyMealPlannerContext
-
+    
