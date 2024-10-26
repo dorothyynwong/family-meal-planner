@@ -23,7 +23,7 @@ jobs:
       run: dotnet restore backend/backend.csproj
       
     - name: 4. Build backend
-      run:  dotnet build backend/backend.csproj --configuration Release
+      run:  dotnet build backend/backend.csproj
       
     - name: 5. Run backend tests
       env:  
