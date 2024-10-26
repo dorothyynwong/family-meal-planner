@@ -35,9 +35,6 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    - name: 4. Navigate to backend folder
-      run: cd backend  
-
     - name: 5. Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
@@ -45,9 +42,6 @@ jobs:
 
     - name: 6. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
-
-    - name: 7. Build the backend
-      run: dotnet build --configuration Release
 
     - name: 8. Run EF Core Migrations
       env:
