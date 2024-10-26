@@ -35,9 +35,8 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    - name: 5. Print environment variables
-      run: printenv
-    - uses: actions/checkout@v4
+    - name: 5. Checkout code
+      uses: actions/checkout@v2
     
     - name: 6. Navigate to backend folder
       run: cd backend  
@@ -46,12 +45,12 @@ jobs:
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
-        
-    - name: 8. Build backend
-      run:  dotnet build backend/backend.csproj
 
-    - name: 9. Install EF Core CLI
+    - name: 8. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
+
+    - name: 9. Build the backend
+      run: dotnet build --configuration Release
 
     - name: 10. Run EF Core Migrations
       env:
