@@ -45,18 +45,9 @@ jobs:
       run: |
         IMAGE_TAG=${GITHUB_SHA::7}
         docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} -f backend/DockerFile backend/
+        git tag -a $IMAGE_TAG -m "Promoting image to staging"
         echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
     - name: 9. Push Docker image
       run: |
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
-    
-    - name: 10. Save Image Tag as Artifact
-      run: echo ${IMAGE_TAG} > image_tag.txt
-      
-    - name: 11. Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: image_tag
-        path: image_tag.txt
-        retention-days: 30
