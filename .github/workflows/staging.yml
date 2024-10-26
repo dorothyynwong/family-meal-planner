@@ -35,18 +35,25 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    - name: 4. Setup .NET Core
+    - name: 5. Print environment variables
+      run: printenv
+    - uses: actions/checkout@v4
+    
+    - name: 6. Navigate to backend folder
+      run: cd backend  
+      
+    - name: 7. Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
         
-    - name: 5. Build backend
+    - name: 8. Build backend
       run:  dotnet build backend/backend.csproj
 
-    - name: 6. Install EF Core CLI
+    - name: 9. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
-    - name: 7. Run EF Core Migrations
+    - name: 10. Run EF Core Migrations
       env:
         ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
         SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
