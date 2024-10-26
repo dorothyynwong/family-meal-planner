@@ -31,8 +31,11 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
             case "families":
                 navigate('/families');
                 break;
-            case "user-login":
-                navigate('/user-login');
+            case "login":
+                navigate('/login');
+                break;
+            case "signup":
+                navigate('/signup');
                 break;
             case "school-menus-edit":
                 navigate('/school-menu-edit', { state: { schoolMenuIds: schoolMenuIds } });
@@ -63,7 +66,7 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
                     <Nav.Link id="family-meals" className="custom-nav-link" onClick={handleClick}>Families' Meals</Nav.Link>
                     <Nav.Link id="families" className="custom-nav-link" onClick={handleClick}>Families</Nav.Link>
                     <Nav.Link id="school-menus-edit" className="custom-nav-link" onClick={handleClick}>School Menus Edit</Nav.Link>
-                    <Nav.Link id="user-login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link>
+                    {/* <Nav.Link id="user-login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link> */}
                     {
                         isAuthenticated &&
                         <Button onClick={handleLogout}>Logout</Button>
@@ -71,8 +74,8 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
                     {
                         !isAuthenticated &&
                         <>
-                            <Nav.Link className="custom-nav-link" href="/user-login">Login</Nav.Link>
-                            <Nav.Link className="custom-nav-link" href="/user-signup">Signup</Nav.Link>
+                            <Nav.Link id="login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link>
+                            <Nav.Link id="signup" className="custom-nav-link" onClick={handleClick}>Signup</Nav.Link>
                         </>
 
                     }

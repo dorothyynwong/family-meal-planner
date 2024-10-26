@@ -49,10 +49,10 @@ function App() {
               <Route path="/meal-plans"
                 element={<MealPlanMonthly />} />
 
-              <Route path="/user-login"
+              <Route path="/login"
                 element={<UserLoginPage />} />
 
-              <Route path="/user-signup"
+              <Route path="/signup"
                 element={<UserSignupPage />} />
 
               <Route path="/families"
