@@ -46,9 +46,9 @@ jobs:
     - name: 7. Build Docker image
       run: |
         IMAGE_TAG=${GITHUB_SHA::7}
-        docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend-staging:${IMAGE_TAG} -f backend/DockerFile backend/
+        docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} -f backend/DockerFile backend/
         echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
     - name: 8. Push Docker image
       run: |
-        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend-staging:${IMAGE_TAG}
+        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
