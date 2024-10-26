@@ -3,40 +3,27 @@ name: Build and Push Docker image
 on:
   push:
     branches:
-      - staging  # Trigger on push to the main branch
+      - staging 
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-    # Step 1: Check out the code from the GitHub repository
-    - name: Checkout code
-      uses: actions/checkout@v2
-
-    # Step 2: Set up Docker Buildx (Optional if you need advanced build features)
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v1
-
-    # Step 3: Log in to Docker Hub
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_HUB_USER_STAGING }}  
-        password: ${{ secrets.DOCKER_HUB_PASSWORD_STAGING }}  
+        username: ${{ secrets.DOCKER_HUB_USER }}  
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}  
 
-    # Step 4: Build the Docker image
-    - name: Build Docker image
+    - name: 1. Push and Retag Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_HUB_USER_STAGING }}/family-meal-planner-backend-staging:latest -f backend/DockerFile backend/
+        IMAGE_TAG=${{ env.IMAGE_TAG }} 
+        docker pull ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
+        docker tag ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
+        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
-    # Step 5: Push the Docker image to Docker Hub
-    - name: Push Docker image
-      run: |
-        docker push ${{ secrets.DOCKER_HUB_USER_STAGING }}/family-meal-planner-backend-staging:latest
-
-    # Step 6: Deploy Docker image to Render
-    - name: Trigger Render Deployment
+    - name: 2. Trigger Render Deployment
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}  
       run: |
@@ -46,26 +33,21 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    # Step 7: Navigate to the backend folder
-    - name: Navigate to backend folder
+    - name: 3. Navigate to backend folder
       run: cd backend  
 
-    # Step 8: Set up .NET Core environment
-    - name: Setup .NET Core
+    - name: 4. Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
 
-    # Step 9: Install EF Core CLI
-    - name: Install EF Core CLI
+    - name: 5. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
-    # Step 10: Build the backend project
-    - name: Build the backend
+    - name: 6. Build the backend
       run: dotnet build --configuration Release
 
-    # Step 11: Run EF Core database update
-    - name: Run EF Core Migrations
+    - name: 7. Run EF Core Migrations
       env:
         ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
         SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
