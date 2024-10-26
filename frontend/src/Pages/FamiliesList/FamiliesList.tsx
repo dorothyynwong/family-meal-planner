@@ -8,7 +8,7 @@ interface FamiliesListProps {
     data: FamilyWithUsersInterface[];
 }
 
-const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
+const FamiliesList: React.FC<FamiliesListProps> = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
@@ -33,6 +33,7 @@ const FamiliesList: React.FC<FamiliesListProps> = ({ data }) => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

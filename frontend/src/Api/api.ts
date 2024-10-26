@@ -1,7 +1,7 @@
+/* eslint-disable no-useless-catch */
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
 import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, SchoolMealInterface, UserSignupInterface } from './apiInterface';
-import { configure } from '@testing-library/react';
 
 export async function importRecipeFromUrl(url: string) {
     try {

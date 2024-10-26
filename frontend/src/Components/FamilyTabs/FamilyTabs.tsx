@@ -2,7 +2,7 @@ import * as React from 'react';
 import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import Box from '@mui/material/Box';
-import { SyntheticEvent, useEffect, useState } from 'react';
+import {  useEffect, useState } from 'react';
 import FamilyTabPanel from '../FamilyTabPanel/FamilyTabPanel';
 import { FamilyWithUsersInterface } from '../../Api/apiInterface';
 import UserMealsCard from '../UserMealsCard/UserMealsCard';
@@ -26,9 +26,10 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
 
     useEffect(() => {
         if(!selectedFamily) setSelectedFamily(familiesAsCook[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [familiesAsCook, setSelectedFamily]);
 
-    const handleChange = (event: SyntheticEvent, newValue: number) => {
+    const handleChange = ( newValue: number) => {
         const family = familiesAsCook.find(fu => fu.familyId === newValue);
         setValue(newValue);
         setSelectedFamily(family!);
@@ -40,7 +41,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
         <Box sx={{ bgcolor: 'background.paper' }}>
             <Tabs
                 value={value}
-                onChange={handleChange}
+                onChange={() => handleChange}
                 variant="scrollable"
                 scrollButtons="auto"
                 aria-label="families-meals-tabs"

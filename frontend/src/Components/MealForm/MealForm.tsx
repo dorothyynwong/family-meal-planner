@@ -41,7 +41,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         resetMealContext,
         selectedFamily,
         schoolMealId,
-        setSchoolMealId
     } = useMeal();
 
     const navigate = useNavigate();
@@ -69,7 +68,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
             setRecipeName(selectedRecipe.name ? selectedRecipe.name : "");
             setModalShow(true);
         }
-    }, [selectedRecipe, modalShow]);
+    }, [selectedRecipe, modalShow, setRecipeName, setModalShow]);
 
     const isFromMealForm = true;
 
