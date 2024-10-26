@@ -56,4 +56,4 @@ jobs:
         path: image_tag.txt
 
     - name: 11. Create Docker tag file
-      run: echo ${{ IMAGE_TAG }} > image_tag.txt
+      run: echo ${ IMAGE_TAG } > image_tag.txt
