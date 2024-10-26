@@ -21,8 +21,8 @@ jobs:
 
     - name: 2. Push and Retag Docker image
       run: |
-        docker pull ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
-        docker tag ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
+        docker pull ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${{ github.event.inputs.IMAGE_TAG }}
+        docker tag ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${{ github.event.inputs.IMAGE_TAG }} ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
     - name: 3. Trigger Render Deployment
