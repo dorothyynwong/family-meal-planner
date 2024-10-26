@@ -46,6 +46,7 @@ const SchoolMenuEdit: React.FC = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (<>
