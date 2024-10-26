@@ -22,18 +22,18 @@ jobs:
     - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_HUB_USER_STAGING }}  
-        password: ${{ secrets.DOCKER_HUB_PASSWORD_STAGING }}  
+        username: ${{ secrets.DOCKER_HUB_USER}}  
+        password: ${{ secrets.DOCKER_HUB_PASSWORD }}  
 
     # Step 4: Build the Docker image
     - name: Build Docker image
       run: |
-        docker build -t ${{ secrets.DOCKER_HUB_USER_STAGING }}/family-meal-planner-backend-staging:latest -f backend/DockerFile backend/
+        docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend-staging:latest -f backend/DockerFile backend/
 
     # Step 5: Push the Docker image to Docker Hub
     - name: Push Docker image
       run: |
-        docker push ${{ secrets.DOCKER_HUB_USER_STAGING }}/family-meal-planner-backend-staging:latest
+        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend-staging:latest
 
     # Step 6: Deploy Docker image to Render
     - name: Trigger Render Deployment
