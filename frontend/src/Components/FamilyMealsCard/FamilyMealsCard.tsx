@@ -1,16 +1,8 @@
-<<<<<<< HEAD
 import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
 import MealDaily from "../MealDaily/MealDaily";
 import { FamilyWithUsersInterface } from "../../Api/apiInterface";
-=======
-import {  Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useState } from "react";
-import MealDaily from "../MealDaily/MealDaily";
-import {  FamilyWithUsersInterface } from "../../Api/apiInterface";
->>>>>>> main
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
