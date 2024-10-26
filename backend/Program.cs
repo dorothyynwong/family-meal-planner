@@ -92,7 +92,7 @@ builder.Services.AddCors(options =>
         /*policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod()
                                                                     .AllowAnyHeader()
                                                                     .AllowCredentials();*/
-policy.AllowAnyOrigin()..AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
 
     });
 });
