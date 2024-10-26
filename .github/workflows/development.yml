@@ -1,11 +1,11 @@
 # This workflow will build a .NET project
 # For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
 
-name: Backend Tests
+name: Development
 
 on:
   push:
-    branches: main
+    branches: development
 
 jobs:
   build:
@@ -13,25 +13,26 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Print environment variables
+    - name: 1. Print environment variables
       run: printenv
     - uses: actions/checkout@v4
     
-    - name: Setup .NET
+    - name: 2. Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
     - name: Restore backend dependencies
       run: dotnet restore backend/backend.csproj
       
-    - name: Build backend
+    - name: 3. Build backend
       run:  dotnet build backend/backend.csproj
       
-    - name: Run backend tests
+    - name: 4. Run backend tests
       env:  
         ImgBB_API_Key: ${{ secrets.ImgBB_API_Key }}
         DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING}}
       run: 
         dotnet test backend.Tests/backend.Tests.csproj
+    
 
 
