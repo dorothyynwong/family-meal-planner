@@ -1,6 +1,3 @@
-# This workflow will build a .NET project
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-net
-
 name: Development
 
 on:
@@ -47,8 +44,16 @@ jobs:
       run: |
         IMAGE_TAG=${GITHUB_SHA::7}
         docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} -f backend/DockerFile backend/
-        echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
 
     - name: 8. Push Docker image
       run: |
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
+    
+    - name: 10. Upload artifact
+      uses: actions/upload-artifact@v2
+      with:
+        name: image_tag
+        path: image_tag.txt
+
+    - name: 11. Create Docker tag file
+      run: echo ${{ IMAGE_TAG }} > image_tag.txt
