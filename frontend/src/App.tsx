@@ -20,7 +20,7 @@ import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
 function App() {
 
   return (
-    <AuthProvider>
+    //AuthProvider>
       <MealProvider>
 
         <Router>
@@ -72,7 +72,7 @@ function App() {
         </Router>
 
       </MealProvider>
-    </AuthProvider>
+    //AuthProvider>
   )
 }
 
