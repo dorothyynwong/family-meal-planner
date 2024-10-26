@@ -29,6 +29,7 @@ const RecipesList: React.FC = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId, location.key])
 
     return (

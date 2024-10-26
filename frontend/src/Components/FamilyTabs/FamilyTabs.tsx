@@ -26,6 +26,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
 
     useEffect(() => {
         if(!selectedFamily) setSelectedFamily(familiesAsCook[0]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [familiesAsCook, setSelectedFamily]);
 
     const handleChange = ( newValue: number) => {

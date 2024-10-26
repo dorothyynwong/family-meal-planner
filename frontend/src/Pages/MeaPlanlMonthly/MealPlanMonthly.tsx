@@ -44,6 +44,7 @@ const MealPlanMonthly: React.FC = () => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
     }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         , [startDate, endDate, modalShow])
 
     useEffect(() => {
