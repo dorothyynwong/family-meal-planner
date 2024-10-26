@@ -50,7 +50,7 @@ jobs:
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
     
     - name: 10. Upload artifact
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: image_tag
         path: image_tag.txt
