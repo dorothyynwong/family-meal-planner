@@ -51,11 +51,12 @@ jobs:
       run: |
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
     
-    - name: 10. Upload artifact
+    - name: 10. Save Image Tag as Artifact
+      run: echo ${IMAGE_TAG} > image_tag.txt
+      
+    - name: 11. Upload Artifact
       uses: actions/upload-artifact@v4
       with:
         name: image_tag
         path: image_tag.txt
 
-    - name: 11. Create Docker tag file
-      run: echo ${ IMAGE_TAG } > image_tag.txt
