@@ -31,7 +31,6 @@ jobs:
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
     - name: 5. Trigger Render Deployment
-    - name: 5. Trigger Render Deployment
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}  
       run: |
@@ -42,24 +41,19 @@ jobs:
         -d '{"branch": "staging"}'  
 
     - name: 6. Navigate to backend folder
-    - name: 6. Navigate to backend folder
       run: cd backend  
 
-    - name: 7. Setup .NET Core
     - name: 7. Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
 
     - name: 8. Install EF Core CLI
-    - name: 8. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
     - name: 9. Build the backend
-    - name: 9. Build the backend
       run: dotnet build --configuration Release
 
-    - name: 10. Run EF Core Migrations
     - name: 10. Run EF Core Migrations
       env:
         ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
