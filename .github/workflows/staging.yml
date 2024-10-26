@@ -56,4 +56,8 @@ jobs:
         JWT_RefreshTokenName: ${{ secrets.JWT_REFRESHTOKENNAME }}
         JWT_Secret: ${{ secrets.JWT_SECRET }}
       run: |
-        dotnet ef database update --project backend/backend.csproj --context FamilyMealPlannerContext
+        docker run --rm \
+          -e ConnectionStrings_DefaultConnection="${{ secrets.CONNECTION_STRINGS_PRODUCTION }}" \
+          -w /app/backend \ # Set the working directory to where the csproj file is located
+          ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:production \
+          dotnet ef database update --context FamilyMealPlannerContext
