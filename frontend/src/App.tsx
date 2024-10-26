@@ -10,7 +10,7 @@ import RecipeUpdate from './Pages/RecipeUpdate/RecipeUpdate';
 import MealPlanMonthly from './Pages/MeaPlanlMonthly/MealPlanMonthly';
 import { MealProvider } from './Components/MealContext/MealContext';
 import UserLoginPage from './Pages/UserLoginPage/UserLoginPage';
-//import { AuthProvider } from './Components/AuthProvider/AuthProvider';
+import { AuthProvider } from './Components/AuthProvider/AuthProvider';
 import UserSignupPage from './Pages/UserSignupPage/UserSignupPage';
 import Families from './Pages/Families/Families';
 import FamiliesList from './Pages/FamiliesList/FamiliesList';
@@ -20,7 +20,7 @@ import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
 function App() {
 
   return (
-    //AuthProvider>
+    <AuthProvider>
       <MealProvider>
 
         <Router>
@@ -72,7 +72,7 @@ function App() {
         </Router>
 
       </MealProvider>
-    //AuthProvider>
+    </AuthProvider>
   )
 }
 
