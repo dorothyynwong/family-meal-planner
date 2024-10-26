@@ -89,10 +89,10 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        /*policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod()
+        policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod()
                                                                     .AllowAnyHeader()
-                                                                    .AllowCredentials();*/
-policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
+                                                                    .AllowCredentials();
+//policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
 
     });
 });
