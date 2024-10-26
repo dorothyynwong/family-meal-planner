@@ -39,7 +39,7 @@ const CustomMonthlyEvent: React.FC<CustomEventProps> = ({ event }) => {
   );
 }
 
-const Basic: React.FC<MealPlanCalendarProps> = ({ startDate, endDate, selectedDate, setStartDate, setEndDate, setSelectedDate, mealEvents }) => {
+const Basic: React.FC<MealPlanCalendarProps> = ({ setStartDate, setEndDate, setSelectedDate, mealEvents }) => {
   const [selectedSlot, setSelectedSlot] = useState<SlotInfo | null>(null);
   const { setMealDate } = useMeal();
 

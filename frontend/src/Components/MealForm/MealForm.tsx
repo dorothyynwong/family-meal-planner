@@ -41,7 +41,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         resetMealContext,
         selectedFamily,
         schoolMealId,
-        setSchoolMealId
     } = useMeal();
 
     const navigate = useNavigate();

@@ -70,6 +70,7 @@ function App() {
             </Routes>
           </Layout>
         </Router>
+
       </MealProvider>
     </AuthProvider>
   )

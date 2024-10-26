@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { deleteRecipe } from "../../Api/api";
 import Popup from "../../Components/Popup/Popup";
-import { Button, InputGroup, Spinner } from "react-bootstrap";
+import { Button, InputGroup } from "react-bootstrap";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import ErrorDisplay from "../ErrorDisplay/ErrorDisplay";
 import StatusHandler from "../StatusHandler/StatusHandler";

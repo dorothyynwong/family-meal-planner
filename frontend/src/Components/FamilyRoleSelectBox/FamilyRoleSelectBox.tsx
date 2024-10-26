@@ -1,5 +1,4 @@
 import { MenuItem, Select, SelectChangeEvent } from "@mui/material";
-import { useState } from "react";
 
 interface FamilyRoleSelectBoxProps {
     defaultRole: string,
@@ -8,7 +7,7 @@ interface FamilyRoleSelectBoxProps {
 }
 
 const FamilyRoleSelectBox: React.FC<FamilyRoleSelectBoxProps> = ({defaultRole, roles, onRoleChange}) => {
-    const [familyRoles, setFamilyRoles] = useState<string[]>(roles);
+    // const [familyRoles, setFamilyRoles] = useState<string[]>(roles);
 
     const handleChange = (event: SelectChangeEvent<string>) => {
             const { value } = event.target;
@@ -23,7 +22,7 @@ const FamilyRoleSelectBox: React.FC<FamilyRoleSelectBoxProps> = ({defaultRole, r
         label="Family-Role"
         onChange={handleChange}
     >
-        {familyRoles.map((familyRole, index) => 
+        {roles.map((familyRole, index) => 
         <MenuItem key={index} value={familyRole}>{familyRole}</MenuItem>)
         }
     </Select>
