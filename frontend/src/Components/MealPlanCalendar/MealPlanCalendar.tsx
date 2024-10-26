@@ -56,7 +56,7 @@ const Basic: React.FC<MealPlanCalendarProps> = ({ setStartDate, setEndDate, setS
       const formattedDate = `${year}-${month}-${day}`
       setMealDate(formattedDate);
     }, 100);
-  }, []);
+  }, [setMealDate, setSelectedDate]);
 
   const { components } = useMemo(
     () => ({

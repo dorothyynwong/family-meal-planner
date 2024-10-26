@@ -33,6 +33,7 @@ const FamiliesList: React.FC<FamiliesListProps> = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

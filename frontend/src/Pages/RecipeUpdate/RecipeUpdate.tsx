@@ -38,6 +38,7 @@ const UpdateRecipe: React.FC = () => {
                 setErrorMessages([...errorMessages, errorMessage]);
             });
 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeIdNo]);
 
     if (!data) return (<>No Data</>);
