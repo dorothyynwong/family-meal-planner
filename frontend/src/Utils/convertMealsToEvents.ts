@@ -11,7 +11,7 @@ export interface EventInterface {
 export function convertMealsToEvents(meals: MealDetailsInterface[]) {
     const groupedByDate = _.groupBy(meals, 'date')
     const events: EventInterface[] = [];
-    for (let [mealDate, mealGroup] of Object.entries(groupedByDate)) {
+    for (const [mealDate, mealGroup] of Object.entries(groupedByDate)) {
         const titles = mealGroup.map((meal: MealDetailsInterface) => meal.mealType + meal.date);
         const types = mealGroup.map((meal: MealDetailsInterface) => meal.mealType);
         const event: EventInterface = {

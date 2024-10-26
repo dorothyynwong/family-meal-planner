@@ -56,8 +56,13 @@ jobs:
     - name: 8. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
+<<<<<<< HEAD
     - name: 9. Build the backend
       run: dotnet build --configuration Release
+=======
+  #  - name: 9. Build the backend
+  #    run: dotnet build --configuration Release
+>>>>>>> main
 
     - name: 10. Run EF Core Migrations
       env:

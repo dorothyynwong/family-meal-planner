@@ -17,7 +17,7 @@ const MealFormSelection: React.FC<MealFormSelectProps> = ({mealFormType, setMeal
                 value="recipe"
                 type="radio"
                 checked={mealFormType === "recipe"}
-                onChange={(e) => setMealFormType("recipe")}
+                onChange={() => setMealFormType("recipe")}
             />
             <Form.Check
                 inline
@@ -26,7 +26,7 @@ const MealFormSelection: React.FC<MealFormSelectProps> = ({mealFormType, setMeal
                 value="school-meal"
                 type="radio"
                 checked={mealFormType === "school-meal"}
-                onChange={(e) => setMealFormType("school-meal")}
+                onChange={() => setMealFormType("school-meal")}
             />
         </div>
 

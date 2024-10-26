@@ -1,4 +1,4 @@
-name: Development
+name: Development to Staging
 
 on:
   push:
@@ -10,64 +10,50 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: 1. Print environment variables
+    - name: Print environment variables
       run: printenv
     - uses: actions/checkout@v4
     
-    - name: 2. Setup .NET
+    - name: Setup .NET
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: 8.0.x
-    
-    - name: 3. Restore backend dependencies
+    - name: Restore backend dependencies
       run: dotnet restore backend/backend.csproj
       
-    - name: 4. Build backend
+    - name: Build backend
       run:  dotnet build backend/backend.csproj
       
-    - name: 5. Run backend tests
+    - name: Run backend tests
       env:  
         ImgBB_API_Key: ${{ secrets.ImgBB_API_Key }}
         DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING}}
       run: 
         dotnet test backend.Tests/backend.Tests.csproj
-        
-    - name: 6. Set up Docker Buildx
+
+    # Step 2: Set up Docker Buildx (Optional if you need advanced build features)
+    - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: 7. Log in to Docker Hub
+    # Step 3: Log in to Docker Hub
+    - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_HUB_USER }}  
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}  
 
-    - name: 8. Build Docker image
+    # Step 4: Build the Docker image
+    - name: Build Docker image
       run: |
-        IMAGE_TAG=${GITHUB_SHA::7}
-        docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} -f backend/DockerFile backend/
-        echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
-<<<<<<< HEAD
+        docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging -f backend/DockerFile backend/
 
-    - name: 9. Push Docker image
+    # Step 5: Push the Docker image to Docker Hub
+    - name: Push Docker image
       run: |
-        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
-    
-    - name: 10. Save Image Tag as Artifact
-      run: echo ${IMAGE_TAG} > image_tag.txt
-      
-    - name: 11. Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: image_tag
-        path: image_tag.txt
+        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
-=======
-        
-    - name: 9. Push Docker image
-      run: |
-        docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
-
-    - name: 10. Trigger Render Deployment
+    # Step 6: Deploy Docker image to Render
+    - name: Trigger Render Deployment
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}  
       run: |
@@ -77,21 +63,26 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    - name: 11. Navigate to backend folder
+    # Step 7: Navigate to the backend folder
+    - name: Navigate to backend folder
       run: cd backend  
 
-    - name: 12. Setup .NET Core
+    # Step 8: Set up .NET Core environment
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
 
-    - name: 13. Install EF Core CLI
+    # Step 9: Install EF Core CLI
+    - name: Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
-    - name: 14. Build the backend
+    # Step 10: Build the backend project
+    - name: Build the backend
       run: dotnet build --configuration Release
 
-    - name: 15. Run EF Core Migrations
+    # Step 11: Run EF Core database update
+    - name: Run EF Core Migrations
       env:
         ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
         SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
@@ -105,4 +96,3 @@ jobs:
         JWT_Secret: ${{ secrets.JWT_SECRET }}
       run: |
         dotnet ef database update --project backend/backend.csproj --context FamilyMealPlannerContext
->>>>>>> main

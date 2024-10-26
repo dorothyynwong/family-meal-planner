@@ -1,3 +1,4 @@
+/* eslint-disable no-useless-catch */
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
 import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, SchoolMealInterface, UserSignupInterface } from './apiInterface';
