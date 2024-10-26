@@ -10,20 +10,27 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Log in to Docker Hub
+    - name: 1. Log in to Docker Hub
       uses: docker/login-action@v2
       with:
         username: ${{ secrets.DOCKER_HUB_USER }}  
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}  
 
-    - name: 1. Push and Retag Docker image
+    - name: 2. Download Artifact
+      uses: actions/download-artifact@v4
+      with:
+        name: image_tag.txt
+      
+    - name: 3. Set Image Tag
+      run: IMAGE_TAG=$(cat image_tag.txt) && echo "IMAGE_TAG=${IMAGE_TAG}" >> $GITHUB_ENV
+
+    - name: 4. Push and Retag Docker image
       run: |
-        IMAGE_TAG=${{ env.IMAGE_TAG }} 
         docker pull ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG}
         docker tag ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${IMAGE_TAG} ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
-    - name: 2. Trigger Render Deployment
+    - name: 5. Trigger Render Deployment
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}  
       run: |
@@ -33,21 +40,21 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    - name: 3. Navigate to backend folder
+    - name: 6. Navigate to backend folder
       run: cd backend  
 
-    - name: 4. Setup .NET Core
+    - name: 7. Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
 
-    - name: 5. Install EF Core CLI
+    - name: 8. Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
-    - name: 6. Build the backend
+    - name: 9. Build the backend
       run: dotnet build --configuration Release
 
-    - name: 7. Run EF Core Migrations
+    - name: 10. Run EF Core Migrations
       env:
         ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
         SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
