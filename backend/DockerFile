@@ -26,5 +26,5 @@ RUN dotnet publish "backend.csproj" -c Release -o /app/publish
 FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
-CMD ["bash", "-c", "dotnet ef database update --project YourProject.Infrastructure && dotnet YourApp.dll"]
+ENTRYPOINT ["dotnet", "backend.dll"]
 

@@ -15,7 +15,7 @@ client.interceptors.response.use(
 
         if (error.response?.status === 401 && !originalRequest._retry) {
             if (isRefreshing) {
-                return new Promise((resolve, reject) => {
+                return new Promise((resolve) => {
                     setTimeout(() => {
                         resolve(client(originalRequest));
                     }, 1000);

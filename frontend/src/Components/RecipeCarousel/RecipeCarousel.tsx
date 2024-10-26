@@ -9,7 +9,7 @@ export interface RecipeCarouselProps {
   defaultImageUrl?: string
 }
 
-const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images, defaultImageUrl }) => {
+const RecipeCarousel: React.FC<RecipeCarouselProps> = ({ images}) => {
   const [index, setIndex] = useState(0);
   const [imagesUrls, setImagesUrls] = useState(images);
 
