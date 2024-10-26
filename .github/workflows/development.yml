@@ -59,4 +59,4 @@ jobs:
       with:
         name: image_tag
         path: image_tag.txt
-
+        retention-days: 30
