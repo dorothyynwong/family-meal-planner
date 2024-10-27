@@ -89,12 +89,9 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(policy =>
     {
-        // policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod()
-        policy.WithOrigins("https://nimble-semolina-9b1e47.netlify.app").AllowAnyMethod()
+        policy.WithOrigins(builder.Configuration["Cors:Frontend"]!).AllowAnyMethod()
                                                                     .AllowAnyHeader()
                                                                     .AllowCredentials();
-//policy.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader().AllowCredentials();
-
     });
 });
 
