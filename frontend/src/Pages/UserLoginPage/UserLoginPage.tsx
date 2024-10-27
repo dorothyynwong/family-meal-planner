@@ -34,8 +34,7 @@ const UserLoginPage: React.FC = () => {
         
         userLogin(email, password)
             .then(response => {
-                if (response.statusText === "OK") {
-                    // const recipeData = response.data;
+                if (response.status === 200) {
                     logUserIn();
                     navigate(`/recipes-list`);
                     setStatus("success");

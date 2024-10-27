@@ -152,7 +152,6 @@ export async function userLogin(email: string, password: string) {
             email: email,
             password: password,
         });
-        console.log(response);
         return response;
     } catch (error) {
         throw error;
