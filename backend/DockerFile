@@ -27,6 +27,8 @@ FROM base AS final
 WORKDIR /app
 COPY --from=publish /app/publish .
 
+COPY ./Resources /app/Resources
+
 ENV ASPNETCORE_ENVIRONMENT=Staging
 
 ENTRYPOINT ["dotnet", "backend.dll"]
