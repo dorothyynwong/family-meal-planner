@@ -2,7 +2,8 @@ import axios, { AxiosInstance } from 'axios';
 import { refreshToken } from './api';
 
 const client: AxiosInstance = axios.create({
-    baseURL: import.meta.env.VITE_APP_BACKEND_URL,
+    //baseURL: import.meta.env.VITE_APP_BACKEND_URL,
+    baseURL: "https://api.dorothyynwong.uk/",
     withCredentials: true,
 });
 
