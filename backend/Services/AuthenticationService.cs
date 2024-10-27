@@ -113,7 +113,13 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         // context.Response.Cookies.Append("email", email,
         //     new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
         context.Response.Cookies.Append("email", email,
-            new CookieOptions { HttpOnly = true, Secure = true, SameSite = SameSiteMode.None });
+            new CookieOptions 
+            { 
+                Expires = DateTimeOffset.UtcNow.AddDays(1),
+                HttpOnly = true, 
+                Secure = true, 
+                SameSite = SameSiteMode.None 
+            });
 
     }
 
