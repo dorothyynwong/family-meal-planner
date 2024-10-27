@@ -49,8 +49,8 @@ public class AuthServiceTests
         _mockCookies.Verify(c => c.Append("refreshToken", refreshToken, It.Is<CookieOptions>(o => 
             o.HttpOnly && o.IsEssential && o.Secure && o.SameSite == SameSiteMode.None)), Times.Once);
 
-        // _mockCookies.Verify(c => c.Append("email", email, It.Is<CookieOptions>(o => 
-        //     o.HttpOnly && o.SameSite == SameSiteMode.Strict)), Times.Once);
+        _mockCookies.Verify(c => c.Append("email", email, It.Is<CookieOptions>(o => 
+            o.HttpOnly && o.SameSite == SameSiteMode.Strict)), Times.Once);
     }
 
     [Test]
@@ -65,7 +65,7 @@ public class AuthServiceTests
         _mockCookies.Verify(c => c.Append("refreshToken", "", It.Is<CookieOptions>(o => 
             o.Expires <= DateTimeOffset.UtcNow)), Times.Once);
 
-        // _mockCookies.Verify(c => c.Append("email", "", It.Is<CookieOptions>(o => 
-        //     o.Expires <= DateTimeOffset.UtcNow)), Times.Once);
+        _mockCookies.Verify(c => c.Append("email", "", It.Is<CookieOptions>(o => 
+            o.Expires <= DateTimeOffset.UtcNow)), Times.Once);
     }
 }
