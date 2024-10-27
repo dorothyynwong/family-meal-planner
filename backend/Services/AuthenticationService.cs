@@ -24,6 +24,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     private readonly UserManager<User> _userManager = userManager;
     private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
     private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
+    private int _emailExpiry = int.Parse(configuration["Jwt:EmailExpiryDays"]);
     private string _issuer = configuration["Jwt_Issuer"];
     private string _audience = configuration["Jwt_Audience"];
     private string _appName = configuration["Jwt_AppName"];
@@ -111,7 +112,14 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             });
 
         context.Response.Cookies.Append("email", email,
-            new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(_emailExpiry),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
 
     }
 
@@ -138,7 +146,14 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             });
 
         context.Response.Cookies.Append("email", "",
-            new CookieOptions { HttpOnly = true, Expires = DateTimeOffset.UtcNow.AddDays(-1), SameSite = SameSiteMode.Strict });
+            new CookieOptions
+            {
+                Expires = DateTimeOffset.UtcNow.AddDays(-1),
+                HttpOnly = true,
+                IsEssential = true,
+                Secure = true,
+                SameSite = SameSiteMode.None
+            });
     }
 
 
