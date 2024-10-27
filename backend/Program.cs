@@ -14,6 +14,9 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var defaultConnection = builder.Configuration["ConnectionStrings_DefaultConnection"];
+NLog.GlobalDiagnosticsContext.Set("defaultConnection", defaultConnection);
+
 NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
 string currentDirectory = System.IO.Directory.GetCurrentDirectory();
@@ -28,7 +31,7 @@ else
     Logger = NLog.Web.NLogBuilder.ConfigureNLog("nlog.config").GetCurrentClassLogger();
 }
 
-Logger.Info($"Is development? {builder.Environment.IsDevelopment()}");
+Logger.Warn($"Is development? {builder.Environment.IsDevelopment()}");
 
 builder.Services.AddTransient<IWebScrappingService, WebScrappingService>();
 builder.Services.AddTransient<IRecipeService, RecipeService>();
