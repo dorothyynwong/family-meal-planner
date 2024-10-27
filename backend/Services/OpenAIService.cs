@@ -34,7 +34,8 @@ public class OpenAIService(IConfiguration configuration, FamilyMealPlannerContex
 
     private string GetPrompt()
     {
-        string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\OpenAIPrompt.txt");
+        // string filePath = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, @"..\..\..\Resources\OpenAIPrompt.txt");
+        string filePath = Path.Combine(Directory.GetCurrentDirectory(), "Resources", "OpenAIPrompt.txt");
 
         try
         {
