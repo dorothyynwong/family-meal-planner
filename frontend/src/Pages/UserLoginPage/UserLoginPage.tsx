@@ -38,6 +38,7 @@ const UserLoginPage: React.FC = () => {
                     logUserIn();
                     navigate(`/recipes-list`);
                     setStatus("success");
+                    console.log(status);
                 }
             })
             .catch(error => {

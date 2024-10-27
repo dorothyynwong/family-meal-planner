@@ -29,7 +29,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData, mode }) => {
             {
                 addRecipe(data)
                 .then(response => {
-                    if(response.statusText==="OK")
+                    if(response.status === 200)
                     {
                         const recipeData = response.data;
                         navigate(`/recipe-details/${recipeData}`);
@@ -47,7 +47,7 @@ const RecipeForm: React.FC<RecipeFormProps> = ({ data, updateData, mode }) => {
             {
                 updateRecipe(data, data.id? data.id: 0)
                 .then(response => {
-                    if(response.statusText==="OK")
+                    if(response.status === 200)
                     {
                         navigate(`/recipe-details/${data.id}`);
                     }
