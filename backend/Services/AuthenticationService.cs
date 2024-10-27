@@ -110,8 +110,10 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                 SameSite = SameSiteMode.None
             });
 
+        // context.Response.Cookies.Append("email", email,
+        //     new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
         context.Response.Cookies.Append("email", email,
-            new CookieOptions { HttpOnly = true, SameSite = SameSiteMode.Strict });
+            new CookieOptions { HttpOnly = true, Secure = true, SameSite = SameSiteMode.None });
 
     }
 
