@@ -48,7 +48,7 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
         navigate("/");
     }
 
-    const schoolMenuIds = [64, 65, 66]; 
+    const schoolMenuIds = [1,2];
 
     return (
         <Navbar expand="lg">
