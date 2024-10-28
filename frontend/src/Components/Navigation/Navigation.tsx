@@ -37,8 +37,8 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
             case "signup":
                 navigate('/signup');
                 break;
-            case "school-menus-edit":
-                navigate('/school-menu-edit', { state: { schoolMenuIds: schoolMenuIds } });
+            // case "school-menus-edit":
+            //     navigate('/school-menu-edit', { state: { schoolMenuIds: schoolMenuIds } });
                 break;
         }
         setIsOpen(false);
@@ -51,7 +51,7 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
         navigate("/");
     }
 
-    const schoolMenuIds = [1, 2]; 
+    // const schoolMenuIds = [3, 4, 5]; 
 
     return (
         <Navbar expand="lg">
@@ -65,7 +65,7 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
                     <Nav.Link id="meals" className="custom-nav-link" onClick={handleClick}>My Meals</Nav.Link>
                     <Nav.Link id="family-meals" className="custom-nav-link" onClick={handleClick}>Families' Meals</Nav.Link>
                     <Nav.Link id="families" className="custom-nav-link" onClick={handleClick}>Families</Nav.Link>
-                    <Nav.Link id="school-menus-edit" className="custom-nav-link" onClick={handleClick}>School Menus Edit</Nav.Link>
+                    {/* <Nav.Link id="school-menus-edit" className="custom-nav-link" onClick={handleClick}>School Menus Edit</Nav.Link> */}
                     {/* <Nav.Link id="user-login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link> */}
                     {
                         isAuthenticated &&

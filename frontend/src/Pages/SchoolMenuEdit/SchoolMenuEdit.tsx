@@ -12,7 +12,9 @@ const SchoolMenuEdit: React.FC = () => {
     const [schoolMenus, setSchoolMenus] = useState<SchoolMenuWeekMealsInterface[]>([]);
 
     const location = useLocation();
-    const schoolMenuIds = (location.state?.schoolMenuIds || []).map(Number) as number[];
+    // const schoolMenuIds = (location.state?.schoolMenuIds || []).map(Number) as number[];
+    const searchParams = new URLSearchParams(location.search);
+    const schoolMenuIds = searchParams.get('schoolMenuIds')?.split(',').map(Number) as number[];
 
     useEffect(() => {
         setStatus("loading");
