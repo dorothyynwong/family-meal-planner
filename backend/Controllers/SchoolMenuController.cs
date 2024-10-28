@@ -56,6 +56,7 @@ public class SchoolMenuController(IPdfService pdfService,
 
         string[] lines = System.IO.File.ReadAllLines(txtFilePath);
         List<string> weekCommencings = new List<string>();
+        foreach(string weekCommencing in weekCommencings) Logger.Info(weekCommencing);
         List<int> menuIds = new List<int>();
 
         foreach (var line in lines)
