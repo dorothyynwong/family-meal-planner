@@ -36,7 +36,7 @@ const UserLoginPage: React.FC = () => {
             .then(response => {
                 if (response.status === 200) {
                     logUserIn();
-                    navigate(`/recipes-list`);
+                    navigate(`/home`);
                     setStatus("success");
                     console.log(status);
                 }

@@ -1,6 +1,6 @@
 import './App.scss'
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import Home from './Home';
+import Home from './Pages/Home/Home';
 import Layout from './Components/Layout/Layout';
 import Recipes from './Pages/Recipes/Recipes';
 import RecipeDetails from './Pages/RecipeDetails/RecipeDetails';
@@ -27,6 +27,8 @@ function App() {
           <Layout>
             <Routes>
               <Route path="/"
+                element={<Home />} />
+              <Route path="/home"
                 element={<Home />} />
               <Route path="/recipes"
                 element={<Recipes />} />
