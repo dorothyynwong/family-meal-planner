@@ -35,7 +35,7 @@ const UserLoginPage: React.FC = () => {
         userLogin(email, password)
             .then(response => {
                 if (response.status === 200) {
-                    logUserIn();
+                    logUserIn(response.data);
                     navigate(`/home`);
                     setStatus("success");
                     console.log(status);

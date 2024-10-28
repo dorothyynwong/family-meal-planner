@@ -110,3 +110,7 @@ export interface SchoolMenuWeekMealsInterface {
     userId: number;
     schoolMeals: SchoolMealInterface[];
 }
+
+export interface UserLoginResponseInterface {
+    nickname: string;
+}
