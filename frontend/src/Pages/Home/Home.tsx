@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getFamilyListByUserId } from "../../Api/api"
+import { getFamiliesWithUsersByUserId} from "../../Api/api"
 import { FamilyWithUsersInterface } from "../../Api/apiInterface";
 import MealDaily from "../../Components/MealDaily/MealDaily"
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
@@ -12,7 +12,7 @@ function Home() {
 
   useEffect(() => {
     setStatus("loading");
-    getFamilyListByUserId()
+    getFamiliesWithUsersByUserId()
       .then(response => {
         setFamilyUsersList(response.data);
         setStatus("success");

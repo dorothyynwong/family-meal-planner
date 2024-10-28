@@ -62,27 +62,6 @@ public class FamilyUserController(IFamilyUserService familyUserService) : Contro
 
     }
 
-    [HttpGet("family-list")]
-    public async Task<IActionResult> GetFamilyIdsByUserId()
-    {
-        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
-            return Unauthorized();
-
-        try
-        {
-            List<FamilyUserResponse> familyUserResponses = await _familyUserService.GetFamilyUsersByUserId(userId);
-
-            return Ok(familyUserResponses);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Failed to get family-users of {userId}: {ex.Message}");
-            return BadRequest($"Unable to get family-users of {userId}: {ex.Message}");
-        }
-
-    }
-
-
     [HttpGet("by-user")]
     public async Task<IActionResult> GetFamiliesWithUsersByUserId()
     {

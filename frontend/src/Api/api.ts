@@ -309,13 +309,3 @@ export async function updateSchoolMeal(schoolMealId: number, schoolMeal: SchoolM
         throw error;
     }
 }
-
-export async function getFamilyListByUserId() {
-    try {
-        const response: AxiosResponse = await client.get(`/familyUsers/family-list/`);
-
-        return response;
-    } catch (error) {
-        throw error;
-    }
-}
