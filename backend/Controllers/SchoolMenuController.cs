@@ -10,7 +10,7 @@ using NLog;
 namespace FamilyMealPlanner.Controllers;
 
 [ApiController]
-[Authorize(Roles="Admin")]
+[Authorize]
 [Route("/schoolmenus")]
 public class SchoolMenuController(IPdfService pdfService,
                                     IOpenAIService aiService,
@@ -27,6 +27,7 @@ public class SchoolMenuController(IPdfService pdfService,
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
+    [Authorize(Roles="Admin")]
     [HttpPost("import")]
     public async Task<IActionResult> Import(IFormFile pdfFile, IFormFile txtFile, [FromQuery] int familyId)
     {
@@ -56,6 +57,8 @@ public class SchoolMenuController(IPdfService pdfService,
 
         string[] lines = System.IO.File.ReadAllLines(txtFilePath);
         List<string> weekCommencings = new List<string>();
+        foreach(string weekCommencing in weekCommencings) Logger.Info(weekCommencing);
+        
         List<int> menuIds = new List<int>();
 
         foreach (var line in lines)
@@ -177,6 +180,7 @@ public class SchoolMenuController(IPdfService pdfService,
         return Ok(Enum.GetNames(typeof(DayType)));
     }
 
+    [Authorize(Roles="Admin")]
     [HttpPut("meal/{schoolMealId}")]
     public async Task<IActionResult> UpdateSchoolMeal(SchoolMealUpdateRequest schoolMeal, [FromRoute] int schoolMealId)
     {

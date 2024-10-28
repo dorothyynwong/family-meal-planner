@@ -39,7 +39,7 @@ const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_
 
         familyCodeShare(familyCodeData)
             .then(response => {
-                if (response.statusText === "OK") {
+                if (response.status === 200) {
                     setModalShow(false);
                     setStatus("success");
                 }

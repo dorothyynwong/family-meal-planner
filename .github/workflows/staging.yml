@@ -1,8 +1,8 @@
-name: Development to Staging
+name: Staging
 
 on:
   push:
-    branches: development
+    branches: staging
 
 jobs:
   build:
