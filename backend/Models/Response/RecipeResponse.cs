@@ -19,4 +19,5 @@ public class RecipeResponse
     public int AddedByUserId {get; set; }
 
     public string AddedByUserNickname {get; set; }
+    public bool IsOwner {get; set;}
 }

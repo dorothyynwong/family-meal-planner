@@ -20,6 +20,7 @@ export interface RecipeDetailsInterface {
     defaultImageUrl?: string;
     addedByUserId?: number;
     addedByUserNickname?: string;
+    isOwner?: boolean;
 }
 
 export interface MealDetailsInterface {
