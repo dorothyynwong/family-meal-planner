@@ -106,7 +106,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                     <Avatar name={recipe.addedByUserNickname} size="50" round={true} />
                 }
                 action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
-                    <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
+                    recipe.isOwner ? <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} /> :
+                    <></>
                 }
                 title={recipe.name}
             />
