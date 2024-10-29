@@ -105,7 +105,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             <CardHeader
                 avatar={
                     <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        Melissa Cheng
+                        {recipe.addedByUserNickname}
                     </Avatar>
                 }
                 action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
