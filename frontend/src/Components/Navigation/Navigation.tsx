@@ -37,9 +37,6 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
             case "signup":
                 navigate('/signup');
                 break;
-            // case "school-menus-edit":
-            //     navigate('/school-menu-edit', { state: { schoolMenuIds: schoolMenuIds } });
-                break;
         }
         setIsOpen(false);
 
@@ -50,8 +47,6 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
         setIsOpen(false);
         navigate("/");
     }
-
-    // const schoolMenuIds = [3, 4, 5]; 
 
     return (
         <Navbar expand="lg">
@@ -65,19 +60,14 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
                     <Nav.Link id="meals" className="custom-nav-link" onClick={handleClick}>My Meals</Nav.Link>
                     <Nav.Link id="family-meals" className="custom-nav-link" onClick={handleClick}>Families' Meals</Nav.Link>
                     <Nav.Link id="families" className="custom-nav-link" onClick={handleClick}>Families</Nav.Link>
-                    {/* <Nav.Link id="school-menus-edit" className="custom-nav-link" onClick={handleClick}>School Menus Edit</Nav.Link> */}
-                    {/* <Nav.Link id="user-login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link> */}
                     {
-                        isAuthenticated &&
-                        <Button onClick={handleLogout}>Logout</Button>
-                    }
-                    {
-                        !isAuthenticated &&
-                        <>
-                            <Nav.Link id="login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link>
-                            <Nav.Link id="signup" className="custom-nav-link" onClick={handleClick}>Signup</Nav.Link>
-                        </>
-
+                        isAuthenticated ?
+                        <Button className="custom-button w-100 mt-3" onClick={handleLogout}>Logout</Button> :
+                        (   <>
+                            <Button id="login" className="custom-button w-100 mt-3" onClick={handleClick}>Login</Button>
+                            <Button id="signup" className="custom-button w-100 mt-3" onClick={handleClick}>Signup</Button>
+                            </>
+                        )
                     }
                 </Nav>
             </Container>

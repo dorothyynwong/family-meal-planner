@@ -17,13 +17,30 @@ import FamiliesList from './Pages/FamiliesList/FamiliesList';
 import FamilyMealDaily from './Pages/FamilyMealDaily/FamilyMealDaily';
 import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Fredoka", 
+  },
+  palette: {
+    primary: {
+      main: '#8E9D76',
+      contrastText: '#000000'
+    },
+    secondary: {
+      main: '#796C50',
+      contrastText: '#FFFFFF'
+    }
+  }
+});
 
 function App() {
 
   return (
     <AuthProvider>
       <MealProvider>
-
+        <ThemeProvider theme={theme}>
         <Router>
           <Layout>
             <Routes>
@@ -77,7 +94,7 @@ function App() {
             </Routes>
           </Layout>
         </Router>
-
+        </ThemeProvider>
       </MealProvider>
     </AuthProvider>
   )
