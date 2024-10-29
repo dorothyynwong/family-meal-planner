@@ -18,13 +18,14 @@
     border-bottom: 3px solid black;
 
     &.search-box {
-        border-right: 3px solid black;
+        border-right: 0;
         border-left: 0;
         &:focus {
             background-color: $primary-background;
             outline: none;            
             border-color: black;     
             box-shadow: none;
+            border-right: 1px solid black;
           }
     }
 }
