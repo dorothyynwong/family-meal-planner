@@ -5,9 +5,7 @@ import CardMedia from '@mui/material/CardMedia';
 import CardContent from '@mui/material/CardContent';
 import CardActions from '@mui/material/CardActions';
 import Collapse from '@mui/material/Collapse';
-import Avatar from '@mui/material/Avatar';
 import IconButton, { IconButtonProps } from '@mui/material/IconButton';
-import { red } from '@mui/material/colors';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { RecipeDetailsInterface } from '../../Api/apiInterface';
@@ -20,6 +18,7 @@ import { useState } from 'react';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdAddCard } from 'react-icons/md';
 import { useMeal } from '../MealContext/MealContext';
+import Avatar from 'react-avatar';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -104,9 +103,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
-                    <Avatar sx={{ bgcolor: red[500] }} aria-label="recipe">
-                        {recipe.addedByUserNickname}
-                    </Avatar>
+                    <Avatar name={recipe.addedByUserNickname} size="50" round={true} />
                 }
                 action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
