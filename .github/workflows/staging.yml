@@ -19,6 +19,9 @@ jobs:
         with:
           dotnet-version: 8.0.x
 
+      - name: Install EF Core CLI
+        run: dotnet tool install --global dotnet-ef
+
       - name: Restore backend dependencies
         run: dotnet restore backend/backend.csproj
 
@@ -60,13 +63,6 @@ jobs:
       - name: Run EF Core Migrations
         env:
           ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
-          SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}
-          SendGrid_API_Key: ${{ secrets.SENDGRID_API_KEY }}
-          OpenAI_API_Key: ${{ secrets.OPENAI_API_KEY }}
-          ImgBB_API_Key: ${{ secrets.IMGBB_API_KEY }}
-          JWT_Issuer: ${{ secrets.JWT_ISSUER }}
-          JWT_Audience: ${{ secrets.JWT_AUDIENCE }}
-          JWT_AppName: ${{ secrets.JWT_APPNAME }}
-          JWT_RefreshTokenName: ${{ secrets.JWT_REFRESHTOKENNAME }}
-          JWT_Secret: ${{ secrets.JWT_SECRET }}
-        run: dotnet ef database update --project backend/backend.csproj --context FamilyMealPlannerContext
+          PATH: $PATH:/home/runner/.dotnet/tools  # Ensures dotnet-ef is in the PATH
+        run: |
+          dotnet ef database update --project backend/backend.csproj --context FamilyMealPlannerContext
