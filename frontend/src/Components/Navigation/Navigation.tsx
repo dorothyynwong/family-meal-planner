@@ -1,5 +1,5 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import logo from '../../Assets/watermelon.png';
+import logo from '../../Assets/familyfeast.png';
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -57,7 +57,7 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
         <Navbar expand="lg">
             <Container className="custom-navbar-container">
                 <Navbar.Brand href="home">
-                    <img src={logo} alt="Family Meal Planner" style={{ height: '100px' }} />
+                    <img src={logo} alt="Family Meal Planner" style={{ height: '150px' }} />
                 </Navbar.Brand>
                 <Nav className="custom-navbar-links">
                     <Nav.Link id="home" className="custom-nav-link" onClick={handleClick}>Home</Nav.Link>
