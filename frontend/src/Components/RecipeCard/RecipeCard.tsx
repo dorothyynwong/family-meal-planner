@@ -64,12 +64,15 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         setExpanded(!expanded);
     };
 
-    const menuItems = [
+    const menuItems = recipe.isOwner ? [
         { id: "display-recipe-button", label: "Details" },
         { id: "edit-recipe-button", label: "Edit" },
         { id: "delete-recipe-button", label: "Delete" },
         { id: "copy-recipe-button", label: "Copy"},
-    ];
+        ] :
+        [
+            { id: "copy-recipe-button", label: "Copy"}
+        ]
 
     const handleOptionsClick = (option: string) => {
         switch (option) {
@@ -106,8 +109,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                     <Avatar name={recipe.addedByUserNickname} size="50" round={true} />
                 }
                 action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
-                    recipe.isOwner ? <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} /> :
-                    <></>
+                    <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
                 }
                 title={recipe.name}
             />
