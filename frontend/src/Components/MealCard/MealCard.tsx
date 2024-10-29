@@ -3,7 +3,7 @@ import { Card, CardContent, CardHeader, CardMedia, Typography } from "@mui/mater
 import { useMeal } from "../MealContext/MealContext";
 // import OverflowMenu from "../OverflowMenu/OverflowMenu";
 // import MoreVertIcon from '@mui/icons-material/MoreVert';
-// import { useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 interface MealProps {
     meal: MealDetailsInterface;
@@ -12,7 +12,7 @@ interface MealProps {
 
 const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
     const { setModalShow, setMealDate, setMealNotes, setSelectedMealType, setCurrentMeal, setRecipeName, setMode } = useMeal();
-    // const navigate = useNavigate();
+    const navigate = useNavigate();
 
     // const menuItems = [
     //     { id: "display-recipe-button", label: "Recipe Details" },
@@ -29,6 +29,10 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
             setMealNotes(meal.notes ? meal.notes : "");
             setRecipeName(meal.recipeName ? meal.recipeName : "");
         }
+    }
+
+    const handleRecipeClick = () => {
+       navigate(`/recipe-details/${meal.recipeId}`);
     }
 
     // const handleOptionsClick = (option: string) => {
@@ -64,6 +68,7 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
                 height="194"
                 image={meal.recipeDefaultImage ? meal.recipeDefaultImage : ""}
                 alt={meal.recipeName}
+                onClick={handleRecipeClick}
             />}
             <CardContent onClick={handleClick}>
                 <Typography gutterBottom variant="subtitle1" component="div">
