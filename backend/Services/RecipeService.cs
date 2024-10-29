@@ -107,6 +107,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                         LastUpdatedDateTime = recipe.LastUpdatedDateTime,
                                                         AddedByUserId = recipe.AddedByUserId,
                                                         AddedByUserNickname = recipe.AddedByUser.Nickname,
+                                                        IsOwner = recipe.AddedByUserId == userId,
                                                     }
                                                 )
                                                 .ToListAsync();
