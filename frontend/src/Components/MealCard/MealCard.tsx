@@ -1,6 +1,8 @@
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import { Card, CardContent, CardHeader, CardMedia, Typography } from "@mui/material";
 import { useMeal } from "../MealContext/MealContext";
+import OverflowMenu from "../OverflowMenu/OverflowMenu";
+import MoreVertIcon from '@mui/icons-material/MoreVert';
 
 interface MealProps {
     meal: MealDetailsInterface;
@@ -9,6 +11,11 @@ interface MealProps {
 
 const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
     const { setModalShow, setMealDate, setMealNotes, setSelectedMealType, setCurrentMeal, setRecipeName, setMode } = useMeal();
+
+    const menuItems = [
+        { id: "display-recipe-button", label: "Details" },
+        { id: "copy-recipe-button", label: "Copy" }
+    ];
 
     const handleClick = () => {
         if (!isReadOnly) {
@@ -24,7 +31,11 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
 
     return (
         <Card sx={{ maxWidth: 345, mx: 0, mb: 1 }} onClick={handleClick}>
-            <CardHeader title={meal.mealType} className={meal.mealType} />
+            <CardHeader
+                title={meal.mealType}
+                className={meal.mealType}
+                action={<OverflowMenu menuItems={menuItems} handleOptionsClick={handleClick} icon={MoreVertIcon} />}
+            />
             {(meal.recipeDefaultImage) && <CardMedia
                 component="img"
                 height="194"
