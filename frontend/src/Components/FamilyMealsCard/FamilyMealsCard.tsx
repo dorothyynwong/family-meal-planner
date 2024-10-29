@@ -49,8 +49,8 @@ const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data}) => {
         <>
             <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0.5 }}>
                 <CardHeader
-                    title={`Family Meals : ${data?.familyName}`}
-                    sx={{p:0, mx:0 }}
+                    title={`Feast with ${data?.familyName}`}
+                    sx={{p:0, mx:1 }}
                 />
                 <CardActions disableSpacing>
                     <ExpandMore

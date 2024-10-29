@@ -103,7 +103,7 @@ const FamilyCodeForm: React.FC<FamilyCodeProps> = ({ modalShow, setModalShow, f_
                 <StatusHandler
                     status={status}
                     errorMessages={errorMessages}
-                    loadingMessage="Loading..."
+                    loadingMessage="Sending Share Code ..."
                     successMessage=""
                 >
                     <></>
