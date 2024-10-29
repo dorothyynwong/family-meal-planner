@@ -75,7 +75,6 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     ];
     
     const menuItems = recipe.isOwner ? [...baseMenuItems, ...ownerMenuItems] : baseMenuItems;
-    
 
     const handleOptionsClick = (option: string) => {
         switch (option) {
