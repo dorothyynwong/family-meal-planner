@@ -51,14 +51,14 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
-      - name: Trigger Render Deployment
-        env:
-          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}
-        run: |
-          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_STAGING }} \
-          -H "Authorization: Bearer $RENDER_API_KEY" \
-          -H "Content-Type: application/json" \
-          -d '{"branch": "staging"}'
+      #name: Trigger Render Deployment
+        #env:
+          #RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}
+        #run: |
+          #curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_STAGING }} \
+          #H "Authorization: Bearer $RENDER_API_KEY" \
+          #H "Content-Type: application/json" \
+          #d '{"branch": "staging"}'
 
       - name: Run EF Core Migrations
         env:
