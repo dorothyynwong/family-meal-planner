@@ -16,6 +16,7 @@ import Families from './Pages/Families/Families';
 import FamiliesList from './Pages/FamiliesList/FamiliesList';
 import FamilyMealDaily from './Pages/FamilyMealDaily/FamilyMealDaily';
 import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 
 function App() {
 
@@ -26,48 +27,52 @@ function App() {
         <Router>
           <Layout>
             <Routes>
-              <Route path="/"
-                element={<Home />} />
-              <Route path="/home"
-                element={<Home />} />
-              <Route path="/recipes"
-                element={<Recipes />} />
-
-              <Route path="/recipes-list/"
-                element={<RecipesList />} />
-
-              <Route path="/recipe-add/:recipeId"
-                element={<RecipeCreation />} />
-
-              <Route path="/recipe-add"
-                element={<RecipeCreation />} />
-
-              <Route path="/recipe-details/:recipeId"
-                element={<RecipeDetails />} />
-
-              <Route path="/recipe-edit/:recipeId"
-                element={<RecipeUpdate />} />
-
-              <Route path="/meal-plans"
-                element={<MealPlanMonthly />} />
-
               <Route path="/login"
                 element={<UserLoginPage />} />
 
               <Route path="/signup"
                 element={<UserSignupPage />} />
 
-              <Route path="/families"
-                element={<Families />} />
 
-              <Route path="/my-families"
-                element={<FamiliesList data={[]} />} />
+              <Route element={<PrivateRoute />}>
+                <Route path="/"
+                  element={<Home />} />
 
-              <Route path="/family-meals"
-                element={<FamilyMealDaily />} />
+                <Route path="/home"
+                  element={<Home />} />
+                <Route path="/recipes"
+                  element={<Recipes />} />
 
-              <Route path="/school-menu-edit"
-                element={<SchoolMenuEdit />} />
+                <Route path="/recipes-list/"
+                  element={<RecipesList />} />
+
+                <Route path="/recipe-add/:recipeId"
+                  element={<RecipeCreation />} />
+
+                <Route path="/recipe-add"
+                  element={<RecipeCreation />} />
+
+                <Route path="/recipe-details/:recipeId"
+                  element={<RecipeDetails />} />
+
+                <Route path="/recipe-edit/:recipeId"
+                  element={<RecipeUpdate />} />
+
+                <Route path="/meal-plans"
+                  element={<MealPlanMonthly />} />
+
+                <Route path="/families"
+                  element={<Families />} />
+
+                <Route path="/my-families"
+                  element={<FamiliesList data={[]} />} />
+
+                <Route path="/family-meals"
+                  element={<FamilyMealDaily />} />
+
+                <Route path="/school-menu-edit"
+                  element={<SchoolMenuEdit />} />
+              </Route>
 
             </Routes>
           </Layout>
