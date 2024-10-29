@@ -50,8 +50,8 @@ const SchoolMealCard: React.FC<SchoolMealProps> = ({ meal, mealDays }) => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Submitting recipe ..."
-                successMessage="Recipe is submitted successfully!"
+                loadingMessage="Updating school meal ..."
+                successMessage="School meal is updated successfully!"
             >
                 <></>
             </StatusHandler>

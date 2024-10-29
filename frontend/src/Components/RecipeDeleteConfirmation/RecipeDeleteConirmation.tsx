@@ -73,8 +73,8 @@ const RecipeDeleteConfirmation: React.FC<RecipeDeleteProps> = ({ data, onCancel 
             <StatusHandler
                     status={status}
                     errorMessages={errorMessages}
-                    loadingMessage="Uploading image..."
-                    successMessage="Image uploaded successfully!"
+                    loadingMessage="Deleting recipe..."
+                    successMessage="Recipe is Deleted"
                 >
                 <Button id="delete-recipe-button" className="custom-button" onClick={handleClick}>Delete</Button>
             </StatusHandler>
