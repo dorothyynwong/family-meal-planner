@@ -89,7 +89,7 @@ public class RecipeController(IWebScrappingService webScrappingService,
 
         try
         {
-            List<Recipe> recipes = await _recipeService.GetRecipeByUserId(userId);
+            List<RecipeResponse> recipes = await _recipeService.GetRecipeByUserId(userId);
             return Ok(recipes);
         }
         catch (Exception ex)

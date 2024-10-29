@@ -18,6 +18,8 @@ export interface RecipeDetailsInterface {
     creationDateTime?: Date;
     lastUpdatedDateTime?: Date;
     defaultImageUrl?: string;
+    addedByUserId?: number;
+    addedByUserNickname?: string;
 }
 
 export interface MealDetailsInterface {
