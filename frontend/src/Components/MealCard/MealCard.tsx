@@ -3,6 +3,7 @@ import { Card, CardContent, CardHeader, CardMedia, Typography } from "@mui/mater
 import { useMeal } from "../MealContext/MealContext";
 import OverflowMenu from "../OverflowMenu/OverflowMenu";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
+import { useNavigate } from "react-router-dom";
 
 interface MealProps {
     meal: MealDetailsInterface;
@@ -11,10 +12,11 @@ interface MealProps {
 
 const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
     const { setModalShow, setMealDate, setMealNotes, setSelectedMealType, setCurrentMeal, setRecipeName, setMode } = useMeal();
+    const navigate = useNavigate();
 
     const menuItems = [
-        { id: "display-recipe-button", label: "Details" },
-        { id: "copy-recipe-button", label: "Copy" }
+        { id: "display-recipe-button", label: "Recipe Details" },
+        { id: "edit-meal-button", label: "Edit Meal" }
     ];
 
     const handleClick = () => {
@@ -29,12 +31,33 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
         }
     }
 
+    const handleOptionsClick = (option: string) => {
+        switch (option) {
+            case "display-recipe-button":
+                navigate(`/recipe-details/${meal.recipeId}`);
+                break
+            case "edit-meal-button":
+                if (!isReadOnly) {
+                    setModalShow(true);
+                    setMode("Edit");
+                    setCurrentMeal(meal);
+                    setMealDate(meal.date);
+                    setSelectedMealType(meal.mealType);
+                    setMealNotes(meal.notes ? meal.notes : "");
+                    setRecipeName(meal.recipeName ? meal.recipeName : "");
+                }
+                break
+            default:
+                break
+        }
+    }
+
     return (
-        <Card sx={{ maxWidth: 345, mx: 0, mb: 1 }} onClick={handleClick}>
+        <Card sx={{ maxWidth: 345, mx: 0, mb: 1 }}>
             <CardHeader
                 title={meal.mealType}
                 className={meal.mealType}
-                action={<OverflowMenu menuItems={menuItems} handleOptionsClick={handleClick} icon={MoreVertIcon} />}
+                action={<OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />}
             />
             {(meal.recipeDefaultImage) && <CardMedia
                 component="img"
@@ -42,7 +65,7 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
                 image={meal.recipeDefaultImage ? meal.recipeDefaultImage : ""}
                 alt={meal.recipeName}
             />}
-            <CardContent>
+            <CardContent onClick={handleClick}>
                 <Typography gutterBottom variant="subtitle1" component="div">
                     {meal.schoolMealId && meal.schoolMealId >= 0 ? meal.schoolMealName : meal.recipeName}
                 </Typography>
