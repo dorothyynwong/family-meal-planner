@@ -35,7 +35,6 @@ const Recipes: React.FC = () => {
 
     return (
         <>
-            <h1>Recipes</h1>
             <SearchBar />
             <div className="button-box">
             <Button id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>My Recipes</Button>
