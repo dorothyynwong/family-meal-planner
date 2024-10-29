@@ -41,7 +41,7 @@ const FamiliesList: React.FC<FamiliesListProps> = () => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Getting recipes..."
+                loadingMessage="Getting family and user details.."
                 successMessage=""
             >
                 <></>
