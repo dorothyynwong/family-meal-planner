@@ -9,7 +9,7 @@ public interface IRecipeService
 {
     Task<int> AddRecipe(RecipeRequest recipeRequest, int userId);
     Task<Recipe> GetRecipeById(int recipeId, int userId);
-    Task<List<Recipe>> GetRecipeByUserId(int userId);
+    Task<List<RecipeResponse>> GetRecipeByUserId(int userId);
     Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId, int userId);
     Task Delete(int recipeId, int userId);
 }
@@ -86,10 +86,28 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         return recipe;
     }
 
-    public async Task<List<Recipe>> GetRecipeByUserId(int userId)
+    public async Task<List<RecipeResponse>> GetRecipeByUserId(int userId)
     {
-        List<Recipe> recipes = await _context.Recipes
+        List<RecipeResponse> recipes = await _context.Recipes
+                                                .Include(user => user.Id == userId)
                                                 .Where(recipe => recipe.AddedByUserId == userId)
+                                                .Select(
+                                                    recipe => new RecipeResponse
+                                                    {
+                                                        Id = recipe.Id,
+                                                        Name = recipe.Name,
+                                                        Notes = recipe.Notes,
+                                                        Images = recipe.Images,
+                                                        Description = recipe.Description,
+                                                        DefaultImageUrl = recipe.DefaultImageUrl,
+                                                        RecipeIngredients = recipe.RecipeIngredients,
+                                                        RecipeInstructions = recipe.RecipeInstructions,
+                                                        CreationDateTime = recipe.CreationDateTime,
+                                                        LastUpdatedDateTime = recipe.LastUpdatedDateTime,
+                                                        AddedByUserId = recipe.AddedByUserId,
+                                                        AddedByUserNickname = recipe.AddedByUser.Nickname,
+                                                    }
+                                                )
                                                 .ToListAsync();
 
         if (recipes == null || recipes.Count == 0)
