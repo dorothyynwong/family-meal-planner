@@ -64,15 +64,18 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         setExpanded(!expanded);
     };
 
-    const menuItems = recipe.isOwner ? [
+    const baseMenuItems = [
         { id: "display-recipe-button", label: "Details" },
+        { id: "copy-recipe-button", label: "Copy" }
+    ];
+    
+    const ownerMenuItems = [
         { id: "edit-recipe-button", label: "Edit" },
-        { id: "delete-recipe-button", label: "Delete" },
-        { id: "copy-recipe-button", label: "Copy"},
-        ] :
-        [
-            { id: "copy-recipe-button", label: "Copy"}
-        ]
+        { id: "delete-recipe-button", label: "Delete" }
+    ];
+    
+    const menuItems = recipe.isOwner ? [...baseMenuItems, ...ownerMenuItems] : baseMenuItems;
+    
 
     const handleOptionsClick = (option: string) => {
         switch (option) {
