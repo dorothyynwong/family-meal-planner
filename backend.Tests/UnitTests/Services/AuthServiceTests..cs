@@ -23,6 +23,7 @@ public class AuthServiceTests
         _mockConfiguration = new Mock<IConfiguration>();
         _mockConfiguration.SetupGet(x => x["Jwt:AccessTokenExpiryMinutes"]).Returns("15");
         _mockConfiguration.SetupGet(x => x["Jwt:RefreshTokenExpiryDays"]).Returns("7");
+        _mockConfiguration.SetupGet(x => x["Jwt:EmailExpiryDays"]).Returns("1");
         _mockConfiguration.SetupGet(x => x["Jwt:Issuer"]).Returns("FamilyMealPlannerTest");
         _mockConfiguration.SetupGet(x => x["Jwt:Audience"]).Returns("audience");
         _mockConfiguration.SetupGet(x => x["Jwt:RefreshTokenName"]).Returns("TokenName");
@@ -50,7 +51,7 @@ public class AuthServiceTests
             o.HttpOnly && o.IsEssential && o.Secure && o.SameSite == SameSiteMode.None)), Times.Once);
 
         _mockCookies.Verify(c => c.Append("email", email, It.Is<CookieOptions>(o => 
-            o.HttpOnly && o.SameSite == SameSiteMode.Strict)), Times.Once);
+            o.HttpOnly && o.IsEssential && o.Secure && o.SameSite == SameSiteMode.None)), Times.Once);
     }
 
     [Test]

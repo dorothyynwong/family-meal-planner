@@ -43,7 +43,7 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
 
         userSignup(signupData)
             .then(response => {
-                if (response.statusText === "OK") {
+                if (response.status === 200) {
                     navigate(`/`);
                 }
             })

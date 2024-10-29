@@ -1,9 +1,11 @@
 import { Context, ReactNode, createContext, useContext, useState } from "react";
 import { userLogout } from "../../Api/api";
+import { UserLoginResponseInterface } from "../../Api/apiInterface";
 
 type AuthContextType = {
   isAuthenticated: boolean;
-  logUserIn: () => void;
+  nickname: string;
+  logUserIn: (data: UserLoginResponseInterface) => void;
   logUserOut: () => void;
 };
 
@@ -16,9 +18,12 @@ const AuthContext: Context<AuthContextType | null> =
 
 export const AuthProvider = ({ children }: AuthContextPropsType) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [nickname, setNickname] = useState("");
 
-  const logUserIn = () => {
+  const logUserIn = (data:UserLoginResponseInterface) => {
     setIsAuthenticated(true);
+    setNickname(data.nickname);
+    console.log("logUserIn");
   };
 
   const logUserOut = () => {
@@ -27,10 +32,11 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
         console.log("Error during logout", error);
       });
     setIsAuthenticated(false);
+    setNickname("");
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, logUserIn, logUserOut }}>
+    <AuthContext.Provider value={{ isAuthenticated, nickname, logUserIn, logUserOut }}>
       {children}
     </AuthContext.Provider>
   );

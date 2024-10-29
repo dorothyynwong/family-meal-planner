@@ -68,14 +68,14 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
             setRecipeName(selectedRecipe.name ? selectedRecipe.name : "");
             setModalShow(true);
         }
-    }, [selectedRecipe, modalShow]);
+    }, [selectedRecipe, modalShow, setRecipeName, setModalShow]);
 
     const isFromMealForm = true;
 
     const handleDelete = () => {
         deleteMeal(currentMeal!.id!)
             .then(response => {
-                if (response.statusText === "OK") {
+                if (response.status === 200) {
                     setStatus("success");
                 }
             })
@@ -133,7 +133,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         if (mode === "Add") {
             addMeal(meal)
                 .then(response => {
-                    if (response.statusText === "OK") {
+                    if (response.status === 200) {
                         setStatus("success");
                     }
                 })
@@ -147,7 +147,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         else {
             updateMeal(meal, currentMeal!.id!)
                 .then(response => {
-                    if (response.statusText === "OK") {
+                    if (response.status === 200) {
                         setStatus("success");
                     }
                 })

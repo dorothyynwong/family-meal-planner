@@ -25,7 +25,7 @@ interface FamilyUsersProps {
 
         updateFamilyRole({ familyId, userId, newRole })
             .then(response => {
-                if (response.statusText === "OK") {
+                if (response.status === 200) {
                     setStatus("success");
                 }
             })

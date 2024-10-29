@@ -18,6 +18,7 @@ public class EmailService(IConfiguration configure) : IEmailService
         var client = new SendGridClient(apiKey);
 
         var from = new EmailAddress(_configure["SendGrid_Email"], "Family Meal Planner");
+        Logger.Debug(_configure["SendGrid_Email"]);
         var to = new EmailAddress(recipentEmail, recipentName);
 
         var msg = MailHelper.CreateSingleEmail(from, to, subject, plainTextContent, htmlContent);

@@ -5,10 +5,8 @@ import { useEffect, useState } from "react";
 import { getSchoolMealsByDate } from "../../Api/api";
 import StatusHandler from "../StatusHandler/StatusHandler";
 
-interface SchoolMenuSelectProps {
-}
 
-const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({ }) => {
+const SchoolMenuSelect: React.FC = () => {
     const { mealDate, schoolMealId, setSchoolMealId } = useMeal();
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
@@ -29,6 +27,7 @@ const SchoolMenuSelect: React.FC<SchoolMenuSelectProps> = ({ }) => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [mealDate]);
 
     return (<>

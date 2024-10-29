@@ -1,41 +1,59 @@
-name: Deploy to Production
+name: Staging
 
 on:
-  workflow_dispatch:
-    inputs:
-      IMAGE_TAG:
-        description: 'Docker image tag'
-        required: true
-        default: 'latest'
-      BRANCH:
-        description: 'Branch to deploy'
-        required: true
-        default: 'main'
+  push:
+    branches: staging
 
 jobs:
   build:
+
     runs-on: ubuntu-latest
 
     steps:
-    - name: 1. Checkout code
-      uses: actions/checkout@v2
+    - name: Print environment variables
+      run: printenv
+    - uses: actions/checkout@v4
+    
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+    - name: Restore backend dependencies
+      run: dotnet restore backend/backend.csproj
+      
+    - name: Build backend
+      run:  dotnet build backend/backend.csproj
+      
+    - name: Run backend tests
+      env:  
+        ImgBB_API_Key: ${{ secrets.ImgBB_API_Key }}
+        DB_CONNECTION_STRING: ${{ secrets.DB_CONNECTION_STRING}}
+      run: 
+        dotnet test backend.Tests/backend.Tests.csproj
 
-    - name: 2. Set up Docker Buildx
+    # Step 2: Set up Docker Buildx (Optional if you need advanced build features)
+    - name: Set up Docker Buildx
       uses: docker/setup-buildx-action@v1
 
-    - name: 3. Log in to Docker Hub
+    # Step 3: Log in to Docker Hub
+    - name: Log in to Docker Hub
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.DOCKER_HUB_USER}}  
+        username: ${{ secrets.DOCKER_HUB_USER }}  
         password: ${{ secrets.DOCKER_HUB_PASSWORD }}  
 
-    - name: 4. Push and Retag Docker image
+    # Step 4: Build the Docker image
+    - name: Build Docker image
       run: |
-        docker pull ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${{ github.event.inputs.IMAGE_TAG }}
-        docker tag ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:${{ github.event.inputs.IMAGE_TAG }} ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
+        docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging -f backend/DockerFile backend/
+
+    # Step 5: Push the Docker image to Docker Hub
+    - name: Push Docker image
+      run: |
         docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
-    - name: 5. Trigger Render Deployment
+    # Step 6: Deploy Docker image to Render
+    - name: Trigger Render Deployment
       env:
         RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}  
       run: |
@@ -45,21 +63,26 @@ jobs:
         -H "Content-Type: application/json" \
         -d '{"branch": "staging"}'  
 
-    - name: 6. Navigate to backend folder
+    # Step 7: Navigate to the backend folder
+    - name: Navigate to backend folder
       run: cd backend  
 
-    - name: 7. Setup .NET Core
+    # Step 8: Set up .NET Core environment
+    - name: Setup .NET Core
       uses: actions/setup-dotnet@v3
       with:
         dotnet-version: '8.x'  
 
-    - name: 8. Install EF Core CLI
+    # Step 9: Install EF Core CLI
+    - name: Install EF Core CLI
       run: dotnet tool install --global dotnet-ef
 
-  #  - name: 9. Build the backend
-  #    run: dotnet build --configuration Release
+    # Step 10: Build the backend project
+    - name: Build the backend
+      run: dotnet build --configuration Release
 
-    - name: 10. Run EF Core Migrations
+    # Step 11: Run EF Core database update
+    - name: Run EF Core Migrations
       env:
         ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
         SendGrid_Email: ${{ secrets.SENDGRID_EMAIL }}

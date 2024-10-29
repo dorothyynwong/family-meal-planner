@@ -1,8 +1,8 @@
-import {  Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
+import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
 import MealDaily from "../MealDaily/MealDaily";
-import {  FamilyWithUsersInterface } from "../../Api/apiInterface";
+import { FamilyWithUsersInterface } from "../../Api/apiInterface";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -14,7 +14,8 @@ interface FamilyMealsProps {
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { ...other } = props;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {expand, ...other } = props;
     return <IconButton {...other} />;
 })(({ theme }) => ({
     marginLeft: 'auto',
@@ -48,7 +49,7 @@ const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data}) => {
         <>
             <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0.5 }}>
                 <CardHeader
-                    title={`Family Meals`}
+                    title={`Family Meals : ${data?.familyName}`}
                     sx={{p:0, mx:0 }}
                 />
                 <CardActions disableSpacing>

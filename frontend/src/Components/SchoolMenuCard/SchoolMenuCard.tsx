@@ -13,7 +13,8 @@ interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
 }
 const ExpandMore = styled((props: ExpandMoreProps) => {
-    const { expand, ...other } = props;
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const {  expand, ...other } = props;
     return <IconButton {...other} />;
 })(({ theme }) => ({
     marginLeft: 'auto',

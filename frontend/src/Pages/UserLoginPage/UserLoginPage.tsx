@@ -34,11 +34,11 @@ const UserLoginPage: React.FC = () => {
         
         userLogin(email, password)
             .then(response => {
-                if (response.statusText === "OK") {
-                    // const recipeData = response.data;
-                    logUserIn();
-                    navigate(`/recipes-list`);
+                if (response.status === 200) {
+                    logUserIn(response.data);
+                    navigate(`/home`);
                     setStatus("success");
+                    console.log(status);
                 }
             })
             .catch(error => {
@@ -62,15 +62,17 @@ const UserLoginPage: React.FC = () => {
             <StatusHandler
                     status={status}
                     errorMessages={errorMessages}
-                    loadingMessage="Loggin In ..."
+                    loadingMessage="Logging In ..."
                     successMessage="Logged In Successfully!"
                 >
+                    <></>
+            </StatusHandler>
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">
                     Submit
                 </Button>
             </div>
-            </StatusHandler>
+            
         </Form>
     )
 

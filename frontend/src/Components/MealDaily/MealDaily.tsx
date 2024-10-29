@@ -52,6 +52,7 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByF
             });
         }
     }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
         , [mealDate, userId, familyId, isByFamily])
 
     if (!mealsOfDate || mealsOfDate.length <= 0) return (<>No meals found</>);
