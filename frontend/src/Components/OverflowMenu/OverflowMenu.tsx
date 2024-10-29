@@ -1,4 +1,4 @@
-import {  ElementType, useEffect, useRef, useState } from "react";
+import {  ElementType,  useState } from "react";
 import { IconButton, Menu, MenuItem, SvgIconProps } from '@mui/material';
 
 import "./OverflowMenu.scss";
@@ -15,8 +15,6 @@ interface OverflowMenuProps {
 
 const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClick, icon: Icon}) => {
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
-    const [containerElement, setContainerElement] = useState<HTMLElement | null>(null);
-    const buttonRef = useRef<HTMLButtonElement>(null);
 
     const handleClick = (event: React.MouseEvent<HTMLElement>) => {
         setAnchorEl(event.currentTarget);
@@ -25,12 +23,6 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
     const handleClose = () => {
         setAnchorEl(null);
     };
-
-    useEffect(() => {
-        if (buttonRef.current) {
-            setContainerElement(buttonRef.current.parentElement); 
-        }
-    }, []);
 
     return (
         <div>
@@ -41,7 +33,6 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                container={containerElement || anchorEl?.parentElement || undefined}
                 sx={{
                     '& .MuiPaper-root': {
                         backgroundColor: '#8E9D76', 
