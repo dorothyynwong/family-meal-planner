@@ -89,8 +89,8 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
     public async Task<List<RecipeResponse>> GetRecipeByUserId(int userId)
     {
         List<RecipeResponse> recipes = await _context.Recipes
-                                                .Include(user => user.Id == userId)
                                                 .Where(recipe => recipe.AddedByUserId == userId)
+                                                .Include(recipe => recipe.AddedByUser)                                    
                                                 .Select(
                                                     recipe => new RecipeResponse
                                                     {
