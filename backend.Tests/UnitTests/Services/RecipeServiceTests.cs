@@ -11,6 +11,7 @@ public class RecipeServiceTests
 {
     private IRecipeService _recipeService;
     private Mock<IFamilyUserService> _mockFamilyUserService;
+    private Mock<IFamilyService> _mockFamilyService;
     private FamilyMealPlannerContext _context;
     private DateTime _dateTime = new DateTime(2024, 10, 14, 09, 00, 00);
 
@@ -18,6 +19,7 @@ public class RecipeServiceTests
     public void Setup()
     {
         _mockFamilyUserService = new Mock<IFamilyUserService>();
+        _mockFamilyService = new Mock<IFamilyService>();
 
         var options = new DbContextOptionsBuilder<FamilyMealPlannerContext>()
             .UseInMemoryDatabase(databaseName: "TestDatabase")
@@ -25,7 +27,7 @@ public class RecipeServiceTests
 
         _context = new FamilyMealPlannerContext(options);
 
-        _recipeService = new RecipeService(_context, _mockFamilyUserService.Object);
+        _recipeService = new RecipeService(_context, _mockFamilyUserService.Object, _mockFamilyService.Object);
 
         SeedDatabase(_context);
     }

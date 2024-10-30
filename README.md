@@ -46,6 +46,10 @@ dotnet user-secrets set "SendGrid_API_Key" "YOUR API KEY"
 dotnet user-secrets set "SendGrid_Email" "Sender Email Address"
 dotnet user-secrets set "OpenAI_API_Key" "YOUR API KEY" 
 dotnet user-secrets set "ConnectionStrings_DefaultConnection" "Host=localhost; Port=5432; Database=familyplanner; Username=familyplanner; Password=familyplanner"
+dotnet user-secrets set "JWT_AppName" "AppName"
+dotnet user-secrets set "JWT_Issuer" "Issuer"
+dotnet user-secrets set "JWT_Audience" "Audience"
+dotnet user-secrets set "JWT_RefreshTokenName" "RefreshTokenName"
 ```
 
 ### Inside the `backend.Tests` 
