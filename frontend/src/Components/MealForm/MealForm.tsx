@@ -20,7 +20,7 @@ interface MealFormProps {
     isFromRecipe?: boolean
 }
 
-const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
+const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate, isFromRecipe }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
