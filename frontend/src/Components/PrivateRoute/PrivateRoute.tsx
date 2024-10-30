@@ -14,17 +14,18 @@ const PrivateRoute: React.FC = () => {
         setStatus("loading");
         validateAccessToken()
             .then(response => {
-                setIsAuthenticated(response.data);
                 console.log(`Response Data: ${response.data}`);
                 console.log(isAuthenticated);
+                localStorage.setItem('isAuthenticated', JSON.stringify(response.data));
                 setStatus("success");
+                setIsAuthenticated(response.data);
             })
             .catch(error => {
                 const errorMessage = error?.response?.data?.message || "Error validating access token";
                 setErrorMessages([...errorMessages, errorMessage]);
                 setStatus("error")
             });
-    }, [])
+    }, [isAuthenticated, setIsAuthenticated])
 
     return (
         <>
@@ -34,9 +35,9 @@ const PrivateRoute: React.FC = () => {
             loadingMessage="Validating ..."
             successMessage=""
         >
-            <></>
+            <>{console.log(status)}</>
         </StatusHandler>
-        {isAuthenticated ? <Outlet /> : <Navigate to="/login" />}
+        { isAuthenticated ? <Outlet /> : <Navigate to="/login" />}
         </>
     );
 }
