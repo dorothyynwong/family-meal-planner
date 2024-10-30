@@ -94,9 +94,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 navigate(`/recipe-add/${recipe.id}`);
                 break
             case "add-meal-button":
-                setMode("Add");
+                //setMode("Add");
                 //setModalShow(true);
-                setSelectedRecipe(recipe);
+                //setSelectedRecipe(recipe);
                 break
             default:
                 break
