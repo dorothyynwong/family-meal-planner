@@ -9,9 +9,10 @@ interface MealDailyProps {
     familyId: number;
     userId: number;
     isByFamily: boolean;
+    isReadOnly: boolean;
 }
 
-const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByFamily }) => {
+const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByFamily, isReadOnly }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealsOfDate, setMealsOfDate] = useState<MealDetailsInterface[]>();
@@ -55,7 +56,7 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByF
         // eslint-disable-next-line react-hooks/exhaustive-deps
         , [mealDate, userId, familyId, isByFamily])
 
-    if (!mealsOfDate || mealsOfDate.length <= 0) return (<>No meals found</>);
+    if (!mealsOfDate || mealsOfDate.length <= 0) return (<p>No meals are planned for today</p>);
 
     return (
         <>
@@ -70,7 +71,7 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByF
             {
                 mealsOfDate &&
                 mealsOfDate.map((meal, index) => (
-                    <MealCard key={index} meal={meal} isReadOnly={!isByFamily}/>
+                    <MealCard key={index} meal={meal} isReadOnly={!isByFamily || isReadOnly}/>
                 ))}
         </>
     )

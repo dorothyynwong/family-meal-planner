@@ -35,12 +35,14 @@ function Home() {
       >
         <></>
       </StatusHandler>
-      <MealDaily mealDate={new Date()} familyId={0} userId={0} isByFamily={false} />
+      <h1>Today's Feast</h1>
+      <MealDaily mealDate={new Date()} familyId={0} userId={0} isByFamily={false} isReadOnly={true}/>
       {familyUsersList.map((fu, index) => (
                 <FamilyMealsCard
                     key = {index}
                     mealDate = {new Date()}
                     data = {fu}
+                    isReadOnly = {true}
                 />
             ))}
     </>

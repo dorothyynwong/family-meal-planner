@@ -41,7 +41,7 @@ interface FamilyUsersProps {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Updating family role ..."
+                loadingMessage="Updating Family Role..."
                 successMessage=""
             ><></>
             </StatusHandler>

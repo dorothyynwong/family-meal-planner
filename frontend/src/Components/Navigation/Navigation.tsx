@@ -1,5 +1,5 @@
 import { Button, Container, Nav, Navbar } from "react-bootstrap";
-import logo from '../../Assets/watermelon.png';
+import logo from '../../Assets/familyfeast.png';
 import { useAuth } from "../AuthProvider/AuthProvider";
 import { useNavigate } from "react-router-dom";
 
@@ -37,9 +37,6 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
             case "signup":
                 navigate('/signup');
                 break;
-            // case "school-menus-edit":
-            //     navigate('/school-menu-edit', { state: { schoolMenuIds: schoolMenuIds } });
-                break;
         }
         setIsOpen(false);
 
@@ -51,13 +48,11 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
         navigate("/");
     }
 
-    // const schoolMenuIds = [3, 4, 5]; 
-
     return (
         <Navbar expand="lg">
             <Container className="custom-navbar-container">
                 <Navbar.Brand href="home">
-                    <img src={logo} alt="Family Meal Planner" style={{ height: '100px' }} />
+                    <img src={logo} alt="Family Meal Planner" style={{ height: '150px' }} />
                 </Navbar.Brand>
                 <Nav className="custom-navbar-links">
                     <Nav.Link id="home" className="custom-nav-link" onClick={handleClick}>Home</Nav.Link>
@@ -65,19 +60,14 @@ const Navigation: React.FC<NavigationProps> = ({ setIsOpen }) => {
                     <Nav.Link id="meals" className="custom-nav-link" onClick={handleClick}>My Meals</Nav.Link>
                     <Nav.Link id="family-meals" className="custom-nav-link" onClick={handleClick}>Families' Meals</Nav.Link>
                     <Nav.Link id="families" className="custom-nav-link" onClick={handleClick}>Families</Nav.Link>
-                    {/* <Nav.Link id="school-menus-edit" className="custom-nav-link" onClick={handleClick}>School Menus Edit</Nav.Link> */}
-                    {/* <Nav.Link id="user-login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link> */}
                     {
-                        isAuthenticated &&
-                        <Button onClick={handleLogout}>Logout</Button>
-                    }
-                    {
-                        !isAuthenticated &&
-                        <>
-                            <Nav.Link id="login" className="custom-nav-link" onClick={handleClick}>Login</Nav.Link>
-                            <Nav.Link id="signup" className="custom-nav-link" onClick={handleClick}>Signup</Nav.Link>
-                        </>
-
+                        isAuthenticated ?
+                        <Button className="custom-button w-100 mt-3" onClick={handleLogout}>Logout</Button> :
+                        (   <>
+                            <Button id="login" className="custom-button w-100 mt-3" onClick={handleClick}>Login</Button>
+                            <Button id="signup" className="custom-button w-100 mt-3" onClick={handleClick}>Signup</Button>
+                            </>
+                        )
                     }
                 </Nav>
             </Container>

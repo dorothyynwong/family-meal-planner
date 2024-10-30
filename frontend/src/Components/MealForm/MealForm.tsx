@@ -122,7 +122,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         setErrorMessages([]);
 
         const meal: MealDetailsInterface = {
-            familyId: selectedFamily?.familyId,
+            familyId: isForFamily? selectedFamily?.familyId : 0,
             date: mealDate,
             notes: mealNotes,
             mealType: mealFormType === "recipe" ? selectedMealType : "Lunch",
@@ -167,7 +167,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         <Popup
             customclass="meal-form"
             show={modalShow}
-            onHide={() => { setModalShow(false); resetMealContext(); }}
+            onHide={() => { setModalShow(false); resetMealContext();  }}
             title={`${mode} Meal`}
             body="">
             <Form onSubmit={handleSubmit}>

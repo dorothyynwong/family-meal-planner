@@ -7,36 +7,16 @@ import DateBar from "../../Components/DateBar/DateBar";
 import dayjs from 'dayjs';
 import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
 import MealForm from "../../Components/MealForm/MealForm";
-import { createTheme, ThemeProvider } from "@mui/material";
-
-const theme = createTheme({
-    palette: {
-      primary: {
-        main: '#8E9D76',
-        contrastText: '#000000'
-      },
-      secondary: {
-        main: '#796C50',
-        contrastText: '#FFFFFF'
-      }
-    }
-  });
   
 const FamilyMealDaily: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
-    // const [familyRoles, setFamilyRoles] = useState<string[]>([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
     
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
-        // getFamilyRoleTypes().then(response => {
-        //     const roles = response.data;
-        //     setFamilyRoles(roles);
-        // });
-
         getFamiliesWithUsersByUserId()
             .then(fu => {
                 setFamilyUsersList(fu.data);
@@ -51,7 +31,7 @@ const FamilyMealDaily: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
     return (
-        <ThemeProvider theme={theme}>
+        <>
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
@@ -71,7 +51,7 @@ const FamilyMealDaily: React.FC = () => {
             )}
             <FamilyMealsBottomBar/>
             <MealForm isForFamily={true} selectedDate={selectedDate}/>
-        </ThemeProvider>
+        </>
     );
 }
 

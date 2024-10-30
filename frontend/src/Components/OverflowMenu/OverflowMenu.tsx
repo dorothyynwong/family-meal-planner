@@ -1,4 +1,4 @@
-import {  ElementType, useState } from "react";
+import {  ElementType,  useState } from "react";
 import { IconButton, Menu, MenuItem, SvgIconProps } from '@mui/material';
 
 import "./OverflowMenu.scss";
@@ -33,9 +33,6 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
-                // slotProps={{
-                //     paper: { className: "overflow-menu" }
-                //   }}
                 sx={{
                     '& .MuiPaper-root': {
                         backgroundColor: '#8E9D76', 

@@ -16,63 +16,85 @@ import Families from './Pages/Families/Families';
 import FamiliesList from './Pages/FamiliesList/FamiliesList';
 import FamilyMealDaily from './Pages/FamilyMealDaily/FamilyMealDaily';
 import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
+import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
+import { createTheme, ThemeProvider } from '@mui/material';
+
+const theme = createTheme({
+  typography: {
+    fontFamily: "Fredoka",
+  },
+  palette: {
+    primary: {
+      main: '#8E9D76',
+      contrastText: '#000000'
+    },
+    secondary: {
+      main: '#796C50',
+      contrastText: '#FFFFFF'
+    }
+  }
+});
 
 function App() {
 
   return (
     <AuthProvider>
       <MealProvider>
+        <ThemeProvider theme={theme}>
+          <Router>
+            <Layout>
+              <Routes>
+                <Route path="/login"
+                  element={<UserLoginPage />} />
 
-        <Router>
-          <Layout>
-            <Routes>
-              <Route path="/"
-                element={<Home />} />
-              <Route path="/home"
-                element={<Home />} />
-              <Route path="/recipes"
-                element={<Recipes />} />
+                <Route path="/signup"
+                  element={<UserSignupPage />} />
 
-              <Route path="/recipes-list/"
-                element={<RecipesList />} />
 
-              <Route path="/recipe-add/:recipeId"
-                element={<RecipeCreation />} />
+                <Route element={<PrivateRoute />}>
+                  <Route path="/"
+                    element={<Home />} />
 
-              <Route path="/recipe-add"
-                element={<RecipeCreation />} />
+                  <Route path="/home"
+                    element={<Home />} />
+                  <Route path="/recipes"
+                    element={<Recipes />} />
 
-              <Route path="/recipe-details/:recipeId"
-                element={<RecipeDetails />} />
+                  <Route path="/recipes-list/"
+                    element={<RecipesList />} />
 
-              <Route path="/recipe-edit/:recipeId"
-                element={<RecipeUpdate />} />
+                  <Route path="/recipe-add/:recipeId"
+                    element={<RecipeCreation />} />
 
-              <Route path="/meal-plans"
-                element={<MealPlanMonthly />} />
+                  <Route path="/recipe-add"
+                    element={<RecipeCreation />} />
 
-              <Route path="/login"
-                element={<UserLoginPage />} />
+                  <Route path="/recipe-details/:recipeId"
+                    element={<RecipeDetails />} />
 
-              <Route path="/signup"
-                element={<UserSignupPage />} />
+                  <Route path="/recipe-edit/:recipeId"
+                    element={<RecipeUpdate />} />
 
-              <Route path="/families"
-                element={<Families />} />
+                  <Route path="/meal-plans"
+                    element={<MealPlanMonthly />} />
 
-              <Route path="/my-families"
-                element={<FamiliesList data={[]} />} />
+                  <Route path="/families"
+                    element={<Families />} />
 
-              <Route path="/family-meals"
-                element={<FamilyMealDaily />} />
+                  <Route path="/my-families"
+                    element={<FamiliesList data={[]} />} />
 
-              <Route path="/school-menu-edit"
-                element={<SchoolMenuEdit />} />
+                  <Route path="/family-meals"
+                    element={<FamilyMealDaily />} />
 
-            </Routes>
-          </Layout>
-        </Router>
+                  <Route path="/school-menu-edit"
+                    element={<SchoolMenuEdit />} />
+                </Route>
 
+              </Routes>
+            </Layout>
+          </Router>
+        </ThemeProvider>
       </MealProvider>
     </AuthProvider>
   )
