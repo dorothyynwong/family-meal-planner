@@ -133,14 +133,25 @@ public class AuthController(
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var email = Request.Cookies["email"];
+        try
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var email = Request.Cookies["email"];
 
-        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, email);
+            if (refreshToken == null || refreshToken == "" || email == null || email == "")
+                return Unauthorized("Refresh token is missing");
 
-        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, email, HttpContext);
+            JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, email);
 
-        return Ok(jwtAuthResult);
+            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, email, HttpContext);
+
+            return Ok(jwtAuthResult);
+        }
+        catch(Exception ex)
+        {
+            Logger.Error($"Unable to refresh token {ex.Message} ");
+            return BadRequest($"Unable to refresh token {ex.Message} ");
+        }
     }
 
     [HttpGet]
