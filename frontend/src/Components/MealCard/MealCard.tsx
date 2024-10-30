@@ -43,7 +43,7 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
                 alt={meal.recipeName}
                 onClick={handleRecipeClick}
             />}
-            <CardContent onClick={handleClick}>
+            <CardContent onClick={handleRecipeClick}>
                 <Typography gutterBottom variant="subtitle1" component="div">
                     {meal.schoolMealId && meal.schoolMealId >= 0 ? meal.schoolMealName : meal.recipeName}
                 </Typography>
