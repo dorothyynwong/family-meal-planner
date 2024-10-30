@@ -14,10 +14,11 @@ public interface IRecipeService
     Task Delete(int recipeId, int userId);
 }
 
-public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService familyUserService) : IRecipeService
+public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService familyUserService, IFamilyService familyService) : IRecipeService
 {
     private readonly FamilyMealPlannerContext _context = context;
     private readonly IFamilyUserService _familyUserService = familyUserService;
+    private readonly IFamilyService _familyService = familyService;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private void ValidateRequest(RecipeRequest recipeRequest, int userId)
@@ -88,10 +89,16 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
 
     public async Task<List<RecipeResponse>> GetRecipeByUserId(int userId)
     {
+        List<FamilyResponse> familyList = await _familyService.GetFamilyByUserId(userId);
+        List<int> familyIds = familyList.Select(family => family.FamilyId).ToList();
+
         List<RecipeResponse> recipes = await _context.Recipes
-                                                .Where(recipe => recipe.AddedByUser != null && recipe.AddedByUser.FamilyUsers.Count != 0)
-                                                .Include(recipe => recipe.AddedByUser)       
-                                                    .ThenInclude( user => user.FamilyUsers)         
+                                                .Include(recipe => recipe.AddedByUser)
+                                                    .ThenInclude(user => user.FamilyUsers)
+                                                .Where(recipe =>
+                                                    recipe.AddedByUserId == userId || 
+                                                    recipe.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId)) 
+                                                )
                                                 .Select(
                                                     recipe => new RecipeResponse
                                                     {
