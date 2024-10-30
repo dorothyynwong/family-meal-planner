@@ -19,8 +19,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdAddCard } from 'react-icons/md';
 import { useMeal } from '../MealContext/MealContext';
 import Avatar from 'react-avatar';
-import MealForm from '../MealForm/MealForm';
-import dayjs from 'dayjs';
+// import MealForm from '../MealForm/MealForm';
+// import dayjs from 'dayjs';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -157,6 +157,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 </CardContent>
             </Collapse>
             {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
+            </Card>
         </>
     );
 }
