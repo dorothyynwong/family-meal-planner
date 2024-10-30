@@ -1,5 +1,5 @@
 const FooterMenu:React.FC = () => {
-    return(<>Footer</>)
+    return(<></>)
 }
 
 export default FooterMenu;
