@@ -183,7 +183,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
                   </Form.Group>
                 )}
 
-                {!isFromRecipe && <MealFormSelection mealFormType={mealFormType} setMealFormType={setMealFormType}/>
+                {!isFromRecipe && <MealFormSelection mealFormType={mealFormType} setMealFormType={setMealFormType}/>}
                 {mealFormType==="recipe" ?
                     <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
                 :   <SchoolMenuSelect />}
