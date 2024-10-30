@@ -60,7 +60,7 @@ const FamilyTabs: React.FC<FamilyTabsProps> = ({ data, selectedDate }) => {
                     value={value}
                     index={fu.familyId}
                 >
-                    <FamilyMealsCard key={index} mealDate={selectedDate.toDate()} data={selectedFamily} />
+                    <FamilyMealsCard key={index} mealDate={selectedDate.toDate()} data={selectedFamily} isReadOnly={false}/>
                     {fu.familyUsers.map(
                         (user, index) => (
                             <UserMealsCard key={index} mealDate={selectedDate.toDate()} data={user} />
