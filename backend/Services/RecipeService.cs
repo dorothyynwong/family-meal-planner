@@ -89,9 +89,14 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
     public async Task<List<RecipeResponse>> GetRecipeByUserId(int userId)
     {
         List<RecipeResponse> recipes = await _context.Recipes
-                                                .Where(recipe => recipe.AddedByUser != null && recipe.AddedByUser.FamilyUsers.Count != 0)
-                                                .Include(recipe => recipe.AddedByUser)       
-                                                    .ThenInclude( user => user.FamilyUsers)         
+                                                .Where(recipe =>
+                                                    recipe.AddedByUserId == userId ||
+                                                    recipe.AddedByUser.FamilyUsers.Any(fu => fu.FamilyId == _context.FamilyUsers
+                                                            .Where(f => f.UserId == userId)
+                                                            .Select(f => f.FamilyId)
+                                                            .FirstOrDefault()))
+                                                .Include(recipe => recipe.AddedByUser)
+                                                .ThenInclude(user => user.FamilyUsers)
                                                 .Select(
                                                     recipe => new RecipeResponse
                                                     {
