@@ -104,6 +104,10 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         navigate(-1);
     }
 
+    const handleCardContentClick = () => {
+        navigate(`/recipe-details/${recipe.id}`);
+    }
+
     return (
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
@@ -120,8 +124,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 height="194"
                 image={recipe.defaultImageUrl? recipe.defaultImageUrl : recipe.images ? recipe.images[0] : ""}
                 alt={recipe.name}
+                onClick={handleCardContentClick}
             />}
-            <CardContent>
+            <CardContent onClick={handleCardContentClick}>
                 {recipe.description}
             </CardContent>
             <CardActions disableSpacing>
