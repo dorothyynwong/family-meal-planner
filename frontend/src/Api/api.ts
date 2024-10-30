@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-catch */
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, SchoolMealInterface, UserSignupInterface } from './apiInterface';
+import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface,  ListResponse,  MealDetailsInterface, RecipeDetailsInterface, SchoolMealInterface, UserSignupInterface } from './apiInterface';
 
 export async function importRecipeFromUrl(url: string) {
     try {
@@ -316,5 +316,14 @@ export async function validateAccessToken() {
         return response;
     } catch (error) {
         throw error;
+    }
+}
+
+export async function searchRecipes(page: number, pageSize: number): Promise<ListResponse<RecipeDetailsInterface>> {
+    try {
+        const response: AxiosResponse<ListResponse<RecipeDetailsInterface>> = await client.get(`/recipessearch?AddedByUserId=3&Page=${page}&PageSize=${pageSize}`, {});
+        return response.data; // Return the data directly
+    } catch (error) {
+        throw error; // Keep the error handling
     }
 }

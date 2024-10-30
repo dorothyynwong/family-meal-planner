@@ -1,3 +1,11 @@
+export interface ListResponse<T> {
+    items: T[];
+    totalNumberOfItems: number;
+    page: number;
+    nextPage: string;
+    previousPage: string;
+}
+
 export interface RecipeDetailsInterface {
     id?: number;
     name?: string;

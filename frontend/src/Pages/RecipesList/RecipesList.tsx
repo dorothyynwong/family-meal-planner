@@ -2,9 +2,10 @@ import { useLocation, useParams } from "react-router-dom";
 import RecipeCard from "../../Components/RecipeCard/RecipeCard";
 import { useEffect, useState } from "react";
 import { RecipeDetailsInterface } from "../../Api/apiInterface";
-import { getRecipeByUserId } from "../../Api/api";
+import { getRecipeByUserId, searchRecipes } from "../../Api/api";
 import { Row } from "react-bootstrap";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
+import { InfiniteList } from "../../Components/InfiniteList/InfiniteList";
 
 const RecipesList: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
@@ -42,6 +43,7 @@ const RecipesList: React.FC = () => {
             >
                 <></>
             </StatusHandler>
+            <InfiniteList fetchItems={searchRecipes} renderItem={recipe => <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm}/>}/>
             {recipesList.map((recipe, index) => (
                 <Row className="mb-3" key={index}>
                     <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm}/>
