@@ -17,7 +17,7 @@ import MealFormSelection from "../MealFormSelection/MealFormSelection";
 interface MealFormProps {
     isForFamily?: boolean
     selectedDate?: Dayjs
-    isFromRecipe?: boolean
+    //isFromRecipe?: boolean
 }
 
 const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate, isFromRecipe }) => {
@@ -183,7 +183,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate, isFromRe
                   </Form.Group>
                 )}
 
-                {!isFromRecipe && <MealFormSelection mealFormType={mealFormType} setMealFormType={setMealFormType}/>}
+                <MealFormSelection mealFormType={mealFormType} setMealFormType={setMealFormType}/>
                 {mealFormType==="recipe" ?
                     <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
                 :   <SchoolMenuSelect />}
