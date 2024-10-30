@@ -143,5 +143,18 @@ public class AuthController(
         return Ok(jwtAuthResult);
     }
 
+    [HttpGet]
+    public async Task<IActionResult> ValidateAccessToken()
+    {
+        var accessToken = Request.Cookies["accessToken"];
 
+        if (await _authenticationService.ValidateAccessToken(accessToken))
+        {
+            return Ok(true);
+        }
+        else
+        {
+            return Unauthorized("Invalid Access Token");
+        }
+    }
 }

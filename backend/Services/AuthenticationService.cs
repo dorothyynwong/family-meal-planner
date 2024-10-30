@@ -16,6 +16,7 @@ public interface IAuthenticationService
     Task<JwtAuthResultViewModel> AuthenticateUserAsync(User user, string password);
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
     Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email);
+    Task<bool> ValidateAccessToken(string accessToken);
 }
 
 public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationService
@@ -29,15 +30,20 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     private string _audience = configuration["Jwt_Audience"];
     private string _appName = configuration["Jwt_AppName"];
     private string _refreshTokenName = configuration["Jwt_RefreshTokenName"];
+
+    private SymmetricSecurityKey CreateSymmetricSecurityKey()
+    {
+        string secret = _configuration["Jwt_Secret"];
+        if (string.IsNullOrWhiteSpace(secret))
+            throw new InvalidOperationException("Unable to find JWT Secret");
+
+        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+    }
     private SigningCredentials CreateSigningCredentials()
     {
 
-        string secret = _configuration["Jwt_Secret"];
-        if (secret == null)
-            throw new InvalidOperationException("Unable to find JWT Secret");
-
         return new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            CreateSymmetricSecurityKey(),
             SecurityAlgorithms.HmacSha256);
     }
 
@@ -183,6 +189,37 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         return jwtAuthResult;
     }
 
+    public async Task<bool> ValidateAccessToken(string accessToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = _issuer,
+
+            ValidateAudience = true,
+            ValidAudience = _audience,
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = CreateSymmetricSecurityKey()
+        };
+
+        try
+        {
+            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken validatedToken);
+            return true; 
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Token validation failed: {ex.Message}");
+            return false; 
+        }
+    }
+
 
     private async Task<List<Claim>> GetUserClaims(User matchingUser)
     {
@@ -200,4 +237,6 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         return authClaims;
     }
+
+
 }
