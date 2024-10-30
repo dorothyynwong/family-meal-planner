@@ -158,7 +158,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             </Collapse>
             {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
         </Card>
-        <MealForm isFromRecipe={true} isForFamily={false} selectedDate={dayjs()}/>
+        //<MealForm isFromRecipe={true} isForFamily={false} selectedDate={dayjs()}/>
         </>
     );
 }
