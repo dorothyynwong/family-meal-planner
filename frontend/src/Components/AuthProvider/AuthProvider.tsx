@@ -1,9 +1,11 @@
-import { Context, ReactNode, createContext, useContext, useState } from "react";
-import { userLogout } from "../../Api/api";
+import { Context, ReactNode, createContext, useContext, useEffect, useState } from "react";
+import { userLogout, validateAccessToken } from "../../Api/api";
 import { UserLoginResponseInterface } from "../../Api/apiInterface";
+import StatusHandler from "../StatusHandler/StatusHandler";
 
 type AuthContextType = {
   isAuthenticated: boolean;
+  setIsAuthenticated: (newStatus: boolean) => void;
   nickname: string;
   logUserIn: (data: UserLoginResponseInterface) => void;
   logUserOut: () => void;
@@ -19,8 +21,10 @@ const AuthContext: Context<AuthContextType | null> =
 export const AuthProvider = ({ children }: AuthContextPropsType) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [nickname, setNickname] = useState("");
+  const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+  const [errorMessages, setErrorMessages] = useState<string[]>([]);
 
-  const logUserIn = (data:UserLoginResponseInterface) => {
+  const logUserIn = (data: UserLoginResponseInterface) => {
     setIsAuthenticated(true);
     setNickname(data.nickname);
     console.log("logUserIn");
@@ -35,10 +39,37 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
     setNickname("");
   };
 
+  useEffect(() => {
+    setStatus("loading");
+    validateAccessToken()
+      .then(response => {
+        setIsAuthenticated(response.data);
+        console.log(`Response Data AuthProvider: ${response.data}`);
+        console.log(isAuthenticated);
+        setStatus("success");
+      })
+      .catch(error => {
+        const errorMessage = error?.response?.data?.message || "Error validating access token";
+        setErrorMessages([...errorMessages, errorMessage]);
+        setStatus("error")
+      });
+  }, [])
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, nickname, logUserIn, logUserOut }}>
-      {children}
-    </AuthContext.Provider>
+    <>
+      <StatusHandler
+        status={status}
+        errorMessages={errorMessages}
+        loadingMessage="Validating ..."
+        successMessage=""
+      >
+        <></>
+      </StatusHandler>
+
+      <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, nickname, logUserIn, logUserOut }}>
+        {children}
+      </AuthContext.Provider>
+    </>
   );
 };
 
