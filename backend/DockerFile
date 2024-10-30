@@ -29,7 +29,7 @@ COPY --from=publish /app/publish .
 
 COPY ./Resources /app/Resources
 
-ENV ASPNETCORE_ENVIRONMENT "Staging"
+ENV ASPNETCORE_ENVIRONMENT "Development"
 
 ENTRYPOINT ["dotnet", "backend.dll"]
 
