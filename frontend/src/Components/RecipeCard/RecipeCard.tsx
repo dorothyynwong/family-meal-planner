@@ -19,6 +19,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdAddCard } from 'react-icons/md';
 import { useMeal } from '../MealContext/MealContext';
 import Avatar from 'react-avatar';
+import MealForm from '../MealForm/MealForm';
+import dayjs from 'dayjs';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -58,7 +60,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
-    const { setSelectedRecipe } = useMeal();
+    const { setModalShow, setSelectedRecipe, setMode } = useMeal();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -66,7 +68,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
 
     const baseMenuItems = [
         { id: "display-recipe-button", label: "Details" },
-        { id: "copy-recipe-button", label: "Copy" }
+        { id: "copy-recipe-button", label: "Copy" },
+        { id: "add-meal-button", label: "Add as Meal"}
     ];
     
     const ownerMenuItems = [
@@ -90,6 +93,11 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             case "copy-recipe-button":
                 navigate(`/recipe-add/${recipe.id}`);
                 break
+            case "add-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipe);
+                break
             default:
                 break
         }
@@ -109,6 +117,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     }
 
     return (
+        <>
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
@@ -149,6 +158,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             </Collapse>
             {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
         </Card>
+        <MealForm isForFamily={false} selectedDate={dayjs()}/>
+        </>
     );
 }
 
