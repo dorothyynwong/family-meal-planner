@@ -23,3 +23,5 @@ backend.Tests/obj/
 backend/Logs/
 backend/DevResources/
 backend/Uploads/
+
+DockerFile
