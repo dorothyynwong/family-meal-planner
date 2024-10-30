@@ -94,9 +94,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 navigate(`/recipe-add/${recipe.id}`);
                 break
             case "add-meal-button":
-                //setMode("Add");
-                //setModalShow(true);
-                //setSelectedRecipe(recipe);
+                // setMode("Add");
+                // setModalShow(true);
+                // setSelectedRecipe(recipe);
                 break
             default:
                 break
@@ -157,8 +157,6 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 </CardContent>
             </Collapse>
             {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
-        </Card>
-        //<MealForm isFromRecipe={true} isForFamily={false} selectedDate={dayjs()}/>
         </>
     );
 }
