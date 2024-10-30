@@ -34,7 +34,7 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
             <CardHeader
                 title={meal.mealType}
                 className={meal.mealType}
-                action={<FaEdit onClick={handleClick}/>}
+                action={!isReadOnly && <FaEdit onClick={handleClick}/>}
             />
             {(meal.recipeDefaultImage) && <CardMedia
                 component="img"
