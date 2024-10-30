@@ -60,7 +60,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
-    const { setSelectedRecipe, setMode } = useMeal();
+    const { setModalShow, setMode } = useMeal();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -95,8 +95,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 break
             case "add-meal-button":
                 setMode("Add");
-                //setModalShow(true);
-                setSelectedRecipe(recipe);
+                setModalShow(true);
+                //setSelectedRecipe(recipe);
                 break
             default:
                 break
