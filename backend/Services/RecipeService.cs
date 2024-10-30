@@ -175,7 +175,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                         .Skip((search.Page - 1) * search.PageSize)
                                                         .Take(search.PageSize);
 
-        return recipes;
+        return filteredAndOrderedRecipes;
     }
 
     public async Task<int> Count(int userId)
