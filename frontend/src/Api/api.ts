@@ -309,3 +309,12 @@ export async function updateSchoolMeal(schoolMealId: number, schoolMeal: SchoolM
         throw error;
     }
 }
+
+export async function validateAccessToken() {
+    try {
+        const response: AxiosResponse = await client.get(`/auth`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
