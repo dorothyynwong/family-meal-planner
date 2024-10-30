@@ -14,8 +14,6 @@ const PrivateRoute: React.FC = () => {
         setStatus("loading");
         validateAccessToken()
             .then(response => {
-                console.log(`Response Data: ${response.data}`);
-                console.log(isAuthenticated);
                 localStorage.setItem('isAuthenticated', JSON.stringify(response.data));
                 setStatus("success");
                 setIsAuthenticated(response.data);
@@ -35,7 +33,7 @@ const PrivateRoute: React.FC = () => {
             loadingMessage="Validating ..."
             successMessage=""
         >
-            <>{console.log(status)}</>
+            <></>
         </StatusHandler>
         { isAuthenticated ? <Outlet /> : <Navigate to="/login" />}
         </>

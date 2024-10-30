@@ -30,7 +30,6 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
     setNickname(data.nickname);
     localStorage.setItem('isAuthenticated', JSON.stringify(true));
     localStorage.setItem('nickname', data.nickname);
-    console.log("logUserIn");
   };
 
   const logUserOut = () => {
