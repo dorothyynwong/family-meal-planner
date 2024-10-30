@@ -10,6 +10,8 @@ public interface IRecipeService
     Task<int> AddRecipe(RecipeRequest recipeRequest, int userId);
     Task<Recipe> GetRecipeById(int recipeId, int userId);
     Task<List<RecipeResponse>> GetRecipeByUserId(int userId);
+    Task<IEnumerable<RecipeResponse>> SearchRecipe(RecipeSearchRequest recipeSearchRequest, int requestUserId);
+    Task<int> Count(int userId);
     Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId, int userId);
     Task Delete(int recipeId, int userId);
 }
@@ -96,8 +98,8 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                 .Include(recipe => recipe.AddedByUser)
                                                     .ThenInclude(user => user.FamilyUsers)
                                                 .Where(recipe =>
-                                                    recipe.AddedByUserId == userId || 
-                                                    recipe.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId)) 
+                                                    recipe.AddedByUserId == userId ||
+                                                    recipe.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId))
                                                 )
                                                 .Select(
                                                     recipe => new RecipeResponse
@@ -126,6 +128,60 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         }
 
         return recipes;
+    }
+
+    public async Task<IEnumerable<RecipeResponse>> SearchRecipe(RecipeSearchRequest search, int requestUserId)
+    {
+        List<FamilyResponse> familyList = await _familyService.GetFamilyByUserId(requestUserId);
+        List<int> familyIds = familyList.Select(family => family.FamilyId).ToList();
+
+        List<RecipeResponse> recipes = await _context.Recipes
+                                                .Include(r => r.AddedByUser)
+                                                    .ThenInclude(u => u.FamilyUsers)
+                                                .Where(r =>
+                                                    r.AddedByUserId == requestUserId ||
+                                                    r.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId))
+                                                )
+                                                .Where(r => search.AddedByUserId == null || r.AddedByUserId == search.AddedByUserId)
+                                                .Where(r => search.RecipeName == null || r.Name.Contains(search.RecipeName))
+                                                .Where(r => search.FamilyId == null || r.AddedByUser.FamilyUsers.Any(fu => fu.FamilyId == search.FamilyId))
+                                                .Select(
+                                                    recipe => new RecipeResponse
+                                                    {
+                                                        Id = recipe.Id,
+                                                        Name = recipe.Name,
+                                                        Notes = recipe.Notes,
+                                                        Images = recipe.Images,
+                                                        Description = recipe.Description,
+                                                        DefaultImageUrl = recipe.DefaultImageUrl,
+                                                        RecipeIngredients = recipe.RecipeIngredients,
+                                                        RecipeInstructions = recipe.RecipeInstructions,
+                                                        CreationDateTime = recipe.CreationDateTime,
+                                                        LastUpdatedDateTime = recipe.LastUpdatedDateTime,
+                                                        AddedByUserId = recipe.AddedByUserId,
+                                                        AddedByUserNickname = recipe.AddedByUser.Nickname,
+                                                        IsOwner = recipe.AddedByUserId == requestUserId,
+                                                    }
+                                                )
+                                                .ToListAsync();
+
+        if (recipes == null || recipes.Count == 0)
+        {
+            Logger.Error($"No recipes for {requestUserId}");
+            throw new InvalidOperationException($"No recipes for {requestUserId}");
+        }
+
+        IEnumerable<RecipeResponse> filteredAndOrderedRecipes = recipes
+                                                        .Skip((search.Page - 1) * search.PageSize)
+                                                        .Take(search.PageSize);
+
+        return recipes;
+    }
+
+    public async Task<int> Count(int userId)
+    {
+        List<RecipeResponse> recipes = await GetRecipeByUserId(userId);
+        return recipes != null ? recipes.Count() : 0;
     }
 
     public async Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId, int userId)
