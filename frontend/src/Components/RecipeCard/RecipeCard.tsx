@@ -95,7 +95,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 break
             case "add-meal-button":
                 setMode("Add");
-                setModalShow(true);
+                //setModalShow(true);
                 setSelectedRecipe(recipe);
                 break
             default:
