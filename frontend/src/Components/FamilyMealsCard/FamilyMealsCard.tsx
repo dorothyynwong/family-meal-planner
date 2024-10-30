@@ -11,6 +11,7 @@ interface ExpandMoreProps extends IconButtonProps {
 interface FamilyMealsProps {
     mealDate: Date;
     data: FamilyWithUsersInterface | null;
+    isReadOnly: boolean;
 }
 
 const ExpandMore = styled((props: ExpandMoreProps) => {
@@ -38,7 +39,7 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
     ],
 }));
 
-const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data}) => {
+const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data, isReadOnly}) => {
     const [expanded, setExpanded] = useState(false);
     
     const handleExpandClick = () => {
@@ -68,7 +69,8 @@ const FamilyMealsCard: React.FC<FamilyMealsProps> = ({mealDate, data}) => {
                             <MealDaily mealDate={mealDate} 
                                         familyId={data.familyId} 
                                         userId={data.userId} 
-                                        isByFamily={true}/>
+                                        isByFamily={true}
+                                        isReadOnly={isReadOnly} />
                         }
                     </CardContent>
                 </Collapse>

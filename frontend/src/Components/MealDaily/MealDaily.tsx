@@ -9,9 +9,10 @@ interface MealDailyProps {
     familyId: number;
     userId: number;
     isByFamily: boolean;
+    isReadOnly: boolean;
 }
 
-const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByFamily }) => {
+const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByFamily, isReadOnly }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealsOfDate, setMealsOfDate] = useState<MealDetailsInterface[]>();
@@ -70,7 +71,7 @@ const MealDaily: React.FC<MealDailyProps> = ({ mealDate, familyId, userId, isByF
             {
                 mealsOfDate &&
                 mealsOfDate.map((meal, index) => (
-                    <MealCard key={index} meal={meal} isReadOnly={!isByFamily}/>
+                    <MealCard key={index} meal={meal} isReadOnly={!isByFamily || isReadOnly}/>
                 ))}
         </>
     )
