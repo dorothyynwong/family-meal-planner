@@ -167,7 +167,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
         <Popup
             customclass="meal-form"
             show={modalShow}
-            onHide={() => { setModalShow(false); resetMealContext(); }}
+            onHide={() => { setModalShow(false); resetMealContext();  }}
             title={`${mode} Meal`}
             body="">
             <Form onSubmit={handleSubmit}>
