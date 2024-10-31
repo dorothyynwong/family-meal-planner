@@ -13,7 +13,7 @@ const RecipesList: React.FC = () => {
     const location = useLocation();
     const [recipesList, setRecipesList] = useState<RecipeDetailsInterface[]>([]);
     const isFromMealForm = location.state?.isFromMealForm || false;
-    
+
 
     useEffect(() => {
         setStatus("loading");
@@ -29,7 +29,7 @@ const RecipesList: React.FC = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId, location.key])
 
     return (
@@ -44,11 +44,9 @@ const RecipesList: React.FC = () => {
             </StatusHandler>
             {recipesList.map((recipe, index) => (
                 <Row className="mb-3" key={index}>
-                    <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm}/>
+                    <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm} />
                 </Row>
             ))}
-
-
         </>
     );
 }

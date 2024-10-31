@@ -30,7 +30,7 @@ function Home() {
       <StatusHandler
         status={status}
         errorMessages={errorMessages}
-        loadingMessage="Getting recipes..."
+        loadingMessage="What's in our feast today..."
         successMessage=""
       >
         <></>

@@ -1,3 +1,11 @@
+export interface ListResponse<T> {
+    items: T[];
+    totalNumberOfItems: number;
+    page: number;
+    nextPage: string;
+    previousPage: string;
+}
+
 export interface RecipeDetailsInterface {
     id?: number;
     name?: string;
@@ -116,4 +124,11 @@ export interface SchoolMenuWeekMealsInterface {
 
 export interface UserLoginResponseInterface {
     nickname: string;
+}
+
+export interface RecipeSearchInterface {
+    addedByUserId: number;
+    familyId: number;
+    recipeName: string;
+    orderBy: string;
 }

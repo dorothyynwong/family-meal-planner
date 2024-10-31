@@ -1,5 +1,4 @@
 import { Button, Form, InputGroup } from "react-bootstrap";
-import SearchBar from "../../Components/SearchBar/SearchBar";
 import "./Recipes.scss";
 import React, { useState } from "react";
 import Popup from "../../Components/Popup/Popup";
@@ -15,7 +14,7 @@ const Recipes: React.FC = () => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
           case "show-recipe-button":
-            navigate(`/recipes-list`); 
+            navigate(`/recipes-search`); 
             break
           case "new-recipe-button":
             navigate("/recipe-add")
@@ -35,9 +34,8 @@ const Recipes: React.FC = () => {
 
     return (
         <>
-            <SearchBar />
             <div className="button-box">
-            <Button id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>My Recipes</Button>
+            <Button id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>Search Recipes</Button>
                 <Button className="custom-button" size="lg" onClick={() => setModalShow(true)}>Import Recipe from Website</Button>
                 <Button id="new-recipe-button" className="custom-button" size="lg" onClick={handleClick}>New Recipe</Button>
             </div>

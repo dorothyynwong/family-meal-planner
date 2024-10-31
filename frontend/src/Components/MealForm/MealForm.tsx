@@ -17,9 +17,10 @@ import MealFormSelection from "../MealFormSelection/MealFormSelection";
 interface MealFormProps {
     isForFamily?: boolean
     selectedDate?: Dayjs
+    //isFromRecipe?: boolean
 }
 
-const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate }) => {
+const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [mealTypes, setMealTypes] = useState<string[]>([]);
