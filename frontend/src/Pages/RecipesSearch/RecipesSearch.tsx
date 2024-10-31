@@ -3,13 +3,20 @@ import RecipeCard from "../../Components/RecipeCard/RecipeCard";
 import { Row } from "react-bootstrap";
 import { InfiniteList } from "../../Components/InfiniteList/InfiniteList";
 import { searchRecipes } from "../../Api/api";
+import SearchBar from "../../Components/SearchBar/SearchBar";
+import { useState } from "react";
+import useDebounce from "../../Hooks/useDebounce";
 
 const RecipesSearch: React.FC = () => {
     const location = useLocation();
     const isFromMealForm = location.state?.isFromMealForm || false;
+    const [searchValue, setSearchValue] = useState("");
+
+    const debouncedSearchValue = useDebounce(searchValue, 500);
 
     return (
         <>
+            <SearchBar searchValue={searchValue} setSearchValue={setSearchValue}/>
             <InfiniteList fetchItems={searchRecipes} 
                             renderItem={
                                             recipe => (
@@ -18,7 +25,7 @@ const RecipesSearch: React.FC = () => {
                                                 </Row>
                                             )
                                         }
-                            query="AddedByUserId=3" 
+                            query={`RecipeName=${debouncedSearchValue}`}
             />
         </>
     );
