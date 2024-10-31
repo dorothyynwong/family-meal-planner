@@ -34,6 +34,8 @@ client.interceptors.response.use(
                 return client(originalRequest);
             } catch (err) {
                 console.error("Token refresh failed, redirect to login", err);
+                window.location.href = '/login';  
+                return Promise.reject(err);
             } finally {
                 isRefreshing = false;
             }
