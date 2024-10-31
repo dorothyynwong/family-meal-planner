@@ -3,8 +3,9 @@ import { ListResponse } from "../../Api/apiInterface";
 import { Button } from "react-bootstrap";
 
 interface InfiniteListProps<T> {
-    fetchItems: (page: number, pageSize: number) => Promise<ListResponse<T>>;
+    fetchItems: (query: string, page: number, pageSize: number) => Promise<ListResponse<T>>;
     renderItem: (item: T) => ReactNode;
+    query: string;
 }
 
 export function InfiniteList<T>(props: InfiniteListProps<T>): JSX.Element {
@@ -25,12 +26,12 @@ export function InfiniteList<T>(props: InfiniteListProps<T>): JSX.Element {
     }
     
     useEffect(() => {
-        props.fetchItems(1, 10)
+        props.fetchItems(props.query, 1, 10)
             .then(replaceItems);
     }, [props]);
 
     function incrementPage() {
-        props.fetchItems(page + 1, 10)
+        props.fetchItems(props.query, page + 1, 10)
             .then(appendItems);
     }
     

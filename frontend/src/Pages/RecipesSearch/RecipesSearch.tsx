@@ -10,14 +10,16 @@ const RecipesSearch: React.FC = () => {
 
     return (
         <>
-            <InfiniteList fetchItems={searchRecipes} renderItem=
-                {
-                    recipe => (
-                        <Row className="mb-3" key={recipe.id}>
-                            <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm} />
-                        </Row>
-                    )
-                } />
+            <InfiniteList fetchItems={searchRecipes} 
+                            renderItem={
+                                            recipe => (
+                                                <Row className="mb-3" key={recipe.id}>
+                                                    <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm} />
+                                                </Row>
+                                            )
+                                        }
+                            query="AddedByUserId=3" 
+            />
         </>
     );
 }

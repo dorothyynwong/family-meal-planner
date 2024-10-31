@@ -128,5 +128,7 @@ export interface UserLoginResponseInterface {
 
 export interface RecipeSearchInterface {
     addedByUserId: number;
-    
+    familyId: number;
+    recipeName: string;
+    orderBy: string;
 }
