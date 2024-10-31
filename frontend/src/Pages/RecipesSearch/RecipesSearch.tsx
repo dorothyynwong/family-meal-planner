@@ -12,7 +12,7 @@ const RecipesSearch: React.FC = () => {
     const isFromMealForm = location.state?.isFromMealForm || false;
     const [searchValue, setSearchValue] = useState("");
 
-    const debouncedSearchValue = useDebounce(searchValue, 500);
+    const debouncedSearchValue = useDebounce(searchValue, 1000);
 
     return (
         <>

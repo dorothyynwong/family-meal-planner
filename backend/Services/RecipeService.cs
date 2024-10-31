@@ -143,7 +143,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                     r.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId))
                                                 )
                                                 .Where(r => search.AddedByUserId == null || r.AddedByUserId == search.AddedByUserId)
-                                                .Where(r => search.RecipeName == null || r.Name.Contains(search.RecipeName))
+                                                .Where(r => search.RecipeName == null || r.Name.ToLower().Contains(search.RecipeName.ToLower()))
                                                 .Where(r => search.FamilyId == null || r.AddedByUser.FamilyUsers.Any(fu => fu.FamilyId == search.FamilyId))
                                                 .Select(
                                                     recipe => new RecipeResponse
@@ -164,12 +164,6 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                     }
                                                 )
                                                 .ToListAsync();
-
-        if (recipes == null || recipes.Count == 0)
-        {
-            Logger.Error($"No recipes for {requestUserId}");
-            throw new InvalidOperationException($"No recipes for {requestUserId}");
-        }
 
         IEnumerable<RecipeResponse> filteredAndOrderedRecipes = recipes
                                                         .Skip((search.Page - 1) * search.PageSize)
