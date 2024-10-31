@@ -15,6 +15,10 @@ client.interceptors.response.use(
     async error => {
         const originalRequest = error.config; 
 
+        retryCount++;
+        console.log(retryCount);
+
+
         if (error.response?.status === 401 && !originalRequest._retry && retryCount < maxRetry) {
             if (isRefreshing) {
                 return new Promise((resolve) => {
@@ -26,14 +30,15 @@ client.interceptors.response.use(
 
             originalRequest._retry = true; 
             isRefreshing = true;
-            retryCount++;
 
             try {
                 await refreshToken(); 
-                retryCount = 0;
                 return client(originalRequest);
             } catch (err) {
                 console.error("Token refresh failed, redirect to login", err);
+                window.location.href = '/login';  
+                retryCount = 0;
+                return Promise.reject(err);
             } finally {
                 isRefreshing = false;
             }
