@@ -125,3 +125,8 @@ export interface SchoolMenuWeekMealsInterface {
 export interface UserLoginResponseInterface {
     nickname: string;
 }
+
+export interface RecipeSearchInterface {
+    addedByUserId: number;
+    
+}

@@ -1,5 +1,6 @@
 import {ReactNode, useEffect, useState} from "react";
 import { ListResponse } from "../../Api/apiInterface";
+import { Button } from "react-bootstrap";
 
 interface InfiniteListProps<T> {
     fetchItems: (page: number, pageSize: number) => Promise<ListResponse<T>>;
@@ -36,7 +37,7 @@ export function InfiniteList<T>(props: InfiniteListProps<T>): JSX.Element {
     return (
         <div className="infinite-list">
             {items.map(props.renderItem)}
-            {hasNextPage && <button className="load-more" onClick={incrementPage}>Load More</button>}
+            {hasNextPage && <Button className="custom-button" onClick={incrementPage}>Load More</Button>}
         </div>
     );
 }

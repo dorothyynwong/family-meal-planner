@@ -322,8 +322,8 @@ export async function validateAccessToken() {
 export async function searchRecipes(page: number, pageSize: number): Promise<ListResponse<RecipeDetailsInterface>> {
     try {
         const response: AxiosResponse<ListResponse<RecipeDetailsInterface>> = await client.get(`/recipes/search?AddedByUserId=3&Page=${page}&PageSize=${pageSize}`, {});
-        return response.data; // Return the data directly
+        return response.data; 
     } catch (error) {
-        throw error; // Keep the error handling
+        throw error; 
     }
 }
