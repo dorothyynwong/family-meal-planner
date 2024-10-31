@@ -21,6 +21,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
     private readonly FamilyMealPlannerContext _context = context;
     private readonly IFamilyUserService _familyUserService = familyUserService;
     private readonly IFamilyService _familyService = familyService;
+    private int _recipeCount = 0;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private void ValidateRequest(RecipeRequest recipeRequest, int userId)
@@ -164,6 +165,8 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                     }
                                                 )
                                                 .ToListAsync();
+                                                
+        _recipeCount = recipes != null ? recipes.Count : 0;
 
         IEnumerable<RecipeResponse> filteredAndOrderedRecipes = recipes
                                                         .Skip((search.Page - 1) * search.PageSize)
@@ -174,8 +177,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
 
     public async Task<int> Count(int userId)
     {
-        List<RecipeResponse> recipes = await GetRecipeByUserId(userId);
-        return recipes != null ? recipes.Count() : 0;
+        return _recipeCount;
     }
 
     public async Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId, int userId)
