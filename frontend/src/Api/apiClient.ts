@@ -15,7 +15,7 @@ client.interceptors.response.use(
     async error => {
         const originalRequest = error.config; 
 
-        if (error.response?.status === 401 && !originalRequest._retry && retryCount > maxRetry) {
+        if (error.response?.status === 401 && !originalRequest._retry && retryCount < maxRetry) {
             if (isRefreshing) {
                 return new Promise((resolve) => {
                     setTimeout(() => {

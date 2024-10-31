@@ -1,7 +1,7 @@
 import { useLocation, useParams } from "react-router-dom";
 import RecipeCard from "../../Components/RecipeCard/RecipeCard";
 import { useEffect, useState } from "react";
-import { RecipeDetailsInterface } from "../../Api/apiInterface";
+// import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import { getRecipeByUserId, searchRecipes } from "../../Api/api";
 import { Row } from "react-bootstrap";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
@@ -12,16 +12,17 @@ const RecipesList: React.FC = () => {
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const { userId } = useParams<{ userId: string }>();
     const location = useLocation();
-    const [recipesList, setRecipesList] = useState<RecipeDetailsInterface[]>([]);
+    // const [recipesList, setRecipesList] = useState<RecipeDetailsInterface[]>([]);
     const isFromMealForm = location.state?.isFromMealForm || false;
-    
+
 
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
         getRecipeByUserId()
             .then(recipes => {
-                setRecipesList(recipes.data);
+                // setRecipesList(recipes.data);
+                console.log(recipes.data);
                 setStatus("success");
             })
             .catch(error => {
@@ -30,7 +31,7 @@ const RecipesList: React.FC = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [userId, location.key])
 
     return (
@@ -43,12 +44,19 @@ const RecipesList: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-            <InfiniteList fetchItems={searchRecipes} renderItem={recipe => <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm}/>}/>
-            {recipesList.map((recipe, index) => (
+            <InfiniteList fetchItems={searchRecipes} renderItem=
+                {
+                    recipe => (
+                        <Row className="mb-3" key={recipe.id}>
+                            <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm} />
+                        </Row>
+                    )
+                } />
+            {/* {recipesList.map((recipe, index) => (
                 <Row className="mb-3" key={index}>
-                    <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm}/>
+                    <RecipeCard recipe={recipe} isFromMealForm={isFromMealForm} />
                 </Row>
-            ))}
+            ))} */}
 
 
         </>
