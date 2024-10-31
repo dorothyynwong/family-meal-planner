@@ -100,6 +100,26 @@ public class RecipeController(IWebScrappingService webScrappingService,
 
     }
 
+    [HttpGet("search")]
+    public async Task<IActionResult> Search([FromQuery] RecipeSearchRequest searchRequest)
+    {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
+
+        try
+        {
+            var recipes = await _recipeService.SearchRecipe(searchRequest, userId);
+            var recipeCount = await _recipeService.Count(userId);
+            return Ok(RecipeListResponse.Create(searchRequest, recipes, recipeCount));
+        }
+        catch(InvalidOperationException ex)
+        {
+            Logger.Error($"Failed to get recipes of {userId}: {ex.Message}");
+            return BadRequest($"Unable to get recipes of {userId}: {ex.Message}");
+        }
+
+    }
+
     [HttpPut("{recipeId}")]
     public async Task<IActionResult> Update(RecipeRequest recipeRequest, [FromRoute] int recipeId)
     {

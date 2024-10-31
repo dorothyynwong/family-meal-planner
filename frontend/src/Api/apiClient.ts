@@ -16,8 +16,6 @@ client.interceptors.response.use(
         const originalRequest = error.config; 
 
         retryCount++;
-        console.log(retryCount);
-
 
         if (error.response?.status === 401 && !originalRequest._retry && retryCount < maxRetry) {
             if (isRefreshing) {
