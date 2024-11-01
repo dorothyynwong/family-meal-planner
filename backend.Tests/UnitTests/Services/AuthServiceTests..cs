@@ -1,7 +1,9 @@
+using FamilyMealPlanner;
 using FamilyMealPlanner.Models.Data;
 using FamilyMealPlanner.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Moq;
 
@@ -13,12 +15,14 @@ public class AuthServiceTests
     private Mock<IConfiguration> _mockConfiguration;
     private Mock<UserManager<User>> _mockUserManager;
     private AuthenticationService _authService; 
+    private FamilyMealPlannerContext _context;
 
     [SetUp]
     public void SetUp()
     {
         _mockHttpContext = new Mock<HttpContext>();
         _mockCookies = new Mock<IResponseCookies>();
+        
         _mockHttpContext.Setup(c => c.Response.Cookies).Returns(_mockCookies.Object);
         _mockConfiguration = new Mock<IConfiguration>();
         _mockConfiguration.SetupGet(x => x["Jwt:AccessTokenExpiryMinutes"]).Returns("15");
@@ -26,13 +30,24 @@ public class AuthServiceTests
         _mockConfiguration.SetupGet(x => x["Jwt:EmailExpiryDays"]).Returns("1");
         _mockConfiguration.SetupGet(x => x["Jwt:Issuer"]).Returns("FamilyMealPlannerTest");
         _mockConfiguration.SetupGet(x => x["Jwt:Audience"]).Returns("audience");
-        _mockConfiguration.SetupGet(x => x["Jwt:RefreshTokenName"]).Returns("TokenName");
         _mockUserManager = new Mock<UserManager<User>>(
             new Mock<IUserStore<User>>().Object, 
             null, null, null, null, null, null, null, null
         );
 
-        _authService = new AuthenticationService(_mockConfiguration.Object, _mockUserManager.Object);
+        var options = new DbContextOptionsBuilder<FamilyMealPlannerContext>()
+            .UseInMemoryDatabase(databaseName: "TestDatabase")
+            .Options;
+
+        _context = new FamilyMealPlannerContext(options);
+
+        _authService = new AuthenticationService(_mockConfiguration.Object, _mockUserManager.Object, _context);
+    }
+
+    [TearDown]
+    public void TearDown()
+    {
+        _context.Dispose();
     }
 
     [Test]

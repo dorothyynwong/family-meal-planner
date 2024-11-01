@@ -47,7 +47,7 @@ public class AuthController(
         _authenticationService
                 .SetTokensInsideCookie(
                     jwtAuthResult.AccessToken,
-                    jwtAuthResult.RefreshToken.TokenString,
+                    jwtAuthResult.RefreshToken.Token,
                     matchingUser.Email,
                     HttpContext
                 );
@@ -57,7 +57,7 @@ public class AuthController(
             {
                 Email = matchingUser.Email,
                 AccessToken = jwtAuthResult.AccessToken,
-                RefreshToken = jwtAuthResult.RefreshToken.TokenString,
+                RefreshToken = jwtAuthResult.RefreshToken.Token,
                 Nickname = matchingUser.Nickname,
             }
         );
@@ -143,7 +143,7 @@ public class AuthController(
 
             JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, email);
 
-            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, email, HttpContext);
+            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.Token, email, HttpContext);
 
             return Ok(jwtAuthResult);
         }

@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 
@@ -19,17 +21,16 @@ public interface IAuthenticationService
     Task<bool> ValidateAccessToken(string accessToken);
 }
 
-public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext dbContext) : IAuthenticationService
 {
     private readonly IConfiguration _configuration = configuration;
     private readonly UserManager<User> _userManager = userManager;
+    private readonly FamilyMealPlannerContext _dbContext = dbContext;
     private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
     private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
     private int _emailExpiry = int.Parse(configuration["Jwt:EmailExpiryDays"]);
     private string _issuer = configuration["Jwt_Issuer"];
     private string _audience = configuration["Jwt_Audience"];
-    private string _appName = configuration["Jwt_AppName"];
-    private string _refreshTokenName = configuration["Jwt_RefreshTokenName"];
 
     private SymmetricSecurityKey CreateSymmetricSecurityKey()
     {
@@ -39,6 +40,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
     }
+
     private SigningCredentials CreateSigningCredentials()
     {
 
@@ -47,31 +49,74 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             SecurityAlgorithms.HmacSha256);
     }
 
+    private string GenerateAccessToken(IEnumerable<Claim> authClaims, DateTime now)
+    {
+        var jwt = new JwtSecurityToken(
+            issuer: _issuer,
+            audience: _audience,
+            claims: authClaims,
+            expires: now.AddMinutes(_accessTokenExpiry),
+            signingCredentials: CreateSigningCredentials()
+            );
+
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
+
+    private RefreshToken GenerateRefreshToken(User user, DateTime now)
+    {
+        var refreshTokenString = "";
+
+        var randomNumber = new byte[32];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomNumber);
+            refreshTokenString = Convert.ToBase64String(randomNumber);
+        }
+
+        return new RefreshToken
+        {
+            Token = refreshTokenString,
+            Username = user.Email,
+            ExpirationTime = now.AddDays(_refreshTokenExpiry)
+        };
+    }
+
+    private async Task RemoveExpiredTokens(DateTime now)
+    {
+        List<RefreshToken> refreshTokens = await _dbContext.RefreshTokens.Where(rt => rt.ExpirationTime < now).ToListAsync();
+
+        if (refreshTokens.Count != 0)
+        {
+            _dbContext.RemoveRange(refreshTokens);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
+    private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
+    {
+        RefreshToken? refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(
+                                        rt => rt.Token == refreshTokenString && 
+                                                rt.Username == email &&
+                                                rt.ExpirationTime < DateTime.UtcNow
+                                    );
+
+        return refreshToken;
+    }
+
     public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> authClaims, DateTime now)
     {
+        await RemoveExpiredTokens(now);
 
-        var jwt = new JwtSecurityToken(
-                    issuer: _issuer,
-                    audience: _audience,
-                    claims: authClaims,
-                    expires: DateTime.UtcNow.AddMinutes(_accessTokenExpiry),
-                    signingCredentials: CreateSigningCredentials()
-                    );
+        var accessTokenString = GenerateAccessToken(authClaims, now);
+        var refreshToken = GenerateRefreshToken(user, now);
 
-        var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _appName, _refreshTokenName);
-
-        var refreshTokenModel = new RefreshTokenViewModel
-        {
-            Email = user.Email,
-            TokenString = refreshTokenString,
-            ExpireAt = now.AddDays(_refreshTokenExpiry)
-        };
+        _dbContext.RefreshTokens.Add(refreshToken);
+        await _dbContext.SaveChangesAsync();
 
         return new JwtAuthResultViewModel
         {
             AccessToken = accessTokenString,
-            RefreshToken = refreshTokenModel
+            RefreshToken = refreshToken
         };
     }
 
@@ -81,14 +126,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         {
             var authClaims = await GetUserClaims(user);
 
-            JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.Now);
-
-            await _userManager.SetAuthenticationTokenAsync(
-                                                            user,
-                                                            _configuration["Jwt_AppName"],
-                                                            _configuration["Jwt_RefreshTokenName"],
-                                                            jwtAuthResult.RefreshToken.TokenString
-                                                        );
+            JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.UtcNow);
 
             return jwtAuthResult;
         }
@@ -163,29 +201,19 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     }
 
 
-    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email)
+    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshTokenString, string email)
     {
+
         var matchingUser = await _userManager.FindByEmailAsync(email);
 
-        var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
-                                                            _appName,
-                                                            _refreshTokenName,
-                                                            refreshToken);
+        if (matchingUser == null) return null;
 
-        if (!isValid)
-        {
-            return null;
-        }
+        await ValidateRefreshToken(refreshTokenString, email);
 
         var authClaims = await GetUserClaims(matchingUser);
 
-        JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.Now);
-        await userManager.SetAuthenticationTokenAsync(
-                                                 matchingUser,
-                                                 _appName,
-                                                 _refreshTokenName,
-                                                 jwtAuthResult.RefreshToken.TokenString
-                                             );
+        JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.UtcNow);
+
         return jwtAuthResult;
     }
 
@@ -211,12 +239,12 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         try
         {
             var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken validatedToken);
-            return true; 
+            return true;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Token validation failed: {ex.Message}");
-            return false; 
+            return false;
         }
     }
 
@@ -228,7 +256,6 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             {
                 new(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
                 new(ClaimTypes.Name, matchingUser.Email),
-                // new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
         foreach (var role in matchingUserRoles)
         {
@@ -237,6 +264,4 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         return authClaims;
     }
-
-
 }

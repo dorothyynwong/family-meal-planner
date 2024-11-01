@@ -15,6 +15,7 @@ public class FamilyMealPlannerContext(DbContextOptions<FamilyMealPlannerContext>
     public DbSet<SchoolMeal> SchoolMeals {get; set;}
     public DbSet<SchoolMenu> SchoolMenus {get; set;}
     public DbSet<SchoolMenuWeek> SchoolMenuWeeks {get; set;}
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     protected override void OnModelCreating(ModelBuilder builder)
     {
