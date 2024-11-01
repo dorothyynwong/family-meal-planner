@@ -51,9 +51,23 @@ jobs:
         run: |
           docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
 
+      - name: Trigger Render Deployment
+        env:
+          RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}
+        run: |
+          curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_STAGING }} \
+          -H "Authorization: Bearer $RENDER_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{"branch": "staging"}'
+
+      - name: Wait for deployment
+        run: |
+          echo "Waiting 120 seconds for deployment to stabilize..."
+          sleep 120
+
       - name: Run EF Core Migrations
         env:
           ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
-          PATH: $PATH:/home/runner/.dotnet/tools  # Ensures dotnet-ef is in the PATH
+          PATH: $PATH:/home/runner/.dotnet/tools  
         run: |
           dotnet ef database update --project backend/backend.csproj --context FamilyMealPlannerContext
