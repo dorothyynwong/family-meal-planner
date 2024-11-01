@@ -52,6 +52,7 @@ jobs:
       - name: Trigger Render Deployment
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}
+          ASPNETCORE_ENVIRONMENT: "Staging"
         run: |
           curl -X POST ${{ secrets.RENDER_DEPLOY_HOOK_STAGING }} \
           -H "Authorization: Bearer $RENDER_API_KEY" \
@@ -59,8 +60,8 @@ jobs:
           -d '{"branch": "staging"}'
       - name: Wait for deployment
         run: |
-          echo "Waiting 120 seconds for deployment to stabilize..."
-          sleep 120
+          echo "Waiting 60 seconds for deployment to stabilize..."
+          sleep 60
       - name: Run EF Core Migrations
         env:
           ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
