@@ -92,12 +92,22 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         }
     }
 
+    private async Task RevokeLastRefreshToken(string refreshTokenString)
+    {
+        RefreshToken refreshToken = await _dbContext.RefreshTokens.SingleAsync(rt => rt.Token == refreshTokenString);
+        if (refreshToken != null)
+        {
+            _dbContext.Remove(refreshToken);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
     private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
     {
         RefreshToken? refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(
                                         rt => rt.Token == refreshTokenString && 
                                                 rt.Username == email &&
-                                                rt.ExpirationTime < DateTime.UtcNow
+                                                rt.ExpirationTime > DateTime.UtcNow
                                     );
 
         return refreshToken;
@@ -208,7 +218,10 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         if (matchingUser == null) return null;
 
-        await ValidateRefreshToken(refreshTokenString, email);
+        RefreshToken? refreshToken = await ValidateRefreshToken(refreshTokenString, email);
+        if (refreshToken == null) return null;
+
+        await RevokeLastRefreshToken(refreshTokenString);
 
         var authClaims = await GetUserClaims(matchingUser);
 
