@@ -5,6 +5,7 @@ using System.Text;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 
@@ -80,13 +81,37 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         };
     }
 
+    private async Task RemoveExpiredTokens(DateTime now)
+    {
+        List<RefreshToken> refreshTokens = await _dbContext.RefreshTokens.Where(rt => rt.ExpirationTime < now).ToListAsync();
+
+        if (refreshTokens.Count != 0)
+        {
+            _dbContext.RemoveRange(refreshTokens);
+            await _dbContext.SaveChangesAsync();
+        }
+    }
+
+    private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
+    {
+        RefreshToken? refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(
+                                        rt => rt.Token == refreshTokenString && 
+                                                rt.Username == email &&
+                                                rt.ExpirationTime < DateTime.UtcNow
+                                    );
+
+        return refreshToken;
+    }
+
     public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> authClaims, DateTime now)
     {
+        await RemoveExpiredTokens(now);
+
         var accessTokenString = GenerateAccessToken(authClaims, now);
         var refreshToken = GenerateRefreshToken(user, now);
 
         _dbContext.RefreshTokens.Add(refreshToken);
-        _dbContext.SaveChangesAsync();
+        await _dbContext.SaveChangesAsync();
 
         return new JwtAuthResultViewModel
         {
@@ -178,16 +203,12 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
     public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshTokenString, string email)
     {
+
         var matchingUser = await _userManager.FindByEmailAsync(email);
 
         if (matchingUser == null) return null;
 
-        RefreshToken refreshToken = _dbContext.RefreshTokens.FirstOrDefault(rt => rt.Token == refreshTokenString && rt.Username == email);
-
-        if (refreshToken == null)
-        {
-            return null;
-        }
+        await ValidateRefreshToken(refreshTokenString, email);
 
         var authClaims = await GetUserClaims(matchingUser);
 
