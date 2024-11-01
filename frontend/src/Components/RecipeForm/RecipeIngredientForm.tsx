@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Button, Col, Form, FormLabel, Row } from "react-bootstrap";
 import { RecipeFormProps } from "./RecipeForm";
+import { RxCross2 } from "react-icons/rx";
 
 
 const RecipeIngreident: React.FC<RecipeFormProps> = ({ data, updateData }) => {
@@ -15,6 +16,18 @@ const RecipeIngreident: React.FC<RecipeFormProps> = ({ data, updateData }) => {
         setRowCount(rowCount+1);
     }
 
+    const handleCrossClick = (index: number) => {
+        if (!data) return;
+    
+        const updatedIngredients = data.recipeIngredients?.filter((_, i) => i !== index);
+    
+        updateData({
+            ...data,
+            recipeIngredients: updatedIngredients && updatedIngredients.length > 0
+                ? updatedIngredients
+                : [""],
+        });
+    };
     const handleChange = (index: number, value: string) => {
         if (data) {
             const updatedIngredients = [...ingredients];
@@ -42,6 +55,9 @@ const RecipeIngreident: React.FC<RecipeFormProps> = ({ data, updateData }) => {
                             name={`ingreident-${i+1}`}
                             onChange={(e) => handleChange(i, e.target.value)}
                         />
+                    </Col>
+                    <Col key={`col-2`} xs={2}>
+                        <RxCross2 onClick={() => handleCrossClick(i)} size="25"/>
                     </Col>
                 </Row>
             ))}
