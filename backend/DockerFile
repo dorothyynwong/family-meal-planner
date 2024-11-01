@@ -21,7 +21,6 @@ COPY ./ ./
 
 # Build the application
 RUN dotnet build "backend.csproj" -c Release -o /app/build \
-    --no-restore \
     /p:EnvironmentName=${ASPNETCORE_ENVIRONMENT}
 
 # Publish the application
@@ -29,7 +28,6 @@ FROM build AS publish
 ARG ASPNETCORE_ENVIRONMENT=Staging
 ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 RUN dotnet publish "backend.csproj" -c Release -o /app/publish \
-    --no-restore \
     /p:EnvironmentName=${ASPNETCORE_ENVIRONMENT}
 
 # Final image: copy the published application and set the entry point
