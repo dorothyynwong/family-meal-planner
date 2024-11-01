@@ -88,19 +88,19 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         if (refreshTokens.Count != 0)
         {
-            _dbContext.RemoveRange(refreshTokens);
+            _dbContext.RefreshTokens.RemoveRange(refreshTokens);
             await _dbContext.SaveChangesAsync();
         }
     }
 
     public async Task RevokeLastRefreshToken(string refreshTokenString)
     {
-        RefreshToken refreshToken = await _dbContext.RefreshTokens.SingleAsync(rt => rt.Token == refreshTokenString);
-        if (refreshToken != null)
-        {
-            _dbContext.Remove(refreshToken);
-            await _dbContext.SaveChangesAsync();
-        }
+        // var refreshToken = await _dbContext.RefreshTokens
+        //                         .Where(rt => rt.Token == refreshTokenString)
+        //                         .FirstOrDefaultAsync();
+
+        // _dbContext.RefreshTokens.Remove(refreshToken);
+        // await _dbContext.SaveChangesAsync();
     }
 
     private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
