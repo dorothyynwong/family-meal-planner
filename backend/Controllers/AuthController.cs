@@ -66,6 +66,7 @@ public class AuthController(
     [HttpPost("logout")]
     public IActionResult Logout()
     {
+        _authenticationService.RevokeLastRefreshToken(Request.Cookies["refreshToken"]);
         _authenticationService.RemoveTokensFromCookie(HttpContext);
 
         return Ok();

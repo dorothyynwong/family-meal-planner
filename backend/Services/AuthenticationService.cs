@@ -19,6 +19,7 @@ public interface IAuthenticationService
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
     Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email);
     Task<bool> ValidateAccessToken(string accessToken);
+    Task RevokeLastRefreshToken(string refreshTokenString);
 }
 
 public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext dbContext) : IAuthenticationService
@@ -92,7 +93,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         }
     }
 
-    private async Task RevokeLastRefreshToken(string refreshTokenString)
+    public async Task RevokeLastRefreshToken(string refreshTokenString)
     {
         RefreshToken refreshToken = await _dbContext.RefreshTokens.SingleAsync(rt => rt.Token == refreshTokenString);
         if (refreshToken != null)
