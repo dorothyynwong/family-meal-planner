@@ -19,6 +19,7 @@ public interface IAuthenticationService
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
     Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email);
     Task<bool> ValidateAccessToken(string accessToken);
+    Task RevokeLastRefreshToken(string refreshTokenString);
 }
 
 public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext dbContext) : IAuthenticationService
@@ -87,9 +88,19 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         if (refreshTokens.Count != 0)
         {
-            _dbContext.RemoveRange(refreshTokens);
+            _dbContext.RefreshTokens.RemoveRange(refreshTokens);
             await _dbContext.SaveChangesAsync();
         }
+    }
+
+    public async Task RevokeLastRefreshToken(string refreshTokenString)
+    {
+        // var refreshToken = await _dbContext.RefreshTokens
+        //                         .Where(rt => rt.Token == refreshTokenString)
+        //                         .FirstOrDefaultAsync();
+
+        // _dbContext.RefreshTokens.Remove(refreshToken);
+        // await _dbContext.SaveChangesAsync();
     }
 
     private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
@@ -97,7 +108,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         RefreshToken? refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(
                                         rt => rt.Token == refreshTokenString && 
                                                 rt.Username == email &&
-                                                rt.ExpirationTime < DateTime.UtcNow
+                                                rt.ExpirationTime > DateTime.UtcNow
                                     );
 
         return refreshToken;
@@ -208,7 +219,10 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         if (matchingUser == null) return null;
 
-        await ValidateRefreshToken(refreshTokenString, email);
+        RefreshToken? refreshToken = await ValidateRefreshToken(refreshTokenString, email);
+        if (refreshToken == null) return null;
+
+        await RevokeLastRefreshToken(refreshTokenString);
 
         var authClaims = await GetUserClaims(matchingUser);
 
