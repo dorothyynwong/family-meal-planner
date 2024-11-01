@@ -16,10 +16,12 @@ const PrivateRoute: React.FC = () => {
             .then(response => {
                 localStorage.setItem('isAuthenticated', JSON.stringify(response.data));
                 setStatus("success");
+                setErrorMessages([]);
                 setIsAuthenticated(response.data);
             })
             .catch(error => {
                 const errorMessage = error?.response?.data?.message || "Error validating access token";
+                localStorage.setItem('isAuthenticated','false');
                 setErrorMessages([...errorMessages, errorMessage]);
                 setStatus("error")
             });
