@@ -23,4 +23,5 @@ public class Recipe
     public int AddedByUserId {get; set; }
 
     public User AddedByUser {get; set;}
+    public string? RecipeUrl {get; set;}
 }

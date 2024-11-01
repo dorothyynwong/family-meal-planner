@@ -15,4 +15,5 @@ public class RecipeRequest
     public DateTime CreationDateTime {get; set; }
     public DateTime? LastUpdatedTime {get; set;} = DateTime.UtcNow;
     public string? DefaultImageUrl   { get; set; }
+    public string? RecipeUrl {get; set;}
 }

@@ -16,6 +16,7 @@ public class RecipeResponse
     public DateTime CreationDateTime {get; set; }
     public DateTime? LastUpdatedDateTime {get; set;} = DateTime.UtcNow;
     public string? DefaultImageUrl   { get; set; }
+    public string? RecipeUrl {get; set;}
     public int AddedByUserId {get; set; }
 
     public string AddedByUserNickname {get; set; }
