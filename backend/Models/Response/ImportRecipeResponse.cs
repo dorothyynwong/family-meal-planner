@@ -17,4 +17,5 @@ public class ImportRecipeResponse
     public List<string> RecipeIngredients { get; set; } = [];
     public List<string> RecipeInstructions { get; set; }  = [];
     public string DefaultImageUrl {get; set;} = "";
+    public string RecipeUrl {get; set;} = "";
 }
