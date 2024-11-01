@@ -51,7 +51,8 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                 RecipeInstructions = recipeRequest.RecipeInstructions,
                 CreationDateTime = DateTime.UtcNow,
                 DefaultImageUrl = recipeRequest.DefaultImageUrl,
-                AddedByUserId = userId
+                AddedByUserId = userId,
+                RecipeUrl = recipeRequest.RecipeUrl,
             };
 
             _context.Recipes.Add(recipe);
@@ -111,6 +112,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                         Images = recipe.Images,
                                                         Description = recipe.Description,
                                                         DefaultImageUrl = recipe.DefaultImageUrl,
+                                                        RecipeUrl = recipe.RecipeUrl,
                                                         RecipeIngredients = recipe.RecipeIngredients,
                                                         RecipeInstructions = recipe.RecipeInstructions,
                                                         CreationDateTime = recipe.CreationDateTime,
@@ -155,6 +157,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                         Images = recipe.Images,
                                                         Description = recipe.Description,
                                                         DefaultImageUrl = recipe.DefaultImageUrl,
+                                                        RecipeUrl = recipe.RecipeUrl,
                                                         RecipeIngredients = recipe.RecipeIngredients,
                                                         RecipeInstructions = recipe.RecipeInstructions,
                                                         CreationDateTime = recipe.CreationDateTime,
@@ -197,6 +200,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
             recipe.RecipeInstructions = recipeRequest.RecipeInstructions;
             recipe.LastUpdatedDateTime = DateTime.UtcNow;
             recipe.DefaultImageUrl = recipeRequest.DefaultImageUrl;
+            recipe.RecipeUrl = recipeRequest.RecipeUrl;
 
             _context.Recipes.Update(recipe);
             await _context.SaveChangesAsync();
