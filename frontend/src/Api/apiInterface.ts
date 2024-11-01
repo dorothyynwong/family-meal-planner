@@ -26,6 +26,7 @@ export interface RecipeDetailsInterface {
     creationDateTime?: Date;
     lastUpdatedDateTime?: Date;
     defaultImageUrl?: string;
+    recipeUrl?: string;
     addedByUserId?: number;
     addedByUserNickname?: string;
     isOwner?: boolean;
