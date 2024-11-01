@@ -45,7 +45,13 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging -f backend/DockerFile backend/
+          docker build \
+          --build-arg ASPNETCORE_ENVIRONMENT=Staging \
+          -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging -f backend/DockerFile backend/
+
+          echo "Verifying environment variable in container..."
+          docker run --rm ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging printenv ASPNETCORE_ENVIRONMENT
+
 
       - name: Push Docker image
         run: |

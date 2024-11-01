@@ -1,10 +1,14 @@
 # Use the official ASP.NET runtime as a base image
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+ARG ASPNETCORE_ENVIRONMENT=Staging
+ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 WORKDIR /app
 EXPOSE 80
 
 # Use the SDK image for building the app
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+ARG ASPNETCORE_ENVIRONMENT=Staging
+ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 WORKDIR /src
 
 # Copy the project files to the container. 
@@ -16,20 +20,27 @@ RUN dotnet restore
 COPY ./ ./
 
 # Build the application
-RUN dotnet build "backend.csproj" -c Release -o /app/build
+RUN dotnet build "backend.csproj" -c Release -o /app/build \
+    --no-restore \
+    /p:EnvironmentName=${ASPNETCORE_ENVIRONMENT}
 
 # Publish the application
 FROM build AS publish
-RUN dotnet publish "backend.csproj" -c Release -o /app/publish
+ARG ASPNETCORE_ENVIRONMENT=Staging
+ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
+RUN dotnet publish "backend.csproj" -c Release -o /app/publish \
+    --no-restore \
+    /p:EnvironmentName=${ASPNETCORE_ENVIRONMENT}
 
 # Final image: copy the published application and set the entry point
 FROM base AS final
+ARG ASPNETCORE_ENVIRONMENT=Staging
+ENV ASPNETCORE_ENVIRONMENT=${ASPNETCORE_ENVIRONMENT}
 WORKDIR /app
 COPY --from=publish /app/publish .
-
 COPY ./Resources /app/Resources
 
 ENV ASPNETCORE_ENVIRONMENT "Staging"
 
-ENTRYPOINT ["dotnet", "backend.dll"]
+ENTRYPOINT ["dotnet", "backend.dll", "--environment=Staging"]
 
