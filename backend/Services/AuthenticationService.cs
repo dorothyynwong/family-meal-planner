@@ -30,8 +30,6 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     private int _emailExpiry = int.Parse(configuration["Jwt:EmailExpiryDays"]);
     private string _issuer = configuration["Jwt_Issuer"];
     private string _audience = configuration["Jwt_Audience"];
-    private string _appName = configuration["Jwt_AppName"];
-    private string _refreshTokenName = configuration["Jwt_RefreshTokenName"];
 
     private SymmetricSecurityKey CreateSymmetricSecurityKey()
     {
@@ -41,6 +39,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
     }
+
     private SigningCredentials CreateSigningCredentials()
     {
 
@@ -49,20 +48,21 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             SecurityAlgorithms.HmacSha256);
     }
 
-    public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> authClaims, DateTime now)
+    private string GenerateAccessToken(IEnumerable<Claim> authClaims, DateTime now)
     {
-
         var jwt = new JwtSecurityToken(
-                    issuer: _issuer,
-                    audience: _audience,
-                    claims: authClaims,
-                    expires: DateTime.UtcNow.AddMinutes(_accessTokenExpiry),
-                    signingCredentials: CreateSigningCredentials()
-                    );
+            issuer: _issuer,
+            audience: _audience,
+            claims: authClaims,
+            expires: now.AddMinutes(_accessTokenExpiry),
+            signingCredentials: CreateSigningCredentials()
+            );
 
-        var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        // var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _appName, _refreshTokenName);
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
 
+    private RefreshToken GenerateRefreshToken(User user, DateTime now)
+    {
         var refreshTokenString = "";
 
         var randomNumber = new byte[32];
@@ -72,19 +72,19 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             refreshTokenString = Convert.ToBase64String(randomNumber);
         }
 
-        // var refreshTokenModel = new RefreshTokenViewModel
-        // {
-        //     Email = user.Email,
-        //     TokenString = refreshTokenString,
-        //     ExpireAt = now.AddDays(_refreshTokenExpiry)
-        // };
-
-        RefreshToken refreshToken = new RefreshToken{
+        return new RefreshToken
+        {
             Token = refreshTokenString,
             Username = user.Email,
-            ExpirationDate = DateTime.UtcNow.AddDays(_refreshTokenExpiry)
+            ExpirationTime = now.AddDays(_refreshTokenExpiry)
         };
-        
+    }
+
+    public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> authClaims, DateTime now)
+    {
+        var accessTokenString = GenerateAccessToken(authClaims, now);
+        var refreshToken = GenerateRefreshToken(user, now);
+
         _dbContext.RefreshTokens.Add(refreshToken);
         _dbContext.SaveChangesAsync();
 
@@ -101,14 +101,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         {
             var authClaims = await GetUserClaims(user);
 
-            JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.Now);
-
-            // await _userManager.SetAuthenticationTokenAsync(
-            //                                                 user,
-            //                                                 _configuration["Jwt_AppName"],
-            //                                                 _configuration["Jwt_RefreshTokenName"], 
-            //                                                 jwtAuthResult.RefreshToken.Token
-                                                        // );
+            JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.UtcNow);
 
             return jwtAuthResult;
         }
@@ -187,30 +180,19 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     {
         var matchingUser = await _userManager.FindByEmailAsync(email);
 
-        // var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
-        //                                                     _appName,
-        //                                                     _refreshTokenName,
-        //                                                     refreshToken);
-
         if (matchingUser == null) return null;
 
-        RefreshToken refreshToken = _dbContext.RefreshTokens.FirstOrDefault( rt => rt.Token == refreshTokenString);
+        RefreshToken refreshToken = _dbContext.RefreshTokens.FirstOrDefault(rt => rt.Token == refreshTokenString && rt.Username == email);
 
-
-        if (refreshToken.Token != refreshTokenString || refreshToken.Username != email)
+        if (refreshToken == null)
         {
             return null;
         }
 
         var authClaims = await GetUserClaims(matchingUser);
 
-        JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.Now);
-        // await userManager.SetAuthenticationTokenAsync(
-        //                                          matchingUser,
-        //                                          _appName,
-        //                                          _refreshTokenName,
-        //                                          jwtAuthResult.RefreshToken.Token
-        //                                      );
+        JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.UtcNow);
+
         return jwtAuthResult;
     }
 
@@ -236,12 +218,12 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         try
         {
             var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken validatedToken);
-            return true; 
+            return true;
         }
         catch (Exception ex)
         {
             Console.WriteLine($"Token validation failed: {ex.Message}");
-            return false; 
+            return false;
         }
     }
 
@@ -253,7 +235,6 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             {
                 new(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
                 new(ClaimTypes.Name, matchingUser.Email),
-                // new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
         foreach (var role in matchingUserRoles)
         {
@@ -262,6 +243,4 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
         return authClaims;
     }
-
-
 }
