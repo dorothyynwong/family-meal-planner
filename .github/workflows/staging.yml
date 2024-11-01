@@ -45,18 +45,10 @@ jobs:
 
       - name: Build Docker image
         run: |
-          docker build \
-          --build-arg ASPNETCORE_ENVIRONMENT=Staging \
-          -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging -f backend/DockerFile backend/
-
-          echo "Verifying environment variable in container..."
-          docker run --rm ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging printenv ASPNETCORE_ENVIRONMENT
-
-
+          docker build -t ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging -f backend/DockerFile backend/
       - name: Push Docker image
         run: |
           docker push ${{ secrets.DOCKER_HUB_USER }}/family-meal-planner-backend:staging
-
       - name: Trigger Render Deployment
         env:
           RENDER_API_KEY: ${{ secrets.RENDER_API_KEY_STAGING }}
@@ -65,12 +57,10 @@ jobs:
           -H "Authorization: Bearer $RENDER_API_KEY" \
           -H "Content-Type: application/json" \
           -d '{"branch": "staging"}'
-
       - name: Wait for deployment
         run: |
           echo "Waiting 120 seconds for deployment to stabilize..."
           sleep 120
-
       - name: Run EF Core Migrations
         env:
           ConnectionStrings_DefaultConnection: ${{ secrets.CONNECTION_STRINGS_STAGING }}
