@@ -1,5 +1,6 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
@@ -19,10 +20,11 @@ public interface IAuthenticationService
     Task<bool> ValidateAccessToken(string accessToken);
 }
 
-public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext dbContext) : IAuthenticationService
 {
     private readonly IConfiguration _configuration = configuration;
     private readonly UserManager<User> _userManager = userManager;
+    private readonly FamilyMealPlannerContext _dbContext = dbContext;
     private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
     private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
     private int _emailExpiry = int.Parse(configuration["Jwt:EmailExpiryDays"]);
@@ -59,19 +61,37 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
                     );
 
         var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _appName, _refreshTokenName);
+        // var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _appName, _refreshTokenName);
 
-        var refreshTokenModel = new RefreshTokenViewModel
+        var refreshTokenString = "";
+
+        var randomNumber = new byte[32];
+        using (var rng = RandomNumberGenerator.Create())
         {
-            Email = user.Email,
-            TokenString = refreshTokenString,
-            ExpireAt = now.AddDays(_refreshTokenExpiry)
+            rng.GetBytes(randomNumber);
+            refreshTokenString = Convert.ToBase64String(randomNumber);
+        }
+
+        // var refreshTokenModel = new RefreshTokenViewModel
+        // {
+        //     Email = user.Email,
+        //     TokenString = refreshTokenString,
+        //     ExpireAt = now.AddDays(_refreshTokenExpiry)
+        // };
+
+        RefreshToken refreshToken = new RefreshToken{
+            Token = refreshTokenString,
+            Username = user.Email,
+            ExpirationDate = DateTime.UtcNow.AddDays(_refreshTokenExpiry)
         };
+        
+        _dbContext.RefreshTokens.Add(refreshToken);
+        _dbContext.SaveChangesAsync();
 
         return new JwtAuthResultViewModel
         {
             AccessToken = accessTokenString,
-            RefreshToken = refreshTokenModel
+            RefreshToken = refreshToken
         };
     }
 
@@ -83,12 +103,12 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
             JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.Now);
 
-            await _userManager.SetAuthenticationTokenAsync(
-                                                            user,
-                                                            _configuration["Jwt_AppName"],
-                                                            _configuration["Jwt_RefreshTokenName"],
-                                                            jwtAuthResult.RefreshToken.TokenString
-                                                        );
+            // await _userManager.SetAuthenticationTokenAsync(
+            //                                                 user,
+            //                                                 _configuration["Jwt_AppName"],
+            //                                                 _configuration["Jwt_RefreshTokenName"], 
+            //                                                 jwtAuthResult.RefreshToken.Token
+                                                        // );
 
             return jwtAuthResult;
         }
@@ -163,16 +183,21 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     }
 
 
-    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email)
+    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshTokenString, string email)
     {
         var matchingUser = await _userManager.FindByEmailAsync(email);
 
-        var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
-                                                            _appName,
-                                                            _refreshTokenName,
-                                                            refreshToken);
+        // var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
+        //                                                     _appName,
+        //                                                     _refreshTokenName,
+        //                                                     refreshToken);
 
-        if (!isValid)
+        if (matchingUser == null) return null;
+
+        RefreshToken refreshToken = _dbContext.RefreshTokens.FirstOrDefault( rt => rt.Token == refreshTokenString);
+
+
+        if (refreshToken.Token != refreshTokenString || refreshToken.Username != email)
         {
             return null;
         }
@@ -180,12 +205,12 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         var authClaims = await GetUserClaims(matchingUser);
 
         JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.Now);
-        await userManager.SetAuthenticationTokenAsync(
-                                                 matchingUser,
-                                                 _appName,
-                                                 _refreshTokenName,
-                                                 jwtAuthResult.RefreshToken.TokenString
-                                             );
+        // await userManager.SetAuthenticationTokenAsync(
+        //                                          matchingUser,
+        //                                          _appName,
+        //                                          _refreshTokenName,
+        //                                          jwtAuthResult.RefreshToken.Token
+        //                                      );
         return jwtAuthResult;
     }
 
