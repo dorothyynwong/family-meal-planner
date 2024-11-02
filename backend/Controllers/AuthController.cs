@@ -67,7 +67,8 @@ public class AuthController(
     public async Task<IActionResult> Logout()
     {
         var refreshTokenString = Request.Cookies["refreshToken"];
-        await _authenticationService.RevokeLastRefreshToken(refreshTokenString);
+        if (refreshTokenString != null)
+            await _authenticationService.RevokeLastRefreshToken(refreshTokenString);
         _authenticationService.RemoveTokensFromCookie(HttpContext);
 
         return Ok();
