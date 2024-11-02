@@ -1,18 +1,17 @@
-import { useEffect, useState } from "react";
+import { useEffect} from "react";
 import Popup from "../Popup/Popup";
-import { Button, Form} from "react-bootstrap";
+import { Form} from "react-bootstrap";
 import { useNavigate} from "react-router-dom";
-import { addMeal, deleteMeal, getMealTypes, updateMeal } from "../../Api/api";
+import { addMeal,  getMealTypes, updateMeal } from "../../Api/api";
 import { useMeal } from "../MealContext/MealContext";
 import { MealDetailsInterface } from "../../Api/apiInterface";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
 import dayjs, { Dayjs } from 'dayjs';
-import MealTypeSelect from "../MealTypeSelect/MealTypeSelect";
 import RecipeSearch from "../RecipeSearch/RecipeSearch";
-import MealDateInput from "../MealDateInput/MealDateInput";
 import SchoolMenuSelect from "../SchoolMenuSelect/SchoolMenuSelect";
 import MealFormSelection from "../MealFormSelection/MealFormSelection";
+import MealFormBase from "../MealFormBase/MealFormBase";
 
 interface MealFormProps {
     isForFamily?: boolean
@@ -20,11 +19,9 @@ interface MealFormProps {
     //isFromRecipe?: boolean
 }
 
+
 const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
-    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
-    const [errorMessages, setErrorMessages] = useState<string[]>([]);
-    const [mealTypes, setMealTypes] = useState<string[]>([]);
-    const [mealFormType, setMealFormType] = useState("recipe");
+
 
     const { mode,
         currentMeal,
@@ -32,29 +29,45 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
         setRecipeName,
         selectedRecipe,
         selectedMealType,
-        setSelectedMealType,
         mealDate,
         setMealDate,
         mealNotes,
-        setMealNotes,
         modalShow,
         setModalShow,
         resetMealContext,
         selectedFamily,
         schoolMealId,
+        setMealTypes,
+        status,
+        setStatus,
+        errorMessages,
+        setErrorMessages,
+        formType,
+        setFormType,
     } = useMeal();
 
     const navigate = useNavigate();
 
 
     useEffect(() => {
-        if (!mealDate) setMealDate(dayjs(selectedDate).format('YYYY-MM-DD'));
+        initaliseMealForm();
+    }, []);
+
+    useEffect(() => {
+        handleRecipeSelection();
+    }, [selectedRecipe]);
+
+    const isFromMealForm = true;
+
+    const initaliseMealForm = async () => {
+        if (!mealDate) 
+            setMealDate(dayjs(selectedDate).format('YYYY-MM-DD'));
         setStatus("loading");
-        setErrorMessages([]);
         getMealTypes()
             .then(mealTypesList => {
                 setMealTypes(mealTypesList.data);
                 setStatus("idle");
+                setErrorMessages([]);
             })
             .catch(error => {
                 console.log("Error getting meal types", error);
@@ -62,62 +75,53 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
-    }, []);
+    };
 
-    useEffect(() => {
+    const handleRecipeSelection = () => {
         if (selectedRecipe) {
             setRecipeName(selectedRecipe.name ? selectedRecipe.name : "");
             setModalShow(true);
         }
-    }, [selectedRecipe, modalShow, setRecipeName, setModalShow]);
+    }
 
-    const isFromMealForm = true;
 
-    const handleDelete = () => {
-        deleteMeal(currentMeal!.id!)
-            .then(response => {
-                if (response.status === 200) {
-                    setStatus("success");
-                }
-            })
-            .catch(error => {
-                console.log("Error deleting meal", error);
-                const errorMessage = error?.response?.data?.message || "Error deleting meal";
-                setStatus("error");
-                setErrorMessages([...errorMessages, errorMessage]);
-            });
 
-        setModalShow(false);
-        resetMealContext();
-        setStatus("idle");
+    const validateForm = (): boolean => {
+        if (formType === "recipe" && !mealNotes.trim() && !selectedRecipe && !recipeName) {
+            const errorMessage = "Please enter notes or select a recipe.";
+            setStatus("error");
+            setErrorMessages([...errorMessages, errorMessage]);
+            return false;
+        }
+
+        if (formType === "school-meal" && schoolMealId === 0) {
+            const errorMessage = "Please select a school menu";
+            setStatus("error");
+            setErrorMessages([...errorMessages, errorMessage]);
+            return false;
+        }
+
+        if (formType === "recipe" && !selectedMealType) {
+            const errorMessage = "Please choose a meal type. ";
+            setStatus("error");
+            setErrorMessages([...errorMessages, errorMessage]);
+            return false;
+        }
+
+        if (!mealDate) {
+            const errorMessage = "Please select a date. ";
+            setStatus("error");
+            setErrorMessages([...errorMessages, errorMessage]);
+            return false;
+        }
+
+        return true;
     }
 
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
 
         event.preventDefault();
-        if (mealFormType === "recipe" && !mealNotes.trim() && !selectedRecipe && !recipeName) {
-            setErrorMessages(["Please enter notes or select a recipe."]);
-            setStatus("error");
-            return;
-        }
-
-        if (mealFormType === "school-meal" && schoolMealId === 0) {
-            setErrorMessages(["Please select a school menu"]);
-            setStatus("error");
-            return;
-        }
-
-        if (mealFormType === "recipe" && !selectedMealType) {
-            setErrorMessages(["Please choose a meal type. "]);
-            setStatus("error");
-            return;
-        }
-
-        if (!mealDate) {
-            setErrorMessages(["Please select a date. "]);
-            setStatus("error");
-            return;
-        }
+        if (!validateForm()) return;
 
         setStatus("loading");
         setErrorMessages([]);
@@ -126,9 +130,9 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
             familyId: isForFamily? selectedFamily?.familyId : 0,
             date: mealDate,
             notes: mealNotes,
-            mealType: mealFormType === "recipe" ? selectedMealType : "Lunch",
-            schoolMealId: mealFormType === "school-meal" ? schoolMealId : 0,
-            ...(mealFormType === "recipe" && selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
+            mealType: formType === "recipe" ? selectedMealType : "Lunch",
+            schoolMealId: formType === "school-meal" ? schoolMealId : 0,
+            ...(formType === "recipe" && selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
 
         if (mode === "Add") {
@@ -183,23 +187,27 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
                   </Form.Group>
                 )}
 
-                <MealFormSelection mealFormType={mealFormType} setMealFormType={setMealFormType}/>
-                {mealFormType==="recipe" ?
+                <MealFormSelection 
+                    mealFormType={formType} 
+                    setMealFormType={setFormType}
+                />
+                {formType==="recipe" ?
                     <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
                 :   <SchoolMenuSelect />}
 
-                <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
+                {/* <MealDateInput mealDate={mealDate} setMealDate={setMealDate} /> */}
 
-                {mealFormType==="recipe"  && 
+                {/* {mealFormType==="recipe"  && 
                     <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
-                }
+                } */}
 
-                <Form.Group controlId="meal-notes">
+                {/* <Form.Group controlId="meal-notes">
                     <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
-                </Form.Group>
+                </Form.Group> */}
 
-                <Button className="mt-3 custom-button" type="submit">{mode === "Add" ? "Add" : "Update"}</Button>
-                {mode === "Edit" && <Button className="mt-3 custom-button" onClick={handleDelete}>Delete</Button>}
+                {/* <Button className="mt-3 custom-button" type="submit">{mode === "Add" ? "Add" : "Update"}</Button>
+                {mode === "Edit" && <Button className="mt-3 custom-button" onClick={handleDelete}>Delete</Button>} */}
+                <MealFormBase />
 
                 <StatusHandler
                     status={status}
