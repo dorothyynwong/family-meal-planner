@@ -209,7 +209,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
 
             meal.Date = mealRequest.Date;
             meal.RecipeId = mealRequest.RecipeId != null ? mealRequest.RecipeId : meal.RecipeId;
-            meal.SchoolMealId = mealRequest.SchoolMealId != null ? mealRequest.SchoolMealId : meal.SchoolMealId;
+            if (mealRequest.SchoolMealId > 0) meal.SchoolMealId = mealRequest.SchoolMealId;
             meal.MealType = mealRequest.GetMealTypeEnum();
             meal.Notes = mealRequest.Notes;
 
