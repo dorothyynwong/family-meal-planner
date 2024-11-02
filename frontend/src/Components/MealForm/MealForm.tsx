@@ -15,10 +15,7 @@ interface MealFormProps {
     selectedDate?: Dayjs
 }
 
-
 const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
-
-
     const { mode,
         modalShow,
         setModalShow,
@@ -33,7 +30,6 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
 
     const isFromMealForm = true;
 
- 
     return (
         <Popup
             customclass="meal-form"

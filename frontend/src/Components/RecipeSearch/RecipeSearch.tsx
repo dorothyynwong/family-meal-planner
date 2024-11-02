@@ -25,8 +25,6 @@ const RecipeSearch: React.FC<RecipeSearchProps> = ({ isFromMealForm }) => {
   }
 
   return (
-
-
     <InputGroup className="mt-3 recipe-search-container">
       <InputGroup.Text className="recipe-search-icon-box">
         <FaSearch className="recipe-search-icon" />
