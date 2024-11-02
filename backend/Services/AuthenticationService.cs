@@ -22,11 +22,12 @@ public interface IAuthenticationService
     Task RevokeLastRefreshToken(string refreshTokenString);
 }
 
-public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext dbContext) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext context) : IAuthenticationService
 {
+    private readonly FamilyMealPlannerContext _context = context;
     private readonly IConfiguration _configuration = configuration;
     private readonly UserManager<User> _userManager = userManager;
-    private readonly FamilyMealPlannerContext _dbContext = dbContext;
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
     private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
     private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
     private int _emailExpiry = int.Parse(configuration["Jwt:EmailExpiryDays"]);
@@ -84,29 +85,45 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
 
     private async Task RemoveExpiredTokens(DateTime now)
     {
-        List<RefreshToken> refreshTokens = await _dbContext.RefreshTokens.Where(rt => rt.ExpirationTime < now).ToListAsync();
+        List<RefreshToken> refreshTokens = await _context.RefreshTokens.Where(rt => rt.ExpirationTime < now).ToListAsync();
 
         if (refreshTokens.Count != 0)
         {
-            _dbContext.RefreshTokens.RemoveRange(refreshTokens);
-            await _dbContext.SaveChangesAsync();
+            _context.RefreshTokens.RemoveRange(refreshTokens);
+            await _context.SaveChangesAsync();
         }
     }
 
     public async Task RevokeLastRefreshToken(string refreshTokenString)
     {
-        // var refreshToken = await _dbContext.RefreshTokens
-        //                         .Where(rt => rt.Token == refreshTokenString)
-        //                         .FirstOrDefaultAsync();
+        try
+        {
+            RefreshToken refreshToken = await _context.RefreshTokens
+                        .FirstOrDefaultAsync(rt => rt.Token == refreshTokenString);
 
-        // _dbContext.RefreshTokens.Remove(refreshToken);
-        // await _dbContext.SaveChangesAsync();
+            if(refreshToken != null)
+            {
+                _context.RefreshTokens.Remove(refreshToken);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            Logger.Error($"Database error on deleting refresh token : {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error deleting refresh token: {ex.Message}");
+            throw new Exception("Unexpected error while deleting record to database", ex);
+        }
+
     }
 
     private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
     {
-        RefreshToken? refreshToken = await _dbContext.RefreshTokens.FirstOrDefaultAsync(
-                                        rt => rt.Token == refreshTokenString && 
+        RefreshToken? refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(
+                                        rt => rt.Token == refreshTokenString &&
                                                 rt.Username == email &&
                                                 rt.ExpirationTime > DateTime.UtcNow
                                     );
@@ -121,8 +138,8 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         var accessTokenString = GenerateAccessToken(authClaims, now);
         var refreshToken = GenerateRefreshToken(user, now);
 
-        _dbContext.RefreshTokens.Add(refreshToken);
-        await _dbContext.SaveChangesAsync();
+        _context.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync();
 
         return new JwtAuthResultViewModel
         {
