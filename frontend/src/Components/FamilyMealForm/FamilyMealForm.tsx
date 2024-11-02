@@ -5,6 +5,8 @@ import { Dayjs } from 'dayjs';
 import StatusHandler from "../StatusHandler/StatusHandler";
 import Popup from "../Popup/Popup";
 import useMealForm from "../../Hooks/useMealForm";
+import RecipeSearch from "../RecipeSearch/RecipeSearch";
+import { useNavigate } from "react-router-dom";
 
 interface FamilyMealFormProps {
     isForFamily?: boolean
@@ -19,8 +21,15 @@ const FamilyMealForm: React.FC<FamilyMealFormProps> = ({ isForFamily, selectedDa
         resetMealContext,
         mode,
         status,
-        errorMessages
+        errorMessages,
+        recipeName,
+        mealDate,
+        selectedMealType,
     } = useMeal();
+
+    const navigate = useNavigate();
+
+    const isFromMealForm = true;
 
     const { handleSubmit} = useMealForm(isForFamily, selectedDate);
 
@@ -39,6 +48,7 @@ const FamilyMealForm: React.FC<FamilyMealFormProps> = ({ isForFamily, selectedDa
                         readOnly
                         placeholder={selectedFamily?.familyName} />
                 </Form.Group>
+                <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
                 <MealFormBase isForFamily={isForFamily} selectedDate={selectedDate} />
                 <StatusHandler
                     status={status}
