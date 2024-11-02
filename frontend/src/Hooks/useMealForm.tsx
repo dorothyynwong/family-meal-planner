@@ -124,7 +124,6 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
                 });
         }
         else {
-            console.log(meal);
             updateMeal(meal, currentMeal!.id!)
                 .then(response => {
                     if (response.status === 200) {
