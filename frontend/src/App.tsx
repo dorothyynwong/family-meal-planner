@@ -67,6 +67,9 @@ function App() {
                   <Route path="/recipes-search/:searchRecipeName"
                     element={<RecipesSearchResult />} />
 
+                  <Route path="/recipes-search/"
+                    element={<RecipesSearchResult />} />
+
                   <Route path="/recipe-add/:recipeId"
                     element={<RecipeCreation />} />
 
