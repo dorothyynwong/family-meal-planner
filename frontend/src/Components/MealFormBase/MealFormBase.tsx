@@ -3,8 +3,14 @@ import MealDateInput from "../MealDateInput/MealDateInput";
 import MealTypeSelect from "../MealTypeSelect/MealTypeSelect";
 import { useMeal } from "../MealContext/MealContext";
 import useMealForm from "../../Hooks/useMealForm";
+import  { Dayjs } from 'dayjs';
 
-const MealFormBase:React.FC = () => {
+interface MealFormBaseProps {
+    isForFamily?: boolean
+    selectedDate?: Dayjs
+}
+
+const MealFormBase:React.FC<MealFormBaseProps> = ({isForFamily, selectedDate}) => {
     const { mode,
         selectedMealType,
         setSelectedMealType,
@@ -13,15 +19,20 @@ const MealFormBase:React.FC = () => {
         mealNotes,
         setMealNotes,
         mealTypes,
+        formType
     } = useMeal();
 
-    const { handleDelete } = useMealForm();
+    const { handleDelete } = useMealForm(isForFamily, selectedDate);
     
 
     return (
         <>
             <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
-            <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
+            
+            {formType == "recipe" ?
+                <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
+            : <></>
+            }
             <Form.Group controlId="meal-notes">
                 <Form.Control className="mt-3 custom-form-control" as="textarea" rows={3} placeholder="Notes" name="notes" value={mealNotes} onChange={(e) => setMealNotes(e.target.value)} />
             </Form.Group>
