@@ -7,7 +7,7 @@ import SearchBar from "../../Components/SearchBar/SearchBar";
 import { useState } from "react";
 import useDebounce from "../../Hooks/useDebounce";
 
-const RecipesSearch: React.FC = () => {
+const RecipesSearchResult: React.FC = () => {
     const location = useLocation();
     const isFromMealForm = location.state?.isFromMealForm || false;
     const [searchValue, setSearchValue] = useState("");
@@ -31,4 +31,4 @@ const RecipesSearch: React.FC = () => {
     );
 }
 
-export default RecipesSearch;
+export default RecipesSearchResult;

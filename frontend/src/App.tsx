@@ -18,7 +18,7 @@ import FamilyMealDaily from './Pages/FamilyMealDaily/FamilyMealDaily';
 import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { createTheme, ThemeProvider } from '@mui/material';
-import RecipesSearch from './Pages/RecipesSearch/RecipesSearch';
+import RecipesSearchResult from './Pages/RecipesSearchResult/RecipesSearchResult';
 
 const theme = createTheme({
   typography: {
@@ -65,7 +65,7 @@ function App() {
                     element={<RecipesList />} />
 
                   <Route path="/recipes-search/"
-                    element={<RecipesSearch />} />
+                    element={<RecipesSearchResult />} />
 
                   <Route path="/recipe-add/:recipeId"
                     element={<RecipeCreation />} />
