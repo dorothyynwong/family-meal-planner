@@ -8,7 +8,7 @@ const client: AxiosInstance = axios.create({
 
 let isRefreshing = false;
 let retryCount = 0;
-const maxRetry = 3;
+const maxRetry = 5;
 
 client.interceptors.response.use(
     response => response, 
@@ -35,10 +35,10 @@ client.interceptors.response.use(
             } catch (err) {
                 console.error("Token refresh failed, redirect to login", err);
                 window.location.href = '/login';  
-                retryCount = 0;
                 return Promise.reject(err);
             } finally {
                 isRefreshing = false;
+                retryCount = 0;
             }
         }
 

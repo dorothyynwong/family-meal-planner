@@ -1,6 +1,5 @@
 import Popup from "../Popup/Popup";
 import { Form} from "react-bootstrap";
-import { useNavigate} from "react-router-dom";
 import { useMeal } from "../MealContext/MealContext";
 import StatusHandler from "../StatusHandler/StatusHandler";
 import "./MealForm.scss";
@@ -14,17 +13,10 @@ import SchoolMenuSelect from "../SchoolMenuSelect/SchoolMenuSelect";
 interface MealFormProps {
     isForFamily?: boolean
     selectedDate?: Dayjs
-    //isFromRecipe?: boolean
 }
 
-
 const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
-
-
     const { mode,
-        recipeName,
-        selectedMealType,
-        mealDate,
         modalShow,
         setModalShow,
         resetMealContext,
@@ -34,12 +26,10 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
         setFormType,
     } = useMeal();
 
-    const navigate = useNavigate();
     const { handleSubmit} = useMealForm(isForFamily, selectedDate);
 
     const isFromMealForm = true;
 
- 
     return (
         <Popup
             customclass="meal-form"
@@ -54,7 +44,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
                 />
                 
                 {formType == "recipe" ?
-                    <RecipeSearch recipeName={recipeName} onSearchClick={() => navigate(`/recipes-list`, { state: { isFromMealForm, mealDate, selectedMealType } })} />
+                    <RecipeSearch isFromMealForm={isFromMealForm}  />
                 :
                     <SchoolMenuSelect />
                 }
