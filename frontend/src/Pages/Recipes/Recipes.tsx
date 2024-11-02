@@ -14,7 +14,7 @@ const Recipes: React.FC = () => {
         const buttonId = event.currentTarget.id;
         switch (buttonId) {
           case "show-recipe-button":
-            navigate(`/recipes-search`); 
+            navigate(`/recipes-search/`); 
             break
           case "new-recipe-button":
             navigate("/recipe-add")
