@@ -23,6 +23,14 @@ interface MealContextProps {
     setSelectedFamily: (newFamily: FamilyWithUsersInterface) => void;
     schoolMealId: number;
     setSchoolMealId: (newSchoolMealId: number) => void;
+    mealTypes: string[];
+    setMealTypes: (newMealTypes: string[]) => void;
+    status: "idle" | "loading" | "success" | "error";
+    setStatus: (newStatus: "idle" | "loading" | "success" | "error") => void;
+    errorMessages: string[];
+    setErrorMessages: (newMessages: string[]) => void;
+    formType: "recipe" | "school-meal";
+    setFormType: (newType: "recipe" | "school-meal") => void;
 }
 
 const MealContext = createContext<MealContextProps | undefined>(undefined);
@@ -38,6 +46,10 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [modalShow, setModalShow] = useState(false);
     const [selectedFamily, setSelectedFamily] = useState<FamilyWithUsersInterface | null>(null);
     const [schoolMealId, setSchoolMealId] = useState(0);
+    const [mealTypes, setMealTypes] = useState<string[]>([]);
+    const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
+    const [errorMessages, setErrorMessages] = useState<string[]>([]);
+    const [formType, setFormType] = useState<"recipe" | "school-meal">("recipe");
 
     const resetMealContext = () => {
         setSelectedMealType("");
@@ -70,6 +82,14 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                         setSelectedFamily,
                                         schoolMealId,
                                         setSchoolMealId,
+                                        mealTypes,
+                                        setMealTypes,
+                                        status,
+                                        setStatus,
+                                        errorMessages,
+                                        setErrorMessages,
+                                        formType,
+                                        setFormType,
                                         }}>
             {children}
         </MealContext.Provider>
