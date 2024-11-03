@@ -6,6 +6,7 @@ import { searchRecipes } from "../../Api/api";
 import SearchBar from "../../Components/SearchBar/SearchBar";
 import { useState } from "react";
 import useDebounce from "../../Hooks/useDebounce";
+import MealForm from "../../Components/MealForm/MealForm";
 
 const RecipesSearchResult: React.FC = () => {
     const location = useLocation();
@@ -27,6 +28,7 @@ const RecipesSearchResult: React.FC = () => {
                                         }
                             query={`RecipeName=${debouncedSearchValue}`}
             />
+            <MealForm />
         </>
     );
 }
