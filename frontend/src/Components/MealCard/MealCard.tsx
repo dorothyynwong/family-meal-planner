@@ -26,7 +26,8 @@ const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
     }
 
     const handleRecipeClick = () => {
-       navigate(`/recipe-details/${meal.recipeId}`);
+        if (!meal.schoolMealId || meal.schoolMealId <=0 )
+            navigate(`/recipe-details/${meal.recipeId}`);
     }
 
     return (
