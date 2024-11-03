@@ -10,7 +10,7 @@ interface MealFormBaseProps {
     selectedDate?: Dayjs
 }
 
-const MealFormBase:React.FC<MealFormBaseProps> = ({isForFamily, selectedDate}) => {
+const MealFormBase:React.FC<MealFormBaseProps> = ({selectedDate}) => {
     const { mode,
         selectedMealType,
         setSelectedMealType,
@@ -22,7 +22,7 @@ const MealFormBase:React.FC<MealFormBaseProps> = ({isForFamily, selectedDate}) =
         formType
     } = useMeal();
 
-    const { handleDelete } = useMealForm(isForFamily, selectedDate);
+    const { handleDelete } = useMealForm(selectedDate);
     
 
     return (

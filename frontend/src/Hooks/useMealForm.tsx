@@ -4,7 +4,7 @@ import { useMeal } from "../Components/MealContext/MealContext";
 import { MealDetailsInterface } from "../Api/apiInterface";
 import dayjs, { Dayjs } from 'dayjs';
 
-function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
+function useMealForm(selectedDate?: Dayjs) {
     const { mode,
         currentMeal,
         recipeName,
