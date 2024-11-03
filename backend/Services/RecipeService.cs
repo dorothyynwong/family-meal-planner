@@ -172,6 +172,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         _recipeCount = recipes != null ? recipes.Count : 0;
 
         IEnumerable<RecipeResponse> filteredAndOrderedRecipes = recipes
+                                                        .OrderByDescending(r => r.LastUpdatedDateTime)
                                                         .Skip((search.Page - 1) * search.PageSize)
                                                         .Take(search.PageSize);
 
