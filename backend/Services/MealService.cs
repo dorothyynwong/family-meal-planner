@@ -98,6 +98,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
                                                             meal.UserId == userId)
+                                                    .OrderBy(meal => meal.MealType)
                                                     .ToListAsync();
 
             if (meals == null || meals.Count <= 0) return [];
@@ -155,6 +156,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
                                                             meal.FamilyId == familyId)
+                                                    .OrderBy(meal => meal.MealType)
                                                     .ToListAsync();
 
             if (meals == null || meals.Count <= 0) return [];
