@@ -1,8 +1,8 @@
 import { Form } from "react-bootstrap";
 
 interface MealFormSelectProps{
-    mealFormType: "recipe" | "school-meal"
-    setMealFormType: (newSelect : "recipe" | "school-meal") => void;
+    mealFormType: "recipe" | "school-meal" | "family"
+    setMealFormType: (newSelect : "recipe" | "school-meal" | "family") => void;
 }
 
 const MealFormSelection: React.FC<MealFormSelectProps> = ({mealFormType, setMealFormType}) => {

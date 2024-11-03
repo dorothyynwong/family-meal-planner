@@ -29,8 +29,10 @@ interface MealContextProps {
     setStatus: (newStatus: "idle" | "loading" | "success" | "error") => void;
     errorMessages: string[];
     setErrorMessages: (newMessages: string[]) => void;
-    formType: "recipe" | "school-meal";
-    setFormType: (newType: "recipe" | "school-meal") => void;
+    formType: "recipe" | "school-meal" | "family";
+    setFormType: (newType: "recipe" | "school-meal" | "family") => void;
+    isFromRecipeList: boolean;
+    setIsFromRecipeList: (newValue: boolean) => void;
 }
 
 const MealContext = createContext<MealContextProps | undefined>(undefined);
@@ -49,7 +51,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
     const [mealTypes, setMealTypes] = useState<string[]>([]);
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
-    const [formType, setFormType] = useState<"recipe" | "school-meal">("recipe");
+    const [formType, setFormType] = useState<"recipe" | "school-meal" | "family">("recipe");
+    const [isFromRecipeList, setIsFromRecipeList] = useState(false);
 
     const resetMealContext = () => {
         setSelectedMealType("");
@@ -58,6 +61,7 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
         setSelectedRecipe(null);
         setRecipeName("");
         setSchoolMealId(0);
+        setIsFromRecipeList(false);
     };
 
     return (
@@ -90,6 +94,8 @@ export const MealProvider: React.FC<{ children: React.ReactNode }> = ({ children
                                         setErrorMessages,
                                         formType,
                                         setFormType,
+                                        isFromRecipeList,
+                                        setIsFromRecipeList
                                         }}>
             {children}
         </MealContext.Provider>
