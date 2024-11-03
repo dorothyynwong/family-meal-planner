@@ -73,7 +73,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const baseMenuItems = [
         { id: "display-recipe-button", label: "Details" },
         { id: "copy-recipe-button", label: "Copy" },
-        { id: "add-meal-button", label: "Add as Meal"}
+        { id: "add-my-meal-button", label: "Add as My Meal"}
     ];
     
     const ownerMenuItems = [
