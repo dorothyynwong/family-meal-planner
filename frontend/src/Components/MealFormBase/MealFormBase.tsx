@@ -29,7 +29,7 @@ const MealFormBase:React.FC<MealFormBaseProps> = ({isForFamily, selectedDate}) =
         <>
             <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
             
-            {formType == "recipe" ?
+            {formType !== "school-meal" ?
                 <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
             : <></>
             }

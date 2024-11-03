@@ -12,11 +12,12 @@ const StyledFab = styled(Fab)({
   });
 
 const FamilyMealsBottomBar: React.FC = () => {
-    const { setModalShow, setMode } = useMeal();
+    const { setModalShow, setMode, setFormType } = useMeal();
     
     const handleClick = () => {
         setMode("Add");
         setModalShow(true);
+        setFormType("family");
     }
 
     return (

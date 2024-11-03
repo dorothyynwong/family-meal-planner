@@ -64,6 +64,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         setSelectedRecipe,
         setModalShow,
         setMode, 
+        setFormType,
     } = useMeal();
 
     const handleExpandClick = () => {
@@ -73,7 +74,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const baseMenuItems = [
         { id: "display-recipe-button", label: "Details" },
         { id: "copy-recipe-button", label: "Copy" },
-        { id: "add-my-meal-button", label: "Add as My Meal"}
+        { id: "add-my-meal-button", label: "Add as My Meal"},
+        { id: "add-family-meal-button", label: "Add as Family Meal"}
     ];
     
     const ownerMenuItems = [
@@ -97,10 +99,17 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             case "copy-recipe-button":
                 navigate(`/recipe-add/${recipe.id}`);
                 break
-            case "add-meal-button":
+            case "add-my-meal-button":
                 setMode("Add");
                 setModalShow(true);
                 setSelectedRecipe(recipe);
+                setFormType("recipe");
+                break
+            case "add-family-meal-button":
+                // setMode("Add");
+                // setModalShow(true);
+                // setSelectedRecipe(recipe);
+                // setFormType("family");
                 break
             default:
                 break

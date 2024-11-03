@@ -33,7 +33,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
     return (
         <Popup
             customclass="meal-form"
-            show={modalShow}
+            show={modalShow && (formType=="recipe" || formType=="school-meal")}
             onHide={() => { setModalShow(false); resetMealContext();  }}
             title={`${mode} Meal`}
             body="">
