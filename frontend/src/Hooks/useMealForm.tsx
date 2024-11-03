@@ -23,6 +23,7 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
         errorMessages,
         setErrorMessages,
         formType,
+        isFromRecipeList,
     } = useMeal();
     
     useEffect(() => {
@@ -52,16 +53,14 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
     };
 
     const handleRecipeSelection = () => {
-        if (selectedRecipe) {
+        if (!isFromRecipeList && selectedRecipe) {
             setRecipeName(selectedRecipe.name ? selectedRecipe.name : "");
             setModalShow(true);
         }
     }
 
-
-
     const validateForm = (): boolean => {
-        if (formType === "recipe" && !mealNotes.trim() && !selectedRecipe && !recipeName) {
+        if (formType !== "school-meal" && !mealNotes.trim() && !selectedRecipe && !recipeName) {
             const errorMessage = "Please enter notes or select a recipe.";
             setStatus("error");
             setErrorMessages([...errorMessages, errorMessage]);
@@ -75,7 +74,7 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
             return false;
         }
 
-        if (formType === "recipe" && !selectedMealType) {
+        if (formType !== "school-meal" && !selectedMealType) {
             const errorMessage = "Please choose a meal type. ";
             setStatus("error");
             setErrorMessages([...errorMessages, errorMessage]);
@@ -101,12 +100,12 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
         setErrorMessages([]);
 
         const meal: MealDetailsInterface = {
-            familyId: isForFamily? selectedFamily?.familyId : 0,
+            familyId: formType === "family" ? selectedFamily?.familyId : 0,
             date: mealDate,
             notes: mealNotes,
-            mealType: formType === "recipe" ? selectedMealType : "Lunch",
+            mealType: formType !== "school-meal" ? selectedMealType : "Lunch",
             schoolMealId: formType === "school-meal" ? schoolMealId : 0,
-            ...(formType === "recipe" && selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
+            ...(formType !== "school-meal" && selectedRecipe ? { recipeId: selectedRecipe.id } : {}),
         }
 
         if (mode === "Add") {

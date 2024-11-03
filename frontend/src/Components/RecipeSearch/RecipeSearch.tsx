@@ -6,9 +6,10 @@ import { useMeal } from "../MealContext/MealContext";
 
 interface RecipeSearchProps {
   isFromMealForm: boolean;
+  isReadOnly: boolean;
 }
 
-const RecipeSearch: React.FC<RecipeSearchProps> = ({ isFromMealForm }) => {
+const RecipeSearch: React.FC<RecipeSearchProps> = ({ isFromMealForm, isReadOnly }) => {
   const {
     recipeName,
   } = useMeal();
@@ -29,16 +30,25 @@ const RecipeSearch: React.FC<RecipeSearchProps> = ({ isFromMealForm }) => {
       <InputGroup.Text className="recipe-search-icon-box">
         <FaSearch className="recipe-search-icon" />
       </InputGroup.Text>
-      <Form.Control
+      {!isReadOnly && <Form.Control
         className="recipe-search-box"
         placeholder="Search Recipe"
         aria-label="Search"
         onChange={handleChange}
         value={searchValue}
+      />}
+      {isReadOnly && <Form.Control
+        className="recipe-search-box"
+        placeholder="Search Recipe"
+        aria-label="Search"
+        onChange={handleChange}
+        value={searchValue}
+        readOnly
       />
-      <Button className="custom-button" onClick={() => navigate(`/recipes-search/${searchValue}`, { state: { isFromMealForm } })}>
+      }
+      {!isReadOnly && <Button className="custom-button" onClick={() => navigate(`/recipes-search/${searchValue}`, { state: { isFromMealForm } })}>
         Search
-      </Button>
+      </Button>}
     </InputGroup>
   );
 }

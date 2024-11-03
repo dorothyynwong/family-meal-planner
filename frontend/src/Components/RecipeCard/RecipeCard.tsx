@@ -60,7 +60,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
-    const { setSelectedRecipe } = useMeal();
+    const { 
+        setSelectedRecipe,
+        setModalShow,
+        setMode, 
+        setFormType,
+        setIsFromRecipeList,
+        setRecipeName,
+    } = useMeal();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -69,7 +76,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const baseMenuItems = [
         { id: "display-recipe-button", label: "Details" },
         { id: "copy-recipe-button", label: "Copy" },
-        { id: "add-meal-button", label: "Add as Meal"}
+        { id: "add-my-meal-button", label: "Add as My Meal"},
+        { id: "add-family-meal-button", label: "Add as Family Meal"}
     ];
     
     const ownerMenuItems = [
@@ -93,10 +101,21 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             case "copy-recipe-button":
                 navigate(`/recipe-add/${recipe.id}`);
                 break
-            case "add-meal-button":
-                // setMode("Add");
-                // setModalShow(true);
-                // setSelectedRecipe(recipe);
+            case "add-my-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipe);
+                setFormType("recipe");
+                setIsFromRecipeList(true);
+                setRecipeName(recipe.name ? recipe.name : recipe.notes ? recipe.notes : "");
+                break
+            case "add-family-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipe);
+                setFormType("family");
+                setIsFromRecipeList(true);
+                setRecipeName(recipe.name ? recipe.name : recipe.notes ? recipe.notes : "");
                 break
             default:
                 break
