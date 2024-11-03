@@ -29,8 +29,11 @@ const RecipesSearchResult: React.FC = () => {
                 }
                 query={`RecipeName=${debouncedSearchValue}`}
             />
+            {!isFromMealForm && 
+            (<>
             <MealForm />
             <FamilyMealForm />
+            </>)}
         </>
     );
 }
