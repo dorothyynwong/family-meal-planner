@@ -24,6 +24,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
         errorMessages,
         formType,
         setFormType,
+        isFromRecipeList,
     } = useMeal();
 
     const { handleSubmit} = useMealForm(isForFamily, selectedDate);
@@ -42,11 +43,12 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
                     mealFormType={formType} 
                     setMealFormType={setFormType}
                 />
-                
-                {formType == "recipe" ?
-                    <RecipeSearch isFromMealForm={isFromMealForm}  />
-                :
-                    <SchoolMenuSelect />
+
+                {
+                    // !isFromRecipeList ? 
+                        formType === "recipe" ? <RecipeSearch isFromMealForm={isFromMealForm} isReadOnly={isFromRecipeList} /> : <SchoolMenuSelect /> 
+                    // : 
+                    // <></>
                 }
                 <MealFormBase />
                 <StatusHandler

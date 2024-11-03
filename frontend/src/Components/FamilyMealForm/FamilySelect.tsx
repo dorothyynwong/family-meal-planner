@@ -18,8 +18,6 @@ const FamilySelect: React.FC<FamilySelectProps> = ({ data }) => {
     const initialValue = familiesAsCook[0]?.familyId;
     const [value, setValue] = useState<number>(selectedFamily ? selectedFamily?.familyId : initialValue);
 
-
-
     const handleChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
         const value = parseInt(event.target.value, 10);
         if (isNaN(value)) {

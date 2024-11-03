@@ -23,6 +23,7 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
         errorMessages,
         setErrorMessages,
         formType,
+        isFromRecipeList,
     } = useMeal();
     
     useEffect(() => {
@@ -52,13 +53,11 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
     };
 
     const handleRecipeSelection = () => {
-        if (selectedRecipe) {
+        if (!isFromRecipeList && selectedRecipe) {
             setRecipeName(selectedRecipe.name ? selectedRecipe.name : "");
             setModalShow(true);
         }
     }
-
-
 
     const validateForm = (): boolean => {
         if (formType !== "school-meal" && !mealNotes.trim() && !selectedRecipe && !recipeName) {
@@ -101,7 +100,7 @@ function useMealForm(isForFamily?: boolean, selectedDate?: Dayjs) {
         setErrorMessages([]);
 
         const meal: MealDetailsInterface = {
-            familyId: isForFamily? selectedFamily?.familyId : 0,
+            familyId: formType === "family" ? selectedFamily?.familyId : 0,
             date: mealDate,
             notes: mealNotes,
             mealType: formType !== "school-meal" ? selectedMealType : "Lunch",

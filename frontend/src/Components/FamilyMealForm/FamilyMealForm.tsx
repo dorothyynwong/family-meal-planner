@@ -27,7 +27,7 @@ const FamilyMealForm: React.FC<FamilyMealFormProps> = ({ isForFamily, selectedDa
         formType,
         setStatus,
         setErrorMessages,
-        // selectedFamily,
+        isFromRecipeList,
     } = useMeal();
 
     const { handleSubmit } = useMealForm(isForFamily, selectedDate);
@@ -60,15 +60,8 @@ const FamilyMealForm: React.FC<FamilyMealFormProps> = ({ isForFamily, selectedDa
             title={`${mode} Meal`}
             body="">
             <Form onSubmit={handleSubmit}>
-                {/* <Form.Group className="mb-3" controlId="meal-family-name">
-                    <Form.Control
-                        type="text"
-                        className="mt-3 meal-family-name"
-                        readOnly
-                        placeholder={selectedFamily?.familyName} />
-                </Form.Group> */}
                 <FamilySelect data={familyUsersList}/>
-                <RecipeSearch isFromMealForm={isFromMealForm}/>
+                <RecipeSearch isFromMealForm={isFromMealForm} isReadOnly={isFromRecipeList}/>
                 <MealFormBase isForFamily={isForFamily} selectedDate={selectedDate} />
                 <StatusHandler
                     status={status}
