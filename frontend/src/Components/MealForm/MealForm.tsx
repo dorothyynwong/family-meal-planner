@@ -15,7 +15,7 @@ interface MealFormProps {
     selectedDate?: Dayjs
 }
 
-const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
+const MealForm: React.FC<MealFormProps> = ({ selectedDate}) => {
     const { mode,
         modalShow,
         setModalShow,
@@ -27,7 +27,7 @@ const MealForm: React.FC<MealFormProps> = ({ isForFamily, selectedDate}) => {
         isFromRecipeList,
     } = useMeal();
 
-    const { handleSubmit} = useMealForm(isForFamily, selectedDate);
+    const { handleSubmit} = useMealForm(selectedDate);
 
     const isFromMealForm = true;
 

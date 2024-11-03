@@ -30,7 +30,7 @@ const FamilyMealForm: React.FC<FamilyMealFormProps> = ({ isForFamily, selectedDa
         isFromRecipeList,
     } = useMeal();
 
-    const { handleSubmit } = useMealForm(isForFamily, selectedDate);
+    const { handleSubmit } = useMealForm(selectedDate);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
 
     useEffect(() => {
