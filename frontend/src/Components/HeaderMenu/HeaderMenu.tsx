@@ -8,7 +8,7 @@ const HeadMenu: React.FC = () => {
 
     return (
         <Link to={"/user-edit"} className="custom-nav-link">
-            <Avatar name={nickname} color={avatarColor} fgColor={avatarFgColor} size="50" round={true} />
+            <Avatar name={nickname} color={avatarColor != "" ? avatarColor : "#796C50" } fgColor={avatarFgColor} size="50" round={true} />
         </Link>
     );
 };
