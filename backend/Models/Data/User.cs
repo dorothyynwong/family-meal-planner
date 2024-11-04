@@ -9,4 +9,7 @@ public class User : IdentityUser<int>
     public string Nickname { get; set; }
 
     public ICollection<FamilyUser> FamilyUsers { get; set; }
+    public string? AvatarColor {get; set;}
+    public string? AvatarUrl {get; set;}
+    public string? AvatarFgColor {get; set;}
 }
