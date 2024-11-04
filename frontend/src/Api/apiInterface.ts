@@ -54,6 +54,7 @@ export interface UserSignupInterface {
     familycode?: string;
     avatarColor?: string;
     avatarUrl?: string;
+    avatarFgColor?: string;
 }
 
 export interface FamilyInterface {
@@ -78,7 +79,8 @@ export interface FamilyUserInterface {
     familyRole: string,
     isApproved: boolean,
     avatarColor: string,
-    avatarUrl: string
+    avatarUrl: string,
+    avatarFgColor: string
 }
 
 export interface FamilyWithUsersInterface {
@@ -131,6 +133,7 @@ export interface UserLoginResponseInterface {
     nickname: string;
     avatarColor: string;
     avatarUrl: string;
+    avatarFgColor: string;
 }
 
 export interface RecipeSearchInterface {

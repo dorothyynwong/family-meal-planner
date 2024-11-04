@@ -6,5 +6,6 @@ public class UserUpdateRequest
 {
     public string? Nickname { get; set; }
     public string? AvatarColor { get; set; }
-    public string? AvatarUrl    { get; set; }
+    public string? AvatarUrl { get; set; }
+    public string? AvatarFgColor {get; set;}
 }

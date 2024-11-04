@@ -11,6 +11,8 @@ type AuthContextType = {
   setAvatarColor: (newColor: string) => void;
   avatarUrl: string;
   setAvatarUrl: (newUrl: string) => void;
+  avatarFgColor: string;
+  setAvatarFgColor: (newColor: string) => void;
   logUserIn: (data: UserLoginResponseInterface) => void;
   logUserOut: () => void;
 };
@@ -23,7 +25,6 @@ const AuthContext: Context<AuthContextType | null> =
   createContext<AuthContextType | null>(null);
 
 export const AuthProvider = ({ children }: AuthContextPropsType) => {
-  // const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [isAuthenticated, setIsAuthenticated] = useState(
     () => JSON.parse(localStorage.getItem('isAuthenticated') || 'false')
   );
@@ -31,16 +32,19 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
   const [nickname, setNickname] = useState("");
   const [avatarColor, setAvatarColor] = useState("");
   const [avatarUrl, setAvatarUrl] = useState("");
+  const [avatarFgColor, setAvatarFgColor] = useState("");
 
   const logUserIn = (data: UserLoginResponseInterface) => {
     setIsAuthenticated(true);
     setNickname(data.nickname);
     setAvatarColor(data.avatarColor);
     setAvatarUrl(data.avatarUrl);
+    setAvatarFgColor(data.avatarFgColor);
     localStorage.setItem('isAuthenticated', JSON.stringify(true));
     localStorage.setItem('nickname', data.nickname);
     localStorage.setItem('avatarColor', data.avatarColor);
     localStorage.setItem('avatarUrl', data.avatarUrl);
+    localStorage.setItem('avatarFgColor', data.avatarFgColor);
   };
 
   const logUserOut = () => {
@@ -53,9 +57,11 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
     localStorage.setItem('nickname', '');
     localStorage.setItem('avatarColor', '');
     localStorage.setItem('avatarUrl', '');
+    localStorage.setItem('avatarFgColor', '');
     setNickname("");
     setAvatarColor("");
     setAvatarUrl("");
+    setAvatarFgColor("");
   };
 
   useEffect(() => {
@@ -74,6 +80,8 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
                                       setAvatarColor, 
                                       avatarUrl, 
                                       setAvatarUrl, 
+                                      avatarFgColor,
+                                      setAvatarFgColor,
                                       logUserIn, 
                                       logUserOut }}>
         {children}

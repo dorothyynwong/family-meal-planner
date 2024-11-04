@@ -20,6 +20,7 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
         familycode: "",
         avatarColor: "",
         avatarUrl: "",
+        avatarFgColor: "",
     });
     const navigate = useNavigate();
 
@@ -85,6 +86,10 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
             <Form.Group className="mb-3" controlId="user-avatarColor">
                 <Form.Label>Avatar Color</Form.Label>
                 <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Color" name="avatarColor" value={signupData.avatarColor || ""} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="user-avatarFgColor">
+                <Form.Label>Avatar Font Color</Form.Label>
+                <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Font Color" name="avatarFgColor" value={signupData.avatarFgColor || ""} onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarUrl">
                 <Form.Label>Avatar Url</Form.Label>
