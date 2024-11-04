@@ -24,13 +24,13 @@ const MealPlanMonthly: React.FC = () => {
 
     const handleClick = () => {
         setMode("Add");
-        setFormType("recipe");
         setModalShow(true);
     }
 
     useEffect(() => {
         setMealDate(todaysDate.toISOString().slice(0, 10));
         setModalShow(false);
+        setFormType("recipe");
     },[]);
 
     useEffect(() => {
