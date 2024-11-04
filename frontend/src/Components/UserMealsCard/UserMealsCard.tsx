@@ -1,7 +1,6 @@
 import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
-import { red } from "@mui/material/colors";
 import MealDaily from "../MealDaily/MealDaily";
 import { FamilyUserInterface } from "../../Api/apiInterface";
 import Avatar from "react-avatar";
