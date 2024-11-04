@@ -1,11 +1,6 @@
 import { Form } from "react-bootstrap";
 import { useMeal } from "../MealContext/MealContext";
 
-// interface MealDateInputProps {
-//   mealDate: string;
-//   setMealDate: (value: string) => void;
-// }
-
 const MealDateInput: React.FC = () => {
   const { mealDate, setMealDate } = useMeal();
 

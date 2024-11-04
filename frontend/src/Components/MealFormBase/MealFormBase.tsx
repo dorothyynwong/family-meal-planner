@@ -14,8 +14,6 @@ const MealFormBase:React.FC<MealFormBaseProps> = ({selectedDate}) => {
     const { mode,
         selectedMealType,
         setSelectedMealType,
-        mealDate,
-        setMealDate,
         mealNotes,
         setMealNotes,
         mealTypes,
@@ -27,7 +25,7 @@ const MealFormBase:React.FC<MealFormBaseProps> = ({selectedDate}) => {
 
     return (
         <>
-            <MealDateInput mealDate={mealDate} setMealDate={setMealDate} />
+            <MealDateInput  />
             
             {formType !== "school-meal" ?
                 <MealTypeSelect mealTypes={mealTypes} selectedMealType={selectedMealType} setSelectedMealType={setSelectedMealType}/>
