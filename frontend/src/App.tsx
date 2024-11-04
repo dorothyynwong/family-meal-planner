@@ -19,6 +19,7 @@ import SchoolMenuEdit from './Pages/SchoolMenuEdit/SchoolMenuEdit';
 import PrivateRoute from './Components/PrivateRoute/PrivateRoute';
 import { createTheme, ThemeProvider } from '@mui/material';
 import RecipesSearchResult from './Pages/RecipesSearchResult/RecipesSearchResult';
+import UserUpdatePage from './Pages/UserUpdatePage/UserUpdatePage';
 
 const theme = createTheme({
   typography: {
@@ -96,6 +97,9 @@ function App() {
 
                   <Route path="/school-menu-edit"
                     element={<SchoolMenuEdit />} />
+
+                  <Route path="/user-edit"
+                    element={<UserUpdatePage />} />
                 </Route>
 
               </Routes>

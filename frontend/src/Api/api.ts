@@ -327,3 +327,21 @@ export async function searchRecipes(query: string, page: number, pageSize: numbe
         throw error; 
     }
 }
+
+export async function updateUser(user: UserSignupInterface) {
+    try {
+        const response: AxiosResponse = await client.put(`/users`, user);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getUser() {
+    try {
+        const response: AxiosResponse = await client.get(`/users`);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}

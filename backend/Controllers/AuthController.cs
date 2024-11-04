@@ -59,6 +59,9 @@ public class AuthController(
                 AccessToken = jwtAuthResult.AccessToken,
                 RefreshToken = jwtAuthResult.RefreshToken.Token,
                 Nickname = matchingUser.Nickname,
+                AvatarColor = matchingUser.AvatarColor,
+                AvatarUrl = matchingUser.AvatarUrl,
+                AvatarFgColor = matchingUser.AvatarFgColor,
             }
         );
     }
@@ -89,6 +92,9 @@ public class AuthController(
                 UserName = userRequest.Email,
                 Nickname = userRequest.Nickname,
                 Email = userRequest.Email,
+                AvatarColor = userRequest.AvatarColor,
+                AvatarUrl = userRequest.AvatarUrl,
+                AvatarFgColor = userRequest.AvatarFgColor,
             };
 
             var result = await _userManager.CreateAsync(user, userRequest.Password);
@@ -110,6 +116,9 @@ public class AuthController(
                 Id = user.Id,
                 Email = user.Email,
                 Nickname = user.Nickname,
+                AvatarColor = user.AvatarColor,
+                AvatarUrl = user.AvatarUrl,
+                AvatarFgColor = user.AvatarFgColor,
             };
 
             if (userRequest.FamilyCode != null && userRequest.FamilyCode != "")

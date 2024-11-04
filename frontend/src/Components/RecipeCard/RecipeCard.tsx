@@ -140,7 +140,7 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
-                    <Avatar name={recipe.addedByUserNickname} size="50" round={true} />
+                    <Avatar name={recipe.addedByUserNickname}  size="50" round={true} />
                 }
                 action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />

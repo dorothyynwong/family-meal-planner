@@ -1,12 +1,15 @@
 import Avatar from "react-avatar";
+import { useAuth } from "../AuthProvider/AuthProvider";
+import { Link } from "react-router-dom";
 
-interface HeadMenuProps {
-    name: string;
-}
 
-const HeadMenu:React.FC<HeadMenuProps> = ({name}) => {
+const HeadMenu: React.FC = () => {
+    const { nickname, avatarColor, avatarFgColor } = useAuth();
+
     return (
-        <Avatar name={name} size="50" round={true} />
+        <Link to={"/user-edit"} className="custom-nav-link">
+            <Avatar name={nickname} color={avatarColor != "" ? avatarColor : "#796C50" } fgColor={avatarFgColor} size="50" round={true} />
+        </Link>
     );
 };
 
