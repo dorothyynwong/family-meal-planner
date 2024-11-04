@@ -1,15 +1,16 @@
 import { Button, Form } from "react-bootstrap"
 import StatusHandler from "../StatusHandler/StatusHandler"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { UserSignupInterface } from "../../Api/apiInterface";
-import { userSignup } from "../../Api/api";
+import { updateUser, userSignup } from "../../Api/api";
 import { useNavigate } from "react-router-dom";
 
 interface UserFormProps {
-    data?: UserSignupInterface
+    data?: UserSignupInterface,
+    mode: string
 }
 
-const UserForm: React.FC<UserFormProps> = ({ data }) => {
+const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [confirmPassword, setConfirmPassword] = useState("");
@@ -22,6 +23,12 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
         avatarUrl: "",
         avatarFgColor: "",
     });
+
+    useEffect(() => {
+        if (data)
+            setSignupData(data);
+    }, [data])
+
     const navigate = useNavigate();
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -40,22 +47,39 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
         setStatus("loading");
         setErrorMessages([]);
 
-        if (signupData.password !== confirmPassword) {
+        if (signupData && signupData.password !== confirmPassword) {
             setErrorMessages([...errorMessages, "Password isn't matched"]);
         }
 
-        userSignup(signupData)
-            .then(response => {
-                if (response.status === 200) {
-                    navigate(`/`);
-                }
-            })
-            .catch(error => {
-                console.log("Error signing up", error);
-                const errorMessage = error?.response?.data?.message || "Error signing up";
-                setStatus("error");
-                setErrorMessages([...errorMessages, errorMessage]);
-            });
+        if (mode == "add") {
+            userSignup(signupData!)
+                .then(response => {
+                    if (response.status === 200) {
+                        navigate(`/`);
+                    }
+                })
+                .catch(error => {
+                    console.log("Error signing up", error);
+                    const errorMessage = error?.response?.data?.message || "Error signing up";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
+        }
+        else {
+            updateUser(signupData!)
+                .then(response => {
+                    if (response.status === 200) {
+                        navigate(`/`);
+                    }
+                })
+                .catch(error => {
+                    console.log("Error updating user", error);
+                    const errorMessage = error?.response?.data?.message || "Error updating user";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
+        }
+
     }
 
     return (
@@ -63,42 +87,117 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
             <StatusHandler
                 status={status}
                 errorMessages={errorMessages}
-                loadingMessage="Signing up ..."
-                successMessage="Signed Up Successfully!"
+                loadingMessage="Signing up / Updating user ..."
+                successMessage="Signed Up / Updated Successfully!"
             ><></>
             </StatusHandler>
-            <Form.Group className="mb-3" controlId="user-email">
-                <Form.Label>Email</Form.Label>
-                <Form.Control required className="custom-form-control" type="email" placeholder="Enter Email" name="email" value={signupData.email || ""} onChange={handleChange} />
-            </Form.Group>
+            {
+                mode == "add" &&
+                <Form.Group className="mb-3" controlId="user-email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        required
+                        className="custom-form-control"
+                        type="email"
+                        placeholder="Enter Email"
+                        name="email"
+                        value={signupData && signupData.email || ""}
+                        onChange={handleChange} />
+                </Form.Group>
+            }
+
+            {
+                mode == "edit" &&
+                <Form.Group className="mb-3" controlId="user-email">
+                    <Form.Label>Email</Form.Label>
+                    <Form.Control
+                        readOnly
+                        className="custom-form-control"
+                        type="email"
+                        name="email"
+                        value={signupData && signupData.email ? signupData.email : ""}
+                        onChange={handleChange} />
+                </Form.Group>
+            }
+
             <Form.Group className="mb-3" controlId="user-password">
                 <Form.Label>Password</Form.Label>
-                <Form.Control required className="custom-form-control" type="password" placeholder="Enter Password" name="password" value={signupData.password || ""} onChange={handleChange} />
+                <Form.Control
+                    required
+                    className="custom-form-control"
+                    type="password"
+                    placeholder="Enter Password"
+                    name="password"
+                    value={signupData.password || ""}
+                    onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-confirm-password">
                 <Form.Label>Confirm Password</Form.Label>
-                <Form.Control required className="custom-form-control" type="password" placeholder="Confirm Password" name="confirmPassword" value={confirmPassword || ""} onChange={handleChange} />
+                <Form.Control
+                    required
+                    className="custom-form-control"
+                    type="password"
+                    placeholder="Confirm Password"
+                    name="confirmPassword"
+                    value={confirmPassword || ""}
+                    onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-nickname">
                 <Form.Label>Nickname</Form.Label>
-                <Form.Control required className="custom-form-control" type="text" placeholder="Enter Nickname" name="nickname" value={signupData.nickname || ""} onChange={handleChange} />
+                <Form.Control
+                    required
+                    className="custom-form-control"
+                    type="text"
+                    placeholder="Enter Nickname"
+                    name="nickname"
+                    value={signupData && signupData.nickname ? signupData.nickname : ""}
+                    onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarColor">
                 <Form.Label>Avatar Color</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Color" name="avatarColor" value={signupData.avatarColor || ""} onChange={handleChange} />
+                <Form.Control
+                    className="custom-form-control"
+                    type="text"
+                    placeholder="Enter Avatar Color"
+                    name="avatarColor"
+                    value={signupData && signupData.avatarColor || ""}
+                    onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarFgColor">
                 <Form.Label>Avatar Font Color</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Font Color" name="avatarFgColor" value={signupData.avatarFgColor || ""} onChange={handleChange} />
+                <Form.Control
+                    className="custom-form-control"
+                    type="text"
+                    placeholder="Enter Avatar Font Color"
+                    name="avatarFgColor"
+                    value={signupData && signupData.avatarFgColor || ""}
+                    onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarUrl">
                 <Form.Label>Avatar Url</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Url" name="avatarUrl" value={signupData.avatarUrl || ""} onChange={handleChange} />
+                <Form.Control
+                    className="custom-form-control"
+                    type="text"
+                    placeholder="Enter Avatar Url"
+                    name="avatarUrl"
+                    value={signupData && signupData.avatarUrl || ""}
+                    onChange={handleChange} />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="user-familycode">
-                <Form.Label>Family Share Code</Form.Label>
-                <Form.Control className="custom-form-control" type="text" placeholder="Enter Family Share Code" name="familycode" value={signupData.familycode || ""} onChange={handleChange} />
-            </Form.Group>
+
+            {
+                mode === "add" &&
+                <Form.Group className="mb-3" controlId="user-familycode">
+                    <Form.Label>Family Share Code</Form.Label>
+                    <Form.Control
+                        className="custom-form-control"
+                        type="text"
+                        placeholder="Enter Family Share Code"
+                        name="familycode"
+                        value={signupData && signupData.familycode || ""}
+                        onChange={handleChange} />
+                </Form.Group>
+            }
+
 
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">

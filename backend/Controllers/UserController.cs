@@ -1,3 +1,4 @@
+using System.Security.Claims;
 using System.Text.Json;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
@@ -17,9 +18,12 @@ public class UserController(IUserService userService) : Controller
 
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
-    [HttpGet("{userId}")]
-    public async Task<IActionResult> GetById([FromRoute] int userId)
+    [HttpGet]
+    public async Task<IActionResult> GetById()
     {
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+        return Unauthorized();
+                
         try
         {
             User user = await _userService.GetUserById(userId);
@@ -48,30 +52,33 @@ public class UserController(IUserService userService) : Controller
 
     }
 
-    [HttpGet]
-    public async Task<IActionResult> GetUserByFamilyId([FromQuery] int familyId)
-    {
-        try
-        {
-            List<UserResponse> userResponses = await _userService.GetUserByFamilyId(familyId);
+    // [HttpGet]
+    // public async Task<IActionResult> GetUserByFamilyId([FromQuery] int familyId)
+    // {
+    //     try
+    //     {
+    //         List<UserResponse> userResponses = await _userService.GetUserByFamilyId(familyId);
             
-            return Ok(userResponses);
-        }
-        catch (Exception ex)
-        {
-            Logger.Error($"Failed to get users of {familyId}: {ex.Message}");
-            return BadRequest($"Unable to get users of {familyId}: {ex.Message}");
-        }
+    //         return Ok(userResponses);
+    //     }
+    //     catch (Exception ex)
+    //     {
+    //         Logger.Error($"Failed to get users of {familyId}: {ex.Message}");
+    //         return BadRequest($"Unable to get users of {familyId}: {ex.Message}");
+    //     }
 
-    }
+    // }
 
-    [HttpPut("{userId}")]
-    public async Task<IActionResult> Update(UserUpdateRequest userRequest, [FromRoute] int userId)
+    [HttpPut]
+    public async Task<IActionResult> Update(UserUpdateRequest userRequest)
     {
         if(!ModelState.IsValid) 
         {
             return BadRequest(ModelState);
         }
+
+        if (!int.TryParse(User.FindFirstValue(ClaimTypes.NameIdentifier), out int userId))
+            return Unauthorized();
 
         try
         {
