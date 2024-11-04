@@ -7,14 +7,18 @@ import DateBar from "../../Components/DateBar/DateBar";
 import dayjs from 'dayjs';
 import FamilyMealsBottomBar from "../../Components/FamilyMealsBottomBar/FamilyMealsBottomBar";
 import FamilyMealForm from "../../Components/FamilyMealForm/FamilyMealForm";
+import { useMeal } from "../../Components/MealContext/MealContext";
   
 const FamilyMealDaily: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
     const [selectedDate, setSelectedDate] = useState(dayjs());
+
+    const {setFormType} = useMeal();
     
     useEffect(() => {
+        setFormType("family");
         setStatus("loading");
         setErrorMessages([]);
         getFamiliesWithUsersByUserId()

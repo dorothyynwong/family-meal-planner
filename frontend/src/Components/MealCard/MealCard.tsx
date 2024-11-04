@@ -10,7 +10,7 @@ interface MealProps {
 }
 
 const MealCard: React.FC<MealProps> = ({ meal, isReadOnly }) => {
-    const { setModalShow, setMealDate, setMealNotes, setSelectedMealType, setCurrentMeal, setRecipeName, setMode } = useMeal();
+    const { setModalShow, setMealDate, setMealNotes, setSelectedMealType, setCurrentMeal, setRecipeName, setMode} = useMeal();
     const navigate = useNavigate();
 
     const handleClick = () => {

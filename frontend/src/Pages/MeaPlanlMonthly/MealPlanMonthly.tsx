@@ -19,13 +19,19 @@ const MealPlanMonthly: React.FC = () => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
-    const { modalShow, setModalShow, setMode } = useMeal();
+    const { modalShow, setModalShow, setMode, setMealDate, setFormType } = useMeal();
     const [convertedEvents, setConvertedEvents] = useState<EventInterface[]>([]);
 
     const handleClick = () => {
         setMode("Add");
         setModalShow(true);
     }
+
+    useEffect(() => {
+        setMealDate(todaysDate.toISOString().slice(0, 10));
+        setModalShow(false);
+        setFormType("recipe");
+    },[]);
 
     useEffect(() => {
         setStatus("loading");
