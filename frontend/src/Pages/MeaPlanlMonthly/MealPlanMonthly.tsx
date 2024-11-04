@@ -115,7 +115,7 @@ const MealPlanMonthly: React.FC = () => {
             {familyUsersList.map((fu, index) => (
                 <FamilyMealsCard
                     key={index}
-                    mealDate={new Date()}
+                    mealDate={selectedDate}
                     data={fu}
                     isReadOnly={true}
                 />

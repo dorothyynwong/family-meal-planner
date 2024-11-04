@@ -68,6 +68,9 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
     const storedAuth = JSON.parse(localStorage.getItem('isAuthenticated') || 'false');
     setIsAuthenticated(storedAuth);
     setNickname(localStorage.getItem('nickname') || '');
+    setAvatarColor(localStorage.getItem('avatarColor') || '');
+    setAvatarUrl(localStorage.getItem('avatarUrl') || '');
+    setAvatarFgColor(localStorage.getItem('avatarFgColor') || '');
   }, []);
 
   return (
