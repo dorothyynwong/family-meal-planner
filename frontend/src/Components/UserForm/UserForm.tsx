@@ -17,7 +17,9 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
         email: "",
         nickname: "",
         password: "",
-        familycode: ""
+        familycode: "",
+        avatarColor: "",
+        avatarUrl: "",
     });
     const navigate = useNavigate();
 
@@ -79,6 +81,14 @@ const UserForm: React.FC<UserFormProps> = ({ data }) => {
             <Form.Group className="mb-3" controlId="user-nickname">
                 <Form.Label>Nickname</Form.Label>
                 <Form.Control required className="custom-form-control" type="text" placeholder="Enter Nickname" name="nickname" value={signupData.nickname || ""} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="user-avatarColor">
+                <Form.Label>Avatar Color</Form.Label>
+                <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Color" name="avatarColor" value={signupData.avatarColor || ""} onChange={handleChange} />
+            </Form.Group>
+            <Form.Group className="mb-3" controlId="user-avatarUrl">
+                <Form.Label>Avatar Url</Form.Label>
+                <Form.Control className="custom-form-control" type="text" placeholder="Enter Avatar Url" name="avatarUrl" value={signupData.avatarUrl || ""} onChange={handleChange} />
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-familycode">
                 <Form.Label>Family Share Code</Form.Label>

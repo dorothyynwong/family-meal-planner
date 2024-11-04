@@ -52,8 +52,8 @@ export interface UserSignupInterface {
     password?: string;
     nickname?: string;
     familycode?: string;
-    avatarcolor?: string;
-    avatarurl?: string;
+    avatarColor?: string;
+    avatarUrl?: string;
 }
 
 export interface FamilyInterface {
@@ -129,8 +129,8 @@ export interface SchoolMenuWeekMealsInterface {
 
 export interface UserLoginResponseInterface {
     nickname: string;
-    avatarcolor: string;
-    avatarurl: string;
+    avatarColor: string;
+    avatarUrl: string;
 }
 
 export interface RecipeSearchInterface {
