@@ -133,6 +133,9 @@ public class FamilyUserService(FamilyMealPlannerContext context, IFamilyService 
                                         UserId = fu2.User.Id,
                                         FamilyRole = fu2.FamilyRole.ToString(),
                                         UserNickName = fu2.User.Nickname,
+                                        AvatarColor = fu2.User.AvatarColor,
+                                        AvatarUrl = fu2.User.AvatarUrl,
+                                        AvatarFgColor = fu2.User.AvatarFgColor
                                     }).ToList()
                                 })
                                 .ToList();
