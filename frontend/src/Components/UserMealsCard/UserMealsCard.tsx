@@ -4,7 +4,6 @@ import { useState } from "react";
 import MealDaily from "../MealDaily/MealDaily";
 import { FamilyUserInterface } from "../../Api/apiInterface";
 import Avatar from "react-avatar";
-import { useAuth } from "../AuthProvider/AuthProvider";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -41,8 +40,6 @@ const ExpandMore = styled((props: ExpandMoreProps) => {
 }));
 
 const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
-    const { nickname, avatarColor, avatarFgColor } = useAuth();
-    
     const [expanded, setExpanded] = useState(false);
     
     const handleExpandClick = () => {
@@ -54,11 +51,9 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
             <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0.5 }}>
                 <CardHeader
                     avatar={
-                        <Avatar  name={nickname} 
-                                    color={avatarColor != "" ? avatarColor : "#796C50" } 
-                                    fgColor={avatarFgColor} 
-                                    size="50" 
-                                    round={true}/>
+                        <Avatar  name={data.userNickName} 
+                                    color={data.avatarColor != "" ? data.avatarColor : "#796C50" } 
+                                    fgColor={data.avatarFgColor} size="50" round={true}/>
                     }
                     title={data.userNickName}
                     sx={{p:0, mx:0 }}
