@@ -6,6 +6,11 @@ type AuthContextType = {
   isAuthenticated: boolean;
   setIsAuthenticated: (newStatus: boolean) => void;
   nickname: string;
+  setNickname: (newNickname: string) => void;
+  avatarColor: string;
+  setAvatarColor: (newColor: string) => void;
+  avatarUrl: string;
+  setAvatarUrl: (newUrl: string) => void;
   logUserIn: (data: UserLoginResponseInterface) => void;
   logUserOut: () => void;
 };
@@ -24,12 +29,18 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
   );
 
   const [nickname, setNickname] = useState("");
+  const [avatarColor, setAvatarColor] = useState("");
+  const [avatarUrl, setAvatarUrl] = useState("");
 
   const logUserIn = (data: UserLoginResponseInterface) => {
     setIsAuthenticated(true);
     setNickname(data.nickname);
+    setAvatarColor(data.avatarColor);
+    setAvatarUrl(data.avatarUrl);
     localStorage.setItem('isAuthenticated', JSON.stringify(true));
     localStorage.setItem('nickname', data.nickname);
+    localStorage.setItem('avatarColor', data.avatarColor);
+    localStorage.setItem('avatarUrl', data.avatarUrl);
   };
 
   const logUserOut = () => {
@@ -40,7 +51,11 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
     setIsAuthenticated(false);
     localStorage.setItem('isAuthenticated', JSON.stringify(false));
     localStorage.setItem('nickname', '');
+    localStorage.setItem('avatarColor', '');
+    localStorage.setItem('avatarUrl', '');
     setNickname("");
+    setAvatarColor("");
+    setAvatarUrl("");
   };
 
   useEffect(() => {
@@ -51,7 +66,16 @@ export const AuthProvider = ({ children }: AuthContextPropsType) => {
 
   return (
     <>
-      <AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated, nickname, logUserIn, logUserOut }}>
+      <AuthContext.Provider value={{ isAuthenticated, 
+                                      setIsAuthenticated, 
+                                      nickname, 
+                                      setNickname,
+                                      avatarColor, 
+                                      setAvatarColor, 
+                                      avatarUrl, 
+                                      setAvatarUrl, 
+                                      logUserIn, 
+                                      logUserOut }}>
         {children}
       </AuthContext.Provider>
     </>
