@@ -2,8 +2,9 @@ import { Button, Form } from "react-bootstrap"
 import StatusHandler from "../StatusHandler/StatusHandler"
 import { useEffect, useState } from "react";
 import { UserSignupInterface } from "../../Api/apiInterface";
-import { updateUser, userSignup } from "../../Api/api";
+import { updateUser, userLogin, userSignup } from "../../Api/api";
 import { useNavigate } from "react-router-dom";
+import { useAuth } from "../AuthProvider/AuthProvider";
 
 interface UserFormProps {
     data?: UserSignupInterface,
@@ -24,6 +25,8 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
         avatarFgColor: "",
     });
 
+    const {logUserIn} = useAuth();
+    
     useEffect(() => {
         if (data)
             setSignupData(data);
@@ -68,8 +71,25 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
         else {
             updateUser(signupData!)
                 .then(response => {
+                    setSignupData(response.data);
                     if (response.status === 200) {
-                        navigate(`/`);
+                        if (signupData && signupData.email && signupData.password) {
+                            userLogin(signupData.email, signupData.password)
+                                .then(response => {
+                                    if (response.status === 200) {
+                                        logUserIn(response.data);
+                                        navigate(`/home`);
+                                        setStatus("success");
+                                        console.log(status);
+                                    }
+                                })
+                                .catch(error => {
+                                    console.log("Error login", error);
+                                    const errorMessage = error?.response?.data?.message || "Error login";
+                                    setStatus("error");
+                                    setErrorMessages([...errorMessages, errorMessage]);
+                                });
+                        }
                     }
                 })
                 .catch(error => {
