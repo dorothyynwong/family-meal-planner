@@ -11,5 +11,7 @@ public class UserLoginResponse
     public string RefreshToken {get; set;}
 
     public string? Nickname {get; set;}
+    public string? AvatarColor {get; set;}
+    public string? AvatarUrl {get; set;}
 
 }

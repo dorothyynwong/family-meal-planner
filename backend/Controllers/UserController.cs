@@ -34,6 +34,8 @@ public class UserController(IUserService userService) : Controller
                 Id = userId,
                 Email = user.Email,
                 Nickname = user.Nickname,
+                AvatarColor = user.AvatarColor,
+                AvatarUrl = user.AvatarUrl
             };
 
             return Ok(userResponse);

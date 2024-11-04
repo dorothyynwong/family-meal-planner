@@ -56,9 +56,9 @@ public class UserServiceTests
 
     private async Task SeedDatabaseAsync(FamilyMealPlannerContext context)
     {
-        var user1 = new User { Email = "user1@abc.com", UserName = "user1@abc.com", Nickname = "user1" };
-        var user2 = new User { Email = "user2@abc.com", UserName = "user2@abc.com", Nickname = "user2" };
-        var user3 = new User { Email = "user3@abc.com", UserName = "user3@abc.com", Nickname = "user3" };
+        var user1 = new User { Email = "user1@abc.com", UserName = "user1@abc.com", Nickname = "user1", AvatarColor="#FFFFFF", AvatarUrl="http://abc.jpg" };
+        var user2 = new User { Email = "user2@abc.com", UserName = "user2@abc.com", Nickname = "user2", AvatarColor="#000000", AvatarUrl="http://def.jpg" };
+        var user3 = new User { Email = "user3@abc.com", UserName = "user3@abc.com", Nickname = "user3", AvatarColor="#EEEEEE", AvatarUrl="http://ghi.jpg"  };
         var password = "Pa$$word1";
 
         await _userManager.CreateAsync(user1, password);
@@ -96,6 +96,8 @@ public class UserServiceTests
         user.Id.Should().Be(2);
         user.Email.Should().Be("user2@abc.com");
         user.Nickname.Should().Be("user2");
+        user.AvatarColor.Should().Be("#000000");
+        user.AvatarUrl.Should().Be("http://def.jpg");
     }
 
     [Test]
@@ -111,6 +113,10 @@ public class UserServiceTests
         user2.Email.Should().Be("user2@abc.com");
         user1.Nickname.Should().Be("user1");
         user2.Nickname.Should().Be("user2");
+        user1.AvatarColor.Should().Be("#FFFFFF");
+        user2.AvatarColor.Should().Be("#000000");
+        user1.AvatarUrl.Should().Be("http://abc.jpg");
+        user2.AvatarUrl.Should().Be("http://def.jpg");
     }
 
     [Test]
@@ -127,6 +133,8 @@ public class UserServiceTests
 
         newUser.Id.Should().Be(userId);
         newUser.Nickname.Should().Be("user1_updated");
+        newUser.AvatarColor.Should().Be("#FFFFFF");
+        newUser.AvatarUrl.Should().Be("http://abc.jpg");
         newUser.Email.Should().Be("user1@abc.com");
         newUser.UserName.Should().Be("user1@abc.com");
     }

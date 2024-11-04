@@ -51,6 +51,8 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
                 Id = user.Id,
                 Email = user.Email,
                 Nickname = user.Nickname,
+                AvatarColor = user.AvatarColor,
+                AvatarUrl = user.AvatarUrl
             };
             userResponses.Add(userResponse);
         }
@@ -64,7 +66,9 @@ public class UserService(FamilyMealPlannerContext context) : IUserService
         {
             User user = await GetUserById(userId);
             user.Id = userId;
-            user.Nickname = userRequest.Nickname;
+            user.Nickname = userRequest.Nickname != null && userRequest.Nickname != "" ? userRequest.Nickname : userRequest.Nickname;
+            user.AvatarColor = userRequest.AvatarColor != null && userRequest.AvatarColor != "" ? userRequest.AvatarColor : user.AvatarColor;
+            user.AvatarUrl = userRequest.AvatarUrl != null && userRequest.AvatarUrl != "" ? userRequest.AvatarUrl : user.AvatarUrl;
 
             _context.Users.Update(user);
             await _context.SaveChangesAsync();
