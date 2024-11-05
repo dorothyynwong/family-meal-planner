@@ -5,6 +5,7 @@ import { UserSignupInterface } from "../../Api/apiInterface";
 import { updateUser, userLogin, userSignup } from "../../Api/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import ColorPicker from "../ColorPicker/ColorPicker";
 
 interface UserFormProps {
     data?: UserSignupInterface,
@@ -15,6 +16,8 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [selectedBgColor, setSelectedBgColor] = useState("#FFFFFF");
+    const [selectedFgColor, setSelectedFgColor] = useState("#000000");
     const [signupData, setSignupData] = useState<UserSignupInterface>(data ? data : {
         email: "",
         nickname: "",
@@ -175,23 +178,25 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarColor">
                 <Form.Label>Avatar Color</Form.Label>
-                <Form.Control
+                <ColorPicker selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor}/>
+                {/* <Form.Control
                     className="custom-form-control"
                     type="text"
                     placeholder="Enter Avatar Color"
                     name="avatarColor"
                     value={signupData && signupData.avatarColor || ""}
-                    onChange={handleChange} />
+                    onChange={handleChange} /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarFgColor">
                 <Form.Label>Avatar Font Color</Form.Label>
-                <Form.Control
+                <ColorPicker selectedColor={selectedFgColor} setSelectedColor={setSelectedFgColor}/>
+                {/* <Form.Control
                     className="custom-form-control"
                     type="text"
                     placeholder="Enter Avatar Font Color"
                     name="avatarFgColor"
                     value={signupData && signupData.avatarFgColor || ""}
-                    onChange={handleChange} />
+                    onChange={handleChange} /> */}
             </Form.Group>
             <Form.Group className="mb-3" controlId="user-avatarUrl">
                 <Form.Label>Avatar Url</Form.Label>
