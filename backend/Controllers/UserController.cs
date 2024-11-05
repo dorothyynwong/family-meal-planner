@@ -39,6 +39,7 @@ public class UserController(IUserService userService) : Controller
                 Email = user.Email,
                 Nickname = user.Nickname,
                 AvatarColor = user.AvatarColor,
+                AvatarFgColor = user.AvatarFgColor,
                 AvatarUrl = user.AvatarUrl
             };
 
