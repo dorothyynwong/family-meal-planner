@@ -1,10 +1,12 @@
-import { Button, Form } from "react-bootstrap"
+import { Button, Col, Form, Row } from "react-bootstrap"
 import StatusHandler from "../StatusHandler/StatusHandler"
 import { useEffect, useState } from "react";
 import { UserSignupInterface } from "../../Api/apiInterface";
 import { updateUser, userLogin, userSignup } from "../../Api/api";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../AuthProvider/AuthProvider";
+import ColorPicker from "../ColorPicker/ColorPicker";
+import Avatar from "react-avatar";
 
 interface UserFormProps {
     data?: UserSignupInterface,
@@ -15,6 +17,8 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [confirmPassword, setConfirmPassword] = useState("");
+    const [selectedBgColor, setSelectedBgColor] = useState("#000000");
+    const [selectedFgColor, setSelectedFgColor] = useState("#FFFFFF");
     const [signupData, setSignupData] = useState<UserSignupInterface>(data ? data : {
         email: "",
         nickname: "",
@@ -25,12 +29,20 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
         avatarFgColor: "",
     });
 
-    const {logUserIn} = useAuth();
-    
+    const { logUserIn, nickname } = useAuth();
+
     useEffect(() => {
-        if (data)
+        if (data) {
             setSignupData(data);
+            setSelectedBgColor(data.avatarColor || "#000000");
+            setSelectedFgColor(data.avatarFgColor || "#FFFFFF");
+        }
+
     }, [data])
+
+    useEffect(() => {
+        setSignupData({ ...signupData, avatarColor: selectedBgColor, avatarFgColor: selectedFgColor })
+    }, [selectedBgColor, selectedFgColor])
 
     const navigate = useNavigate();
 
@@ -173,26 +185,24 @@ const UserForm: React.FC<UserFormProps> = ({ data, mode }) => {
                     value={signupData && signupData.nickname ? signupData.nickname : ""}
                     onChange={handleChange} />
             </Form.Group>
-            <Form.Group className="mb-3" controlId="user-avatarColor">
-                <Form.Label>Avatar Color</Form.Label>
-                <Form.Control
-                    className="custom-form-control"
-                    type="text"
-                    placeholder="Enter Avatar Color"
-                    name="avatarColor"
-                    value={signupData && signupData.avatarColor || ""}
-                    onChange={handleChange} />
-            </Form.Group>
-            <Form.Group className="mb-3" controlId="user-avatarFgColor">
-                <Form.Label>Avatar Font Color</Form.Label>
-                <Form.Control
-                    className="custom-form-control"
-                    type="text"
-                    placeholder="Enter Avatar Font Color"
-                    name="avatarFgColor"
-                    value={signupData && signupData.avatarFgColor || ""}
-                    onChange={handleChange} />
-            </Form.Group>
+            <Row>
+                <Col xs="8">
+                    <Form.Group className="mb-3" controlId="user-avatarColor">
+                        <Form.Label>Avatar Background</Form.Label>
+                        <ColorPicker selectedColor={selectedBgColor} setSelectedColor={setSelectedBgColor} />
+                    </Form.Group>
+                    <Form.Group className="mb-3" controlId="user-avatarFgColor">
+                        <Form.Label>Avatar Foreground</Form.Label>
+                        <ColorPicker selectedColor={selectedFgColor} setSelectedColor={setSelectedFgColor} />
+                    </Form.Group>
+                </Col>
+            
+                <Col>
+                    <Form.Label>New Avatar</Form.Label>
+                    <Avatar name={nickname} color={selectedBgColor} fgColor={selectedFgColor} size="50" round={true} />
+                </Col>
+            </Row>
+
             <Form.Group className="mb-3" controlId="user-avatarUrl">
                 <Form.Label>Avatar Url</Form.Label>
                 <Form.Control
