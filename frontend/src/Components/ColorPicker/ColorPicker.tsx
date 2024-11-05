@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Button } from 'react-bootstrap';
 import { ChromePicker, ColorResult } from 'react-color';
 
 interface ColorPickerProps {
@@ -56,13 +57,13 @@ const ButtonExample: React.FC<ColorPickerProps> = ({ selectedColor, setSelectedC
 
     return (
         <div>
-            <button
+            <Button
                 onClick={handleClick}
-                className="px-4 py-2 text-white rounded"
+                className="custom-button"
                 style={{ backgroundColor: selectedColor }}
             >
                 Pick a Color
-            </button>
+            </Button>
             {displayColorPicker && (
                 <div style={popover}>
                     <div style={cover} onClick={handleClose} />
