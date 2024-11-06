@@ -8,6 +8,7 @@ import { useState } from "react";
 import useDebounce from "../../Hooks/useDebounce";
 import MealForm from "../../Components/MealForm/MealForm";
 import FamilyMealForm from "../../Components/FamilyMealForm/FamilyMealForm";
+import GoTopButton from "../../Components/GoTopButton/GoTopButton";
 
 const RecipesSearchResult: React.FC = () => {
     const location = useLocation();
@@ -33,6 +34,7 @@ const RecipesSearchResult: React.FC = () => {
             (<>
             <MealForm />
             <FamilyMealForm />
+            <GoTopButton />
             </>)}
         </>
     );
