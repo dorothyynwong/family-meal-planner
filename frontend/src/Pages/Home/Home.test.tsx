@@ -1,7 +1,6 @@
-// Imports
 import { describe, it, expect } from 'vitest';
 import { render, screen } from '@testing-library/react';
-import Home from '../Pages/Home/Home';
+import Home from './Home';
 
 describe('Renders home page correctly', async () => {
     it('Should render the page correctly', async () => {
