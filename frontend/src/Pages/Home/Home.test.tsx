@@ -1,13 +1,21 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import Home from './Home';
-import { beforeEach, describe, expect, it, Mock, vi } from 'vitest';
-import { getFamiliesWithUsersByUserId } from '../../Api/api';
+import { afterEach, beforeEach, describe, expect, it,  vi } from 'vitest';
 import { mockFamiliesWithUsers } from '../../__mock__/mockFamiliesWithUsers';
-import axios from 'axios';
+import AxiosMockAdapter from 'axios-mock-adapter';
+import MockAdapter from 'axios-mock-adapter';
+import client from '../../Api/apiClient';
 
 describe('Home Component', () => {
+  let mockAxios: AxiosMockAdapter;
+
   beforeEach(() => {
     vi.clearAllMocks();
+    mockAxios = new MockAdapter(client);
+  });
+
+  afterEach(() => {
+    mockAxios.restore();  // Reset any mocks or interceptors
   });
 
   it('displays loading message initially', () => {
@@ -16,7 +24,8 @@ describe('Home Component', () => {
   });
 
   it('displays family meals after successful API call', async () => {
-    vi.spyOn(axios, 'get').mockResolvedValue(mockFamiliesWithUsers);
+
+    mockAxios.onGet(`/familyUsers/by-user/`).reply(200, mockFamiliesWithUsers);
 
     render(<Home />);
 
