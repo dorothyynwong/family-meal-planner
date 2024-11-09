@@ -1,0 +1,1 @@
+export const mockRoles = ['Cook', 'Eater'];
