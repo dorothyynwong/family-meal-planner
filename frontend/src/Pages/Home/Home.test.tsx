@@ -47,15 +47,12 @@ describe('Home Component', () => {
     expect(headerText).toBeInTheDocument();
   });
 
-  // it('displays an error message if API call fails', async () => {
-  //   (getFamiliesWithUsersByUserId as Mock).mockRejectedValueOnce({
-  //     response: { data: { message: 'Failed to load family meals' } },
-  //   });
+  it('displays an error message if API call fails', async () => {
 
-  //   render(<Home />);
+    render(<Home />);
 
-  //   await waitFor(() => expect(screen.getByText('Error getting family meals')).toBeInTheDocument());
+    await waitFor(() => expect(screen.getByText('Error getting family meals')).toBeInTheDocument());
 
-  //   expect(screen.getByText('Failed to load family meals')).toBeInTheDocument();
-  // });
+    expect(screen.getByText('No meals are planned for today')).toBeInTheDocument();
+  });
 });
