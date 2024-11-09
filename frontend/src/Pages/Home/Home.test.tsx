@@ -1,10 +1,13 @@
 import { render, screen, waitFor } from '@testing-library/react';
 import Home from './Home';
-import { afterEach, beforeEach, describe, expect, it,  vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { mockFamiliesWithUsers } from '../../__mock__/mockFamiliesWithUsers';
 import AxiosMockAdapter from 'axios-mock-adapter';
 import MockAdapter from 'axios-mock-adapter';
 import client from '../../Api/apiClient';
+import { mockMealDetails } from '../../__mock__/mockMealDetails';
+import { MealProvider } from '../../Components/MealContext/MealContext';
+import { MemoryRouter } from 'react-router-dom';
 
 describe('Home Component', () => {
   let mockAxios: AxiosMockAdapter;
@@ -26,12 +29,20 @@ describe('Home Component', () => {
   it('displays family meals after successful API call', async () => {
 
     mockAxios.onGet(`/familyUsers/by-user/`).reply(200, mockFamiliesWithUsers);
+    mockAxios.onGet(`/meals`).reply(200, mockMealDetails);
 
-    render(<Home />);
+    render(
+      <MealProvider>
+        <MemoryRouter>
+          <Home />
+        </MemoryRouter>
+      </MealProvider>
+    );
 
     await waitFor(() => expect(screen.getByText("Today's Feast")).toBeInTheDocument());
-    screen.debug();
-    
+
+    expect(screen.getByText("Lunch")).toBeInTheDocument();
+
     const headerText = screen.getByText(/Feast with The Smith Family/i);
     expect(headerText).toBeInTheDocument();
   });
