@@ -35,7 +35,7 @@ const DateBar: React.FC<DateBarProps> = ({selectedDate, setSelectedDate}) => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={browserLocale}>
-            <AppBar position="static">
+            <AppBar position="static" aria-label="Date Bar">
                 <Toolbar color="primary">
                     <IconButton edge="start" color="inherit" onClick={handlePreviousDate}>
                         <ArrowBackIcon />

@@ -55,6 +55,7 @@ const FamilyMealForm: React.FC<FamilyMealFormProps> = ({ isForFamily, selectedDa
     return (
         <Popup
             customclass="meal-form"
+            aria-label="Family Meal Form"
             show={modalShow && formType=="family"}
             onHide={() => { setModalShow(false); resetMealContext(); }}
             title={`${mode} Meal`}
