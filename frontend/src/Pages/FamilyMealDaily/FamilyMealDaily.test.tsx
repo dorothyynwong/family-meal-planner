@@ -1,4 +1,4 @@
-import { render, screen, waitFor } from '@testing-library/react';
+import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import FamilyMealDaily from './FamilyMealDaily';
 import { MealProvider} from '../../Components/MealContext/MealContext';
 import { getFamiliesWithUsersByUserId, getMealByDateUserId, getMealTypes } from '../../Api/api';
@@ -20,6 +20,8 @@ const mockSetMealDate = vi.fn();
 const mockSetStatus = vi.fn();
 const mockSetErrorMessages = vi.fn();
 const mockSetSelectedFamily = vi.fn();
+const mockSetModalShow = vi.fn();
+const mockSetMode = vi.fn();
 const errorMessages: string[] = [];
 
 vi.mock('../../Components/MealContext/MealContext', () => ({
@@ -29,7 +31,9 @@ vi.mock('../../Components/MealContext/MealContext', () => ({
     setStatus: mockSetStatus,
     errorMessages,
     setErrorMessages: mockSetErrorMessages,
-    setSelectedFamily: mockSetSelectedFamily
+    setSelectedFamily: mockSetSelectedFamily,
+    setModalShow: mockSetModalShow,
+    setMode: mockSetStatus,
   }),
   MealProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
@@ -124,6 +128,10 @@ describe.only('FamilyMealDaily Page', () => {
   });
 
   it('renders DateBar, FamilyMealsBottomBar components', async () => {
+    mockSetMode('Add');
+    mockSetModalShow(true);
+    mockSetFormType('family');
+
     render(
       <MealProvider>
         <MemoryRouter>
@@ -133,5 +141,8 @@ describe.only('FamilyMealDaily Page', () => {
 
     expect(screen.getByLabelText('Date Bar')).toBeInTheDocument();
     expect(screen.getByLabelText('Family Meals Bottom Bar')).toBeInTheDocument();
+
+    fireEvent.click(screen.getByLabelText('Add Meal to Family'));
+    await waitFor(() => expect(screen.getByLabelText('Family Meal Form')).toBeInTheDocument());
   });
 });
