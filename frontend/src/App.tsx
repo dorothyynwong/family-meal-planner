@@ -90,7 +90,7 @@ function App() {
                     element={<Families />} />
 
                   <Route path="/my-families"
-                    element={<FamiliesList data={[]} />} />
+                    element={<FamiliesList />} />
 
                   <Route path="/family-meals"
                     element={<FamilyMealDaily />} />
