@@ -24,7 +24,7 @@ const FamilyMealsBottomBar: React.FC = () => {
         <AppBar position="fixed" color="primary" sx={{ top: 'auto', bottom: 0 }} aria-label="Family Meals Bottom Bar">
             <Toolbar>
                 <StyledFab color="secondary" aria-label="add">
-                    <AddIcon onClick={handleClick}/>
+                    <AddIcon aria-label="Add Meal to Family" onClick={handleClick}/>
                 </StyledFab>
                 <Box sx={{ flexGrow: 1 }} />
             </Toolbar>
