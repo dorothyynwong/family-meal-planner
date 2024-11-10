@@ -21,6 +21,7 @@ const FamilyMealDaily: React.FC = () => {
         setFormType("family");
         setStatus("loading");
         setErrorMessages([]);
+        
         getFamiliesWithUsersByUserId()
             .then(fu => {
                 setFamilyUsersList(fu.data);

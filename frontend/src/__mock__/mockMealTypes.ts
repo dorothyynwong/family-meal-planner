@@ -1,0 +1,1 @@
+export const mockMealTypes = ['Breakfast', 'Lunch', 'Snack', 'Dinner'];
