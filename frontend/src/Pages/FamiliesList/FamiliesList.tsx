@@ -4,11 +4,11 @@ import { getFamiliesWithUsersByUserId, getFamilyRoleTypes } from "../../Api/api"
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import FamilyCard from "../../Components/FamilyCard/FamilyCard";
 
-interface FamiliesListProps {
-    data: FamilyWithUsersInterface[];
-}
+// interface FamiliesListProps {
+//     data: FamilyWithUsersInterface[];
+// }
 
-const FamiliesList: React.FC<FamiliesListProps> = () => {
+const FamiliesList: React.FC = () => {
     const [status, setStatus] = useState<"idle" | "loading" | "success" | "error">("idle");
     const [errorMessages, setErrorMessages] = useState<string[]>([]);
     const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
@@ -17,23 +17,32 @@ const FamiliesList: React.FC<FamiliesListProps> = () => {
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
-        getFamilyRoleTypes().then(response => {
-            const roles = response.data;
-            setFamilyRoles(roles);
-        });
+        getFamilyRoleTypes()
+            .then(response => {
+                const roles = response.data;
+                setFamilyRoles(roles);
 
-        getFamiliesWithUsersByUserId()
-            .then(fu => {
-                setFamilyUsersList(fu.data);
-                setStatus("success");
+                getFamiliesWithUsersByUserId()
+                .then(fu => {
+                    setFamilyUsersList(fu.data);
+                    setStatus("success");
+                })
+                .catch(error => {
+                    console.log("Error getting families with users", error);
+                    const errorMessage = error?.response?.data?.message || "Error getting families with users";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
             })
             .catch(error => {
-                console.log("Error getting families with users", error);
-                const errorMessage = error?.response?.data?.message || "Error getting families with users";
+                console.log("Error fetching roles", error);
+                const errorMessage = error?.response?.data?.message || "Error fetching roles";
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     return (

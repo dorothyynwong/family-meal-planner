@@ -9,7 +9,7 @@ import { mockMealDetails } from '../../__mock__/mockMealDetails';
 import { MealProvider } from '../../Components/MealContext/MealContext';
 import { MemoryRouter } from 'react-router-dom';
 
-describe('Home Component', () => {
+describe('Home Page', () => {
   let mockAxios: AxiosMockAdapter;
 
   beforeEach(() => {
