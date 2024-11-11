@@ -18,6 +18,7 @@ const FamilyMealsBottomBar: React.FC = () => {
         setMode("Add");
         setModalShow(true);
         setFormType("family");
+        console.log('handleClick');
     }
 
     return (
