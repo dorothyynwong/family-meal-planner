@@ -22,7 +22,6 @@ const mockSetErrorMessages = vi.fn();
 const mockSetSelectedFamily = vi.fn();
 const mockSetModalShow = vi.fn();
 const mockSetMealTypes = vi.fn();
-// const mockSetMode = vi.fn();
 const errorMessages: string[] = [];
 const mockModalShow = true;
 const mockMode = true;
