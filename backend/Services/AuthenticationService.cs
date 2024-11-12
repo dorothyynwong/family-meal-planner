@@ -1,9 +1,11 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using System.Security.Cryptography;
 using System.Text;
 using FamilyMealPlanner.Models;
 using FamilyMealPlanner.Models.Data;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using NLog;
 
@@ -16,56 +18,133 @@ public interface IAuthenticationService
     Task<JwtAuthResultViewModel> AuthenticateUserAsync(User user, string password);
     Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> claims, DateTime now);
     Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email);
+    Task<bool> ValidateAccessToken(string accessToken);
+    Task RevokeLastRefreshToken(string refreshTokenString);
 }
 
-public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager) : IAuthenticationService
+public class AuthenticationService(IConfiguration configuration, UserManager<User> userManager, FamilyMealPlannerContext context) : IAuthenticationService
 {
+    private readonly FamilyMealPlannerContext _context = context;
     private readonly IConfiguration _configuration = configuration;
     private readonly UserManager<User> _userManager = userManager;
+    NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
     private int _accessTokenExpiry = int.Parse(configuration["Jwt:AccessTokenExpiryMinutes"]);
     private int _refreshTokenExpiry = int.Parse(configuration["Jwt:RefreshTokenExpiryDays"]);
     private int _emailExpiry = int.Parse(configuration["Jwt:EmailExpiryDays"]);
     private string _issuer = configuration["Jwt_Issuer"];
     private string _audience = configuration["Jwt_Audience"];
-    private string _appName = configuration["Jwt_AppName"];
-    private string _refreshTokenName = configuration["Jwt_RefreshTokenName"];
+
+    private SymmetricSecurityKey CreateSymmetricSecurityKey()
+    {
+        string secret = _configuration["Jwt_Secret"];
+        if (string.IsNullOrWhiteSpace(secret))
+            throw new InvalidOperationException("Unable to find JWT Secret");
+
+        return new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret));
+    }
+
     private SigningCredentials CreateSigningCredentials()
     {
 
-        string secret = _configuration["Jwt_Secret"];
-        if (secret == null)
-            throw new InvalidOperationException("Unable to find JWT Secret");
-
         return new SigningCredentials(
-            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secret)),
+            CreateSymmetricSecurityKey(),
             SecurityAlgorithms.HmacSha256);
+    }
+
+    private string GenerateAccessToken(IEnumerable<Claim> authClaims, DateTime now)
+    {
+        var jwt = new JwtSecurityToken(
+            issuer: _issuer,
+            audience: _audience,
+            claims: authClaims,
+            expires: now.AddMinutes(_accessTokenExpiry),
+            signingCredentials: CreateSigningCredentials()
+            );
+
+        return new JwtSecurityTokenHandler().WriteToken(jwt);
+    }
+
+    private RefreshToken GenerateRefreshToken(User user, DateTime now)
+    {
+        var refreshTokenString = "";
+
+        var randomNumber = new byte[32];
+        using (var rng = RandomNumberGenerator.Create())
+        {
+            rng.GetBytes(randomNumber);
+            refreshTokenString = Convert.ToBase64String(randomNumber);
+        }
+
+        return new RefreshToken
+        {
+            Token = refreshTokenString,
+            Username = user.Email,
+            ExpirationTime = now.AddDays(_refreshTokenExpiry)
+        };
+    }
+
+    private async Task RemoveExpiredTokens(DateTime now)
+    {
+        List<RefreshToken> refreshTokens = await _context.RefreshTokens.Where(rt => rt.ExpirationTime < now).ToListAsync();
+
+        if (refreshTokens.Count != 0)
+        {
+            _context.RefreshTokens.RemoveRange(refreshTokens);
+            await _context.SaveChangesAsync();
+        }
+    }
+
+    public async Task RevokeLastRefreshToken(string refreshTokenString)
+    {
+        try
+        {
+            RefreshToken refreshToken = await _context.RefreshTokens
+                        .FirstOrDefaultAsync(rt => rt.Token == refreshTokenString);
+
+            if(refreshToken != null)
+            {
+                _context.RefreshTokens.Remove(refreshToken);
+                await _context.SaveChangesAsync();
+            }
+        }
+        catch (DbUpdateException ex)
+        {
+            Logger.Error($"Database error on deleting refresh token : {ex.Message}");
+            throw new Exception("An error occurred while updating the database.", ex);
+        }
+        catch (Exception ex)
+        {
+            Logger.Error($"Unexpected error deleting refresh token: {ex.Message}");
+            throw new Exception("Unexpected error while deleting record to database", ex);
+        }
+
+    }
+
+    private async Task<RefreshToken?> ValidateRefreshToken(string refreshTokenString, string email)
+    {
+        RefreshToken? refreshToken = await _context.RefreshTokens.FirstOrDefaultAsync(
+                                        rt => rt.Token == refreshTokenString &&
+                                                rt.Username == email &&
+                                                rt.ExpirationTime > DateTime.UtcNow
+                                    );
+
+        return refreshToken;
     }
 
     public async Task<JwtAuthResultViewModel> GenerateTokens(User user, IEnumerable<Claim> authClaims, DateTime now)
     {
+        await RemoveExpiredTokens(now);
 
-        var jwt = new JwtSecurityToken(
-                    issuer: _issuer,
-                    audience: _audience,
-                    claims: authClaims,
-                    expires: DateTime.UtcNow.AddMinutes(_accessTokenExpiry),
-                    signingCredentials: CreateSigningCredentials()
-                    );
+        var accessTokenString = GenerateAccessToken(authClaims, now);
+        var refreshToken = GenerateRefreshToken(user, now);
 
-        var accessTokenString = new JwtSecurityTokenHandler().WriteToken(jwt);
-        var refreshTokenString = await _userManager.GenerateUserTokenAsync(user, _appName, _refreshTokenName);
-
-        var refreshTokenModel = new RefreshTokenViewModel
-        {
-            Email = user.Email,
-            TokenString = refreshTokenString,
-            ExpireAt = now.AddDays(_refreshTokenExpiry)
-        };
+        _context.RefreshTokens.Add(refreshToken);
+        await _context.SaveChangesAsync();
 
         return new JwtAuthResultViewModel
         {
             AccessToken = accessTokenString,
-            RefreshToken = refreshTokenModel
+            RefreshToken = refreshToken
         };
     }
 
@@ -75,14 +154,7 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
         {
             var authClaims = await GetUserClaims(user);
 
-            JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.Now);
-
-            await _userManager.SetAuthenticationTokenAsync(
-                                                            user,
-                                                            _configuration["Jwt_AppName"],
-                                                            _configuration["Jwt_RefreshTokenName"],
-                                                            jwtAuthResult.RefreshToken.TokenString
-                                                        );
+            JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(user, authClaims, DateTime.UtcNow);
 
             return jwtAuthResult;
         }
@@ -157,30 +229,54 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
     }
 
 
-    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshToken, string email)
+    public async Task<JwtAuthResultViewModel> RefreshTokensAsync(string refreshTokenString, string email)
     {
+
         var matchingUser = await _userManager.FindByEmailAsync(email);
 
-        var isValid = await userManager.VerifyUserTokenAsync(matchingUser,
-                                                            _appName,
-                                                            _refreshTokenName,
-                                                            refreshToken);
+        if (matchingUser == null) return null;
 
-        if (!isValid)
-        {
-            return null;
-        }
+        RefreshToken? refreshToken = await ValidateRefreshToken(refreshTokenString, email);
+        if (refreshToken == null) return null;
+
+        await RevokeLastRefreshToken(refreshTokenString);
 
         var authClaims = await GetUserClaims(matchingUser);
 
-        JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.Now);
-        await userManager.SetAuthenticationTokenAsync(
-                                                 matchingUser,
-                                                 _appName,
-                                                 _refreshTokenName,
-                                                 jwtAuthResult.RefreshToken.TokenString
-                                             );
+        JwtAuthResultViewModel jwtAuthResult = await GenerateTokens(matchingUser, authClaims, DateTime.UtcNow);
+
         return jwtAuthResult;
+    }
+
+    public async Task<bool> ValidateAccessToken(string accessToken)
+    {
+        var tokenHandler = new JwtSecurityTokenHandler();
+
+        var tokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidIssuer = _issuer,
+
+            ValidateAudience = true,
+            ValidAudience = _audience,
+
+            ValidateLifetime = true,
+            ClockSkew = TimeSpan.Zero,
+
+            ValidateIssuerSigningKey = true,
+            IssuerSigningKey = CreateSymmetricSecurityKey()
+        };
+
+        try
+        {
+            var principal = tokenHandler.ValidateToken(accessToken, tokenValidationParameters, out SecurityToken validatedToken);
+            return true;
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Token validation failed: {ex.Message}");
+            return false;
+        }
     }
 
 
@@ -191,7 +287,6 @@ public class AuthenticationService(IConfiguration configuration, UserManager<Use
             {
                 new(ClaimTypes.NameIdentifier, matchingUser.Id.ToString()),
                 new(ClaimTypes.Name, matchingUser.Email),
-                // new(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
             };
         foreach (var role in matchingUserRoles)
         {

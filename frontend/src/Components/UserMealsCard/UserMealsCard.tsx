@@ -1,9 +1,9 @@
-import { Avatar, Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
+import { Card, CardActions, CardContent, CardHeader, Collapse, IconButton, IconButtonProps, styled } from "@mui/material";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useState } from "react";
-import { red } from "@mui/material/colors";
 import MealDaily from "../MealDaily/MealDaily";
 import { FamilyUserInterface } from "../../Api/apiInterface";
+import Avatar from "react-avatar";
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -51,9 +51,9 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
             <Card sx={{ maxWidth: 345, mx:0, mb:1, p:0.5 }}>
                 <CardHeader
                     avatar={
-                        <Avatar sx={{ bgcolor: red[500] }} aria-label="user avator">
-                            {data.userNickName}
-                        </Avatar>
+                        <Avatar  name={data.userNickName} 
+                                    color={data.avatarColor != "" ? data.avatarColor : "#796C50" } 
+                                    fgColor={data.avatarFgColor} size="50" round={true}/>
                     }
                     title={data.userNickName}
                     sx={{p:0, mx:0 }}
@@ -70,7 +70,7 @@ const UserMealsCard: React.FC<UserMealsProps> = ({mealDate, data}) => {
                 </CardActions>
                 <Collapse in={expanded} timeout="auto" unmountOnExit>
                     <CardContent> 
-                        <MealDaily mealDate={mealDate} familyId={data.familyId} userId={data.userId} isByFamily={false}/>
+                        <MealDaily mealDate={mealDate} familyId={data.familyId} userId={data.userId} isByFamily={false} isReadOnly={false}/>
                     </CardContent>
                 </Collapse>
             </Card>

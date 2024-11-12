@@ -1,3 +1,11 @@
+export interface ListResponse<T> {
+    items: T[];
+    totalNumberOfItems: number;
+    page: number;
+    nextPage: string;
+    previousPage: string;
+}
+
 export interface RecipeDetailsInterface {
     id?: number;
     name?: string;
@@ -18,6 +26,7 @@ export interface RecipeDetailsInterface {
     creationDateTime?: Date;
     lastUpdatedDateTime?: Date;
     defaultImageUrl?: string;
+    recipeUrl?: string;
     addedByUserId?: number;
     addedByUserNickname?: string;
     isOwner?: boolean;
@@ -43,6 +52,9 @@ export interface UserSignupInterface {
     password?: string;
     nickname?: string;
     familycode?: string;
+    avatarColor?: string;
+    avatarUrl?: string;
+    avatarFgColor?: string;
 }
 
 export interface FamilyInterface {
@@ -66,6 +78,9 @@ export interface FamilyUserInterface {
     familyId: number,
     familyRole: string,
     isApproved: boolean,
+    avatarColor: string,
+    avatarUrl: string,
+    avatarFgColor: string
 }
 
 export interface FamilyWithUsersInterface {
@@ -116,4 +131,14 @@ export interface SchoolMenuWeekMealsInterface {
 
 export interface UserLoginResponseInterface {
     nickname: string;
+    avatarColor: string;
+    avatarUrl: string;
+    avatarFgColor: string;
+}
+
+export interface RecipeSearchInterface {
+    addedByUserId: number;
+    familyId: number;
+    recipeName: string;
+    orderBy: string;
 }

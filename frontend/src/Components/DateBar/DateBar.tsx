@@ -6,6 +6,7 @@ import { useState } from "react";
 import { AppBar, Box,  IconButton, TextField, Toolbar, Typography } from "@mui/material";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import ArrowForwardIcon from '@mui/icons-material/ArrowForward';
+import { useMeal } from "../MealContext/MealContext";
 
 interface DateBarProps {
     selectedDate: Dayjs,
@@ -14,13 +15,16 @@ interface DateBarProps {
 
 const DateBar: React.FC<DateBarProps> = ({selectedDate, setSelectedDate}) => {
     const [open, setOpen] = useState(false);
+    const {setMealDate} = useMeal();
 
     const handlePreviousDate = () => {
         setSelectedDate(selectedDate.subtract(1, 'day'));
+        setMealDate(selectedDate.subtract(1, 'day').format('YYYY-MM-DD'));
     };
 
     const handleNextDate = () => {
         setSelectedDate(selectedDate.add(1, 'day'));
+        setMealDate(selectedDate.add(1, 'day').format('YYYY-MM-DD'));
     };
 
     const handleOpenDatePicker = () => {
@@ -31,7 +35,7 @@ const DateBar: React.FC<DateBarProps> = ({selectedDate, setSelectedDate}) => {
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs} adapterLocale={browserLocale}>
-            <AppBar position="static">
+            <AppBar position="static" aria-label="Date Bar">
                 <Toolbar color="primary">
                     <IconButton edge="start" color="inherit" onClick={handlePreviousDate}>
                         <ArrowBackIcon />

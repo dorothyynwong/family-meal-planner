@@ -155,6 +155,7 @@ public class WebScrappingService : IWebScrappingService
                                 RecipeIngredients = ParseJsonNode(recipeNode["recipeIngredient"]),
                                 RecipeInstructions = ParseJsonNode(recipeNode["recipeInstructions"]),
                                 DefaultImageUrl = imageUrls[0] != null ? imageUrls[0] : "",
+                                RecipeUrl = url,
                         };
 
                         return recipe;

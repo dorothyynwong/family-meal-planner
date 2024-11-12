@@ -17,6 +17,7 @@ const RecipeCreation: React.FC = () => {
         description: "",
         recipeIngredients: [],
         recipeInstructions: [],
+        recipeUrl: "",
     });
 
     const { recipeId } = useParams<{ recipeId: string }>();

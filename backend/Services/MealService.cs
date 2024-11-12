@@ -98,6 +98,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
                                                             meal.UserId == userId)
+                                                    .OrderBy(meal => meal.MealType)
                                                     .ToListAsync();
 
             if (meals == null || meals.Count <= 0) return [];
@@ -140,7 +141,8 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
     }
     public async Task<List<MealResponse>> GetMealByDateFamilyId(DateOnly fromDate, DateOnly toDate, int familyId, int requestUserId)
     {
-        if (!await _familyUserService.IsCook(familyId, requestUserId))
+        // if (!await _familyUserService.IsCook(familyId, requestUserId))
+        if(await _familyUserService.GetFamilyUser(familyId, requestUserId) == null)
         {
             Logger.Error($"Unauthorised Access for family {familyId} by user {requestUserId}");
             throw new UnauthorizedAccessException("Unathorised Access");
@@ -154,6 +156,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
                                                     .Where(meal => meal.Date >= fromDate &&
                                                             meal.Date <= toDate &&
                                                             meal.FamilyId == familyId)
+                                                    .OrderBy(meal => meal.MealType)
                                                     .ToListAsync();
 
             if (meals == null || meals.Count <= 0) return [];
@@ -208,7 +211,7 @@ public class MealService(FamilyMealPlannerContext context, IFamilyUserService fa
 
             meal.Date = mealRequest.Date;
             meal.RecipeId = mealRequest.RecipeId != null ? mealRequest.RecipeId : meal.RecipeId;
-            meal.SchoolMealId = mealRequest.SchoolMealId != null ? mealRequest.SchoolMealId : meal.SchoolMealId;
+            if (mealRequest.SchoolMealId > 0) meal.SchoolMealId = mealRequest.SchoolMealId;
             meal.MealType = mealRequest.GetMealTypeEnum();
             meal.Notes = mealRequest.Notes;
 

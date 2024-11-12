@@ -16,7 +16,8 @@ const Popup:React.FC<PopupProps> = (props: PopupProps) => {
     <Modal
       {...props}
       size="lg"
-      aria-labelledby="contained-modal-title-vcenter"
+      aria-labelledby={"contained-modal-title-vcenter"}
+      arial-label={props.title}
       centered
     >
       <Modal.Header closeButton className={props.customclass}>

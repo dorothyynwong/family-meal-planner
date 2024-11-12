@@ -47,7 +47,7 @@ public class AuthController(
         _authenticationService
                 .SetTokensInsideCookie(
                     jwtAuthResult.AccessToken,
-                    jwtAuthResult.RefreshToken.TokenString,
+                    jwtAuthResult.RefreshToken.Token,
                     matchingUser.Email,
                     HttpContext
                 );
@@ -57,15 +57,21 @@ public class AuthController(
             {
                 Email = matchingUser.Email,
                 AccessToken = jwtAuthResult.AccessToken,
-                RefreshToken = jwtAuthResult.RefreshToken.TokenString,
+                RefreshToken = jwtAuthResult.RefreshToken.Token,
                 Nickname = matchingUser.Nickname,
+                AvatarColor = matchingUser.AvatarColor,
+                AvatarUrl = matchingUser.AvatarUrl,
+                AvatarFgColor = matchingUser.AvatarFgColor,
             }
         );
     }
 
     [HttpPost("logout")]
-    public IActionResult Logout()
+    public async Task<IActionResult> Logout()
     {
+        var refreshTokenString = Request.Cookies["refreshToken"];
+        if (refreshTokenString != null)
+            await _authenticationService.RevokeLastRefreshToken(refreshTokenString);
         _authenticationService.RemoveTokensFromCookie(HttpContext);
 
         return Ok();
@@ -86,6 +92,9 @@ public class AuthController(
                 UserName = userRequest.Email,
                 Nickname = userRequest.Nickname,
                 Email = userRequest.Email,
+                AvatarColor = userRequest.AvatarColor,
+                AvatarUrl = userRequest.AvatarUrl,
+                AvatarFgColor = userRequest.AvatarFgColor,
             };
 
             var result = await _userManager.CreateAsync(user, userRequest.Password);
@@ -107,6 +116,9 @@ public class AuthController(
                 Id = user.Id,
                 Email = user.Email,
                 Nickname = user.Nickname,
+                AvatarColor = user.AvatarColor,
+                AvatarUrl = user.AvatarUrl,
+                AvatarFgColor = user.AvatarFgColor,
             };
 
             if (userRequest.FamilyCode != null && userRequest.FamilyCode != "")
@@ -133,15 +145,39 @@ public class AuthController(
     [HttpPost("refresh")]
     public async Task<IActionResult> Refresh()
     {
-        var refreshToken = Request.Cookies["refreshToken"];
-        var email = Request.Cookies["email"];
+        try
+        {
+            var refreshToken = Request.Cookies["refreshToken"];
+            var email = Request.Cookies["email"];
 
-        JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, email);
+            if (refreshToken == null || refreshToken == "" || email == null || email == "")
+                return Unauthorized("Refresh token is missing");
 
-        _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.TokenString, email, HttpContext);
+            JwtAuthResultViewModel jwtAuthResult = await _authenticationService.RefreshTokensAsync(refreshToken, email);
 
-        return Ok(jwtAuthResult);
+            _authenticationService.SetTokensInsideCookie(jwtAuthResult.AccessToken, jwtAuthResult.RefreshToken.Token, email, HttpContext);
+
+            return Ok(jwtAuthResult);
+        }
+        catch(Exception ex)
+        {
+            Logger.Error($"Unable to refresh token {ex.Message} ");
+            return BadRequest($"Unable to refresh token {ex.Message} ");
+        }
     }
 
+    [HttpGet]
+    public async Task<IActionResult> ValidateAccessToken()
+    {
+        var accessToken = Request.Cookies["accessToken"];
 
+        if (await _authenticationService.ValidateAccessToken(accessToken))
+        {
+            return Ok(true);
+        }
+        else
+        {
+            return Unauthorized("Invalid Access Token");
+        }
+    }
 }

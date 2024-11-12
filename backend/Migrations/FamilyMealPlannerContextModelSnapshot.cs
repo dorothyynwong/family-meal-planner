@@ -77,6 +77,15 @@ namespace backend.Migrations
                     b.Property<int>("AccessFailedCount")
                         .HasColumnType("integer");
 
+                    b.Property<string>("AvatarColor")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AvatarFgColor")
+                        .HasColumnType("text");
+
+                    b.Property<string>("AvatarUrl")
+                        .HasColumnType("text");
+
                     b.Property<string>("ConcurrencyStamp")
                         .IsConcurrencyToken()
                         .HasColumnType("text");
@@ -266,11 +275,38 @@ namespace backend.Migrations
                     b.Property<List<string>>("RecipeInstructions")
                         .HasColumnType("text[]");
 
+                    b.Property<string>("RecipeUrl")
+                        .HasColumnType("text");
+
                     b.HasKey("Id");
 
                     b.HasIndex("AddedByUserId");
 
                     b.ToTable("Recipes");
+                });
+
+            modelBuilder.Entity("FamilyMealPlanner.Models.RefreshToken", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTime>("ExpirationTime")
+                        .HasColumnType("timestamp with time zone");
+
+                    b.Property<string>("Token")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.Property<string>("Username")
+                        .IsRequired()
+                        .HasColumnType("text");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("RefreshTokens");
                 });
 
             modelBuilder.Entity("FamilyMealPlanner.Models.SchoolMeal", b =>

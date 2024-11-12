@@ -1,7 +1,7 @@
 /* eslint-disable no-useless-catch */
 import { AxiosResponse } from 'axios';
 import client from './apiClient';
-import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface, MealDetailsInterface, RecipeDetailsInterface, SchoolMealInterface, UserSignupInterface } from './apiInterface';
+import { FamilyCodeShareInterface, FamilyInterface, FamilyRoleUpdateInterface, FamilyUserCreationInterface,  ListResponse,  MealDetailsInterface, RecipeDetailsInterface,  SchoolMealInterface, UserSignupInterface } from './apiInterface';
 
 export async function importRecipeFromUrl(url: string) {
     try {
@@ -226,7 +226,7 @@ export async function getFamiliesWithUsersByUserId() {
 export async function getFamilyRoleTypes() {
     try {
 
-        const response: AxiosResponse = await client.get(`/familyUsers/familyRoleTypes`, {});
+        const response: AxiosResponse = await client.get(`/familyUsers/familyRoleTypes/`);
         return response;
     } catch (error) {
         throw error;
@@ -304,6 +304,42 @@ export async function getDayTypes() {
 export async function updateSchoolMeal(schoolMealId: number, schoolMeal: SchoolMealInterface) {
     try {
         const response: AxiosResponse = await client.put(`/schoolmenus/meal/${schoolMealId}`, schoolMeal);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function validateAccessToken() {
+    try {
+        const response: AxiosResponse = await client.get(`/auth`, {});
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function searchRecipes(query: string, page: number, pageSize: number): Promise<ListResponse<RecipeDetailsInterface>> {
+    try {
+        const response: AxiosResponse<ListResponse<RecipeDetailsInterface>> = await client.get(`/recipes/search?${query}&Page=${page}&PageSize=${pageSize}`, {});
+        return response.data; 
+    } catch (error) {
+        throw error; 
+    }
+}
+
+export async function updateUser(user: UserSignupInterface) {
+    try {
+        const response: AxiosResponse = await client.put(`/users`, user);
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+
+export async function getUser() {
+    try {
+        const response: AxiosResponse = await client.get(`/users`);
         return response;
     } catch (error) {
         throw error;

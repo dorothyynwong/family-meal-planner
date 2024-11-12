@@ -15,29 +15,31 @@ public class WebScrappingServiceTests
     [Test]
     public async Task ImportRecipe_ValidUrl_ReturnsRecipe()
     {
-        var url = "https://www.bbc.co.uk/food/recipes/air_fryer_chicken_27325";
+        var url = "https://www.allrecipes.com/recipe/45396/easy-pancakes/";
 
         Recipe recipe = new Recipe();
-        recipe.Name = "Air fryer sticky chicken drumsticks";
+        recipe.Name = "Easy Pancakes";
         recipe.Images = [
-                        "https://food-images.files.bbci.co.uk/food/recipes/air_fryer_chicken_27325_16x9.jpg"
+                        "https://www.allrecipes.com/thmb/pZtxkWhiaZdUmdhgv-Pj9EIMbVY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/45396-easy-pancakes-DDMFS-4x3-44411f993d7841d9b2b89bcc65bdd178.jpg"
                         ];
-        recipe.Description =  "This sticky marinade is a winner – super quick to make and adds a wonderfully sweet and rich flavour to chicken pieces.";
+        recipe.Description =  "This easy pancake recipe is quick to make with simple pantry ingredients. They cook up nice and fluffy for a family-pleasing breakfast or brunch.";
         recipe.RecipeIngredients = [
-                                    "2 tbsp light soy sauce",
-                                    "3 tbsp tomato chutney (or any type will work)",
-                                    "2 tbsp runny honey",
-                                    "1 tsp Worcestershire sauce",
-                                    "8 chicken legs (see recipe tip)",
-                                    "potato salad and green crunchy leaves",
+                                    "1 cup all-purpose flour",
+                                    "2 tablespoons white sugar",
+                                    "2 teaspoons baking powder",
+                                    "1 teaspoon salt, or to taste",
+                                    "1 cup milk",
+                                    "2 tablespoons vegetable oil",
+                                    "1 egg, beaten"
                                   ];
         recipe.RecipeInstructions = [
-                                    "In a large bowl, mix together the marinade ingredients, then add the chicken and coat well with the marinade. Cover and keep in the fridge for anything from 20 minutes up to 24 hours.",
-                                    "When ready to cook, preheat the air fryer to 180C.",
-                                    "Lay the drumsticks in a single layer in the basket and cook for 10 minutes, then turn over and cook for another 10–12 minutes until they are crispy and charred.",
-                                    "Serve with a potato salad and green crunchy leaves.",
+                                    "Gather the ingredients.",
+                                    "Combine flour, sugar, baking powder, and salt in a large bowl. Make a well in the center, and pour in milk, oil, and egg. Mix until smooth.",
+                                    "Heat a lightly oiled griddle or frying pan over medium-high heat. Pour or scoop batter onto the griddle, using approximately 1/4 cup for each pancake; cook until bubbles form and the edges are dry, 1 to 2 minutes. Flip and cook until browned on the other side. Repeat with remaining batter.",
+                                    "Serve hot and enjoy!",
                                     ];
-        recipe.DefaultImageUrl = "https://food-images.files.bbci.co.uk/food/recipes/air_fryer_chicken_27325_16x9.jpg";
+        recipe.DefaultImageUrl = "https://www.allrecipes.com/thmb/pZtxkWhiaZdUmdhgv-Pj9EIMbVY=/1500x0/filters:no_upscale():max_bytes(150000):strip_icc()/45396-easy-pancakes-DDMFS-4x3-44411f993d7841d9b2b89bcc65bdd178.jpg";
+        recipe.RecipeUrl = url;
 
 
         var result = await _service.GetRecipeFromUrl(url);
@@ -49,6 +51,7 @@ public class WebScrappingServiceTests
         result.RecipeIngredients.Should().BeEquivalentTo(recipe.RecipeIngredients);
         result.RecipeInstructions.Should().BeEquivalentTo(recipe.RecipeInstructions);
         result.DefaultImageUrl.Should().BeEquivalentTo(recipe.DefaultImageUrl);
+        result.RecipeUrl.Should().BeEquivalentTo(recipe.RecipeUrl);
     }
 
     [Test]

@@ -1,14 +1,15 @@
 import MealPlanCalendar from "../../Components/MealPlanCalendar/MealPlanCalendar"
 import MealCard from "../../Components/MealCard/MealCard"
-import { MealDetailsInterface } from "../../Api/apiInterface"
+import { FamilyWithUsersInterface, MealDetailsInterface } from "../../Api/apiInterface"
 import { useEffect, useState } from "react";
-import { getMealByDateUserId } from "../../Api/api";
+import { getFamiliesWithUsersByUserId, getMealByDateUserId } from "../../Api/api";
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
 import { convertMealsToEvents, EventInterface } from "../../Utils/convertMealsToEvents";
 import { IoIosAddCircle } from "react-icons/io";
 import "./MealPlanMonthly.scss";
 import MealForm from "../../Components/MealForm/MealForm";
 import { useMeal } from "../../Components/MealContext/MealContext";
+import FamilyMealsCard from "../../Components/FamilyMealsCard/FamilyMealsCard";
 
 const MealPlanMonthly: React.FC = () => {
     const todaysDate = new Date();
@@ -19,13 +20,32 @@ const MealPlanMonthly: React.FC = () => {
     const [meals, setMeals] = useState<MealDetailsInterface[]>();
     const [selectedDate, setSelectedDate] = useState(new Date());
     const [mealOfDate, setMealOfDate] = useState<MealDetailsInterface[]>();
-    const { modalShow, setModalShow, setMode } = useMeal();
+    const { modalShow, setModalShow, setMode, setMealDate, setFormType } = useMeal();
     const [convertedEvents, setConvertedEvents] = useState<EventInterface[]>([]);
+    const [familyUsersList, setFamilyUsersList] = useState<FamilyWithUsersInterface[]>([]);
 
     const handleClick = () => {
         setMode("Add");
         setModalShow(true);
     }
+
+    useEffect(() => {
+        setMealDate(todaysDate.toISOString().slice(0, 10));
+        setModalShow(false);
+        setFormType("recipe");
+
+        getFamiliesWithUsersByUserId()
+            .then(fu => {
+                setFamilyUsersList(fu.data);
+                setStatus("success");
+            })
+            .catch(error => {
+                console.log("Error getting families with users", error);
+                const errorMessage = error?.response?.data?.message || "Error getting families with users";
+                setStatus("error");
+                setErrorMessages([...errorMessages, errorMessage]);
+            });
+    }, []);
 
     useEffect(() => {
         setStatus("loading");
@@ -92,6 +112,14 @@ const MealPlanMonthly: React.FC = () => {
                 mealOfDate.map((meal, index) => (
                     <MealCard key={index} meal={meal} isReadOnly={false} />
                 ))}
+            {familyUsersList.map((fu, index) => (
+                <FamilyMealsCard
+                    key={index}
+                    mealDate={selectedDate}
+                    data={fu}
+                    isReadOnly={true}
+                />
+            ))}
         </>
 
     )

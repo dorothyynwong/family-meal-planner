@@ -19,6 +19,8 @@ import MoreVertIcon from '@mui/icons-material/MoreVert';
 import { MdAddCard } from 'react-icons/md';
 import { useMeal } from '../MealContext/MealContext';
 import Avatar from 'react-avatar';
+// import MealForm from '../MealForm/MealForm';
+// import dayjs from 'dayjs';
 
 interface ExpandMoreProps extends IconButtonProps {
     expand: boolean;
@@ -58,7 +60,14 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
     const [expanded, setExpanded] = useState(false);
     const [isDelete, setIsDelete] = useState(false);
     const navigate = useNavigate();
-    const { setSelectedRecipe } = useMeal();
+    const { 
+        setSelectedRecipe,
+        setModalShow,
+        setMode, 
+        setFormType,
+        setIsFromRecipeList,
+        setRecipeName,
+    } = useMeal();
 
     const handleExpandClick = () => {
         setExpanded(!expanded);
@@ -66,7 +75,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
 
     const baseMenuItems = [
         { id: "display-recipe-button", label: "Details" },
-        { id: "copy-recipe-button", label: "Copy" }
+        { id: "copy-recipe-button", label: "Copy" },
+        { id: "add-my-meal-button", label: "Add as My Meal"},
+        { id: "add-family-meal-button", label: "Add as Family Meal"}
     ];
     
     const ownerMenuItems = [
@@ -90,6 +101,22 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
             case "copy-recipe-button":
                 navigate(`/recipe-add/${recipe.id}`);
                 break
+            case "add-my-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipe);
+                setFormType("recipe");
+                setIsFromRecipeList(true);
+                setRecipeName(recipe.name ? recipe.name : recipe.notes ? recipe.notes : "");
+                break
+            case "add-family-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipe);
+                setFormType("family");
+                setIsFromRecipeList(true);
+                setRecipeName(recipe.name ? recipe.name : recipe.notes ? recipe.notes : "");
+                break
             default:
                 break
         }
@@ -104,11 +131,16 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
         navigate(-1);
     }
 
+    const handleCardContentClick = () => {
+        navigate(`/recipe-details/${recipe.id}`);
+    }
+
     return (
+        <>
         <Card sx={{ maxWidth: 345 }}>
             <CardHeader
                 avatar={
-                    <Avatar name={recipe.addedByUserNickname} size="50" round={true} />
+                    <Avatar name={recipe.addedByUserNickname}  size="50" round={true} />
                 }
                 action={isFromMealForm ? <div onClick={handleCardClick}><MdAddCard /></div> :
                     <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
@@ -120,8 +152,9 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 height="194"
                 image={recipe.defaultImageUrl? recipe.defaultImageUrl : recipe.images ? recipe.images[0] : ""}
                 alt={recipe.name}
+                onClick={handleCardContentClick}
             />}
-            <CardContent>
+            <CardContent onClick={handleCardContentClick}>
                 {recipe.description}
             </CardContent>
             <CardActions disableSpacing>
@@ -143,7 +176,8 @@ const RecipeCard: React.FC<RecipeCardProps> = ({ recipe, isFromMealForm}) => {
                 </CardContent>
             </Collapse>
             {isDelete && <RecipeDeleteConfirmation data={recipe}  onCancel={handleCancel} />}
-        </Card>
+            </Card>
+        </>
     );
 }
 

@@ -10,14 +10,18 @@ public interface IRecipeService
     Task<int> AddRecipe(RecipeRequest recipeRequest, int userId);
     Task<Recipe> GetRecipeById(int recipeId, int userId);
     Task<List<RecipeResponse>> GetRecipeByUserId(int userId);
+    Task<IEnumerable<RecipeResponse>> SearchRecipe(RecipeSearchRequest recipeSearchRequest, int requestUserId);
+    Task<int> Count(int userId);
     Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId, int userId);
     Task Delete(int recipeId, int userId);
 }
 
-public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService familyUserService) : IRecipeService
+public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService familyUserService, IFamilyService familyService) : IRecipeService
 {
     private readonly FamilyMealPlannerContext _context = context;
     private readonly IFamilyUserService _familyUserService = familyUserService;
+    private readonly IFamilyService _familyService = familyService;
+    private int _recipeCount = 0;
     NLog.ILogger Logger = LogManager.GetCurrentClassLogger();
 
     private void ValidateRequest(RecipeRequest recipeRequest, int userId)
@@ -47,7 +51,8 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                 RecipeInstructions = recipeRequest.RecipeInstructions,
                 CreationDateTime = DateTime.UtcNow,
                 DefaultImageUrl = recipeRequest.DefaultImageUrl,
-                AddedByUserId = userId
+                AddedByUserId = userId,
+                RecipeUrl = recipeRequest.RecipeUrl,
             };
 
             _context.Recipes.Add(recipe);
@@ -88,10 +93,16 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
 
     public async Task<List<RecipeResponse>> GetRecipeByUserId(int userId)
     {
+        List<FamilyResponse> familyList = await _familyService.GetFamilyByUserId(userId);
+        List<int> familyIds = familyList.Select(family => family.FamilyId).ToList();
+
         List<RecipeResponse> recipes = await _context.Recipes
-                                                .Where(recipe => recipe.AddedByUser != null && recipe.AddedByUser.FamilyUsers.Count != 0)
-                                                .Include(recipe => recipe.AddedByUser)       
-                                                    .ThenInclude( user => user.FamilyUsers)         
+                                                .Include(recipe => recipe.AddedByUser)
+                                                    .ThenInclude(user => user.FamilyUsers)
+                                                .Where(recipe =>
+                                                    recipe.AddedByUserId == userId ||
+                                                    recipe.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId))
+                                                )
                                                 .Select(
                                                     recipe => new RecipeResponse
                                                     {
@@ -101,6 +112,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
                                                         Images = recipe.Images,
                                                         Description = recipe.Description,
                                                         DefaultImageUrl = recipe.DefaultImageUrl,
+                                                        RecipeUrl = recipe.RecipeUrl,
                                                         RecipeIngredients = recipe.RecipeIngredients,
                                                         RecipeInstructions = recipe.RecipeInstructions,
                                                         CreationDateTime = recipe.CreationDateTime,
@@ -121,6 +133,57 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
         return recipes;
     }
 
+    public async Task<IEnumerable<RecipeResponse>> SearchRecipe(RecipeSearchRequest search, int requestUserId)
+    {
+        List<FamilyResponse> familyList = await _familyService.GetFamilyByUserId(requestUserId);
+        List<int> familyIds = familyList.Select(family => family.FamilyId).ToList();
+
+        List<RecipeResponse> recipes = await _context.Recipes
+                                                .Include(r => r.AddedByUser)
+                                                    .ThenInclude(u => u.FamilyUsers)
+                                                .Where(r =>
+                                                    r.AddedByUserId == requestUserId ||
+                                                    r.AddedByUser.FamilyUsers.Any(fu => familyIds.Contains(fu.FamilyId))
+                                                )
+                                                .Where(r => search.AddedByUserId == null || r.AddedByUserId == search.AddedByUserId)
+                                                .Where(r => search.RecipeName == null || r.Name.ToLower().Contains(search.RecipeName.ToLower()))
+                                                .Where(r => search.FamilyId == null || r.AddedByUser.FamilyUsers.Any(fu => fu.FamilyId == search.FamilyId))
+                                                .Select(
+                                                    recipe => new RecipeResponse
+                                                    {
+                                                        Id = recipe.Id,
+                                                        Name = recipe.Name,
+                                                        Notes = recipe.Notes,
+                                                        Images = recipe.Images,
+                                                        Description = recipe.Description,
+                                                        DefaultImageUrl = recipe.DefaultImageUrl,
+                                                        RecipeUrl = recipe.RecipeUrl,
+                                                        RecipeIngredients = recipe.RecipeIngredients,
+                                                        RecipeInstructions = recipe.RecipeInstructions,
+                                                        CreationDateTime = recipe.CreationDateTime,
+                                                        LastUpdatedDateTime = recipe.LastUpdatedDateTime,
+                                                        AddedByUserId = recipe.AddedByUserId,
+                                                        AddedByUserNickname = recipe.AddedByUser.Nickname,
+                                                        IsOwner = recipe.AddedByUserId == requestUserId,
+                                                    }
+                                                )
+                                                .ToListAsync();
+                                                
+        _recipeCount = recipes != null ? recipes.Count : 0;
+
+        IEnumerable<RecipeResponse> filteredAndOrderedRecipes = recipes
+                                                        .OrderByDescending(r => r.LastUpdatedDateTime)
+                                                        .Skip((search.Page - 1) * search.PageSize)
+                                                        .Take(search.PageSize);
+
+        return filteredAndOrderedRecipes;
+    }
+
+    public async Task<int> Count(int userId)
+    {
+        return _recipeCount;
+    }
+
     public async Task UpdateRecipe(RecipeRequest recipeRequest, int recipeId, int userId)
     {
         ValidateRequest(recipeRequest, userId);
@@ -138,6 +201,7 @@ public class RecipeService(FamilyMealPlannerContext context, IFamilyUserService 
             recipe.RecipeInstructions = recipeRequest.RecipeInstructions;
             recipe.LastUpdatedDateTime = DateTime.UtcNow;
             recipe.DefaultImageUrl = recipeRequest.DefaultImageUrl;
+            recipe.RecipeUrl = recipeRequest.RecipeUrl;
 
             _context.Recipes.Update(recipe);
             await _context.SaveChangesAsync();
