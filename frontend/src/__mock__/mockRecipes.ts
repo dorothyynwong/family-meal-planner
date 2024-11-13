@@ -1,0 +1,155 @@
+import { RecipeDetailsInterface } from "../Api/apiInterface";
+
+export const mockRecipes: RecipeDetailsInterface[] = [
+    {
+      id: 1,
+      name: "Spaghetti Carbonara",
+      images: ["carbonara1.jpg", "carbonara2.jpg"],
+      author: "Jane Smith",
+      url: "http://example.com/spaghetti-carbonara",
+      description: "A classic Italian pasta dish with eggs, cheese, pancetta, and pepper.",
+      notes: "Ensure you use fresh eggs for a creamy texture.",
+      recipeCuisine: "Italian",
+      prepTime: "10 minutes",
+      cookTime: "20 minutes",
+      totalTime: "30 minutes",
+      keywords: "pasta, carbonara, italian, dinner",
+      recipeYield: "2 servings",
+      recipeCategory: "Main Course",
+      recipeIngredients: [
+        "200g spaghetti",
+        "100g pancetta",
+        "2 large eggs",
+        "50g parmesan cheese, grated",
+        "50g pecorino cheese, grated",
+        "Freshly ground black pepper"
+      ],
+      recipeInstructions: [
+        "Cook the spaghetti according to the package instructions.",
+        "Fry the pancetta until crispy.",
+        "Beat the eggs with the grated cheese and pepper.",
+        "Drain the pasta and combine with pancetta.",
+        "Toss with the egg mixture and serve immediately."
+      ],
+      creationDateTime: new Date("2024-10-20T14:00:00Z"),
+      lastUpdatedDateTime: new Date("2024-10-22T16:00:00Z"),
+      defaultImageUrl: "http://example.com/images/carbonara-default.jpg",
+      recipeUrl: "http://example.com/spaghetti-carbonara-url",
+      addedByUserId: 456,
+      addedByUserNickname: "janesmith456",
+      isOwner: true
+    },
+    {
+      id: 2,
+      name: "Vegan Tacos",
+      images: ["tacos1.jpg", "tacos2.jpg"],
+      author: "Alice Brown",
+      url: "http://example.com/vegan-tacos",
+      description: "Delicious plant-based tacos filled with seasoned vegetables and topped with avocado.",
+      notes: "You can use any veggies you prefer.",
+      recipeCuisine: "Mexican",
+      prepTime: "15 minutes",
+      cookTime: "25 minutes",
+      totalTime: "40 minutes",
+      keywords: "vegan, tacos, mexican, lunch",
+      recipeYield: "4 servings",
+      recipeCategory: "Main Course",
+      recipeIngredients: [
+        "8 small corn tortillas",
+        "1 cup corn kernels",
+        "1 cup black beans",
+        "1 red onion, diced",
+        "1 bell pepper, diced",
+        "2 ripe avocados, sliced",
+        "Lime wedges"
+      ],
+      recipeInstructions: [
+        "Heat the tortillas in a dry skillet.",
+        "Sauté the onion and bell pepper in olive oil until soft.",
+        "Add the corn and black beans to the pan and cook for another 5 minutes.",
+        "Assemble the tacos by adding the vegetable mixture to the tortillas.",
+        "Top with sliced avocado and a squeeze of lime."
+      ],
+      creationDateTime: new Date("2024-09-12T11:30:00Z"),
+      lastUpdatedDateTime: new Date("2024-09-14T13:00:00Z"),
+      defaultImageUrl: "http://example.com/images/vegan-tacos-default.jpg",
+      recipeUrl: "http://example.com/vegan-tacos-url",
+      addedByUserId: 789,
+      addedByUserNickname: "aliceb789",
+      isOwner: true
+    },
+    {
+      id: 3,
+      name: "Chocolate Cake",
+      images: ["chocolatecake1.jpg", "chocolatecake2.jpg"],
+      author: "Bob Williams",
+      url: "http://example.com/chocolate-cake",
+      description: "A rich, moist chocolate cake topped with smooth ganache.",
+      notes: "Perfect for birthdays or special occasions.",
+      recipeCuisine: "American",
+      prepTime: "20 minutes",
+      cookTime: "40 minutes",
+      totalTime: "1 hour",
+      keywords: "chocolate, dessert, cake, sweet",
+      recipeYield: "8 servings",
+      recipeCategory: "Dessert",
+      recipeIngredients: [
+        "200g all-purpose flour",
+        "100g cocoa powder",
+        "200g sugar",
+        "2 large eggs",
+        "100g butter",
+        "1 tsp vanilla extract",
+        "1 cup milk",
+        "1 cup boiling water"
+      ],
+      recipeInstructions: [
+        "Preheat the oven to 180°C (350°F).",
+        "Mix the dry ingredients in a bowl.",
+        "Beat the eggs, butter, and vanilla extract in another bowl.",
+        "Combine the wet and dry ingredients, then add milk and boiling water.",
+        "Pour the batter into a greased pan and bake for 40 minutes."
+      ],
+      creationDateTime: new Date("2024-08-30T09:00:00Z"),
+      lastUpdatedDateTime: new Date("2024-09-01T10:00:00Z"),
+      defaultImageUrl: "http://example.com/images/chocolate-cake-default.jpg",
+      recipeUrl: "http://example.com/chocolate-cake-url",
+      addedByUserId: 1011,
+      addedByUserNickname: "bobwilliams1011",
+      isOwner: true
+    },
+    {
+      id: 4,
+      name: "Grilled Cheese Sandwich",
+      images: ["grilledcheese1.jpg", "grilledcheese2.jpg"],
+      author: "Emma Davis",
+      url: "http://example.com/grilled-cheese-sandwich",
+      description: "A classic grilled cheese sandwich with gooey cheese and crispy bread.",
+      notes: "You can add tomato or bacon for extra flavor.",
+      recipeCuisine: "American",
+      prepTime: "5 minutes",
+      cookTime: "10 minutes",
+      totalTime: "15 minutes",
+      keywords: "sandwich, cheese, quick, lunch",
+      recipeYield: "2 servings",
+      recipeCategory: "Snack",
+      recipeIngredients: [
+        "4 slices of bread",
+        "2 slices of cheddar cheese",
+        "2 tbsp butter"
+      ],
+      recipeInstructions: [
+        "Butter one side of each slice of bread.",
+        "Place cheese between two slices of bread with the buttered side out.",
+        "Grill the sandwich on medium heat until golden brown on both sides."
+      ],
+      creationDateTime: new Date("2024-07-15T08:30:00Z"),
+      lastUpdatedDateTime: new Date("2024-07-18T09:00:00Z"),
+      defaultImageUrl: "http://example.com/images/grilled-cheese-default.jpg",
+      recipeUrl: "http://example.com/grilled-cheese-url",
+      addedByUserId: 1213,
+      addedByUserNickname: "emmadavis1213",
+      isOwner: true
+    }
+  ];
+  
