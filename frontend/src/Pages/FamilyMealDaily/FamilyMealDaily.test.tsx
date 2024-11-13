@@ -7,6 +7,7 @@ import { mockMealDetails } from '../../__mock__/mockMealDetails';
 import { MemoryRouter } from 'react-router-dom';
 import { mockMealTypes } from '../../__mock__/mockMealTypes';
 import { mockFamiliesWithUsers } from '../../__mock__/mockFamiliesWithUsers';
+import { act } from 'react';
 
 // Mock API and context
 vi.mock('../../Api/api', () => ({
@@ -47,7 +48,7 @@ vi.mock('../../Components/MealContext/MealContext', () => ({
   MealProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-describe.only('FamilyMealDaily Page', () => {
+describe('FamilyMealDaily Page', () => {
   const mockGetFamiliesWithUsersByUserId = getFamiliesWithUsersByUserId as Mock;
   const mockGetMealByDateUserId = getMealByDateUserId as Mock;
   const mockGetMealTypes = getMealTypes as Mock;
@@ -104,10 +105,9 @@ describe.only('FamilyMealDaily Page', () => {
   });
 
   // it('displays error message when API call fails', async () => {
-  //   const errorMessage = 'Error getting families with users';
-  //   mockGetFamiliesWithUsersByUserId.mockRejectedValueOnce({
-  //     response: { data: { message: errorMessage } },
-  //   });
+  //   const mockError = { response: { data: { message: 'Error getting families with users' } }, };
+
+  //   mockGetFamiliesWithUsersByUserId.mockRejectedValueOnce(mockError);
 
   //   render(
   //     <MealProvider>
@@ -117,7 +117,7 @@ describe.only('FamilyMealDaily Page', () => {
   //     </MealProvider>);
 
   //   await waitFor(() => {
-  //     expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  //     expect(screen.getByText('Error getting families with users')).toBeInTheDocument();
   //   });
   // });
 

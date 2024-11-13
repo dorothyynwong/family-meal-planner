@@ -43,7 +43,7 @@ const StatusHandler: React.FC<StatusHandlerProps> = ({
             if (successMessage === "") return <></>
             return <Alert variant="success">{successMessage}</Alert>;
 
-        case "idle":
+        case "idle": 
         default:
             return <>{children}</>;
     }
