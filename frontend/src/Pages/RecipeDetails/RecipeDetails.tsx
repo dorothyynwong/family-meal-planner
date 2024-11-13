@@ -85,7 +85,7 @@ const RecipeDetails: React.FC = () => {
             </StatusHandler>
                 <Row>
                     <Col xs={10}>
-                        <MdArrowBackIosNew size={20} onClick={() => navigate(-1)} />
+                        <MdArrowBackIosNew aria-label='Go Back' size={20} onClick={() => navigate(-1)} />
                     </Col>
                     <Col xs={2}>
                         <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />

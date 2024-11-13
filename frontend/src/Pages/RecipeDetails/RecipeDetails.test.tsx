@@ -1,5 +1,5 @@
 import { render, screen, fireEvent, waitFor } from "@testing-library/react";
-import { MemoryRouter} from "react-router-dom";
+import { MemoryRouter, useNavigate } from "react-router-dom";
 import RecipeDetails from "./RecipeDetails";
 import { getRecipeById } from "../../Api/api";
 import { beforeEach, describe, expect, it, Mock, vi } from "vitest";
@@ -8,16 +8,29 @@ import { mockRecipes } from "../../__mock__/mockRecipes";
 // Mock the necessary dependencies
 vi.mock("../../Api/api", () => ({
     getRecipeById: vi.fn(),
-  }));
-  
+}));
+
+vi.mock('react-router-dom', async () => {
+    const actual = await vi.importActual('react-router-dom');
+    return {
+        ...actual,
+        useNavigate: vi.fn(),
+    };
+});
+
+
 describe("RecipeDetails Component", () => {
     const mockGetRecipeById = getRecipeById as Mock;
-    
+    const mockNavigate = vi.fn();
+
     beforeEach(() => {
         vi.clearAllMocks();
+        (useNavigate as Mock).mockReturnValue(mockNavigate);
     });
 
     it("renders loading message initially", async () => {
+        mockGetRecipeById.mockResolvedValueOnce({ data: mockRecipes[0] });
+
         render(
             <MemoryRouter initialEntries={["/recipe-details/1"]}>
                 <RecipeDetails />
@@ -52,18 +65,20 @@ describe("RecipeDetails Component", () => {
         await waitFor(() => expect(screen.getByText(errorMessage)).toBeInTheDocument());
     });
 
-    // it("navigates back on back button click", async () => {
-    //     render(
-    //         <MemoryRouter initialEntries={["/recipe-details/1"]}>
-    //             <RecipeDetails />
-    //         </MemoryRouter>
-    //     );
+    it("navigates back on back button click", async () => {
+        mockGetRecipeById.mockResolvedValueOnce({ data: mockRecipes[0] });
 
-    //     const backButton = screen.getByRole("button", { name: /back/i });
-    //     fireEvent.click(backButton);
+        render(
+            <MemoryRouter initialEntries={["/recipe-details/1"]}>
+                <RecipeDetails />
+            </MemoryRouter>
+        );
 
-    //     expect(mockNavigate).toHaveBeenCalledWith(-1);
-    // });
+        const backButton = screen.getAllByLabelText(/go back/i);
+        fireEvent.click(backButton);
+
+        expect(mockNavigate).toHaveBeenCalledWith(-1);
+    });
 
     it("shows delete confirmation on delete menu click", async () => {
         mockGetRecipeById.mockResolvedValueOnce({ data: mockRecipes[0] });
@@ -75,7 +90,7 @@ describe("RecipeDetails Component", () => {
         );
 
         await waitFor(() => screen.getByText("Spaghetti Carbonara"));
-        
+
         const moreButton = screen.getByRole("button", { name: /more button/i });
         fireEvent.click(moreButton);
 
