@@ -74,7 +74,7 @@ describe("RecipeDetails Component", () => {
             </MemoryRouter>
         );
 
-        const backButton = screen.getAllByLabelText(/go back/i);
+        const backButton = screen.getByLabelText(/go back/i);
         fireEvent.click(backButton);
 
         expect(mockNavigate).toHaveBeenCalledWith(-1);
@@ -100,21 +100,23 @@ describe("RecipeDetails Component", () => {
         expect(screen.getByText(/delete recipe/i)).toBeInTheDocument();
     });
 
-    // it("navigates to edit page on edit menu click", async () => {
-    //     render(
-    //         <MemoryRouter initialEntries={["/recipe-details/1"]}>
-    //             <RecipeDetails />
-    //         </MemoryRouter>
-    //     );
+    it("navigates to edit page on edit menu click", async () => {
+        mockGetRecipeById.mockResolvedValueOnce({ data: mockRecipes[0] });
+        
+        render(
+            <MemoryRouter initialEntries={["/recipe-details/1"]}>
+                <RecipeDetails />
+            </MemoryRouter>
+        );
 
-    //     await waitFor(() => screen.getByText("Test Recipe"));
+        await waitFor(() => screen.getByText("Spaghetti Carbonara"));
 
-    //     const moreButton = screen.getByRole("button", { name: /more/i });
-    //     fireEvent.click(moreButton);
+        const moreButton = screen.getByRole("button", { name: /more button/i });
+        fireEvent.click(moreButton);
 
-    //     const editOption = screen.getByText("Edit");
-    //     fireEvent.click(editOption);
+        const editOption = screen.getByText("Edit");
+        fireEvent.click(editOption);
 
-    //     expect(mockNavigate).toHaveBeenCalledWith("/recipe-edit/1");
-    // });
+        expect(mockNavigate).toHaveBeenCalledWith("/recipe-edit/1");
+    });
 });
