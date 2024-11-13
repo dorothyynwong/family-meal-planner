@@ -22,9 +22,6 @@ const Recipes: React.FC = () => {
           case "import-recipe-button":
             navigate("/recipe-add", { state: url })
             break
-          case "log-out-button":
-            navigate("/")
-            break
           default:
             break
         }
@@ -35,9 +32,9 @@ const Recipes: React.FC = () => {
     return (
         <>
             <div className="button-box">
-            <Button id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>Search Recipes</Button>
-                <Button className="custom-button" size="lg" onClick={() => setModalShow(true)}>Import Recipe from Website</Button>
-                <Button id="new-recipe-button" className="custom-button" size="lg" onClick={handleClick}>New Recipe</Button>
+                <Button aria-label="Search Recipes" id="show-recipe-button" className="custom-button" size="lg" onClick={handleClick}>Search Recipes</Button>
+                <Button aria-label="Import Recipe from Website" className="custom-button" size="lg" onClick={() => setModalShow(true)}>Import Recipe from Website</Button>
+                <Button aria-label="New Recipe" id="new-recipe-button" className="custom-button" size="lg" onClick={handleClick}>New Recipe</Button>
             </div>
             <Popup
                 show={modalShow}
