@@ -25,8 +25,8 @@ const OverflowMenu: React.FC<OverflowMenuProps> = ({menuItems, handleOptionsClic
     };
 
     return (
-        <div>
-            <IconButton onClick={handleClick}>
+        <div data-testId='overflow-menu'>
+            <IconButton aria-label="More Button" onClick={handleClick}>
                 <Icon />
             </IconButton>
             <Menu

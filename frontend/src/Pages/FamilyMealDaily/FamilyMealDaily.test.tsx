@@ -21,8 +21,12 @@ const mockSetStatus = vi.fn();
 const mockSetErrorMessages = vi.fn();
 const mockSetSelectedFamily = vi.fn();
 const mockSetModalShow = vi.fn();
-const mockSetMode = vi.fn();
+const mockSetMealTypes = vi.fn();
 const errorMessages: string[] = [];
+const mockModalShow = true;
+const mockMode = true;
+const mockFormType = 'family';
+
 
 vi.mock('../../Components/MealContext/MealContext', () => ({
   useMeal: () => ({
@@ -34,11 +38,16 @@ vi.mock('../../Components/MealContext/MealContext', () => ({
     setSelectedFamily: mockSetSelectedFamily,
     setModalShow: mockSetModalShow,
     setMode: mockSetStatus,
+    setMealTypes: mockSetMealTypes,
+    modalShow: mockModalShow,
+    mode: mockMode,
+    formType: mockFormType,
+    mealTypes: mockMealTypes,
   }),
   MealProvider: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
-describe.only('FamilyMealDaily Page', () => {
+describe('FamilyMealDaily Page', () => {
   const mockGetFamiliesWithUsersByUserId = getFamiliesWithUsersByUserId as Mock;
   const mockGetMealByDateUserId = getMealByDateUserId as Mock;
   const mockGetMealTypes = getMealTypes as Mock;
@@ -95,10 +104,9 @@ describe.only('FamilyMealDaily Page', () => {
   });
 
   // it('displays error message when API call fails', async () => {
-  //   const errorMessage = 'Error getting families with users';
-  //   mockGetFamiliesWithUsersByUserId.mockRejectedValueOnce({
-  //     response: { data: { message: errorMessage } },
-  //   });
+  //   const mockError = { response: { data: { message: 'Error getting families with users' } }, };
+
+  //   mockGetFamiliesWithUsersByUserId.mockRejectedValueOnce(mockError);
 
   //   render(
   //     <MealProvider>
@@ -108,7 +116,7 @@ describe.only('FamilyMealDaily Page', () => {
   //     </MealProvider>);
 
   //   await waitFor(() => {
-  //     expect(screen.getByText(errorMessage)).toBeInTheDocument();
+  //     expect(screen.getByText('Error getting families with users')).toBeInTheDocument();
   //   });
   // });
 
@@ -127,11 +135,7 @@ describe.only('FamilyMealDaily Page', () => {
     });
   });
 
-  it('renders DateBar, FamilyMealsBottomBar components', async () => {
-    mockSetMode('Add');
-    mockSetModalShow(true);
-    mockSetFormType('family');
-
+  it('renders DateBar, FamilyMealsBottomBar components FamilyForm should not be shown', async () => {
     render(
       <MealProvider>
         <MemoryRouter>
@@ -141,8 +145,24 @@ describe.only('FamilyMealDaily Page', () => {
 
     expect(screen.getByLabelText('Date Bar')).toBeInTheDocument();
     expect(screen.getByLabelText('Family Meals Bottom Bar')).toBeInTheDocument();
+    expect(screen.queryByLabelText('Family Meal Form')).toBeInTheDocument();
+  });
 
-    fireEvent.click(screen.getByLabelText('Add Meal to Family'));
+  it('should show FamilyForm when Add Meal to Family is clicked ', async () => {
+    mockGetFamiliesWithUsersByUserId.mockResolvedValueOnce({ data: mockFamiliesWithUsers });
+    mockGetMealByDateUserId.mockResolvedValueOnce({ data: mockMealDetails });
+    mockGetMealTypes.mockResolvedValueOnce({ data: mockMealTypes});
+
+    render(
+      <MealProvider>
+        <MemoryRouter>
+          <FamilyMealDaily />
+        </MemoryRouter>
+      </MealProvider>);
+
+    const addIcon = screen.getByLabelText('Add Meal to Family');
+    fireEvent.click(addIcon);
+
     await waitFor(() => expect(screen.getByLabelText('Family Meal Form')).toBeInTheDocument());
   });
 });

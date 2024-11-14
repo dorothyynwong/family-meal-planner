@@ -43,9 +43,9 @@ const RecipeCreation: React.FC = () => {
                 });
         }
 
-        if (recipeId !== null) {
+        if (recipeId !== null && recipeId !== undefined) {
             const recipeIdNo = parseInt(recipeId!, 10);
-            if (recipeIdNo > 0) {
+            if (!isNaN(recipeIdNo) && recipeIdNo > 0) {
                 getRecipeById(recipeIdNo)
                     .then(recipe => setData(recipe.data))
                     .catch(err => {
