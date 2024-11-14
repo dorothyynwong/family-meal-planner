@@ -101,10 +101,10 @@ const MealPlanMonthly: React.FC = () => {
                 loadingMessage="Loading Meals.."
                 successMessage=""
             >
-                <></>
+                <>{status}</>
             </StatusHandler>
             <MealForm />
-            <div className="add-meal-button" onClick={handleClick}>
+            <div aria-label="Add Meal" data-testId="add-meal-button" className="add-meal-button" onClick={handleClick}>
                 <IoIosAddCircle size={30} />
             </div>
             {
