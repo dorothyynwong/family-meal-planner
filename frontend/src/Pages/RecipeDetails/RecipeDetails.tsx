@@ -56,12 +56,6 @@ const RecipeDetails: React.FC = () => {
         // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeId])
 
-    // const menuItems = [
-    //     { id: "edit-recipe-button", label: "Edit" },
-    //     { id: "delete-recipe-button", label: "Delete" },
-    //     { id: "copy-recipe-button", label: "Copy" },
-    // ];
-
     const baseMenuItems = [
         { id: "copy-recipe-button", label: "Copy" },
         { id: "add-my-meal-button", label: "Add as My Meal" },
