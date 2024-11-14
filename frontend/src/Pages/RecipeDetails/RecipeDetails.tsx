@@ -10,6 +10,9 @@ import OverflowMenu from "../../Components/OverflowMenu/OverflowMenu";
 import RecipeDeleteConfirmation from "../../Components/RecipeDeleteConfirmation/RecipeDeleteConirmation";
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import StatusHandler from "../../Components/StatusHandler/StatusHandler";
+import { useMeal } from "../../Components/MealContext/MealContext";
+import MealForm from "../../Components/MealForm/MealForm";
+import FamilyMealForm from "../../Components/FamilyMealForm/FamilyMealForm";
 
 
 const RecipeDetails: React.FC = () => {
@@ -25,8 +28,16 @@ const RecipeDetails: React.FC = () => {
         description: "",
         recipeIngredients: [],
         recipeInstructions: [],
-    });;
-
+    });
+    const { 
+        setSelectedRecipe,
+        setModalShow,
+        setMode, 
+        setFormType,
+        setIsFromRecipeList,
+        setRecipeName,
+    } = useMeal();
+    
     useEffect(() => {
         setStatus("loading");
         setErrorMessages([]);
@@ -42,20 +53,30 @@ const RecipeDetails: React.FC = () => {
                 setStatus("error");
                 setErrorMessages([...errorMessages, errorMessage]);
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [recipeId])
 
-    const menuItems = [
-        { id: "edit-recipe-button", label: "Edit" },
-        { id: "delete-recipe-button", label: "Delete" },
+    // const menuItems = [
+    //     { id: "edit-recipe-button", label: "Edit" },
+    //     { id: "delete-recipe-button", label: "Delete" },
+    //     { id: "copy-recipe-button", label: "Copy" },
+    // ];
+
+    const baseMenuItems = [
         { id: "copy-recipe-button", label: "Copy" },
+        { id: "add-my-meal-button", label: "Add as My Meal" },
+        { id: "add-family-meal-button", label: "Add as Family Meal" }
     ];
+
+    const ownerMenuItems = [
+        { id: "edit-recipe-button", label: "Edit" },
+        { id: "delete-recipe-button", label: "Delete" }
+    ];
+
+    const menuItems = recipeData.isOwner ? [...baseMenuItems, ...ownerMenuItems] : baseMenuItems;
 
     const handleOptionsClick = (option: string) => {
         switch (option) {
-            case "display-recipe-button":
-                navigate(`/recipe-details/${recipeData.id}`);
-                break
             case "delete-recipe-button":
                 setIsDelete(true);
                 break
@@ -64,6 +85,22 @@ const RecipeDetails: React.FC = () => {
                 break
             case "copy-recipe-button":
                 navigate(`/recipe-add/${recipeData.id}`);
+                break
+            case "add-my-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipeData);
+                setFormType("recipe");
+                setIsFromRecipeList(true);
+                setRecipeName(recipeData.name ? recipeData.name : recipeData.notes ? recipeData.notes : "");
+                break
+            case "add-family-meal-button":
+                setMode("Add");
+                setModalShow(true);
+                setSelectedRecipe(recipeData);
+                setFormType("family");
+                setIsFromRecipeList(true);
+                setRecipeName(recipeData.name ? recipeData.name : recipeData.notes ? recipeData.notes : "");
                 break
             default:
                 break
@@ -83,19 +120,19 @@ const RecipeDetails: React.FC = () => {
             >
                 <></>
             </StatusHandler>
-                <Row>
-                    <Col xs={10}>
-                        <MdArrowBackIosNew aria-label='Go Back' size={20} onClick={() => navigate(-1)} />
-                    </Col>
-                    <Col xs={2}>
-                        <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
-                    </Col>
-                </Row>
+            <Row>
+                <Col xs={10}>
+                    <MdArrowBackIosNew aria-label='Go Back' size={20} onClick={() => navigate(-1)} />
+                </Col>
+                <Col xs={2}>
+                    <OverflowMenu menuItems={menuItems} handleOptionsClick={handleOptionsClick} icon={MoreVertIcon} />
+                </Col>
+            </Row>
 
-                <RecipeDisplay data={recipeData} />
-                {isDelete && <RecipeDeleteConfirmation data={recipeData} onCancel={handleCancel} />}
-            
-
+            <RecipeDisplay data={recipeData} />
+            {isDelete && <RecipeDeleteConfirmation data={recipeData} onCancel={handleCancel} />}
+            <MealForm/>
+            <FamilyMealForm />
         </>
 
     )
