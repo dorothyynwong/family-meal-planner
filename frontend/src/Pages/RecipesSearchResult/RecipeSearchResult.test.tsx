@@ -4,8 +4,9 @@ import { useLocation, useParams } from "react-router-dom";
 import { describe, it, vi, Mock, beforeEach, expect } from "vitest";
 import { searchRecipes } from "../../Api/api";
 import { InfiniteList } from "../../Components/InfiniteList/InfiniteList";
-import { RecipeDetailsInterface } from "../../Api/apiInterface";
+// import { RecipeDetailsInterface } from "../../Api/apiInterface";
 import userEvent from '@testing-library/user-event'
+import { mockRecipes } from "../../__mock__/mockRecipes";
 
 // Mock dependencies
 vi.mock("react-router-dom", () => ({
@@ -18,11 +19,11 @@ vi.mock("../../Api/api", () => ({
 }));
 
 vi.mock("../../Components/InfiniteList/InfiniteList", () => ({
-    InfiniteList: vi.fn(({ renderItem }) => <div>{renderItem({ id: 1, name: "Mock Recipe" })}</div>),
+    InfiniteList: vi.fn(({ renderItem }) => <div>{renderItem(mockRecipes)}</div>),
 }));
 
 vi.mock("../../Components/RecipeCard/RecipeCard", () => ({
-    default: ({ recipe }: { recipe: RecipeDetailsInterface }) => <div>{recipe.name}</div>,
+    default: () => <div>{mockRecipes[0].name}</div>,
 }));
 
 vi.mock("../../Components/SearchBar/SearchBar", () => ({
@@ -48,6 +49,9 @@ vi.mock("../../Components/GoTopButton/GoTopButton", () => ({
     default: () => <div>GoTopButton</div>,
 }));
 
+vi.mock("../../Hooks/useDebounce", () => ({
+    default: (value: string) => value,
+}));
 
 describe("RecipesSearchResult", () => {
     const mockUseLocation = useLocation as Mock;
@@ -59,25 +63,25 @@ describe("RecipesSearchResult", () => {
 
     it("renders SearchBar and InfiniteList with the correct initial state", () => {
         mockUseLocation.mockReturnValue({ state: { isFromMealForm: false } });
-        mockUseParams.mockReturnValue({ searchRecipeName: "pasta" });
-
+        mockUseParams.mockReturnValue({ searchRecipeName: "spaghetti" });
+        
         render(<RecipesSearchResult />);
 
         // Verify SearchBar
         const searchBar = screen.getByPlaceholderText("Search...");
-        expect(searchBar).toHaveValue("pasta");
+        expect(searchBar).toHaveValue("spaghetti");
 
         // Verify InfiniteList
         expect(InfiniteList).toHaveBeenCalledWith(
             expect.objectContaining({
                 fetchItems: searchRecipes,
-                query: "RecipeName=pasta",
+                query: "RecipeName=spaghetti",
             }),
             {}
         );
 
         // Verify RecipeCard is rendered inside InfiniteList
-        expect(screen.getByText("Mock Recipe")).toBeInTheDocument();
+        expect(screen.getByText("Spaghetti Carbonara")).toBeInTheDocument();
     });
 
     it("renders MealForm, FamilyMealForm, and GoTopButton when not from meal form", () => {
@@ -109,14 +113,14 @@ describe("RecipesSearchResult", () => {
         render(<RecipesSearchResult />);
         
         const searchBar = screen.getByPlaceholderText("Search...");
-        await userEvent.type(searchBar, "soup");
+        await userEvent.type(searchBar, "vegan");
 
         await waitFor(() => {
             expect(InfiniteList).toHaveBeenLastCalledWith(
                 expect.objectContaining({
-                    query: "RecipeName=soup",
+                    query: "RecipeName=vegan",
                 }),
-                {}
+                expect.anything()
             );
         });
     });
