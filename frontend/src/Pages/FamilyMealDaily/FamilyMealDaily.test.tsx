@@ -7,7 +7,6 @@ import { mockMealDetails } from '../../__mock__/mockMealDetails';
 import { MemoryRouter } from 'react-router-dom';
 import { mockMealTypes } from '../../__mock__/mockMealTypes';
 import { mockFamiliesWithUsers } from '../../__mock__/mockFamiliesWithUsers';
-import { act } from 'react';
 
 // Mock API and context
 vi.mock('../../Api/api', () => ({

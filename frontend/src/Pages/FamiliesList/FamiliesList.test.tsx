@@ -15,11 +15,6 @@ vi.mock('../../Api/api', () => ({
 vi.mock('../../Components/FamilyCard/FamilyCard', () => ({
     default: ({ data }: { data: FamilyWithUsersInterface }) => <div>{data.familyId}</div>,
 }));
-vi.mock('../../Components/StatusHandler/StatusHandler', () => ({
-    default: ({ status, children }: { status: string, children: React.ReactNode }) => (
-        <div data-testid="status-handler">{status === 'loading' ? 'Loading...' : children}</div>
-    ),
-}));
 
 describe('FamiliesList Page', () => {
 
