@@ -11,7 +11,7 @@ const UserLoginPage: React.FC = () => {
 
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    
+
     const navigate = useNavigate();
 
     const { logUserIn } = useAuth();
@@ -31,22 +31,29 @@ const UserLoginPage: React.FC = () => {
     const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
         event.preventDefault();
         setStatus("loading");
-        
-        userLogin(email, password)
-            .then(response => {
-                if (response.status === 200) {
-                    logUserIn(response.data);
-                    navigate(`/home`);
-                    setStatus("success");
-                    console.log(status);
-                }
-            })
-            .catch(error => {
-                console.log("Error login", error);
-                const errorMessage = error?.response?.data?.message || "Error login";
-                setStatus("error");
-                setErrorMessages([...errorMessages, errorMessage]);
-            });
+
+        if (email === "" || password === "") {
+            setStatus("error");
+            setErrorMessages([...errorMessages, "Please input email and password"]);
+        }
+        else {
+            userLogin(email, password)
+                .then(response => {
+                    if (response.status === 200) {
+                        logUserIn(response.data);
+                        navigate(`/home`);
+                        setStatus("success");
+                        console.log(status);
+                    }
+                })
+                .catch(error => {
+                    console.log("Error login", error);
+                    const errorMessage = error?.response?.data?.message || "Error login";
+                    setStatus("error");
+                    setErrorMessages([...errorMessages, errorMessage]);
+                });
+        }
+
     }
 
     return (
@@ -60,19 +67,19 @@ const UserLoginPage: React.FC = () => {
                 <Form.Control className="custom-form-control" type="password" placeholder="Enter Password" name="password" value={password} onChange={handleChange} />
             </Form.Group>
             <StatusHandler
-                    status={status}
-                    errorMessages={errorMessages}
-                    loadingMessage="Logging In ..."
-                    successMessage="Logged In Successfully!"
-                >
-                    <></>
+                status={status}
+                errorMessages={errorMessages}
+                loadingMessage="Logging In ..."
+                successMessage="Logged In Successfully!"
+            >
+                <></>
             </StatusHandler>
             <div className="d-flex justify-content-end">
                 <Button className="custom-button recipe-button" size="lg" type="submit">
                     Submit
                 </Button>
             </div>
-            
+
         </Form>
     )
 
