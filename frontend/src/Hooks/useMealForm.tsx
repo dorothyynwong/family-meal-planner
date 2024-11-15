@@ -88,6 +88,13 @@ function useMealForm(selectedDate?: Dayjs) {
             return false;
         }
 
+        if (formType === "family" && !selectedFamily) {
+            const errorMessage = "Please select a family. ";
+            setStatus("error");
+            setErrorMessages([...errorMessages, errorMessage]);
+            return false;
+        }
+
         return true;
     }
 
