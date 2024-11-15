@@ -76,7 +76,7 @@ export const mockRecipes: RecipeDetailsInterface[] = [
       recipeUrl: "http://example.com/vegan-tacos-url",
       addedByUserId: 789,
       addedByUserNickname: "aliceb789",
-      isOwner: true
+      isOwner: false
     },
     {
       id: 3,
